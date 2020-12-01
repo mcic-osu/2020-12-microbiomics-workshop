@@ -8,7 +8,10 @@ navbar:
       href: index.html
     - text: "Day 1"
       menu:
+        - text: "Lecture:"
         - text: "Intro to Microbiomics"
+        - text: "---------"
+        - text: "Hands-on Sessions:"
         - href: "01-microbiomics.html"
         - text: "Intro to R"
         - href: "02-R.html"
