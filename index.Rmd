@@ -1,12 +1,11 @@
 ---
 title: "A Microbiomics Workshop"
-subtitle: "Dec 2020 -- OSU"
 ---
 
 <br>
 
-This website contains materials for a two-day online microbiomics workshop
-on December 16 and 17, 2020 at OSU.
+<span style="font-size: 18px">**This website contains materials for a two-day online
+microbiomics workshop<br>on December 16 and 17, 2020, at OSU.**</span>
 
 <br>
 
@@ -16,26 +15,39 @@ on December 16 and 17, 2020 at OSU.
 
 ### Day 1 (Wed, Dec 16)
 
-...
+| When  | Type | Who | What |
+|-------|------|-----|------|
+| 10:00 | Lecture | Antonino | [Introduction to Microbiomics](/01-microbiomics.html)  |
+| 11:30 | Hands-on | Jelmer | [Introduction to OSC](/02-OSC.html)         |
+| 11:50 | Hands-on | Jelmer | [Introduction to the shell](/03-shell.html) |
+| 12:15 | Hands-on | Jelmer | [Introduction to R](/04-R.html)             |
 
 ### Day 2 (Thu, Dec 17)
 
-...
+| When  | Type | Who | What |
+|-------|------|-----|------|
+| 10:00 | Hands-on | all | [From reads to an ASV table](/05-reads-to-ASV.html)  |
+| 11:30 | Hands-on | all | [Analyzing ASV data](/06-ASV-analysis.html)         |
 
 <br>
 
 ----
 
-## Set up
+## Pre-workshop Set-up
 
-....
+- Make sure you have an account at the Ohio Supercomputer Center (OSC),
+  and access to a Project.
 
 <br>
 
 ----
 
-## Organizers
+## Instructors
 
-...
+- [M. Soledad Benitez Ponce](benitezponce.1@osu.edu) -- Asst. Prof., [Dept. of Plant Pathology](https://plantpath.osu.edu/)
+
+- [Antonino Malacrino](mailto:malacrino.1@osu.edu) -- Postdoc, [Dept. of EEOB](https://eeob.osu.edu/)
+
+- [Jelmer Poelstra](mailto:poelstra.1@osu.edu) -- Bioinformatician, [MCIC Wooster](https://mcic.osu.edu)
 
 <br>
