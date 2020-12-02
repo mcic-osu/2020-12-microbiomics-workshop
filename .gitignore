@@ -2,3 +2,4 @@
 .RData
 .Rproj.user
 *.code-workspace
+*_cache
