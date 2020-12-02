@@ -1,7 +1,4 @@
 ---
-title: An Introduction to OSC
-author: "[Jelmer Poelstra](mailto:poelstra.1@osu.edu), MCIC Wooster"
-date: 2020-12-16
 output:
   rmarkdown::html_document:
     theme: cerulean
@@ -9,6 +6,10 @@ output:
     toc_float: true
     css: my.css
 ---
+
+<br>
+
+# An Introduction to OSC
 
 ```{r knitr_options, echo=FALSE}
 knitr::opts_chunk$set(results='hide',

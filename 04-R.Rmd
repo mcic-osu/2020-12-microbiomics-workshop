@@ -1,7 +1,4 @@
 ---
-title: An Introduction to R
-author: "[Jelmer Poelstra](mailto:poelstra.1@osu.edu), MCIC Wooster"
-date: 2020-12-16
 output:
   rmarkdown::html_document:
     theme: cerulean
@@ -12,6 +9,7 @@ output:
 
 ```{r knitr_options, echo=FALSE}
 knitr::opts_chunk$set(results='hide',
+                      eval = FALSE,
                       class.source="r_code",
                       class.output="r_output",
                       class.warning="r_warning",
@@ -20,6 +18,10 @@ knitr::opts_chunk$set(results='hide',
 
 folder_name <- "2020-12_microbiomics-workshop"
 ```
+
+<br>
+
+# An Introduction to R
 
 <br>
 
@@ -36,7 +38,7 @@ folder_name <- "2020-12_microbiomics-workshop"
 
 ## Before we start
 
-### Acknowledgements
+### Attribution
 
 This material was modified after material from [The Carpentries](https://carpentries.org/),
 especially from [this Data Carpentry workshop](http://uw-madison-aci.github.io/2016-06-01-uwmadison/)
@@ -127,16 +129,17 @@ It indicates that R is ready for you to type something.
 
 Let's start by performing an amazing subtraction:
 
-```{r add, results='show'}
+```{r add, eval=TRUE, results='show'}
 20 - 13
 ```
 
 R does the calculation and prints the result, and then you get the `>` prompt again.
-(The `[1]` in the results is a bit weird; you can ignore that for now.)
+(The `[1]` may look a bit weird when there is only one output element; 
+if there were many, it would keep count of them.)
 
 You can generally use R as a calculator in this way, with standard symbols:
 
-```{r calculations, results='show'}
+```{r calculations, eval = TRUE, results='show'}
 20 * 13   # Multiplication
 20 / 13   # Division
 ```
@@ -144,7 +147,7 @@ You can generally use R as a calculator in this way, with standard symbols:
 
 ### Let's try some random things!
 
-```{r space, results="show"}
+```{r space, eval=TRUE, results="show"}
          20                     - 13
 ```
 
@@ -154,7 +157,7 @@ Okay! So R just ignores any extra spaces.
 
 How about:
 
-```{r hanging_prompt, eval=FALSE}
+```{r hanging_prompt}
 4 +
 ```
 
@@ -186,7 +189,7 @@ Note also that RStudio will alert you in the script window when you are making s
 
 Now we just type a number:
 
-```{r number, results='show'}
+```{r number, eval=TRUE, results='show'}
 4
 ```
 
@@ -199,7 +202,7 @@ on anything you type is to print it back to us
 
 What if we try that with some text?
 
-```{r gibberish, results='show', error=TRUE}
+```{r gibberish, eval=TRUE, results='show', error=TRUE}
 Awesome
 ```
 
@@ -221,7 +224,7 @@ it will expect a function.)
 We *can* get R to print character strings back to us,
 and work with them in other ways, as long as we quote the strings:
 
-```{r print_char, results='show'}
+```{r print_char, eval=TRUE, results='show'}
 "Well, I'm really liking R so far."
 ```
 
@@ -375,7 +378,7 @@ meanings, and so I recommend sticking with the `<-` combination.].
 (This is a smaller-than sign `<` followed by a dash `-`.)
 For example:
 
-```{r assign}
+```{r assign, eval=TRUE}
 age <- 2020 - 1984
 ```
 
@@ -385,7 +388,7 @@ and use <kbd>`Ctrl`</kbd> + <kbd>`Enter`</kbd> to send it to the console.
 If you've assigned a number to an object, you can then use it in
 further calculations:
 
-```{r sqrt, results='show'}
+```{r sqrt, eval=TRUE, results='show'}
 age + (age / 2)
 ```
 
@@ -461,7 +464,7 @@ Like for *many* things you may want to do in R, there is a **function** for that
 
 Functions are used by typing their name followed by parentheses:
 
-```{r log, results='show'}
+```{r log, eval=TRUE, results='show'}
 round(1.538462)
 ```
 
@@ -692,7 +695,7 @@ We will look at a dataset with the species and weight of animals caught
 in plots in a study area in Arizona over time.
 This data is available on the web, and we can read it straight from there:
   
-  ```{r read_csv_from_web}
+```{r read_csv_from_web, eval=FALSE}
 surveys <- read.csv("http://kbroman.org/datacarp/portal_data_joined.csv")
 ```
 
@@ -706,30 +709,30 @@ but all columns have the same length.
 
 Use `head()` to view the first few rows.
 
-```{r head}
+```{r head, eval=FALSE}
 head(surveys)
 ```
 
 Use `str()` to look at the structure of the data.
 
-```{r str}
+```{r str, eval=FALSE}
 str(surveys)
 ```
 
-This shows that there are `r nrow(surveys)` rows and `r ncol(surveys)`
-columns, and then for each column, it gives information about the data
+This shows that there are 34,786 rows and 13 columns,
+and then for each column, it gives information about the data
 type and shows the first few values.
 
 Another useful function is `summary()`.
 
-```{r summary}
+```{r summary, eval=FALSE}
 summary(surveys)
 ```
 
 Finally, in RStudio, we can click on an object in the `Files` pane, or
 equivalently, type:
   
-  ```{r View}
+  ```{r View, eval=FALSE}
 View(surveys)
 ```
 

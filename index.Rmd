@@ -1,13 +1,12 @@
----
-title: "A Microbiomics Workshop"
----
 
 <br>
 
-<span style="font-size: 18px">**This website contains materials for a two-day online
-microbiomics workshop<br>on December 16 and 17, 2020, at OSU.**</span>
+# Microbiomics Workshop
 
 <br>
+
+<span style="font-size: 18px">**This website contains materials for an online
+OSC microbiomics workshop<br>on December 16 and 17, 2020.**</span>
 
 ----
 
@@ -17,28 +16,27 @@ microbiomics workshop<br>on December 16 and 17, 2020, at OSU.**</span>
 
 | When  | Type | Who | What |
 |-------|------|-----|------|
-| 10:00 | Lecture | Antonino | [Introduction to Microbiomics](/01-microbiomics.html)  |
-| 11:30 | Hands-on | Jelmer | [Introduction to OSC](/02-OSC.html)         |
-| 11:50 | Hands-on | Jelmer | [Introduction to the shell](/03-shell.html) |
-| 12:15 | Hands-on | Jelmer | [Introduction to R](/04-R.html)             |
+| 10:00 | Lecture | Antonino | [Introduction to Microbiomics](01-microbiomics.html)  |
+| 11:30 | Hands-on | Jelmer | [Introduction to OSC](02-OSC.html)         |
+| 11:50 | Hands-on | Jelmer | [Introduction to the shell](03-shell.html) |
+| 12:15 | Hands-on | Jelmer | [Introduction to R](04-R.html)             |
 
 ### Day 2 (Thu, Dec 17)
 
 | When  | Type | Who | What |
 |-------|------|-----|------|
-| 10:00 | Hands-on | all | [From reads to an ASV table](/05-reads-to-ASV.html)  |
-| 11:30 | Hands-on | all | [Analyzing ASV data](/06-ASV-analysis.html)         |
-
-<br>
+| 10:00 | Hands-on | all | [From reads to an ASV table](05-reads-to-ASV.html)  |
+| 11:30 | Hands-on | all | [Analyzing ASV data](06-ASV-analysis.html)         |
 
 ----
 
-## Pre-workshop Set-up
+## Pre-workshop Setup
 
-- Make sure you have an account at the Ohio Supercomputer Center (OSC),
-  and access to a Project.
-
-<br>
+- **OSC account:** make sure you have an account at the Ohio Supercomputer Center (OSC),
+  and access to an active OSC project.
+  - If you don't have an OSC account, see [these instructions](setup.html) to get one.
+  - If you have an account but no access to an active project,
+    contact the instructors to be added to a project.
 
 ----
 
