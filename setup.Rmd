@@ -1,0 +1,20 @@
+<br>
+
+# Setup
+
+<br>
+
+### Sign up at OSC
+
+- Go to <https://my.osc.edu/> and click the blue "*Sign Up*" bar.
+
+- Fill out the form with your personal information (see screenshot below).
+
+- In the bottom right portion of the form, enter MCIC's Project Code, which is `PAS0471`.
+
+<p align="center">
+<img src="img/osc_signup2.png">
+Enter Project Code `PAS0471` in the red box.
+</p>
+
+
