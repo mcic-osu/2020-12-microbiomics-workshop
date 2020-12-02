@@ -1,4 +1,5 @@
 ---
+title: "<br>An Introduction to R"
 output:
   rmarkdown::html_document:
     theme: cerulean
@@ -19,9 +20,11 @@ knitr::opts_chunk$set(results='hide',
 folder_name <- "2020-12_microbiomics-workshop"
 ```
 
-<br>
-
-# An Introduction to R
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = 'right',
+               tooltip_message = "Copy code to clipboard",
+               tooltip_success = "Copied!")
+```
 
 <br>
 
@@ -44,15 +47,6 @@ This material was modified after material from [The Carpentries](https://carpent
 especially from [this Data Carpentry workshop](http://uw-madison-aci.github.io/2016-06-01-uwmadison/)
 and [this "R for Ecology" workshop](https://datacarpentry.org/R-ecology-lesson).
 
-### Prerequisites
-
-- An account at OSC with access to an OSC Project.   
-  *While these materials can be used either in a local R and RStudio installation
-  or using RStudio Server at the Ohio Supercomputer Center (OSC),
-  we recommend you to use OSC as we will also use OSC for other elements
-  of this workshop.*
-  
-  
 ### Notes on Terminology
 
 - The terms "directory" and "folder" are used interchangeably.
@@ -83,6 +77,17 @@ Furthermore, R:
 
 - Has a large and welcoming user community.
 
+### Start an RStudio Server session at OSC
+
+- Go to <https://ondemand.osc.edu>.
+- In the blue top bar, click the `Interactive Apps` dropdown menu.
+- All the way in the bottom of the dropdown, click `RStudio Server (Owens and Pitzer)`.
+- In the submission form, keep all the defaults, unless you want to select
+  a particular project, and then click `Launch`.
+- Wait until the top bar of the little job box turns green and says "Running",
+  and then click the blue `Connect to RStudio Server` button in the bottom of the Box.
+- You're in!
+
 ### R vs. RStudio
 
 R simply provides a "*console*" to type your commands.
@@ -104,16 +109,6 @@ RStudio is divided into 4 "panes":
   
 The placement of these panes and their content can be customized.
 
-### Start an RStudio Server session at OSC
-
-- Go to <https://ondemand.osc.edu>.
-- In the blue top bar, click the `Interactive Apps` dropdown menu.
-- All the way in the bottom of the dropdown, click `RStudio Server (Owens and Pitzer)`.
-- In the submission form, keep all the defaults, unless you want to select
-  a particular project, and then click `Launch`.
-- Wait until the top bar of the little job box turns green and says "Running",
-  and then click the blue `Connect to RStudio Server` button in the bottom of the Box.
-- You're in!
 
 -----
 
@@ -127,10 +122,10 @@ is where you can interact with R directly.
 The `>` sign is the R "prompt".
 It indicates that R is ready for you to type something.
 
-Let's start by performing an amazing subtraction:
+Let's start by performing an amazing division:
 
 ```{r add, eval=TRUE, results='show'}
-20 - 13
+203 / 2.54
 ```
 
 R does the calculation and prints the result, and then you get the `>` prompt again.
@@ -140,15 +135,15 @@ if there were many, it would keep count of them.)
 You can generally use R as a calculator in this way, with standard symbols:
 
 ```{r calculations, eval = TRUE, results='show'}
-20 * 13   # Multiplication
-20 / 13   # Division
+203 * 2.54   # Multiplication
+203 + 2.54   # Addition
 ```
 
 
 ### Let's try some random things!
 
 ```{r space, eval=TRUE, results="show"}
-         20                     - 13
+         203                     - 2.54
 ```
 
 Okay! So R just ignores any extra spaces.
@@ -158,7 +153,7 @@ Okay! So R just ignores any extra spaces.
 How about:
 
 ```{r hanging_prompt}
-4 +
+203 +
 ```
 
 <details>
@@ -190,7 +185,7 @@ Note also that RStudio will alert you in the script window when you are making s
 Now we just type a number:
 
 ```{r number, eval=TRUE, results='show'}
-4
+203
 ```
 
 R will print the number back to us!
@@ -346,7 +341,7 @@ so start by typing the following into the R script in the top-left pane:
 ```{r rscript}
 # R intro
 
-20 - 13
+203 / 2.54
 ```
 
 Now place the cursor on the line with `20 - 13` and type
@@ -379,7 +374,7 @@ meanings, and so I recommend sticking with the `<-` combination.].
 For example:
 
 ```{r assign, eval=TRUE}
-age <- 2020 - 1984
+wingspan_in <- 203 / 2.54
 ```
 
 Type that into your script,
@@ -389,7 +384,7 @@ If you've assigned a number to an object, you can then use it in
 further calculations:
 
 ```{r sqrt, eval=TRUE, results='show'}
-age + (age / 2)
+wingspan_in * 2.54
 ```
 
 ### Object names
@@ -578,14 +573,14 @@ We can assign a series of values to a vector using the `c()` function.
 For example:
 
 ```{r, eval = TRUE}
-weights <- c(50, 60, 65, 82)
+wingspan_cm <- c(11.8, 203, 18.2, 27.9)
 ```
 
 A vector can also contain characters -- but again, quoting is important,
 or R will think the strings are objects:
 
 ```{r, eval = TRUE}
-animals <- c("mouse", "rat", "dog")
+birds <- c("hummingbird", "bald_eagle", "chickadee", "cardinal")
 ```
 
 <br>
@@ -593,9 +588,9 @@ animals <- c("mouse", "rat", "dog")
 As mentioned, all of a vector's elements are the same type of data.
 The function `class()` indicates what kind of data you are working with:
 
-```{r, results='show'}
-class(weights)
-class(animals)
+```{r, eval = TRUE, results='show'}
+class(wingspan_cm)
+class(birds)
 ```
 
 ### Data types in R
@@ -613,7 +608,7 @@ The 4 most common atomic vector types are:
 **Vector coercion: when not all elements are of the same type.**
 </summary>
 
-What happens if we try to mix vector types (e.g., "character and numberic"
+What happens if we try to mix vector types (e.g., "character and numeric")
 in a single vector?
 **R converts them to all be the same type, and it does so without telling us about it.**
 
@@ -643,80 +638,109 @@ types.
 
 ### Vectorization!
 
-Let's say we wanted to convert our weights to pounds,
-which means that ...
+Let's say we wanted to convert our wingspans to inches,
+which means that we need to divide each length in centimeters by 2.54.
 
-```{r}
-# weights <- c(50, 60, 65, 82)     # Still working with the same weights vector
+How could we do this quickly?
 
-weights * 5
+```{r, eval = TRUE, results = "show"}
+# wingspan_cm <- c(11.8, 203, 18.2, 27.9)  # Still working with the same wingspan vector
+
+wingspan_in <- wingspan_cm / 2.54
+wingspan_in
 ```
 
 <details>
 
 <summary>
-**What is going on here??**
+**Why does this work?**
 </summary>
 
 R "vectorizes" operations whenever it can.
-This means that in this case, each element in the vector `weights` will be multiplied by 5.
-For a programming language, this is unusual behavior -- but it is very useful!
+This means that in this case, each element in the vector `weights_cm` will be divided
+by 2.54 -- this number is "vectorized" or recycled to match the number of weights.
 
-```{r, results="show"}
-weights * 5
-```
+For a programming language, this is unusual behavior -- but it is very useful!
 
 </details>
 
 <br>
 
-<span style="color: #eb4034">TODO: EXPAND AND USE WEIGHT CONVERSION AS AN EXAMPLE</span>
+Similarly, we can use two vectors of equal length to quickly operate on each element
+of the vector:
+
+```{r eval = TRUE, results =  "show"}
+size_cm <- c(7.62, 90, 13.1, 21.8)
+
+ratio <- wingspan_cm / size_cm
+ratio
+
+```
+<br>
 
 
 ### Data structures in R
 
-Vectors, in turn, are one of the many **data structures** that R uses.
+While vectors can be composed of one of several *data types*, they, in turn,
+are one of several **data structures** that R uses.
 Other important ones are:
 
+- **`data.frame`** -- A rectangular data structure where each column can be a different data type.
+- **`matrix`** -- A rectangular data structure of a single data type.
 - **`list`** -- A very flexible data structure that we will not further discuss here.
 - **`factor`** -- Character strings with a discrete set of possible values,
 used mostly for statistical tests and when plotting.
-- **`matrix`** -- a rectangular data structure of a single data type.
-- **`data.frame`** -- A rectangular data structure where each column can be a different data type, see below!
-               
+
 
 ----
 
 ## Data Frames
 
-### Read a Dataset
+A data frame (formal object type: `data.frame`) is a rectangular data structure
+in which rows are observations and columns are variables.
+Each column can be of a different type (numeric, character, etc.),
+but since each column is a vector, all the cells within a column are of the same type.
+Also, due to the rectangular structure, all columns have the same length.
 
-We will look at a dataset with the species and weight of animals caught
-in plots in a study area in Arizona over time.
-This data is available on the web, and we can read it straight from there:
-  
-```{r read_csv_from_web, eval=FALSE}
-surveys <- read.csv("http://kbroman.org/datacarp/portal_data_joined.csv")
+### Create, write, and read a data frame
+
+We can easily create a data frame by hand using the `data.frame()` function and a
+`column_name = column_vector` notation for each column:
+
+```{r eval=TRUE, results='show'}
+birds_df <- data.frame(species = birds,
+                       wingspan = wingspan_cm,
+                       size = size_cm,
+                       n_eggs = c(2, 2, 7, 4)) 
 ```
 
-The data are stored in what's called a **"data frame"**
-(formal object type: `data.frame`).
-It's a big rectangle, with rows being observations and columns being variables.
-In a data frame, different columns can be different types (numeric, character, etc.),
-but all columns have the same length.
+Most often, however, you'll be reading your data frames from files.
+And you'll also want to save your modified data frames.
+
+So let's practice writing and reading a data frame:
+
+```{r}
+# Write a data frame to CSV format:
+write.csv(x = birds_df, file = "bird-data.csv", row.names = FALSE)
+```
+
+Now we read our data frame back in:
+
+```{r}
+birds_df_2 <- read.csv('bird-data.csv')
+
+## Let's compare the two data frames:
+birds_df
+
+birds_df_2
+```
 
 ### Inspecting a Data Frame
-
-Use `head()` to view the first few rows.
-
-```{r head, eval=FALSE}
-head(surveys)
-```
 
 Use `str()` to look at the structure of the data.
 
 ```{r str, eval=FALSE}
-str(surveys)
+str(birds_df)
 ```
 
 This shows that there are 34,786 rows and 13 columns,
@@ -726,14 +750,14 @@ type and shows the first few values.
 Another useful function is `summary()`.
 
 ```{r summary, eval=FALSE}
-summary(surveys)
+summary(birds_df)
 ```
 
 Finally, in RStudio, we can click on an object in the `Files` pane, or
 equivalently, type:
   
   ```{r View, eval=FALSE}
-View(surveys)
+View(birds_df)
 ```
 
 ### An Overview of Functions to Get an Overview
@@ -757,9 +781,6 @@ View(surveys)
   * `summary()` -- summary statistics for each column
   * `skimr::skim()` -- very nice summary, need to install *skimr* with `install.packages(skimr)`.
 
-Note: most of these functions are "generic",
-they can be used on other types of objects besides `data.frame`.
-
 
 ----
 
@@ -767,8 +788,7 @@ they can be used on other types of objects besides `data.frame`.
 
 ### Missing data
 
-As R was designed to analyze datasets,
-it includes the concept of missing data
+As R was designed to analyze datasets, it includes the concept of missing data
 (which is uncommon in other programming languages).
 Missing data are represented as `NA` (for "Not Available").
 
@@ -850,8 +870,8 @@ to be represented in a single object.
 
 Some very brief notes on saving your data in R:
 
-- To save data frames and other tabular data, use `write.table()` in base R
-  or one of *readr*'s [writing functions](https://readr.tidyverse.org/reference/write_delim.html).
+- We already saw the use of `write.csv()` to save data frames,
+  and you can also use one of *readr*'s [writing     functions](https://readr.tidyverse.org/reference/write_delim.html).
   
 - To save R objects "as is",
   which can be useful when you're working with complex S4 objects that may have

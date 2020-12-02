@@ -1,4 +1,5 @@
 ---
+title: "<br>An Introduction to OSC"
 output:
   rmarkdown::html_document:
     theme: cerulean
@@ -7,9 +8,6 @@ output:
     css: my.css
 ---
 
-<br>
-
-# An Introduction to OSC
 
 ```{r knitr_options, echo=FALSE}
 knitr::opts_chunk$set(results='hide',

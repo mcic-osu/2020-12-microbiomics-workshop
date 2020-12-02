@@ -1,4 +1,5 @@
 ---
+title: "<br>An Introduction the Shell"
 output:
   rmarkdown::html_document:
     theme: cerulean
@@ -6,10 +7,6 @@ output:
     toc_float: true
     css: my.css
 ---
-
-<br>
-
-# An Introduction to the Shell
 
 <br>
 
