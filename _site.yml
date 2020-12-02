@@ -5,7 +5,13 @@ navbar:
   title: "Microbiomics Workshop"
   left:
     - text: "Overview"
+      icon: fa-home
       href: index.html
+    
+    - text: "Setup"
+      icon: fa-gear
+      href: "setup.html"
+    
     - text: "Day 1"
       menu:
         - text: "Lecture:"
@@ -23,9 +29,9 @@ navbar:
     - text: "Day 2"
       menu:
         - text: "Hands-on Sessions:"
-        - text: "From reads to an ASV table"
+        - text: "From Reads to an ASV Table"
           href: "05-reads-to-ASV.html"
-        - text: "Analyzing ASV data"
+        - text: "Analyzing ASV Data"
           href: "06-ASV-analysis.html"
   right:
     - icon: fa-github fa-lg
