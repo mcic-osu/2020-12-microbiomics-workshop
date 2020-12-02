@@ -1,0 +1,23 @@
+---
+title: An Introduction to the shell
+author: "[Jelmer Poelstra](mailto:poelstra.1@osu.edu), MCIC Wooster"
+date: 2020-12-16
+output:
+  rmarkdown::html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    css: my.css
+---
+
+<br>
+
+> ## Learning Objectives
+>
+> * ...
+
+------------
+
+## Before we start
+
+<br> <br>

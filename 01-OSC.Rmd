@@ -1,0 +1,35 @@
+---
+title: An Introduction to OSC
+author: "[Jelmer Poelstra](mailto:poelstra.1@osu.edu), MCIC Wooster"
+date: 2020-12-16
+output:
+  rmarkdown::html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    css: my.css
+---
+
+```{r knitr_options, echo=FALSE}
+knitr::opts_chunk$set(results='hide',
+                      eval = FALSE,
+                      class.source="r_code",
+                      class.output="r_output",
+                      class.warning="r_warning",
+                      class.message="r_warning",
+                      class.error="r_error")
+
+folder_name <- "2020-12_microbiomics-workshop"
+```
+
+<br>
+
+> ## Learning Objectives
+>
+> * ...
+
+------------
+
+## Before we start
+
+<br> <br>
