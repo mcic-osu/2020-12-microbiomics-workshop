@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>04-R.utf8</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="my.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Microbiomics Workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lecture:</li>
+    <li>
+      <a href="01-microbiomics.html">Intro to Microbiomics</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Hands-on Sessions:</li>
+    <li>
+      <a href="02-OSC.html">Intro to OSC</a>
+    </li>
+    <li>
+      <a href="03-shell.html">Intro to the Shell</a>
+    </li>
+    <li>
+      <a href="04-R.html">Intro to R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Hands-on Sessions:</li>
+    <li>
+      <a href="05-reads-to-ASV.html">From reads to an ASV table</a>
+    </li>
+    <li>
+      <a href="06-ASV-analysis.html">Analyzing ASV data</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mcic-osu/2020-12-microbiomics-workshop.git">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br></p>
+<div id="an-introduction-to-r" class="section level1">
+<h1>An Introduction to R</h1>
+<p><br></p>
+<blockquote>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Get some basic familiarity with R and RStudio</li>
+<li>Learn how and why to use RStudio Projects</li>
+<li>Understand objects, functions, and how to use them</li>
+<li>Understand the concepts of <code>vector</code> and <code>data.frame</code></li>
+<li>Explore the structure and the content of a <code>data.frame</code></li>
+<li>Learn about how R handles missing data</li>
+</ul>
+</blockquote>
+<hr />
+<div id="before-we-start" class="section level2">
+<h2>Before we start</h2>
+<div id="attribution" class="section level3">
+<h3>Attribution</h3>
+<p>This material was modified after material from <a href="https://carpentries.org/">The Carpentries</a>, especially from <a href="http://uw-madison-aci.github.io/2016-06-01-uwmadison/">this Data Carpentry workshop</a> and <a href="https://datacarpentry.org/R-ecology-lesson">this “R for Ecology” workshop</a>.</p>
+</div>
+<div id="prerequisites" class="section level3">
+<h3>Prerequisites</h3>
+<ul>
+<li>An account at OSC with access to an OSC Project.<br />
+<em>While these materials can be used either in a local R and RStudio installation or using RStudio Server at the Ohio Supercomputer Center (OSC), we recommend you to use OSC as we will also use OSC for other elements of this workshop.</em></li>
+</ul>
+</div>
+<div id="notes-on-terminology" class="section level3">
+<h3>Notes on Terminology</h3>
+<ul>
+<li>The terms “directory” and “folder” are used interchangeably.</li>
+</ul>
+</div>
+<div id="why-r" class="section level3">
+<h3>Why R?</h3>
+<p>R is a versatile, open source programming/scripting language that’s particularly useful for <em>statistics</em> and <em>data visualization</em>.</p>
+<p><strong>Yes, there is a learning curve, and many of us just want to get on with our analysis –<br />
+but investing in learning R will pay off:</strong></p>
+<ul>
+<li><p>R gives you greater flexibility to do anything you want.</p></li>
+<li><p>A greater reproducibility of scripting vs clicking.</p></li>
+<li><p>R is highly interdisciplinary – e.g. nowadays very useful for <strong>analyzing sequencing data</strong>,<br />
+but can also be used to create maps and perform GIS analyses, and so on!</p></li>
+<li><p>R is more than a platform to perform analysis. When combined with <em>Markdown</em> (a very simple text markup language), you can easily use R to produce reports that integrate code, results, and text, as well as for websites, slide decks, books, and so on!</p></li>
+</ul>
+<p>Furthermore, R:</p>
+<ul>
+<li><p>Is freely available on all platforms, and open source.</p></li>
+<li><p>Has a large and welcoming user community.</p></li>
+</ul>
+</div>
+<div id="r-vs.-rstudio" class="section level3">
+<h3>R vs. RStudio</h3>
+<p>R simply provides a “<em>console</em>” to type your commands. However, because you want to save your sequences of commands in scripts, regularly examine output such a graphics, and so on, you can work much more effectively in an environment that provides all of this side-by-side.</p>
+<p>We will use RStudio, an excellent “Integrated Development Environment” (IDE) for R. In RStudio, we have a <em>single interface</em> to write code, navigate the files found on our computer, inspect the objects we create, and visualize the plots we generate.</p>
+<p>RStudio is divided into 4 “panes”:</p>
+<ul>
+<li><strong><em>Top-left</em></strong>: The <strong>editor</strong> for your scripts and documents.</li>
+<li><strong><em>Bottom-left</em></strong>: The <strong>R console</strong>.</li>
+<li><strong><em>Top-right</em></strong>: Your environment/history.</li>
+<li><strong><em>Bottom-left</em></strong>: Your files/plots/packages/help/viewer.</li>
+</ul>
+<p>The placement of these panes and their content can be customized.</p>
+</div>
+<div id="start-an-rstudio-server-session-at-osc" class="section level3">
+<h3>Start an RStudio Server session at OSC</h3>
+<ul>
+<li>Go to <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>.</li>
+<li>In the blue top bar, click the <code>Interactive Apps</code> dropdown menu.</li>
+<li>All the way in the bottom of the dropdown, click <code>RStudio Server (Owens and Pitzer)</code>.</li>
+<li>In the submission form, keep all the defaults, unless you want to select a particular project, and then click <code>Launch</code>.</li>
+<li>Wait until the top bar of the little job box turns green and says “Running”, and then click the blue <code>Connect to RStudio Server</code> button in the bottom of the Box.</li>
+<li>You’re in!</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="interacting-with-r" class="section level2">
+<h2>Interacting with R</h2>
+<div id="r-as-a-calculator" class="section level3">
+<h3>R as a calculator</h3>
+<p>The lower-left RStudio pane, i.e. <strong>the R console</strong>, is where you can interact with R directly.</p>
+<p>The <code>&gt;</code> sign is the R “prompt”. It indicates that R is ready for you to type something.</p>
+<p>Let’s start by performing an amazing subtraction:</p>
+<pre class="r r_code"><code>20 - 13</code></pre>
+<pre class="r_output"><code>## [1] 7</code></pre>
+<p>R does the calculation and prints the result, and then you get the <code>&gt;</code> prompt again. (The <code>[1]</code> may look a bit weird when there is only one output element; if there were many, it would keep count of them.)</p>
+<p>You can generally use R as a calculator in this way, with standard symbols:</p>
+<pre class="r r_code"><code>20 * 13   # Multiplication</code></pre>
+<pre class="r_output"><code>## [1] 260</code></pre>
+<pre class="r r_code"><code>20 / 13   # Division</code></pre>
+<pre class="r_output"><code>## [1] 1.538462</code></pre>
+</div>
+<div id="lets-try-some-random-things" class="section level3">
+<h3>Let’s try some random things!</h3>
+<pre class="r r_code"><code>         20                     - 13</code></pre>
+<pre class="r_output"><code>## [1] 7</code></pre>
+<p>Okay! So R just ignores any extra spaces.</p>
+<p><br></p>
+<p>How about:</p>
+<pre class="r r_code"><code>4 +</code></pre>
+<details>
+<p><summary> <strong>Now the prompt is a <code>+</code>. What is going on?</strong> </summary></p>
+<p>R is waiting for you to finish the command, since you typed an incomplete command: something has to come after the <code>+</code> to be added to what came before.</p>
+<p>OK, so this was easy, but in practice, you will type incomplete commands without realizing you did so. Just remember that when you see the <code>+</code> prompt, you are missing something in your command: oftentimes, you have forgotten a closing parenthesis <code>)</code> or accidentally opened up an unwanted opening parenthesis <code>(</code>.</p>
+<p>Note also that RStudio will alert you in the script window when you are making syntax errors:</p>
+<p align="center">
+<img src="img/Rstudio_error.png" style="width:50%; margin-top: 10px; margin-bottom: 10px;"/>
+</p>
+</details>
+<p><br></p>
+<p>Now we just type a number:</p>
+<pre class="r r_code"><code>4</code></pre>
+<pre class="r_output"><code>## [1] 4</code></pre>
+<p>R will print the number back to us! It turns out that the default, implicit action that R will perform on anything you type is to print it back to us (it is calling a function called <code>print()</code> under the hood).</p>
+<p><br></p>
+<p>What if we try that with some text?</p>
+<pre class="r r_code"><code>Awesome</code></pre>
+<pre class="r_error"><code>## Error in eval(expr, envir, enclos): object &#39;Awesome&#39; not found</code></pre>
+<details>
+<p><summary> <strong>What seems to be going wrong here?</strong> </summary></p>
+<p>Whenever you type a character string, R expects to find an object with that name. (Or, if you would use parentheses after the string, like <code>string()</code>, it will expect a function.)</p>
+</details>
+<p><br></p>
+<p>We <em>can</em> get R to print character strings back to us, and work with them in other ways, as long as we quote the strings:</p>
+<pre class="r r_code"><code>&quot;Well, I&#39;m really liking R so far.&quot;</code></pre>
+<pre class="r_output"><code>## [1] &quot;Well, I&#39;m really liking R so far.&quot;</code></pre>
+<hr />
+</div>
+</div>
+<div id="getting-organized" class="section level2">
+<h2>Getting Organized</h2>
+<div id="need-for-scripts" class="section level3">
+<h3>Need for Scripts</h3>
+<p>We can go along like this, typing commands directly into the R console. But there won’t be an easy way to keep track of what we’ve done.</p>
+<p>It’s best to write your code in separate files, i.e. “scripts”. And when we start creating scripts, we need to worry about how we organize the scripts and data for a project.</p>
+<p>So let’s pause for a moment and talk about file organization.</p>
+</div>
+<div id="creating-an-rstudio-project" class="section level3">
+<h3>Creating an RStudio Project</h3>
+<p>It is good practice to keep a set of related data, analyses, and text self-contained in a single folder, and use that folder as the <strong>working directory</strong>.</p>
+<p>Then, all of the scripts within this folder can use <em>relative paths</em> to files that indicate where inside the project a file is located (as opposed to <em>absolute paths</em>, which point to where a file is <em>on a specific computer</em>).</p>
+<details>
+<p><summary> More on absolute vs relative paths </summary></p>
+<p>An absolute path always contains the <em>root element</em> (<code>/</code> on Unix systems such as Linux and Mac; typically <code>C:\</code> on Windows) and the complete directory list to locate file. For that reason, if you move a file around on your computer, or move it to a different computer, an absolute path will practically never work. On the other hand, as long as the files remains in the same location, you can refer to it with an absolute path regardless of where you are on your computer.</p>
+<pre class="bash r_code"><code>C:\Documents\2020-12_microbiomics-workshop\scripts\intro-to-R.R  # An absolute path
+
+scripts/intro-to-R.R                                             # A relative path</code></pre>
+<p><br></p>
+<p>A relative path assumes a certain starting point (the “working directory”), so you need to be at the correct starting point for the path to work. On the other hand, if you keep all files associated with a project within a single parent directory, and keep the internal directory structures constant, a relative path will keep working, even if you move the project directory, open it on a different computer, or share it with a collaborator.</p>
+<p><strong>You should avoid using absolute paths as much as possible.</strong></p>
+<p><em>P.S.: Another point to note is that in R you can (and should) always use a forward slash <code>/</code> to delimit directories, even if you are on a Windows machine.</em></p>
+</details>
+<p><br></p>
+<p>Working this way makes it a lot easier to move your project around on your computer and share it with others without worrying about whether or not the underlying scripts will still work.</p>
+<p>A challenge of using relative paths is that you need to make sure you are always at the same starting point (your <em>working directory</em>). RStudio provides a helpful set of tools to do this through its <strong>“Projects”</strong>. When you use a Project, your working directory will <em>always</em> be the top-level directory of that project, and you can safely use relative paths to point to other files.</p>
+<p><br></p>
+<p><strong>Let’s create an RStudio Project:</strong></p>
+<ul>
+<li><p>Under the <code>File</code> menu, click on <code>New project</code>, choose <code>Existing directory</code>, then click the <code>Browse</code> and find your 2020-12_microbiomics-workshop folder.</p></li>
+<li><p>Click on <code>Create Project</code>.</p></li>
+</ul>
+<p>Now, RStudio will reload with the newly created Project open. One consequence of this is that your working directory should be the Project’s directory. Let’s see what our working directory is using <code>getwd()</code>:</p>
+<pre class="r"><code>getwd()</code></pre>
+<p>From now on, we will avoid the temptation (?) to change our working directory, and refer to all files relative to our project’s top-level directory.</p>
+</div>
+<div id="creating-an-r-script" class="section level3">
+<h3>Creating an R script</h3>
+<ul>
+<li><p>Create a new R script (<code>File</code> &gt; <code>New File</code> &gt; <code>R Script</code>)</p></li>
+<li><p>Click <code>File</code> &gt; <code>Save As</code> to save the script.<br />
+Save it in your <code>scripts</code> subfolder (e.g. <code>~/2020-12_microbiomics-workshop/scripts/</code>) using the file name <code>intro-to-R.R</code>.</p></li>
+</ul>
+</div>
+<div id="interacting-with-the-r-console-from-your-script" class="section level3">
+<h3>Interacting with the R console from your script</h3>
+<p>I recommend always <em>typing your commands into a script</em>, which you’ll save for later reference, and then executing the commands from there.</p>
+<p>We want to make sure to save our wonderful subtraction, so start by typing the following into the R script in the top-left pane:</p>
+<pre class="r r_code"><code># R intro
+
+20 - 13</code></pre>
+<p>Now place the cursor on the line with <code>20 - 13</code> and type <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd>. The command will be copied to the R console and executed, and then the cursor will move to the next line. (You can also highlight a bunch of code and execute the block all at once with <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd>.)</p>
+</div>
+<div id="commenting" class="section level3">
+<h3>Commenting</h3>
+<p>Use <code>#</code> signs to comment. Anything to the right of a <code>#</code> is ignored by R, meaning it won’t be executed. You can use <code>#</code> both at the start of a line or anywhere in the line, after actual code.</p>
+<p>Comments are a great way to describe what your code does within the code itself, so comment liberally in your R scripts!</p>
+<hr />
+</div>
+</div>
+<div id="objects" class="section level2">
+<h2>Objects</h2>
+<div id="assigning-stuff-to-objects" class="section level3">
+<h3>Assigning stuff to objects</h3>
+<p>We can assign pretty much anything to an object with the assignment operator, <code>&lt;-</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. (This is a smaller-than sign <code>&lt;</code> followed by a dash <code>-</code>.) For example:</p>
+<pre class="r r_code"><code>age &lt;- 2020 - 1984</code></pre>
+<p>Type that into your script, and use <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd> to send it to the console.</p>
+<p>If you’ve assigned a number to an object, you can then use it in further calculations:</p>
+<pre class="r r_code"><code>age + (age / 2)</code></pre>
+<pre class="r_output"><code>## [1] 54</code></pre>
+</div>
+<div id="object-names" class="section level3">
+<h3>Object names</h3>
+<p>Objects can be given any name such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>.</p>
+<p>Some pointers on object names:</p>
+<ul>
+<li><p>Make them descriptive yet not too long.</p></li>
+<li><p>They cannot start with a number (<code>2x</code> is not valid, but <code>x2</code> is)<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p></li>
+<li><p>Note: R is case sensitive (e.g., <code>weight</code> is different from <code>Weight</code>).</p></li>
+<li><p>A style recommendation is to avoid capital letters (e.g., <code>totalWeight</code>) and dots (<code>total.weight</code>) to separate words. Instead, stick to lowercase, and use underscores (<code>total_weight</code>) to separate words.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p></li>
+</ul>
+<div class="alert puzzle">
+<div id="challenge" class="section level4">
+<h4>Challenge</h4>
+<p>What is the value of <code>y</code> after doing all of the following?</p>
+<pre class="r r_code"><code>x &lt;- 50
+y &lt;- x * 2
+x &lt;- 80</code></pre>
+<details>
+<p><summary> Solution (click here) </summary></p>
+<p>Objects don’t get linked to each other, so if you change one, it won’t affect the values of any others. Therefore, <code>y</code> will keep the value <code>100</code>.</p>
+</details>
+</div>
+</div>
+</div>
+<div id="objects-in-your-workspace" class="section level3">
+<h3>Objects in your workspace</h3>
+<p>The objects you create get added to your “workspace”. You can list the current objects with <code>ls()</code>. RStudio also shows the objects in the Environment panel.</p>
+<hr />
+</div>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<p>Earlier, we managed to divide <code>20</code> by <code>13</code> and got 1.5384615, but what if we wanted to go even further and <em>round</em> the result? Like for <em>many</em> things you may want to do in R, there is a <strong>function</strong> for that.</p>
+<p>Functions are used by typing their name followed by parentheses:</p>
+<pre class="r r_code"><code>round(1.538462)</code></pre>
+<pre class="r_output"><code>## [1] 2</code></pre>
+<p>Here, <code>round()</code> is a <em>function</em> that rounds a number. The value in the parentheses is called a function “argument”, which is used in the execution of the function (usually, the primary argument is converted by the function, like here).</p>
+<div id="using-named-arguments" class="section level3">
+<h3>Using named arguments</h3>
+<p>Functions can have more than one argument, and some of them may have default values.</p>
+<p>There are some functions that take many arguments and you can imagine that it might get confusing trying to keep them in order. In that case, it is often better to explicitly name the arguments.</p>
+<p>When you type a function name and pause for a moment, the arguments, their names, and their default values (i.e., the value if the argument is left unspecified) will be shown.</p>
+<details>
+<p><summary> <strong>What is the second argument for <code>round()</code> and what is it default value?</strong> </summary></p>
+<p><code>round</code> has a second argument <code>digits</code> whose default is <code>0</code>, such that numbers will be rounded to whole integers.</p>
+</details>
+<p><br></p>
+<p>Below is an example using named arguments with <code>round()</code>. When the arguments are named, the order doesn’t matter! You might also enter the first few important arguments positionally, and later ones by naming them.</p>
+<pre class="r r_code"><code>round(x = 1.538462, digits = 2)
+
+round(digits = 2, x = 1.538462)
+
+round(1.538462, digits = 2)</code></pre>
+<p><br></p>
+<p>Note that we can also directly plug in objects:</p>
+<pre class="r"><code>my_number &lt;- 20 / 13
+round(my_number)</code></pre>
+<p>Or do the initial division inside the function:</p>
+<pre class="r"><code>round(20 / 13)</code></pre>
+<p>Or nest functions – here we are adding the <code>log()</code> function:</p>
+<pre class="r"><code>log(round(20 / 13 ))</code></pre>
+<details>
+<p><summary> <strong>What is the order of execution in the last command?</strong> </summary></p>
+<p><code>round()</code> is executed first, and the output of <code>round()</code> is used as the input of <code>log()</code>.</p>
+</details>
+<p><br></p>
+<hr />
+</div>
+</div>
+<div id="getting-help" class="section level2">
+<h2>Getting help</h2>
+<p>As we saw, when we typed <code>round</code> and paused for a moment, we got a pop-up with information about the function.</p>
+<p>Alternatively, you could type:</p>
+<pre class="r r_code"><code>?round</code></pre>
+<p>… and the documentation for the function will show up in the lower-right pane.</p>
+<p>This documentation is often a bit <em>too</em> detailed, and can be terse, so it takes some practice to read. I generally focus on <em>Usage</em> and <em>Arguments</em>, and then on <em>Examples</em> at the bottom.</p>
+<p>Otherwise, for instance when you don’t know a function’s name, or even whether a function may or may not exist, Google is your friend! Try typing “rounding a number in r”, and see if you get useful results.</p>
+<hr />
+</div>
+<div id="vectors" class="section level2">
+<h2>Vectors</h2>
+<p>A <strong>vector</strong> is the most common and basic data structure in R, and is composed of a <strong>series of values of the same type</strong>.</p>
+<p>We can assign a series of values to a vector using the <code>c()</code> function. For example:</p>
+<pre class="r r_code"><code>weights &lt;- c(50, 60, 65, 82)</code></pre>
+<p>A vector can also contain characters – but again, quoting is important, or R will think the strings are objects:</p>
+<pre class="r r_code"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;)</code></pre>
+<p><br></p>
+<p>As mentioned, all of a vector’s elements are the same type of data. The function <code>class()</code> indicates what kind of data you are working with:</p>
+<pre class="r r_code"><code>class(weights)
+class(animals)</code></pre>
+<div id="data-types-in-r" class="section level3">
+<h3>Data types in R</h3>
+<p>These classes are different types of <strong>atomic vectors</strong>, R’s simplest <strong>data type</strong>. The 4 most common atomic vector types are:</p>
+<ul>
+<li><strong><code>"numeric"</code></strong> (or <code>"double"</code>) – floating point numbers</li>
+<li><strong><code>"character"</code></strong> – character strings</li>
+<li><strong><code>"logical"</code></strong> – <code>TRUE</code> and <code>FALSE</code> (also known as boolean)</li>
+<li><strong><code>"integer"</code></strong> – integer numbers</li>
+</ul>
+<details>
+<p><summary> <strong>Vector coercion: when not all elements are of the same type.</strong> </summary></p>
+<p>What happens if we try to mix vector types (e.g., “character and numberic” in a single vector? <strong>R converts them to all be the same type, and it does so without telling us about it.</strong></p>
+<p>What will happen in each of the following examples?<br />
+(Hint: use <code>class()</code> to check the data type of your objects)</p>
+<pre class="r"><code>num_char &lt;- c(1, 2, 3, &quot;a&quot;)
+
+num_logical &lt;- c(1, 2, 3, TRUE)
+
+char_logical &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, TRUE)
+
+tricky &lt;- c(1, 2, 3, &quot;4&quot;)</code></pre>
+<p>You’ve probably noticed that objects of different types get converted into a single, shared type within a vector. In R, we call converting objects from one class into another class <em>coercion</em>. These conversions happen according to a hierarchy, whereby some types get preferentially coerced into other types.</p>
+</details>
+<p><br></p>
+</div>
+<div id="vectorization" class="section level3">
+<h3>Vectorization!</h3>
+<p>Let’s say we wanted to convert our weights to pounds, which means that …</p>
+<pre class="r r_code"><code># weights &lt;- c(50, 60, 65, 82)     # Still working with the same weights vector
+
+weights * 5</code></pre>
+<details>
+<p><summary> <strong>What is going on here??</strong> </summary></p>
+<p>R “vectorizes” operations whenever it can. This means that in this case, each element in the vector <code>weights</code> will be multiplied by 5. For a programming language, this is unusual behavior – but it is very useful!</p>
+<pre class="r r_code"><code>weights * 5</code></pre>
+</details>
+<p><br></p>
+<p><span style="color: #eb4034">TODO: EXPAND AND USE WEIGHT CONVERSION AS AN EXAMPLE</span></p>
+</div>
+<div id="data-structures-in-r" class="section level3">
+<h3>Data structures in R</h3>
+<p>Vectors, in turn, are one of the many <strong>data structures</strong> that R uses. Other important ones are:</p>
+<ul>
+<li><strong><code>list</code></strong> – A very flexible data structure that we will not further discuss here.</li>
+<li><strong><code>factor</code></strong> – Character strings with a discrete set of possible values, used mostly for statistical tests and when plotting.</li>
+<li><strong><code>matrix</code></strong> – a rectangular data structure of a single data type.</li>
+<li><strong><code>data.frame</code></strong> – A rectangular data structure where each column can be a different data type, see below!</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="data-frames" class="section level2">
+<h2>Data Frames</h2>
+<div id="read-a-dataset" class="section level3">
+<h3>Read a Dataset</h3>
+<p>We will look at a dataset with the species and weight of animals caught in plots in a study area in Arizona over time. This data is available on the web, and we can read it straight from there:</p>
+<pre class="r r_code"><code>surveys &lt;- read.csv(&quot;http://kbroman.org/datacarp/portal_data_joined.csv&quot;)</code></pre>
+<p>The data are stored in what’s called a <strong>“data frame”</strong> (formal object type: <code>data.frame</code>). It’s a big rectangle, with rows being observations and columns being variables. In a data frame, different columns can be different types (numeric, character, etc.), but all columns have the same length.</p>
+</div>
+<div id="inspecting-a-data-frame" class="section level3">
+<h3>Inspecting a Data Frame</h3>
+<p>Use <code>head()</code> to view the first few rows.</p>
+<pre class="r r_code"><code>head(surveys)</code></pre>
+<p>Use <code>str()</code> to look at the structure of the data.</p>
+<pre class="r r_code"><code>str(surveys)</code></pre>
+<p>This shows that there are 34,786 rows and 13 columns, and then for each column, it gives information about the data type and shows the first few values.</p>
+<p>Another useful function is <code>summary()</code>.</p>
+<pre class="r r_code"><code>summary(surveys)</code></pre>
+<p>Finally, in RStudio, we can click on an object in the <code>Files</code> pane, or equivalently, type:</p>
+<pre class="r r_code"><code>View(surveys)</code></pre>
+</div>
+<div id="an-overview-of-functions-to-get-an-overview" class="section level3">
+<h3>An Overview of Functions to Get an Overview</h3>
+<ul>
+<li><strong>Size:</strong>
+<ul>
+<li><code>dim()</code> – returns a vector with the number of rows in the first element, and the number of columns as the second element (the __dim__ensions of the object)</li>
+<li><code>nrow()</code> – returns the number of rows</li>
+<li><code>ncol()</code> – returns the number of columns</li>
+<li><code>length()</code> – for a dataframe, returns the number of columns. Very commonly used for vectors, for which it will return the number of elements.</li>
+</ul></li>
+<li><strong>Content:</strong>
+<ul>
+<li><code>head()</code> – shows the first 6 rows</li>
+<li><code>tail()</code> – shows the last 6 rows</li>
+</ul></li>
+<li><strong>Names:</strong>
+<ul>
+<li><code>names()</code> – returns the column names (synonym of <code>colnames()</code> for <code>data.frame</code> objects)</li>
+<li><code>rownames()</code> – returns the row names</li>
+</ul></li>
+<li><strong>Summary:</strong>
+<ul>
+<li><code>str()</code> – structure of the object and information about the class, length and content of each column</li>
+<li><code>summary()</code> – summary statistics for each column</li>
+<li><code>skimr::skim()</code> – very nice summary, need to install <em>skimr</em> with <code>install.packages(skimr)</code>.</li>
+</ul></li>
+</ul>
+<p>Note: most of these functions are “generic”, they can be used on other types of objects besides <code>data.frame</code>.</p>
+<hr />
+</div>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2>Miscellaneous</h2>
+<div id="missing-data" class="section level3">
+<h3>Missing data</h3>
+<p>As R was designed to analyze datasets, it includes the concept of missing data (which is uncommon in other programming languages). Missing data are represented as <code>NA</code> (for “Not Available”).</p>
+<pre class="r r_code"><code>heights &lt;- c(2, 4, 4, NA, 6)</code></pre>
+<p>When doing operations on numbers, most functions will return <code>NA</code> if the data you are working with include missing values. It is a safer behavior as otherwise you may overlook that you are dealing with missing data. You can add the argument <code>na.rm=TRUE</code> to calculate the result while ignoring the missing values.</p>
+<pre class="r r_code"><code>mean(heights)
+
+mean(heights, na.rm = TRUE)</code></pre>
+<p><br></p>
+<p>If your data includes missing values, you may want to become familiar with the functions <code>is.na()</code> and <code>na.omit()</code>.</p>
+<pre class="r r_code"><code>## Extract those elements which are not missing values:
+heights[!is.na(heights)]
+
+## Shortcut to do the same:
+na.omit(heights)</code></pre>
+<hr />
+</div>
+<div id="packages" class="section level3">
+<h3>Packages</h3>
+<p>The functions that we have been using so far (and <em>many</em>, <em>many</em> more) are available in any R session as soon as you start R (we refer to this functionality as <em>“base R”</em>). However, when doing specialized analyses such as in microbiomics, rather than coding up everything using the basic building blocks in R, we can load add-on code that will allow us to use <em>“high-level”</em> functions specifically geared towards the effective analyses of such data.</p>
+<p>This type of add-on code is distributed in R <em>packages</em>. The default <em>repository</em> for R packages is <strong>CRAN</strong>. The packages on CRAN have undergone a certain level of vetting, and can be easily installed with <code>install.packages()</code> function, for instance:</p>
+<pre class="r r_code"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
+<p>If you’re doing bioinformatic analyses in R, as we will be doing, you will encounter packages that are not on CRAN but are on “Bioconductor”. To install a package from Bioconductor, use the BiocManager package – for example:</p>
+<pre class="r r_code"><code>install.packages(&quot;BiocManager&quot;)  # Install the BiocManager package
+BiocManager::install(&quot;dada2&quot;)    # Install the edgeR package from Bioconductor</code></pre>
+<hr />
+</div>
+<div id="s4-objects" class="section level3">
+<h3>S4 Objects</h3>
+<p>“S4” objects are most certainly an advanced R topic, but because many bioinformatics packages use them, we will briefly discuss them here. In a nutshell, S4 objects allow for complicated, multifaceted datasets (such as multiple dataframes with distinct but related data as well as with metadata) to be represented in a single object.</p>
+<p><span style="color: #eb4034">TODO: EXPAND</span></p>
+<hr />
+</div>
+<div id="saving-your-data" class="section level3">
+<h3>Saving your data</h3>
+<p>Some very brief notes on saving your data in R:</p>
+<ul>
+<li><p>To save data frames and other tabular data, use <code>write.table()</code> in base R or one of <em>readr</em>’s <a href="https://readr.tidyverse.org/reference/write_delim.html">writing functions</a>.</p></li>
+<li><p>To save R objects “as is”, which can be useful when you’re working with complex S4 objects that may have taken a long time to generate, like a <em>phyloseq object</em>, you can use:</p>
+<pre class="r r_code"><code># Save an object:
+saveRDS(my_phyloseq_object, &quot;my_phyloseq_object.RDS&quot;)
+
+# Load it again in a new R session:
+my_phyloseq_object &lt;- readRDS(&quot;my_phyloseq_object.RDS&quot;)</code></pre></li>
+<li><p>A general recommendation is to not rely on your R session to keep things around, especially “overnight”. Devise your workflow such that you are always saving important objects and results outside of R, and can always use your R script to restart from where you left off.</p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="where-to-go-from-here" class="section level2">
+<h2>Where to go from here</h2>
+<p>This document only scratched the surface of R, but it has hopefully provided a good starting point for working with R.</p>
+<p>My recommendations on where to go from here would be exactly the same regardless of whether you just wanted to make general progress with R, or wanted learn R things that you can apply when working with microbiomics packages. They are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Learn about data wrangling with tidyverse packages, especially <em>dplyr</em> and <em>tidyr</em>. Start <a href="https://datacarpentry.org/R-ecology-lesson/03-dplyr.html">here</a></p></li>
+<li><p>Learn about plotting with <em>ggplot2</em>. Start <a href="https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html">here</a></p></li>
+</ol>
+<p>Both of those topics and some other material are also covered in this excellent Carpentries workshop <a href="https://swcarpentry.github.io/r-novice-gapminder/">R for Reproducible Scientific Analysis</a>.</p>
+<p>If you want to start with a book, I would recommend Wickham &amp; Grolemund’s “R for Data Science”, which is freely available on the web in a really nice format <a href="https://r4ds.had.co.nz/">here</a>.</p>
+<hr />
+</div>
+<div id="bonus-material-subsetting" class="section level2">
+<h2>Bonus Material: Subsetting</h2>
+<div id="basic-subsetting-of-data-frames-and-vectors" class="section level3">
+<h3>Basic subsetting of data frames and vectors</h3>
+<p>We can pull out parts of a data frame using square brackets. We need to provide two values: row and column, with a comma between them.</p>
+<p>For example, to get the element in the 1st row, 1st column:</p>
+<pre class="r r_code"><code>surveys[1, 1]</code></pre>
+<p>To get the element in the 2nd row, 7th column:</p>
+<pre class="r r_code"><code>surveys[2, 7]</code></pre>
+<p>To get the entire 2nd row, leave the column part blank:</p>
+<pre class="r r_code"><code>surveys[2, ]</code></pre>
+<p>And to get the entire 7th column, leave the row part blank:</p>
+<pre class="r r_code"><code>sex &lt;- surveys[, 7]</code></pre>
+<p>You can also refer to columns by name, in multiple ways:</p>
+<pre class="r r_code"><code>sex &lt;- surveys$sex       # Very commonly used syntax!
+
+sex &lt;- surveys[, &quot;sex&quot;]</code></pre>
+<p>When we pull out a single column, the result is a <em>vector</em>. To pull out individual values from a vector, we can again use square brackets, but now we only provide a single number:</p>
+<pre class="r r_code"><code>sex[1]
+sex[10000]</code></pre>
+</div>
+<div id="slicing" class="section level3">
+<h3>Slicing</h3>
+<p>You can pull out larger slices from the vector by providing vectors of indices:</p>
+<pre class="r r_code"><code>sex[c(1,3,5)]</code></pre>
+<p>The <code>:</code> operator gives you a sequence of consecutive values, which you can also using for slicing:</p>
+<pre class="r r_code"><code>surveys[1:3, ]        # First three rows, all columns
+surveys[1, 1:3]       # First row, first three columns
+surveys[2:4, c(6, 8)] # Rows 2-4, columns 6 and 8</code></pre>
+</div>
+<div id="conditional-subsetting" class="section level3">
+<h3>Conditional subsetting</h3>
+<p>Another common way of subsetting is by using a logical vector. <code>TRUE</code> will select the element with the same index, while <code>FALSE</code> will not:</p>
+<pre class="r r_code"><code>weight_g &lt;- c(21, 34, 39, 54, 55)
+weight_g[c(TRUE, FALSE, FALSE, TRUE, TRUE)]</code></pre>
+<p>Typically, these logical vectors are not typed by hand, but are the output of other functions or logical tests. For instance, if you wanted to select only the values above 50:</p>
+<pre class="r r_code"><code>weight_g &gt; 50    # will return logicals with TRUE for the indices that meet the condition
+## so we can use this to select only the values above 50
+weight_g[weight_g &gt; 50]</code></pre>
+<p>You can combine multiple tests using <code>&amp;</code> (both conditions are true, AND) or <code>|</code> (at least one of the conditions is true, OR):</p>
+<pre class="r r_code"><code>weight_g[weight_g &gt; 30 &amp; weight_g &lt; 50]
+weight_g[weight_g &lt;= 30 | weight_g == 55]
+weight_g[weight_g &gt;= 30 &amp; weight_g == 21]</code></pre>
+<p>Here, <code>&gt;</code> for “greater than”, <code>&lt;</code> stands for “less than”, <code>&lt;=</code> for “less than or equal to”, and <code>==</code> for “equal to”. The double equal sign <code>==</code> is a test for numerical equality between the left and right hand sides, and should not be confused with the single <code>=</code> sign, which performs variable assignment (similar to <code>&lt;-</code>).</p>
+<p>A common task is to search for certain strings in a vector. One could use the “or” operator <code>|</code> to test for equality to multiple values, but this can quickly become tedious. The function <code>%in%</code> allows you to test if any of the elements of a search vector are found:</p>
+<pre class="r r_code"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;, &quot;cat&quot;, &quot;cat&quot;)
+
+# return both rat and cat
+animals[animals == &quot;cat&quot; | animals == &quot;rat&quot;] 
+animals[animals %in% c(&quot;cat&quot;, &quot;rat&quot;)] </code></pre>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> will write <code>&lt;-</code> in a single keystroke. You can also use <code>=</code> as assignment, but that symbol can have other meanings, and so I recommend sticking with the <code>&lt;-</code> combination.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>There are some names that cannot be used because they are the names of fundamental functions in R (e.g., <code>if</code>, <code>else</code>, <code>for</code>, see <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html">here</a> for a complete list). In general, even if it’s allowed, it’s best to not use other function names (e.g., <code>c</code>, <code>T</code>, <code>mean</code>, <code>data</code>, <code>df</code>, <code>weights</code>). In doubt check the help to see if the name is already in use.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>It is also recommended to use nouns for variable names, and verbs for function names. It’s important to be consistent in the styling of your code (where you put spaces, how you name variables, etc.). In R, two popular style guides are <a href="http://adv-r.had.co.nz/Style.html">Hadley Wickham’s</a> and <a href="https://google.github.io/styleguide/Rguide.xml">Google’s</a>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
