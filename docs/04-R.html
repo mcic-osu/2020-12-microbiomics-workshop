@@ -11,7 +11,7 @@
 
 
 
-<title>04-R.utf8</title>
+<title> An Introduction to R</title>
 
 <script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -363,7 +363,18 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Overview</a>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Overview
+  </a>
+</li>
+<li>
+  <a href="setup.html">
+    <span class="fa fa-gear"></span>
+     
+    Setup
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -398,10 +409,10 @@ div.tocify {
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Hands-on Sessions:</li>
     <li>
-      <a href="05-reads-to-ASV.html">From reads to an ASV table</a>
+      <a href="05-reads-to-ASV.html">From Reads to an ASV Table</a>
     </li>
     <li>
-      <a href="06-ASV-analysis.html">Analyzing ASV data</a>
+      <a href="06-ASV-analysis.html">Analyzing ASV Data</a>
     </li>
   </ul>
 </li>
@@ -422,13 +433,11 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore"><br>An Introduction to R</h1>
 
 </div>
 
 
-<p><br></p>
-<div id="an-introduction-to-r" class="section level1">
-<h1>An Introduction to R</h1>
 <p><br></p>
 <blockquote>
 <h2 id="learning-objectives">Learning Objectives</h2>
@@ -447,13 +456,6 @@ div.tocify {
 <div id="attribution" class="section level3">
 <h3>Attribution</h3>
 <p>This material was modified after material from <a href="https://carpentries.org/">The Carpentries</a>, especially from <a href="http://uw-madison-aci.github.io/2016-06-01-uwmadison/">this Data Carpentry workshop</a> and <a href="https://datacarpentry.org/R-ecology-lesson">this “R for Ecology” workshop</a>.</p>
-</div>
-<div id="prerequisites" class="section level3">
-<h3>Prerequisites</h3>
-<ul>
-<li>An account at OSC with access to an OSC Project.<br />
-<em>While these materials can be used either in a local R and RStudio installation or using RStudio Server at the Ohio Supercomputer Center (OSC), we recommend you to use OSC as we will also use OSC for other elements of this workshop.</em></li>
-</ul>
 </div>
 <div id="notes-on-terminology" class="section level3">
 <h3>Notes on Terminology</h3>
@@ -479,6 +481,17 @@ but can also be used to create maps and perform GIS analyses, and so on!</p></li
 <li><p>Has a large and welcoming user community.</p></li>
 </ul>
 </div>
+<div id="start-an-rstudio-server-session-at-osc" class="section level3">
+<h3>Start an RStudio Server session at OSC</h3>
+<ul>
+<li>Go to <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>.</li>
+<li>In the blue top bar, click the <code>Interactive Apps</code> dropdown menu.</li>
+<li>All the way in the bottom of the dropdown, click <code>RStudio Server (Owens and Pitzer)</code>.</li>
+<li>In the submission form, keep all the defaults, unless you want to select a particular project, and then click <code>Launch</code>.</li>
+<li>Wait until the top bar of the little job box turns green and says “Running”, and then click the blue <code>Connect to RStudio Server</code> button in the bottom of the Box.</li>
+<li>You’re in!</li>
+</ul>
+</div>
 <div id="r-vs.-rstudio" class="section level3">
 <h3>R vs. RStudio</h3>
 <p>R simply provides a “<em>console</em>” to type your commands. However, because you want to save your sequences of commands in scripts, regularly examine output such a graphics, and so on, you can work much more effectively in an environment that provides all of this side-by-side.</p>
@@ -491,17 +504,6 @@ but can also be used to create maps and perform GIS analyses, and so on!</p></li
 <li><strong><em>Bottom-left</em></strong>: Your files/plots/packages/help/viewer.</li>
 </ul>
 <p>The placement of these panes and their content can be customized.</p>
-</div>
-<div id="start-an-rstudio-server-session-at-osc" class="section level3">
-<h3>Start an RStudio Server session at OSC</h3>
-<ul>
-<li>Go to <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>.</li>
-<li>In the blue top bar, click the <code>Interactive Apps</code> dropdown menu.</li>
-<li>All the way in the bottom of the dropdown, click <code>RStudio Server (Owens and Pitzer)</code>.</li>
-<li>In the submission form, keep all the defaults, unless you want to select a particular project, and then click <code>Launch</code>.</li>
-<li>Wait until the top bar of the little job box turns green and says “Running”, and then click the blue <code>Connect to RStudio Server</code> button in the bottom of the Box.</li>
-<li>You’re in!</li>
-</ul>
 <hr />
 </div>
 </div>
@@ -511,24 +513,24 @@ but can also be used to create maps and perform GIS analyses, and so on!</p></li
 <h3>R as a calculator</h3>
 <p>The lower-left RStudio pane, i.e. <strong>the R console</strong>, is where you can interact with R directly.</p>
 <p>The <code>&gt;</code> sign is the R “prompt”. It indicates that R is ready for you to type something.</p>
-<p>Let’s start by performing an amazing subtraction:</p>
-<pre class="r r_code"><code>20 - 13</code></pre>
-<pre class="r_output"><code>## [1] 7</code></pre>
+<p>Let’s start by performing an amazing division:</p>
+<pre class="r r_code"><code>203 / 2.54</code></pre>
+<pre class="r_output"><code>## [1] 79.92126</code></pre>
 <p>R does the calculation and prints the result, and then you get the <code>&gt;</code> prompt again. (The <code>[1]</code> may look a bit weird when there is only one output element; if there were many, it would keep count of them.)</p>
 <p>You can generally use R as a calculator in this way, with standard symbols:</p>
-<pre class="r r_code"><code>20 * 13   # Multiplication</code></pre>
-<pre class="r_output"><code>## [1] 260</code></pre>
-<pre class="r r_code"><code>20 / 13   # Division</code></pre>
-<pre class="r_output"><code>## [1] 1.538462</code></pre>
+<pre class="r r_code"><code>203 * 2.54   # Multiplication</code></pre>
+<pre class="r_output"><code>## [1] 515.62</code></pre>
+<pre class="r r_code"><code>203 + 2.54   # Addition</code></pre>
+<pre class="r_output"><code>## [1] 205.54</code></pre>
 </div>
 <div id="lets-try-some-random-things" class="section level3">
 <h3>Let’s try some random things!</h3>
-<pre class="r r_code"><code>         20                     - 13</code></pre>
-<pre class="r_output"><code>## [1] 7</code></pre>
+<pre class="r r_code"><code>         203                     - 2.54</code></pre>
+<pre class="r_output"><code>## [1] 200.46</code></pre>
 <p>Okay! So R just ignores any extra spaces.</p>
 <p><br></p>
 <p>How about:</p>
-<pre class="r r_code"><code>4 +</code></pre>
+<pre class="r r_code"><code>203 +</code></pre>
 <details>
 <p><summary> <strong>Now the prompt is a <code>+</code>. What is going on?</strong> </summary></p>
 <p>R is waiting for you to finish the command, since you typed an incomplete command: something has to come after the <code>+</code> to be added to what came before.</p>
@@ -540,8 +542,8 @@ but can also be used to create maps and perform GIS analyses, and so on!</p></li
 </details>
 <p><br></p>
 <p>Now we just type a number:</p>
-<pre class="r r_code"><code>4</code></pre>
-<pre class="r_output"><code>## [1] 4</code></pre>
+<pre class="r r_code"><code>203</code></pre>
+<pre class="r_output"><code>## [1] 203</code></pre>
 <p>R will print the number back to us! It turns out that the default, implicit action that R will perform on anything you type is to print it back to us (it is calling a function called <code>print()</code> under the hood).</p>
 <p><br></p>
 <p>What if we try that with some text?</p>
@@ -608,7 +610,7 @@ Save it in your <code>scripts</code> subfolder (e.g. <code>~/2020-12_microbiomi
 <p>We want to make sure to save our wonderful subtraction, so start by typing the following into the R script in the top-left pane:</p>
 <pre class="r r_code"><code># R intro
 
-20 - 13</code></pre>
+203 / 2.54</code></pre>
 <p>Now place the cursor on the line with <code>20 - 13</code> and type <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd>. The command will be copied to the R console and executed, and then the cursor will move to the next line. (You can also highlight a bunch of code and execute the block all at once with <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd>.)</p>
 </div>
 <div id="commenting" class="section level3">
@@ -623,11 +625,11 @@ Save it in your <code>scripts</code> subfolder (e.g. <code>~/2020-12_microbiomi
 <div id="assigning-stuff-to-objects" class="section level3">
 <h3>Assigning stuff to objects</h3>
 <p>We can assign pretty much anything to an object with the assignment operator, <code>&lt;-</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. (This is a smaller-than sign <code>&lt;</code> followed by a dash <code>-</code>.) For example:</p>
-<pre class="r r_code"><code>age &lt;- 2020 - 1984</code></pre>
+<pre class="r r_code"><code>wingspan_in &lt;- 203 / 2.54</code></pre>
 <p>Type that into your script, and use <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd> to send it to the console.</p>
 <p>If you’ve assigned a number to an object, you can then use it in further calculations:</p>
-<pre class="r r_code"><code>age + (age / 2)</code></pre>
-<pre class="r_output"><code>## [1] 54</code></pre>
+<pre class="r r_code"><code>wingspan_in * 2.54</code></pre>
+<pre class="r_output"><code>## [1] 203</code></pre>
 </div>
 <div id="object-names" class="section level3">
 <h3>Object names</h3>
@@ -712,13 +714,15 @@ round(my_number)</code></pre>
 <h2>Vectors</h2>
 <p>A <strong>vector</strong> is the most common and basic data structure in R, and is composed of a <strong>series of values of the same type</strong>.</p>
 <p>We can assign a series of values to a vector using the <code>c()</code> function. For example:</p>
-<pre class="r r_code"><code>weights &lt;- c(50, 60, 65, 82)</code></pre>
+<pre class="r r_code"><code>wingspan_cm &lt;- c(11.8, 203, 18.2, 27.9)</code></pre>
 <p>A vector can also contain characters – but again, quoting is important, or R will think the strings are objects:</p>
-<pre class="r r_code"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;)</code></pre>
+<pre class="r r_code"><code>birds &lt;- c(&quot;hummingbird&quot;, &quot;bald_eagle&quot;, &quot;chickadee&quot;, &quot;cardinal&quot;)</code></pre>
 <p><br></p>
 <p>As mentioned, all of a vector’s elements are the same type of data. The function <code>class()</code> indicates what kind of data you are working with:</p>
-<pre class="r r_code"><code>class(weights)
-class(animals)</code></pre>
+<pre class="r r_code"><code>class(wingspan_cm)</code></pre>
+<pre class="r_output"><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r r_code"><code>class(birds)</code></pre>
+<pre class="r_output"><code>## [1] &quot;character&quot;</code></pre>
 <div id="data-types-in-r" class="section level3">
 <h3>Data types in R</h3>
 <p>These classes are different types of <strong>atomic vectors</strong>, R’s simplest <strong>data type</strong>. The 4 most common atomic vector types are:</p>
@@ -730,7 +734,7 @@ class(animals)</code></pre>
 </ul>
 <details>
 <p><summary> <strong>Vector coercion: when not all elements are of the same type.</strong> </summary></p>
-<p>What happens if we try to mix vector types (e.g., “character and numberic” in a single vector? <strong>R converts them to all be the same type, and it does so without telling us about it.</strong></p>
+<p>What happens if we try to mix vector types (e.g., “character and numeric”) in a single vector? <strong>R converts them to all be the same type, and it does so without telling us about it.</strong></p>
 <p>What will happen in each of the following examples?<br />
 (Hint: use <code>class()</code> to check the data type of your objects)</p>
 <pre class="r"><code>num_char &lt;- c(1, 2, 3, &quot;a&quot;)
@@ -746,49 +750,70 @@ tricky &lt;- c(1, 2, 3, &quot;4&quot;)</code></pre>
 </div>
 <div id="vectorization" class="section level3">
 <h3>Vectorization!</h3>
-<p>Let’s say we wanted to convert our weights to pounds, which means that …</p>
-<pre class="r r_code"><code># weights &lt;- c(50, 60, 65, 82)     # Still working with the same weights vector
+<p>Let’s say we wanted to convert our wingspans to inches, which means that we need to divide each length in centimeters by 2.54.</p>
+<p>How could we do this quickly?</p>
+<pre class="r r_code"><code># wingspan_cm &lt;- c(11.8, 203, 18.2, 27.9)  # Still working with the same wingspan vector
 
-weights * 5</code></pre>
+wingspan_in &lt;- wingspan_cm / 2.54
+wingspan_in</code></pre>
+<pre class="r_output"><code>## [1]  4.645669 79.921260  7.165354 10.984252</code></pre>
 <details>
-<p><summary> <strong>What is going on here??</strong> </summary></p>
-<p>R “vectorizes” operations whenever it can. This means that in this case, each element in the vector <code>weights</code> will be multiplied by 5. For a programming language, this is unusual behavior – but it is very useful!</p>
-<pre class="r r_code"><code>weights * 5</code></pre>
+<p><summary> <strong>Why does this work?</strong> </summary></p>
+<p>R “vectorizes” operations whenever it can. This means that in this case, each element in the vector <code>weights_cm</code> will be divided by 2.54 – this number is “vectorized” or recycled to match the number of weights.</p>
+<p>For a programming language, this is unusual behavior – but it is very useful!</p>
 </details>
 <p><br></p>
-<p><span style="color: #eb4034">TODO: EXPAND AND USE WEIGHT CONVERSION AS AN EXAMPLE</span></p>
+<p>Similarly, we can use two vectors of equal length to quickly operate on each element of the vector:</p>
+<pre class="r r_code"><code>size_cm &lt;- c(7.62, 90, 13.1, 21.8)
+
+ratio &lt;- wingspan_cm / size_cm
+ratio</code></pre>
+<pre class="r_output"><code>## [1] 1.548556 2.255556 1.389313 1.279817</code></pre>
+<p><br></p>
 </div>
 <div id="data-structures-in-r" class="section level3">
 <h3>Data structures in R</h3>
-<p>Vectors, in turn, are one of the many <strong>data structures</strong> that R uses. Other important ones are:</p>
+<p>While vectors can be composed of one of several <em>data types</em>, they, in turn, are one of several <strong>data structures</strong> that R uses. Other important ones are:</p>
 <ul>
+<li><strong><code>data.frame</code></strong> – A rectangular data structure where each column can be a different data type.</li>
+<li><strong><code>matrix</code></strong> – A rectangular data structure of a single data type.</li>
 <li><strong><code>list</code></strong> – A very flexible data structure that we will not further discuss here.</li>
 <li><strong><code>factor</code></strong> – Character strings with a discrete set of possible values, used mostly for statistical tests and when plotting.</li>
-<li><strong><code>matrix</code></strong> – a rectangular data structure of a single data type.</li>
-<li><strong><code>data.frame</code></strong> – A rectangular data structure where each column can be a different data type, see below!</li>
 </ul>
 <hr />
 </div>
 </div>
 <div id="data-frames" class="section level2">
 <h2>Data Frames</h2>
-<div id="read-a-dataset" class="section level3">
-<h3>Read a Dataset</h3>
-<p>We will look at a dataset with the species and weight of animals caught in plots in a study area in Arizona over time. This data is available on the web, and we can read it straight from there:</p>
-<pre class="r r_code"><code>surveys &lt;- read.csv(&quot;http://kbroman.org/datacarp/portal_data_joined.csv&quot;)</code></pre>
-<p>The data are stored in what’s called a <strong>“data frame”</strong> (formal object type: <code>data.frame</code>). It’s a big rectangle, with rows being observations and columns being variables. In a data frame, different columns can be different types (numeric, character, etc.), but all columns have the same length.</p>
+<p>A data frame (formal object type: <code>data.frame</code>) is a rectangular data structure in which rows are observations and columns are variables. Each column can be of a different type (numeric, character, etc.), but since each column is a vector, all the cells within a column are of the same type. Also, due to the rectangular structure, all columns have the same length.</p>
+<div id="create-write-and-read-a-data-frame" class="section level3">
+<h3>Create, write, and read a data frame</h3>
+<p>We can easily create a data frame by hand using the <code>data.frame()</code> function and a <code>column_name = column_vector</code> notation for each column:</p>
+<pre class="r r_code"><code>birds_df &lt;- data.frame(species = birds,
+                       wingspan = wingspan_cm,
+                       size = size_cm,
+                       n_eggs = c(2, 2, 7, 4)) </code></pre>
+<p>Most often, however, you’ll be reading your data frames from files. And you’ll also want to save your modified data frames.</p>
+<p>So let’s practice writing and reading a data frame:</p>
+<pre class="r r_code"><code># Write a data frame to CSV format:
+write.csv(x = birds_df, file = &quot;bird-data.csv&quot;, row.names = FALSE)</code></pre>
+<p>Now we read our data frame back in:</p>
+<pre class="r r_code"><code>birds_df_2 &lt;- read.csv(&#39;bird-data.csv&#39;)
+
+## Let&#39;s compare the two data frames:
+birds_df
+
+birds_df_2</code></pre>
 </div>
 <div id="inspecting-a-data-frame" class="section level3">
 <h3>Inspecting a Data Frame</h3>
-<p>Use <code>head()</code> to view the first few rows.</p>
-<pre class="r r_code"><code>head(surveys)</code></pre>
 <p>Use <code>str()</code> to look at the structure of the data.</p>
-<pre class="r r_code"><code>str(surveys)</code></pre>
+<pre class="r r_code"><code>str(birds_df)</code></pre>
 <p>This shows that there are 34,786 rows and 13 columns, and then for each column, it gives information about the data type and shows the first few values.</p>
 <p>Another useful function is <code>summary()</code>.</p>
-<pre class="r r_code"><code>summary(surveys)</code></pre>
+<pre class="r r_code"><code>summary(birds_df)</code></pre>
 <p>Finally, in RStudio, we can click on an object in the <code>Files</code> pane, or equivalently, type:</p>
-<pre class="r r_code"><code>View(surveys)</code></pre>
+<pre class="r r_code"><code>View(birds_df)</code></pre>
 </div>
 <div id="an-overview-of-functions-to-get-an-overview" class="section level3">
 <h3>An Overview of Functions to Get an Overview</h3>
@@ -817,7 +842,6 @@ weights * 5</code></pre>
 <li><code>skimr::skim()</code> – very nice summary, need to install <em>skimr</em> with <code>install.packages(skimr)</code>.</li>
 </ul></li>
 </ul>
-<p>Note: most of these functions are “generic”, they can be used on other types of objects besides <code>data.frame</code>.</p>
 <hr />
 </div>
 </div>
@@ -860,7 +884,7 @@ BiocManager::install(&quot;dada2&quot;)    # Install the edgeR package from Bioc
 <h3>Saving your data</h3>
 <p>Some very brief notes on saving your data in R:</p>
 <ul>
-<li><p>To save data frames and other tabular data, use <code>write.table()</code> in base R or one of <em>readr</em>’s <a href="https://readr.tidyverse.org/reference/write_delim.html">writing functions</a>.</p></li>
+<li><p>We already saw the use of <code>write.csv()</code> to save data frames, and you can also use one of <em>readr</em>’s <a href="https://readr.tidyverse.org/reference/write_delim.html">writing functions</a>.</p></li>
 <li><p>To save R objects “as is”, which can be useful when you’re working with complex S4 objects that may have taken a long time to generate, like a <em>phyloseq object</em>, you can use:</p>
 <pre class="r r_code"><code># Save an object:
 saveRDS(my_phyloseq_object, &quot;my_phyloseq_object.RDS&quot;)
@@ -935,7 +959,6 @@ weight_g[weight_g &gt;= 30 &amp; weight_g == 21]</code></pre>
 animals[animals == &quot;cat&quot; | animals == &quot;rat&quot;] 
 animals[animals %in% c(&quot;cat&quot;, &quot;rat&quot;)] </code></pre>
 <p><br> <br></p>
-</div>
 </div>
 </div>
 <div class="footnotes">
