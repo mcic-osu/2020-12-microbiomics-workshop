@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>06-ASV-analysis.utf8</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="my.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Microbiomics Workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lecture:</li>
+    <li>
+      <a href="01-microbiomics.html">Intro to Microbiomics</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Hands-on Sessions:</li>
+    <li>
+      <a href="02-OSC.html">Intro to OSC</a>
+    </li>
+    <li>
+      <a href="03-shell.html">Intro to the Shell</a>
+    </li>
+    <li>
+      <a href="04-R.html">Intro to R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Hands-on Sessions:</li>
+    <li>
+      <a href="05-reads-to-ASV.html">From reads to an ASV table</a>
+    </li>
+    <li>
+      <a href="06-ASV-analysis.html">Analyzing ASV data</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mcic-osu/2020-12-microbiomics-workshop.git">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br></p>
+<div id="microbiome-marker-gene-count-table-analysis" class="section level1">
+<h1>Microbiome Marker-Gene Count Table Analysis</h1>
+<div id="before-we-get-started" class="section level2">
+<h2>Before We Get Started</h2>
+<div id="attribution" class="section level3">
+<h3>Attribution</h3>
+<p>This is a slightly modified version of a document created by <a href="mailto:willman.18@osu.edu">Matthew Willman</a>.</p>
+</div>
+<div id="goal" class="section level3">
+<h3>Goal</h3>
+<p>Analyze microbiome experimental data as a phyloseq object - explore ecological metrics and identify differentially abundant taxa.</p>
+</div>
+<div id="want-to-run-this-code-and-get-rid-of-the-prose" class="section level3">
+<h3>Want to run this code and get rid of the prose?</h3>
+<p>To convert Rmd to R script, R or RStudio and use: <code>knitr::purl(input="&lt;filename&gt;.Rmd")</code></p>
+</div>
+<div id="packages" class="section level3">
+<h3>Packages</h3>
+<pre class="r r_code"><code>library(ggplot2)
+library(vegan)
+library(phyloseq)
+library(decontam)
+library(ampvis2)
+library(ape)
+library(DESeq2)
+library(microbiome)
+library(metagenomeSeq)
+library(breakaway)</code></pre>
+</div>
+</div>
+</div>
+<div id="input-filter-data" class="section level1">
+<h1>Input &amp; filter data</h1>
+<p>The phyloseq object in this tutorial was generated using gene-marker sequence data collected from soil DNA samples collected from an Ohio rye cover cropping experiment. Four treatments correspond to different cover crop management regiments:<br />
+T1 = no cover crop<br />
+T2 = Early termiation (2 weeks before soybean planting)<br />
+T3 = Mid termination (1 day before soybean planting)<br />
+T4 = Late termination (5 days after soybean planting).</p>
+<p>Samples were collected at four timepoints:<br />
+S1 = Fall 2019 (baseline)<br />
+S2 = Spring 2020 (pre-cover crop termination)<br />
+S3 = Spring 2020 (post-termination)<br />
+S4 = Summer 2020 (soybean seedling stage).</p>
+<p>DNA samples were subjected to PCR using 16S-V4 paired primers. Amplicons were then pooled and analyzed by 300 cycles of Illumina paired-end sequencing.<br />
+Primer sequence was removed using cutadapt (Martin, 2011). The <code>DADA2</code> R package v1.14.0 (Callahan et al., 2016) was used to trim and filter reads, infer sequence variants, and merge the resulting sequence variants to obtain full length Amplicon Sequence Variants (ASVs). Following sequence alignment using the <code>DECIPHER</code> R package v2.14.0 (Wright, 2016), phylogenetic relatedness of all ASVs was estimated by fitting a generalized time-reversable with Gamma rate variation (GTR+G+I) maximum likelihood tree using the <code>phangorn</code> R package v2.5.5 (Schliep, 2011).</p>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<p>Just like tables can be saved in R using <code>write.table</code> or <code>write.csv</code>, R objects can be saved using <code>saveRDS</code>. The resulting *.rds file can then be loaded into an R environment using <code>readRDS</code>. This is a convenient way to save R objects that require a lot of computation time or merging of multiple files.</p>
+<pre class="r r_code"><code>ps.raw&lt;- readRDS(&quot;ps_16S_V4.rds&quot;)</code></pre>
+<p>Our phyloseq object is made up of components: otu_table, sample_data, tax_table, and phy_tree.</p>
+<pre class="r r_code"><code>ps.raw</code></pre>
+<p>Let’s look at the assigned taxa names.</p>
+<pre class="r r_code"><code>taxa_names(ps.raw)[1:3]</code></pre>
+<p>As we can see, taxa names are currently the associated sequences. We can create a new phyloseq component to store these sequences, then rename the ASVs so something shorter (ASV_1, ASV_2, etc.).</p>
+<pre class="r r_code"><code>dna&lt;- Biostrings::DNAStringSet(taxa_names(ps.raw))
+names(dna)&lt;- taxa_names(ps.raw)
+ps.raw&lt;- merge_phyloseq(ps.raw, dna)
+taxa_names(ps.raw) &lt;- paste(&quot;ASV&quot;, 1:ntaxa(ps.raw), sep=&quot;_&quot;)
+ps.raw
+taxa_names(ps.raw)[1:3]</code></pre>
+</div>
+<div id="filter-taxa" class="section level2">
+<h2>Filter taxa</h2>
+<div id="identify-and-remove-contaminants" class="section level3">
+<h3>Identify and Remove Contaminants</h3>
+<p>It is possible to introduce contaminating microbes during sample preparation. Before analyzing the data, we will identify and remove probable contaminants using the <a href="https://benjjneb.github.io/decontam/vignettes/decontam_intro.html">decontam package</a>.</p>
+<p>In this case, we will define a conataminant as an ASV whose abundance correlates with DNA concentration (post-PCR). Our assumption here is that each soil taxon’s abundance should be independant of DNA concentration. However, if we were to spike each sample with a contaminant, that contaminant would show a greater abundance in samples with lower DNA concentrations. To do this, we need DNA concentration measured after PCR and before pooling of the samples. These data are in column 14 of the sample data component.</p>
+<pre class="r r_code"><code>head(sample_data(ps.raw))</code></pre>
+<p>MCIC measured our DNA concentration by comparing band intensities to a single reference band. MCIC’s DNA concentration measurements range from 0 to 1 (the reference). Zero in this case is coded as NA. Decontam can’t handle NA’s or 0’s, so we need to change them to a small value (e.g. 0.1).</p>
+<pre class="r r_code"><code>sample_data(ps.raw)$PCR_prod_V4.V5[is.na(sample_data(ps.raw)$PCR_prod_V4.V5)] &lt;- 0.1</code></pre>
+<p>We will use <code>decontam::isContaminant(method="frequency")</code> to test each taxon against the null hypothesis: abundance is not associated with DNA concentration. MCIC’s DNA concentrations are not very accurate, so I chose a relaxed p-value (0.2) to reject the null hypothesis.</p>
+<pre class="r r_code"><code>contamdf.freq &lt;- isContaminant(ps.raw, method=&quot;frequency&quot;, conc=&quot;PCR_prod_V4.V5&quot;, 
+                               threshold=0.2)
+head(contamdf.freq)</code></pre>
+<p>As we can see, the top 3 ASVs are identified as probable contaminants. How many contaminants were identified (TRUE)?</p>
+<pre class="r r_code"><code>table(contamdf.freq$contaminant)</code></pre>
+<p>What are the most abundant contaminant taxa?</p>
+<pre class="r r_code"><code>head(which(contamdf.freq$contaminant))
+ps.contam&lt;- prune_taxa(contamdf.freq$contaminant, ps.raw)
+head(tax_table(ps.contam))</code></pre>
+<p>Lets take a look at our tested associations for several taxa.</p>
+<pre class="r r_code"><code>plot_frequency(ps.raw, taxa_names(ps.raw)[c(1,2,3,4,5,11)], conc=&quot;PCR_prod_V4.V5&quot;) + 
+   xlab(&quot;DNA Concentration (relative to single marker)&quot;)</code></pre>
+<p>As we can see, abundance of ASVs 1, 2, 3, and 11 are particularly high in samples with low DNA concentration. I expect that if we were to use more accurate measures of DNA concentration (e.g. fluorometric or gel electrophoresis with a standard curve), we would find a stronger association (lower p-value) between DNA concentration and taxon abundance for these ASVs.</p>
+<p>Which samples have highest abundances of the ID’d contaminants?</p>
+<pre class="r r_code"><code>asv1&lt;- otu_table(ps.raw)[,1]
+head(asv1[order(asv1, decreasing=TRUE)])
+asv2&lt;- otu_table(ps.raw)[,2]
+head(asv2[order(asv2, decreasing=TRUE)])</code></pre>
+<p>How do these overlap with ASVs present in the negative control?</p>
+<pre class="r r_code"><code>otu_table(ps.raw)[70:75,1:11]</code></pre>
+<p>ASVs have high read counts in the extraction negative control. Thus, we can be fairly certain these are contaminants and not representative of our experimental samples.</p>
+<p>Remove ID’d contaminants.</p>
+<pre class="r r_code"><code>ps.noncontam &lt;- prune_taxa(!contamdf.freq$contaminant, ps.raw)
+ps.noncontam</code></pre>
+<p>What proportion of our count data were removed as contaminants?</p>
+<pre class="r r_code"><code>pre&lt;- sum(sample_sums(ps.raw))
+post&lt;- sum(sample_sums(ps.noncontam))
+(pre-post)/pre</code></pre>
+<p>r (pre-post)/pre*100`%</p>
+</div>
+<div id="remove-non-bacterial-non-archaea-asvs" class="section level3">
+<h3>Remove non-bacterial, non-archaea ASVs</h3>
+<p>The V4 rDNA region is conserved within certain bacteria, archaea, chloroplasts, mitochondria, and eukaryotes. Since we are only interested in bacteria and archaea, we should remove these other taxa from our object.</p>
+<pre class="r r_code"><code>chlr = subset_taxa(ps.noncontam, Order==&quot;Chloroplast&quot;)
+mit = subset_taxa(ps.noncontam, Family==&quot;Mitochondria&quot;)
+euk = subset_taxa(ps.noncontam, Kingdom==&quot;Eukaryota&quot;)
+badTaxa = c(taxa_names(chlr), taxa_names(mit), taxa_names(euk))
+allTaxa = taxa_names(ps.noncontam)
+myTaxa &lt;- allTaxa[!(allTaxa %in% badTaxa)]
+ps.bac_arc&lt;- prune_taxa(myTaxa, ps.noncontam)</code></pre>
+<p>How many ASVs were kept?</p>
+<pre class="r r_code"><code>pre&lt;- sum(sample_sums(ps.noncontam))
+post&lt;- sum(sample_sums(ps.bac_arc))
+(pre-post)/pre</code></pre>
+<p>r (pre-post)/pre*100`%</p>
+<p>We’ll also remove non-experimental samples (e.g. negative controls).</p>
+<pre class="r r_code"><code>ps&lt;- subset_samples(ps.bac_arc, Experiment==&quot;HCC&quot;)
+
+ps</code></pre>
+</div>
+</div>
+<div id="filter-samples" class="section level2">
+<h2>Filter samples</h2>
+<p>Let’s begin to investigate our samples. First, how many counts do we have for each sample?</p>
+<pre class="r r_code"><code>sums&lt;- sample_sums(ps)
+sums[order(sums)]</code></pre>
+<p>We can see that the lowest count sample, r names(sums[order(sums)][1]), has r min(sums) taxa count(s). To remove uninformative samples, we will only keep those with over 1,000 counts.</p>
+<pre class="r r_code"><code>ps&lt;- subset_samples(ps, sample_sums(ps)&gt;1000)
+#samps&lt;- data.frame(sample_data(ps)[,1:6])
+#sample_data(ps)&lt;- phyloseq(sample_data(samps))</code></pre>
+<p>Let’s take a look at our <code>phyloseq</code> object and save some summary tables.</p>
+<pre class="r r_code"><code>sample_data(ps)[1:10]
+head(t(otu_table(ps)[1:10]))
+head(tax_table(ps))</code></pre>
+</div>
+</div>
+<div id="normalization" class="section level1">
+<h1>Normalization</h1>
+<p>Normalization is currently a much-discussed issue of microbiome studies. Differences in read depth between samples often need to be corrected before analysis. Several normalization methods have been proposed, and no one method is perfect. It may be that the most appropriate method depends on the analysis. In this tutorial, we will use rarefyed data to estimate ecological metrics and variance stabilizing transformation normalized data (via DESeq2) to identify differentially abundant taxa. For more detail, read <a href="https://dx.plos.org/10.1371/journal.pcbi.1003531">McMurdie and Holmes 2014</a> and <a href="http://doi.wiley.com/10.1111/2041-210X.13115">McKnight et al. 2019</a>.</p>
+<div id="rarefying" class="section level2">
+<h2>Rarefying</h2>
+<p>Rarefying can be used to subset data such that library depth is equal for each sample. Because sampling of the data is random, rarefaction can account for an effect of total read count on taxa richness. However, rarefying is regarded as wasteful because it discards large amounts of data.</p>
+<pre class="r r_code"><code>ps.rarefied&lt;- rarefy_even_depth(ps, rngseed=1, sample.size=min(sample_sums(ps)), 
+                                replace=F)
+otu_table(ps.rarefied)[1:5,1:5]
+head(sample_sums(ps.rarefied))</code></pre>
+<p>Compare these sample sums to the non-rarified data sums.</p>
+<pre class="r r_code"><code>head(sample_sums(ps))</code></pre>
+</div>
+<div id="proportions" class="section level2">
+<h2>Proportions</h2>
+<p>Proportion normalization involves dividing each OTU count by the total sum for each sample. The resulting count data will add up to 1 (100%) for each sample. The <code>microbiome::transform</code> function can be used to easily normalize count data as proportions in a phyloseq object.</p>
+<pre class="r r_code"><code>ps.proportions&lt;- transform(ps, &quot;compositional&quot;)
+otu_table(ps.proportions)[1:5,1:5]
+head(sample_sums(ps.proportions))</code></pre>
+</div>
+<div id="cumulative-sum-scaling" class="section level2">
+<h2>Cumulative sum scaling</h2>
+<p>The metagenomeSeq Cumulative Sum Scaling (CSS) normalization is another option developed for microbiome data. For more information, read <a href="http://www.nature.com/articles/nmeth.2658">Paulson,Stine, Bravo, &amp; Pop 2013</a>.</p>
+<pre class="r r_code"><code>mgs&lt;- phyloseq_to_metagenomeSeq(ps)
+mgs.css&lt;- mgs
+mgs.css&lt;- cumNorm(mgs.css)
+css_counts&lt;- MRcounts(mgs.css, norm=TRUE)
+ps.css&lt;- ps
+otu_table(ps.css)&lt;- otu_table(t(css_counts), taxa_are_rows=FALSE)</code></pre>
+<p>Now lets compare the original data to the CSS normalized data.</p>
+<pre class="r r_code"><code>otu_table(ps)[1:5,1:5]
+head(sample_sums(ps))
+otu_table(ps.css)[1:5,1:5]
+head(sample_sums(ps.css))</code></pre>
+</div>
+<div id="variance-stabilizing-transformation" class="section level2">
+<h2>Variance stabilizing transformation</h2>
+<p>This transformation method available in <a href="https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html">DESeq2</a> normalizes data with respect to library size as well as dispersion. Use <code>?vst</code> or read <a href="http://dx.doi.org/10.1186/gb-2010-11-10-r106">Anders and Huber 2010</a> for more information.</p>
+<pre class="r r_code"><code>dds&lt;- phyloseq_to_deseq2(ps, ~1)
+dds&lt;- estimateSizeFactors(dds)
+dds.vst&lt;- vst(dds, blind=T)
+vst_counts&lt;- assay(dds.vst)
+t(vst_counts)[1:5,1:5]
+ps.vst&lt;- ps</code></pre>
+</div>
+</div>
+<div id="plot-abundances" class="section level1">
+<h1>Plot abundances</h1>
+<pre class="r r_code"><code>T1&lt;- subset_samples(ps.rarefied, Treatment==&quot;T1&quot;)
+T1.phylum&lt;- tax_glom(T1, taxrank=&quot;Phylum&quot;, NArm=FALSE)
+T1.phylum&lt;- subset_taxa(T1.phylum, taxa_sums(T1.phylum)&gt;50)
+plot_bar(T1.phylum, fill=&quot;Phylum&quot;,) + facet_wrap(~Timepoint, scales=&quot;free_x&quot;, nrow=1)</code></pre>
+</div>
+<div id="alpha-diversity" class="section level1">
+<h1>Alpha diversity</h1>
+<p>Alpha diversity measures taxonomic diversity within a single population. Measures of alpha diversity include taxonomic richness (i.e. number of taxa), and indices which combine taxonomic richness with some measure of evenness.</p>
+<p><em>Note:</em> Many of these methods are greatly influenced by singleton data (i.e. taxa represented by a single count), meaning they may be unreliable if your data excludes singletons. DADA2 does not output singletons if it is run individually on each sample. Thus, if using dada2 to infer ASVs, it is advisable to use pool=T when running the dada algorithm. This will allow calling per-sample singletons, but not per-study singletons.</p>
+<div id="taxonomic-richness" class="section level2">
+<h2>Taxonomic richness</h2>
+<p>Our goal in defining richness is to determine the number of unique taxa within each population (in our case, each plot). This is difficult, as our samples contain only a portion of the total richness in within our plots. As sequence depth increases for each sample, so does the number of taxa. This can be illustrated with a rarefaction plot.</p>
+<div id="rarefaction" class="section level3">
+<h3>Rarefaction</h3>
+<p>To make a rarefaction plot, we draw random samples from our data and count the number of unique ASVs as samples are drawn. The resulting rarefaction curve is expected to rise quickly then plateu as the most abundant taxa are represented. We can make a quick rarefaction curve plot directly from our <code>phyloseq</code> object of all samples using the <a href="https://peat-clark.github.io/BIO381/veganTutorial.html"><code>vegan</code> package</a>:</p>
+<pre class="r r_code"><code>rarecurve(otu_table(ps), step=500, xlab=&quot;Sample Size&quot;, ylab=&quot;Taxa&quot;)</code></pre>
+<p>We can also split rarefaction curves by group using the <a href="https://madsalbertsen.github.io/ampvis2/articles/ampvis2.html"><code>ampvis2</code> package</a>.</p>
+<pre class="r r_code"><code>metadata &lt;- data.frame(sample_data(ps), check.names = F)
+asvtable &lt;- data.frame(t(otu_table(ps)),
+                       tax_table(ps),
+                       check.names = F)</code></pre>
+<p><code>ampvis2</code> requires a Species column, which must be added to our data. If your table already has a Species column, skip this step.</p>
+<pre class="r r_code"><code>asvtable$Species &lt;- NA</code></pre>
+<p>Load an <code>ampvis2</code> object and calculate rarefaction.</p>
+<pre class="r r_code"><code>my_ampvis2_object &lt;- amp_load(asvtable, metadata)
+ps3 &lt;- my_ampvis2_object
+rar &lt;- amp_rarecurve(ps3, stepsize=100, facet_by = &quot;Timepoint&quot;, color_by = &quot;Treatment&quot;)
+rar + ylab(&quot;Number of observed ASVs&quot;)</code></pre>
+<p>As we can see, as read depth increases for each sample, so does taxonomic richness. In all samples, increased sampling would result in increased richness. Thus, our observed sample richness is lower than the true population richness for every plot. Further, sequence depth and total richness appear to be correlated across samples. We can test whether this correlation is significant.</p>
+<pre class="r r_code"><code>ct_sums&lt;- sample_sums(ps)
+unique_asvs&lt;- rowSums(otu_table(ps)!=0)
+plot(ct_sums, unique_asvs, xlab=&quot;Sequence depth&quot;, ylab=&quot;ASV count&quot;)
+cor&lt;- cor.test(ct_sums, unique_asvs, method=&quot;spearman&quot;)
+cor</code></pre>
+<p>Here we observe a significant correlation (p=r cor$p.value) between read count and observed taxonomic richness.</p>
+<p>Thus, a sample from a high richness population but low read depth could have low observed richness. Fortunately, there are methods to estimate the number of unobserved taxa. For an overview of these methods, read <a href="http://www.annualreviews.org/doi/10.1146/annurev-statistics-022513-115654">Bunge et al. 2014</a></p>
+</div>
+<div id="frequency-counts" class="section level3">
+<h3>Frequency counts</h3>
+<p>To illustrate the difficulty of estimating population richness and importance of singletons to alpha diversity metrics, we’ll look at the frequency count distribution for our first sample: 101-S1. We’ll count the number of singletons, doubletons, etc., then plot frequency as a function of count.</p>
+<pre class="r r_code"><code>frequencytablelist &lt;- build_frequency_count_tables(otu_table(ps))
+freq_ct&lt;- frequencytablelist[[1]]
+colnames(freq_ct)&lt;- c(&quot;Frequency&quot;, &quot;Count&quot;)
+ggplot(freq_ct, aes(Frequency, Count)) + 
+  geom_point() + 
+  scale_x_continuous(breaks=seq(0, 600, by=50)) + 
+  ggtitle(&quot;101-S1&quot;)</code></pre>
+<p>We can see there are ~3,200 taxa represented as singletons and ~1,600 taxa represented as doubletons. How many total taxa are observed in 101-S1?</p>
+<pre class="r r_code"><code>sum(freq_ct$Count)</code></pre>
+<p>3193 of 8640 taxa observed in this sample (37%) are represented by single (paired) reads! How many more taxa might we observe if we increased our sampling?</p>
+</div>
+<div id="inference" class="section level3">
+<h3>Inference</h3>
+<p>Population richness can be inferred using the <a href="https://adw96.github.io/breakaway/index.html"><code>breakaway</code> package</a>. For details on the methods used, read <a href="http://doi.wiley.com/10.1111/biom.12332">Willis and Bunge 2015</a></p>
+<pre class="r r_code"><code>estimated_richness&lt;- breakaway(ps, cutoff=12)
+richness&lt;- data.frame(summary(estimated_richness))
+head(richness)[1:5]
+meta&lt;- data.frame(sample_data(ps))
+meta$Group&lt;- paste(meta$Treatment, meta$Timepoint, sep=&quot;:&quot;)
+combined_richness&lt;- cbind(meta, richness)
+betta_pic(combined_richness$estimate, se=combined_richness$error)</code></pre>
+<p>Here we see very large confidence intervals. This is because estimating unobserved taxa is difficult and uncertain.<br />
+The <code>betta</code> function allows us to test for heterogeneity of total diversity between our treatments. We’ll define treatments as Treatment-by-Timepoint combintations.</p>
+<pre class="r r_code"><code>bt_group_f&lt;- betta(chats = combined_richness$estimate, 
+                   ses = combined_richness$error, 
+                   X = model.matrix(~Group, data=combined_richness))
+bt_group_f$table</code></pre>
+<p>Here we find significant differences in richness between T1:S1 and two treatments - T2:S3 and T3:S3 at a cut-off p &lt; 0.05.</p>
+<p>We can also use <code>betta_random</code> to fit a model including random block effects.</p>
+<pre class="r r_code"><code>bt_group_f_block_r&lt;- betta_random(chats = combined_richness$estimate, 
+                                  ses = combined_richness$error, 
+                                  X = model.matrix(~Group, data=combined_richness),
+                                  groups=combined_richness$Block)
+bt_group_f_block_r$table</code></pre>
+</div>
+</div>
+<div id="indices" class="section level2">
+<h2>Indices</h2>
+<p>We can use several indecies to explore how evenly species are distributed within each sample. Here will look at several indices for non-normalized and rarefied data. Note that ‘Observed’ is the sample taxanomic richness. The other three indices combine richness and abundance data for each taxon.</p>
+<pre class="r r_code"><code>plot_richness(ps, x=&quot;Timepoint&quot;, shape=&quot;Treatment&quot;, color=&quot;Treatment&quot;, 
+              measures=c(&quot;Observed&quot;, &quot;Shannon&quot;, &quot;Simpson&quot;, &quot;InvSimpson&quot;))
+plot_richness(ps.rarefied, x=&quot;Timepoint&quot;, shape=&quot;Treatment&quot;, color=&quot;Treatment&quot;, 
+              measures=c(&quot;Observed&quot;, &quot;Shannon&quot;, &quot;Simpson&quot;, &quot;InvSimpson&quot;))</code></pre>
+<p>Notice that several T2:S3 samples have low measures, suggesting they have low diversity (i.e. abundances are dominated by a few taxa) compared to the other samples.</p>
+</div>
+</div>
+<div id="beta-diversity" class="section level1">
+<h1>Beta diversity</h1>
+<p>Beta diversity measures differences in microbial compositions between populations. We can use a phylogenetic tree and otu table to estimate the <a href="https://doi.org/10.1128/AEM.71.12.8228-8235.2005">UniFrac</a> for each sample pair. The result is a distance matrix with height and width equal to the number of samples. UniFrac may be <a href="https://doi.org/10.1128/AEM.01996-06">weighted or unweighted</a>. Selection of weighted or unweighted will depend on the question you want to answer. Unweighted UniFrac uses only presence or absence of a taxon from the otu table (i.e. 1000 will be treated the same as 1). It is appropriate if you want to test qualitative taxa differences between samples. Weighted UniFrac uses presence as well as quantity data (i.e. 1 &lt; 1000). We are interested to know what changes to taxon abundance may be driven by our treatments, so we will use weighted UniFrac.</p>
+<div id="ordination" class="section level2">
+<h2>Ordination</h2>
+<p>First we’ll make a weighted UniFrac distance matrix.</p>
+<pre class="r r_code"><code>set.seed(100)
+wUF&lt;- phyloseq::distance(ps.rarefied, method=&quot;wunifrac&quot;)
+as.matrix(wUF)[1:6,1:6]</code></pre>
+<p>If your phyloseq object lacks a phylogenetic tree, you could use a dissimilarity index that does not require one, such as Bray-Curtis.</p>
+<pre class="r r_code"><code>bray&lt;- vegan::vegdist(otu_table(ps.rarefied), method=&quot;bray&quot;)
+as.matrix(bray)[1:6,1:6]</code></pre>
+<p>Then perform Principal Coordinate Analysis (PCoA) on your favorite distance matrix. In this case, we are using weighted UniFrac.</p>
+<pre class="r r_code"><code>do&lt;- ordinate(ps.rarefied, method=&quot;PCoA&quot;, distance=wUF)
+
+plot_ordination(ps.rarefied, do, type =&quot;samples&quot;, color =&quot;Treatment&quot;, 
+                shape =&quot;Timepoint&quot;) + 
+   geom_point(size=2) + 
+   ggtitle(&quot;HCC ordination, all samples\nmethod=PCoA, distance=weighted UniFrac&quot;)
+plot_ordination(ps.rarefied, do, type = &quot;samples&quot;, color = &quot;Treatment&quot;, 
+                shape = &quot;Timepoint&quot;) + 
+   geom_point(size = 1) + 
+   geom_text(aes(label=SampleID),size = 3.5, color=&quot;black&quot;)
+plot_ordination(ps.rarefied, do, type =&quot;samples&quot;, color =&quot;Treatment&quot;, 
+                shape =&quot;Timepoint&quot;) + 
+   geom_point(size=2) + 
+   ggtitle(&quot;HCC ordination, all samples\nmethod=PCoA, distance=weighted UniFrac&quot;) +
+   facet_wrap(~Timepoint, 2)</code></pre>
+<p>We can see some grouping by timepoint.</p>
+</div>
+<div id="hierarchical-clustering" class="section level2">
+<h2>Hierarchical Clustering</h2>
+<p>Using the UniFrac distance matrix from earlier, we’ll perform UPGMA clustering.</p>
+<pre class="r r_code"><code>ps.hclust&lt;- hclust(wUF, method=&quot;average&quot;)
+plot(ps.hclust, cex=0.6)</code></pre>
+<p>We can use the <a href="http://ape-package.ird.fr/"><code>ape</code> package</a> to make prettier plots.</p>
+<pre class="r r_code"><code>colorScale&lt;- hcl.colors(length(levels(get_variable(ps, &quot;Timepoint&quot;))), palette=&quot;Dark 2&quot;)
+cols&lt;- colorScale[get_variable(ps, &quot;Timepoint&quot;)] 
+plot(as.phylo(ps.hclust), type=&quot;unrooted&quot;, cex=0.6, no.margin=TRUE, tip.color=cols)</code></pre>
+<p>Label Treatment by Timepoint instead of sample name.</p>
+<pre class="r r_code"><code>sample_data(ps)$Group&lt;- paste(sample_data(ps)$Treatment, sample_data(ps)$Timepoint, 
+                              sep=&quot;:&quot;)
+hclust.group&lt;- ps.hclust
+ps.tip.labels &lt;- (get_variable(ps, &quot;Group&quot;))
+hclust.group$labels&lt;- ps.tip.labels
+plot(as.phylo(hclust.group), type=&quot;unrooted&quot;, cex=0.6, no.margin=TRUE, tip.color=cols)</code></pre>
+<p>Color by Treatment.</p>
+<pre class="r r_code"><code>treat.colorScale&lt;- hcl.colors(length(levels(get_variable(ps, &quot;Treatment&quot;))), 
+                              palette=&quot;Dark 2&quot;)
+treat.cols&lt;- treat.colorScale[get_variable(ps, &quot;Treatment&quot;)]
+plot(as.phylo(hclust.group), type=&quot;unrooted&quot;, cex=0.6, no.margin=TRUE, 
+     tip.color=treat.cols)</code></pre>
+</div>
+<div id="permutational-analysis-of-variance-permanova" class="section level2">
+<h2>Permutational analysis of variance (PERMANOVA)</h2>
+<p>Finally, we’ll test whether there is a significant ecological level treatment effect. PERMANOVA sounds fancy, but it is essentially ANOVA performed using computation. Permutations are used to determine how data may appear if there is no treatment effect and group differences are due to random chance. Observed data are then compared to the randomized data to calculate a p-value.</p>
+<p>Treatments are independant within Timepoints, so we will first subset the data by Timepoint.</p>
+<pre class="r r_code"><code>ps.S1&lt;- subset_samples(ps.rarefied, Timepoint==&quot;S1&quot;)
+ps.S3&lt;- subset_samples(ps.rarefied, Timepoint==&quot;S3&quot;)
+ps.S4&lt;- subset_samples(ps.rarefied, Timepoint==&quot;S4&quot;)</code></pre>
+<p>Subset metadata and estimate UniFrac for S3.</p>
+<pre class="r r_code"><code>metadata &lt;- as(sample_data(ps.S3), &quot;data.frame&quot;)
+unifrac.dist&lt;- UniFrac(ps.S3, weighted=T)</code></pre>
+<p>Then we’ll use <code>vegan::adonis2</code> to perform PERMANOVA.</p>
+<pre class="r r_code"><code>permanova&lt;- adonis2(unifrac.dist ~ Treatment, data=metadata, permutations=10000)
+permanova</code></pre>
+<p>A low p-value (0.0077) suggests that within the S3 timepoint (post-termination), there is a significant treatment effect.</p>
+</div>
+</div>
+<div id="differential-taxon-abundance-deseq" class="section level1">
+<h1>Differential taxon abundance (DESeq)</h1>
+<p>Here we will use <a href="https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html">DESeq2</a> to identify differentially abundant taxa. DESeq2 was designed to analyze RNAseq datasets, which are similar to OTU/ASV datasets in that both handle large, sparse contingency tables generated from Illumina sequencing data. For more detail, read <a href="https://dx.plos.org/10.1371/journal.pcbi.1003531">McMurdie and Holmes 2014</a>.</p>
+<p>First, we’ll convert our non-normalized count data to a DESeq object.</p>
+<pre class="r r_code"><code>dds&lt;- phyloseq_to_deseq2(ps, ~Timepoint+Treatment)
+dds
+colData(dds)</code></pre>
+<p>There are two ways to analyze interaction effects using <code>DESeq2</code>. The first is to fit a multivariate model (e.g. ~A+B+A:B) and explore the model coefficients. The second is to fit a univariate model and explore pairwise contrasts. Here, we will group our two factors (Treatment and Timepoint) and use the latter approach.</p>
+<pre class="r r_code"><code>dds$Group &lt;- factor(paste0(dds$Treatment, dds$Timepoint))
+design(dds)&lt;- formula(~Group)
+dds&lt;- dds[,-50] #remove tech_rep sample
+dds$Group&lt;- droplevels(dds$Group) #drop tech_rep level from design matrix
+dds&lt;- DESeq(dds)
+results(dds)</code></pre>
+<p>Let’s explore the contrast, T1S4 : T4S4 (no cc, seedling stage : late termination, seedling stage)</p>
+<pre class="r r_code"><code>res&lt;- results(dds, contrast=c(&quot;Group&quot;, &quot;T1S4&quot;, &quot;T4S4&quot;))
+summary(res)</code></pre>
+<p>We can see there are r sum(res<span class="math inline">\(padj&lt;0.1 &amp; res\)</span>log2FoldChange&gt;0, na.rm=T) taxa with significantly increased abundance in T4S4 (p &lt; 0.1, log2 fold change &gt; 0), and there are r sum(res<span class="math inline">\(padj&lt;0.1 &amp; res\)</span>log2FoldChange&lt;0, na.rm=T) taxa with significantly decreased abundance in T4S4.</p>
+<p>We can sort results by p-value and look at the top ASVs.</p>
+<pre class="r r_code"><code>res.order&lt;- res[order(res$pvalue),]
+head(res.order)[c(1:2,6)]</code></pre>
+<p>What about the contrast, T1S1 : T1S4 (no cc, baseline : no cc, seedling stage)?</p>
+<pre class="r r_code"><code>res&lt;- results(dds, contrast=c(&quot;Group&quot;, &quot;T1S1&quot;, &quot;T1S4&quot;))
+summary(res)</code></pre>
+<p>Lowest p-value ASVs.</p>
+<pre class="r r_code"><code>res.order&lt;- res[order(res$pvalue),]
+head(res.order)[c(1:2,6)]</code></pre>
+<p>And plot counts for the first in the ordered list ASV.</p>
+<pre class="r r_code"><code>plotCounts(dds, gene=res.order@rownames[1], intgroup=&quot;Group&quot;)</code></pre>
+<p>We can also plot counts by SampleID.</p>
+<pre class="r r_code"><code>plotCounts(dds, gene=&quot;ASV_48&quot;, intgroup=&quot;Group&quot;)</code></pre>
+<p>The plot can also be saved and customized with ggplot</p>
+<pre class="r r_code"><code>d&lt;- plotCounts(dds, gene=&quot;ASV_48&quot;, intgroup=&quot;Group&quot;, returnData=TRUE)
+ggplot(d, aes(x=Group, y=count)) +
+  geom_point(position=position_jitter(w=0.1,h=0), size=2) +
+  scale_y_log10() +
+  ggtitle(expression(paste(&quot;ASV 48, log&quot;[10],&quot;-scale&quot;)))</code></pre>
+<p>We can also subset our differentially abundant taxa to keep those with an adjusted p-value &lt; 0.05.</p>
+<pre class="r r_code"><code>sig&lt;- subset(res.order, padj&lt;=0.05)
+head(sig)</code></pre>
+<p>What taxa are associated with significant differentially abundant ASVs?</p>
+<pre class="r r_code"><code>sig.asv&lt;- rownames(sig)
+sig.taxa&lt;- tax_table(ps)[sig.asv,]
+head(sig.taxa)
+write.csv(cbind(sig,sig.taxa), &quot;DATaxa_T1S1_T1S4.csv&quot;)</code></pre>
+</div>
+<div id="resources" class="section level1">
+<h1>Resources</h1>
+<p><code>decontam</code> tutorial<br />
+<a href="https://benjjneb.github.io/decontam/vignettes/decontam_intro.html" class="uri">https://benjjneb.github.io/decontam/vignettes/decontam_intro.html</a><br />
+<code>vegan</code> tutorial<br />
+<a href="https://peat-clark.github.io/BIO381/veganTutorial.html" class="uri">https://peat-clark.github.io/BIO381/veganTutorial.html</a><br />
+DESeq2 tutorial<br />
+<a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html" class="uri">http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html</a><br />
+Intro course on microbiome analysis<br />
+<a href="https://mibwurrepo.github.io/Microbial-bioinformatics-introductory-course-Material-2018/" class="uri">https://mibwurrepo.github.io/Microbial-bioinformatics-introductory-course-Material-2018/</a><br />
+UniFrac publication<br />
+<a href="https://doi.org/10.1128/AEM.71.12.8228-8235.2005" class="uri">https://doi.org/10.1128/AEM.71.12.8228-8235.2005</a><br />
+additional UniFrac publication <a href="https://doi.org/10.1128/AEM.01996-06" class="uri">https://doi.org/10.1128/AEM.01996-06</a><br />
+Articles on data normalization:<br />
+Waste not, want not: why rarifying microbiome data is inadmissible<br />
+<a href="https://dx.plos.org/10.1371/journal.pcbi.1003531" class="uri">https://dx.plos.org/10.1371/journal.pcbi.1003531</a><br />
+Microbiome datasets are compositional: and this is not optional <a href="http://journal.frontiersin.org/article/10.3389/fmicb.2017.02224/full" class="uri">http://journal.frontiersin.org/article/10.3389/fmicb.2017.02224/full</a><br />
+Methods for normalizing microbiome data: an ecological perspective<br />
+<a href="http://doi.wiley.com/10.1111/2041-210X.13115" class="uri">http://doi.wiley.com/10.1111/2041-210X.13115</a><br />
+Differential abundance analysis for microbial marker-gene surveys<br />
+<a href="http://www.nature.com/articles/nmeth.2658" class="uri">http://www.nature.com/articles/nmeth.2658</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
