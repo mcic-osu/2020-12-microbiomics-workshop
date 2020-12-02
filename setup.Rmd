@@ -1,9 +1,19 @@
+---
+title: "<br>Pre-workshop Setup"
+---
+
 <br>
 
-# Setup
+## Access to OSC
 
-<br>
+Make sure you have an account at the Ohio Supercomputer Center (OSC),
+and access to an active OSC project.
 
+- If you don't have an OSC account, see the instructions below to get one.
+
+- If you have an account but no access to an active project,
+  contact the instructors to be added to a project.
+    
 ### Sign up at OSC
 
 - Go to <https://my.osc.edu/> and click the blue "*Sign Up*" bar.
