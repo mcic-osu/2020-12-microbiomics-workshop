@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>An Introduction to the shell</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jelmer Poelstra" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# An Introduction to the shell
+### Jelmer Poelstra
+### MCIC Wooster
+### 2020/12/16 (updated: 2020-12-04)
+
+---
+
+
+
+
+## What is a shell?
+
+The shell is a command-line interface (CLI) to the operating system
+for Unix-like operating systems, such as Linux and Mac.
+
+(In Windows, there isn't really a shell, but there are [ways to get one](#windows-shell)).
+
+--
+
+&lt;br&gt;
+
+There are many shell flavors that are mostly very similar.
+The most common shell, and the default in Mac and Linux, is called **bash**.
+
+We will also be working in a bash shell at OSC.
+
+---
+
+## But what does the shell do?
+
+--
+
+**The shell:**
+
+- Provides a powerful way to manage and manipulate
+  text files.
+  
+- Is the most efficient (or only) way to run many programs
+  and submit scripts, especially when dealing with bioinformatic data.
+  
+- Is the most efficient (or only) way to interact with remote
+  computers such as OSC clusters.
+
+- Makes it easy to keep *exact* track of all your actions.
+
+---
+
+## Let's open up a shell at OSC!
+
+OSC allows us to use a shell within the browser at 
+&lt;https://ondemand.osc.edu/&gt;
+
+&lt;br&gt;
+
+&lt;p align = "center"&gt;
+&lt;img src=figs_shell/OSC_shell.png width="900"&gt;
+&lt;/p&gt;
+
+- In the "`Clusters`" dropdown, Click "`Pitzer Shell Access`".
+
+
+---
+
+## Lots of welcome messages
+
+&lt;p align="left"&gt;
+&lt;img src=figs_shell/OSC_welcome.png width="600"&gt;
+&lt;/p&gt;
+
+&lt;p align="center"&gt;
+&lt;img src=figs_shell/OSC_welcome2.png width="900"&gt;
+&lt;/p&gt;
+
+### And a **prompt**:
+
+&lt;p align="center"&gt;
+&lt;img src=figs_shell/OSC_prompt.png width="900"&gt;
+&lt;/p&gt;
+
+---
+
+
+
+---
+
+## Interactive jobs on `SLURM`
+
+- Start a 1-hour, single-core interactive job with a `bash` shell:
+```sh
+$ srun --nodes=1 --ntasks-per-node=1 --time=01:00:00 --pty bash -i
+```
+
+- Can also use `salloc` and `sinteractive`.
+
+---
+
+## Batch jobs on `SLURM`
+
+- Unlike in `PBS`, job script needs to start with shebang line:
+```sh
+#!/bin/bash
+```
+
+- Submit a job:
+```sh
+$ sbatch myscript.sh [script-options] [script-args]
+```
+
+- Monitor your jobs:
+```bash
+$ squeue -u &lt;username&gt;
+```
+
+---
+
+## Some common `sbatch` options:
+
+```sh
+#SBATCH --nodes=&lt;N&gt;
+#SBATCH --ntasks-per-node=&lt;N&gt;
+#SBATCH --time=HH:MM:SS
+#SBATCH --mem=Xgb               # Default is Mb, hence "gb" specification
+#SBATCH --job-name=&lt;myjobname&gt;
+#SBATCH --account=&lt;projectID&gt;
+```
+
+--- 
+
+## Some more advanced `sbatch` options:
+
+```sh
+--begin=2020-10-20T12:00:00
+```
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
