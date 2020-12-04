@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>A Practical Introduction to OSC</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jelmer Poelstra" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# A Practical Introduction to OSC
+### Jelmer Poelstra
+### MCIC Wooster
+### 2020/12/16 (updated: 2020-12-03)
+
+---
+
+
+
+
+## What is OSC?
+
+- The Ohio Supercomputer Center (OSC) provides computing
+  resources across the state of Ohio (it is not a part of OSU).
+
+- Their main services are two supercomputers
+  and the infrastructure for their usage.
+
+--
+
+&lt;br&gt;
+
+- Research usage is charged but via their institutions
+  and at [heavily subsidized rates](https://www.osc.edu/content/academic_fee_model_faq)
+  (education usage if entirely free).
+
+---
+
+## Supercomputer?
+
+A supercomputer, AKA a (compute) **cluster**,   
+is simply a connected set of many processors and storage units.
+
+&lt;br&gt;
+
+**When do we need a supercomputer?**
+
+--
+
+- When our dataset is too large to be handled by our computer.
+
+--
+
+- Or, we may have analyses that *could* run on our own computer,  
+  but we get a massive speed gain with a cluster if:
+  
+  - We need to repeat a computation many times   
+    (or are analyzing many datasets at the same time).
+
+  - We could distribute a single analysis across multiple computers.
+  
+---
+
+## Getting started at OSC
+
+- OSC provides excellent introductory material at their [Getting Started Page](https://www.osc.edu/resources/getting_started).
+**Do read these!**
+
+&lt;p align="center"&gt;
+&lt;img src=figs/gettingstarted.png width="500"&gt;
+&lt;/p&gt;
+
+--
+
+- Have a look at all the ["HOWTO" pages](https://www.osc.edu/resources/getting_started/howto) that includes more advanced material, too.
+
+---
+
+## Getting started at OSC (cont.)
+
+- OSC regularly has online introductory sessions,   
+  both overviews and more hands-on sessions --
+  see the [OSC Events page](https://www.osc.edu/events).
+
+&lt;br/&gt;
+
+- There is also a Carpentry-style tutorial available [here](https://khill42.github.io/OSC_IntroHPC).
+
+---
+
+## Terminology
+
+#### Cluster
+
+Many processors and storage units tied together.
+
+OSC has two clusters (*Pitzer* and *Owens*) and they are largely separate --   
+you log in to them separately.
+But the same long-term storage space is accessed by both.
+
+&lt;br&gt;
+
+--
+
+#### Node
+
+Essentially a (large) computer.
+
+---
+
+## Terminology (cont.)
+
+#### Core
+
+A processor within a node.
+Standard *Pitzer* nodes, for instance, have 40-48 cores.
+Each core can run and be reserved independently:
+48 people may each be running a "job" on one core simultaneously.
+
+(Note: While a **CPU** technically often has a collection of cores,
+OSC's resource reservation system (*SLURM*) generally use the terms CPU and core interchangeably.)
+
+--
+
+&lt;br&gt;
+
+#### Memory
+
+RAM (Random Access Memory), not to be confused with hard disk storage.
+
+Many programs, including R, load all the data that is used into memory.   
+This makes it hard to work with multi-GB datasets on a personal computer.
+Standard *Pitzer* nodes have 192 GB memory.
+
+---
+
+## Clusters at OSC
+
+&lt;p align="center"&gt;
+&lt;img src=figs/computers2.png width="500"&gt;
+&lt;/p&gt;
+
+- **The "annotated" changes have happened just in the past few months:**
+
+  - The *Ruby* cluster has been decommissioned
+
+  - The *Pitzer* cluster just got an expansion
+
+
+---
+
+## Connecting to OSC with "OnDemand"
+
+- You can make use of OSC not only through `ssh` at the command line,   
+but also through the web browser: from https://ondemand.osc.edu.
+
+&lt;br&gt;
+
+&lt;p align="center"&gt;
+&lt;img src=figs/ondemand1.png width="900"&gt;
+&lt;/p&gt;
+
+&lt;br&gt;
+
+--
+
+- Here you can:
+  - Browse and upload files
+  - Submit and manage jobs visually,
+  - Access a terminal
+  - Start RStudio Server
+  - Etc.
+
+--
+
+&lt;br&gt;
+
+- **Interface Demo**
+
+---
+class:inverse
+
+## Connecting to OSC with `ssh`
+
+- If you'll be working at OSC a lot,
+  especially if you need to submit jobs that run scripts,
+  you will want to use the command line as well.
+  
+- If you want to log in from your *own local terminal*,   
+  you need to **connect through `ssh`.**
+  
+- Basic `ssh` usage (note: you log in to a specific cluster, Pitzer or Owens):
+```bash
+$ ssh &lt;username&gt;@pitzer.osc.edu    # e.g. jelmer@owens.oscu.edu     
+$ ssh &lt;username&gt;@owens.osc.edu
+```
+  
+  - You will be prompted for your OSC password.
+
+&lt;br&gt;
+
+- For tips on logging in without using your password,
+  and with name shortcuts, see the bonus slides starting [here](#ssh).
+
+---
+
+
+## Transferring files
+
+There are several ways to transfer files between your local computer and OSC,
+depending on your preferences and **the size of the transfer**.
+
+---
+
+## Transferring files: with GUIs
+
+### For small transfers (&lt;1 GB): use OnDemand
+
+&lt;p align="center"&gt;
+&lt;img src=figs/ondemand2_circle.png width="900"&gt;
+&lt;/p&gt;
+
+--
+
+----
+
+&lt;p align="center"&gt;
+&lt;img src=figs/ondemand3_circle.png width="900"&gt;
+&lt;/p&gt;
+
+--
+
+-----
+
+### For large transfers (&gt;1 GB): use Globus
+
+- Especially useful for very large and/or complex transfers.
+
+- Does need a [local installation](https://www.osc.edu/resources/getting_started/howto/howto_transfer_files_using_globus_connect) and some set-up.
+
+---
+class:inverse
+
+## Transferring files: at the command line
+
+### For small transfers (&lt;1 GB): use `scp` / `rsync`
+
+```bash
+# scp
+$ scp /path/in/local/file.txt &lt;user&gt;@owens.osc.edu:/path/in/remote/
+```
+
+```bash
+# rsync (recommended, especially to keep folders synched)
+$ rsync -avrz --progress /path/in/local/dir \
+    &lt;user&gt;@owens.osc.edu:/path/in/remote/
+```
+
+--
+
+-----
+
+### For any transfer (&gt;1 GB): use `sftp`
+
+```bash
+$ sftp sftp.osc.edu
+sftp&gt; put /path/in/local/file.txt /path/in/remote
+
+sftp&gt; put file.txt    # From local working dir to $HOME in remote
+
+sftp&gt; get /path/in/remote/file.txt /path/in/local/
+```
+
+---
+
+## Login nodes
+
+- After logging in to OSC, you're on a **login node**.
+
+&lt;p align="center"&gt;
+&lt;img src=figs/cluster_diagram.png width="900"&gt;
+&lt;/p&gt;
+
+
+---
+
+## Login nodes
+
+- After logging in to OSC, you're on a **login node**.
+
+  - This is true when you log in through `ssh` and also at OnDemand.
+  
+  - (Starting an App like RStudio Server connects you to a compute node.)
+
+--
+
+&lt;br&gt;
+
+-----
+
+- Use login nodes for *navigation*, *housekeeping*, and *job submission*.
+
+- Any process that is active for &gt;20 minutes or uses &gt;1GB **will be killed**.
+
+- It is good practice to avoid even getting close to these limits:   
+  login nodes are *shared by everyone*, and can get clogged.   
+
+- Fore more info, see OSC's page [Login environment at OSC](https://www.osc.edu/supercomputing/login-environment-at-osc).
+
+--
+
+&lt;br&gt;
+
+-----
+
+- All analyses should be done on **compute nodes**.
+
+---
+
+## Running "jobs" at OSC
+
+- When you actually want to run some analysis at OSC,
+ you will need to use a **compute node** rather than a *login node*.
+
+- What to do when 100s of people, all with different access rights and needs
+  (time, memory, number of cores, GPU or not),
+  need to access nodes on a cluster?
+  
+  We need an automated scheduling mechanism is needed to distribute and manage
+  these jobs.
+
+--
+
+&lt;br&gt;
+
+-----
+
+- There are several programs that can do this.
+  This year, OSC gradually switched from one scheduler (PBS/Torque) to another (SLURM),
+  and as of yesterday (Dec 15, 2020), **both Pitzer and Owens run with SLURM**.
+
+- We will briefly demonstrate submitting a SLURM job in the shell session.
+
+---
+
+## How to submit jobs?
+
+For example, you can:
+
+1. In OnDemand, start an RStudio Server (or other interactive app).
+
+2. In OnDemand, Use the Job Composer (largely visual interface to 3.)
+
+3. In your shell, submit a script.
+
+--
+
+&lt;br&gt;
+
+- **OnDemand Demo.**
+- ADD SCREENSHOT OF INTERACTIVE JOB MENU?
+
+--
+
+&lt;br&gt;
+
+-----
+
+For all of these options,
+**you have to provide special instructions to the SLURM scheduler.**
+
+---
+
+## Specifying job options: RStudio in OnDemand
+
+&lt;p align="center"&gt;
+&lt;img src=figs/submit-RStudio.png width="500"&gt;
+&lt;/p&gt;
+
+---
+class:inverse
+
+## Specifying job options: in a shell script
+
+
+```bash
+#SBATCH --account=PAS0471
+#SBATCH --time=00:45:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem-per-cpu=8G
+```
+
+---
+
+## Things to consider for compute jobs
+
+### Number of nodes and cores
+
+- Only ask for &gt;1 node when you have explicit parallelization   
+  (you probably don't).
+
+- **R will not even use multiple cores by default**,   
+  though some of the packages we'll work with *can* do this.
+
+- Asking for multiple cores can also increase the memory you have available
+  (memory is shared across cores).
+
+--
+
+&lt;br&gt;
+
+-----
+
+### Memory
+
+- Optional to specify, default is ~4 GB per core
+- **ADD MORE INFO**
+
+---
+
+## Things to consider for compute jobs (cont.)
+
+### Walltime
+
+- You need to specify a **time limit** for your job.   
+  (This is the "walltime" -- cf. "core-hours".)
+
+- **Your job gets killed as soon as it hits the time limit!**
+
+--
+
+- Specifying the time can be a slight **trade-off**:   
+  shorter jobs are likely to start sooner.
+  
+- But: better safe than sorry -- **ask for (much) more time than you think you will need**. (Your project will be charged for the time *actually used*.)
+
+--
+
+&lt;br&gt;
+
+-----
+
+### Project
+
+- Your jobs always needs to be billed to a project.   
+  (If you have only one project, no need to specify it.)
+
+---
+
+### Queue
+
+There are several "queues" that jobs can be submitted to.
+
+- **The default queue (no specification) will work in most cases.**
+
+- For short and interactive jobs, consider the `debug` queue.
+
+- There are separate queues for jobs that require many nodes,
+  jobs that use *GPUs*, etc. ([list of queues at Owens](https://www.osc.edu/resources/technical_support/supercomputers/owens/queues_and_reservations) and [list of queues at Pitzer](https://www.osc.edu/supercomputing/computing/pitzer/queues_and_reservations)).
+
+- **The maximum walltime** for most queues is 168 h (1 week).   
+  For longer jobs, *request access* to the `longserial` queue on Pitzer.
+
+---
+
+## Software at OSC
+ 
+- For a list of software that has been installed at OSC,   
+  and is available for all users,   
+  see https://www.osc.edu/resources/available_software.
+
+---
+class: inverse
+
+## Software at OSC (cont.)
+
+- You can also check for software availability on the command line:
+```bash
+$ module spider [search-term]       # All installed software
+$ module avail [search-term]        # Available software, given current environment
+```
+
+&lt;br/&gt;
+
+-----
+
+- Loading software is also done with `module` commands:
+```bash
+$ module load R                     # Load default version
+$ module load R/4.0.2-gnu9.1        # Load a specific version (better)
+$ module unload R
+```
+
+---
+
+## What if software isn't installed at OSC?
+
+- **Manually installing software is possible but can be tricky**,
+  since you and I have no admin rights (but R packages are usually fine!).
+
+--
+
+&lt;br&gt;
+
+----
+
+- For commonly used software, send an email to &lt;oschelp@osc.edu&gt;,
+  and they may install it centrally for you.
+
+- For bioinformatics software, including more niche stuff,
+  I can also try to help.
+
+--
+
+&lt;br&gt;
+
+------
+
+- The **`conda`** software management system, and **`Singularity` containers**
+  are alternatives when installation is tricky.
+
+- These are also superior for reproducibility purposes.   
+  For a `conda` example, see the bonus slides starting from [here](#conda).
+
+---
+class: inverse center middle
+
+# Bonus Material
+
+---
+
+## Filesystems
+
+- OSC has several filesystems with different typical use cases:
+  we'll discuss in terms of short-term versus long-terms storage. 
+
+---
+
+## Filesystem I: long-term storage locations
+
+### Home dir
+
+- Can always be accessed with shortcuts **`$HOME`** and **`~`**.
+
+- 500 GB capacity, daily back-ups.
+
+- Your home dir will include your first project ID, e.g. `/users/PAS0471/jelmer`.
+  (However, this is not the project dir!)
+
+--
+
+### Project dir
+  
+- `/fs/project/&lt;projectID&gt;`. (MCIC project: `/fs/project/PAS0471`)
+  
+- The total storage limit is whatever a PI sets this too.   
+    Charges are for the reserved space, not actual usage.
+  
+- Daily back-ups.
+
+---
+
+## Filesystem II: short-term storage locations
+
+### scratch
+
+- `/fs/scratch/&lt;projectID&gt;`, sometimes `fs/ess/scratch/&lt;projectID&gt;`.
+
+- Fast I/O, good to use for large input and output files.
+
+- Temporary: deleted after 120 days, and not backed up.
+
+--
+
+### `$TMPDIR`
+
+- Represents storage space *on your compute node*. 1 TB max.
+
+- Available in the job script through the environment variable `$TMPDIR`.
+
+- **Deleted after job ends** -- so copy to/from in job scripts!
+
+- See [this bonus slide](#tmpdir) for some example code for working with `$TMPDIR`.
+
+---
+name: tmpdir
+
+## Working with `$TMPDIR` in scripts
+
+```bash
+cp -R $HOME/my/data/ $TMPDIR/
+[...analyze data....]
+cp -R $TMPDIR/* $HOME/my/data/
+```
+
+&lt;br/&gt;
+
+Or better yet, copy the data even if the jobs was killed:
+
+```bash
+trap "cd $PBS_O_WORKDIR;mkdir $PBS_JOBID;cp -R $TMPDIR/* $PBS_JOBID;exit" TERM
+```
+
+---
+
+## File systems: in closing
+
+- If this is all a bit much -- for those working with "small" NGS datasets
+  (like from MiSeq runs), you may be able to **stick to your home dir**.
+
+&lt;br&gt;
+
+- See [here](https://www.osc.edu/supercomputing/storage-environment-at-osc/available-file-systems) for more info about the file systems.
+
+---
+name: ssh
+
+## `ssh` set-up: avoid being prompted for password
+
+- On your own computer, generate a key:
+```bash
+$ ssh-keygen -t rsa
+```
+
+- On your own computer, transfer the key to the remote computer:
+```bash
+$ cat ~/.ssh/id_rsa.pub | ssh &lt;user&gt;@owens.osc.edu 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'
+```
+
+- On remote computer (OSC), set permissions:
+```bash
+$ chmod 700 .ssh; chmod 640 .ssh/authorized_keys
+```
+
+&lt;br&gt;
+
+- For more details, see this [Tecmint post](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/).
+
+---
+
+## `ssh` set-up: use shortcuts
+
+- Create a file called `~/.ssh/config`:
+```bash
+$ touch `~/.ssh/config`
+```
+
+- Open the file and add your alias(es):
+```bash
+&gt; Host &lt;arbitrary-alias-name&gt;    
+&gt;     HostName &lt;remote-name&gt;
+&gt;     User &lt;user-name&gt;
+```
+
+--
+
+- This is what it looks like on my machine, so I can login using "`ssh jo`":
+&lt;br/&gt;
+
+&lt;p align="center"&gt;
+&lt;img src=figs/ssh.png width="400"&gt;
+&lt;/p&gt;
+
+
+---
+name: conda
+
+## `conda`
+
+**`conda` is a software environment manager**
+  
+- Install software *into a conda environment*, no need for admin (`sudo`) rights
+  
+- Takes care of software dependencies.
+  
+- You can easily have different "environments" that each have a different version
+  of the same software - load and unload similar to the `module` system.
+  
+- A *lot* of bioinformatics software is available through `conda`.
+
+---
+
+## `conda` in practice
+
+- Load the `conda` module at OSC (part of Python): 
+
+  ```bash
+  $ module load python/3.6-conda5.2
+  ```
+
+&lt;br&gt;
+
+- Create a new environment with "`multiqc`" installed:
+
+  ```bash
+  $ conda create -y -n my-multiqc-env -c bioconda multiqc
+  ```
+
+&lt;br&gt;
+
+- Activate the `multiqc` environment and see if we can run it:
+
+  ```bash
+  [&lt;user&gt;@owens-login01 ~]$ conda activate my-multiqc-env
+
+  # Note environment indicator
+  (multiqc) [&lt;user&gt;@owens-login01 ~]$ multiqc --help
+  ```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
