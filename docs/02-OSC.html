@@ -11,7 +11,7 @@
 
 
 
-<title> An Introduction to OSC</title>
+<title> An Introduction to the Ohio Supercomputer Center (OSC)</title>
 
 <script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -20,9 +20,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -266,69 +263,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -336,16 +270,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -383,15 +307,15 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Lecture:</li>
+    <li class="dropdown-header">Lectures:</li>
     <li>
       <a href="01-microbiomics.html">Intro to Microbiomics</a>
     </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Hands-on Sessions:</li>
     <li>
       <a href="02-OSC.html">Intro to OSC</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Hands-on Sessions:</li>
     <li>
       <a href="03-shell.html">Intro to the Shell</a>
     </li>
@@ -433,7 +357,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore"><br>An Introduction to OSC</h1>
+<h1 class="title toc-ignore"><br>An Introduction to the<br>Ohio Supercomputer Center (OSC)</h1>
 
 </div>
 
@@ -442,19 +366,23 @@ div.tocify {
 <blockquote>
 <h2 id="learning-objectives">Learning Objectives</h2>
 <ul>
-<li>…</li>
+<li>Learn what the OSC is and why you may want to use it.</li>
+<li>Learn how to connect to OSC through the OnDemand portal.</li>
+<li>Learn how to transfer data to and from OSC.</li>
+<li>Understand the difference between login and compute nodes.</li>
+<li>Understand several important options when submitting a compute job.</li>
+<li>Learn about software availability at OSC.</li>
+<li>Get a taste for command-line options at OSC.</li>
 </ul>
 </blockquote>
 <hr />
-<div id="before-we-start" class="section level2">
-<h2>Before we start</h2>
+<div id="click-here-for-the-slides" class="section level2">
+<h2><a href="slides/02-OSC.html" target="_blank">Click here for the slides</a></h2>
 <p><br> <br></p>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -487,32 +415,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
