@@ -254,11 +254,9 @@ $ rsync -avrz --progress /path/in/local/dir \
     <user>@owens.osc.edu:/path/in/remote/
 ```
 
---
-
 -----
 
-### For any transfer (>1 GB): use `sftp`
+### For any transfer size: use `sftp`
 
 ```bash
 $ sftp sftp.osc.edu
