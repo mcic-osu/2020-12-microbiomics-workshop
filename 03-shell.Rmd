@@ -3,8 +3,6 @@ title: "<br>An Introduction the Shell"
 output:
   rmarkdown::html_document:
     theme: cerulean
-    toc: true
-    toc_float: true
     css: my.css
 ---
 
@@ -16,6 +14,12 @@ output:
 
 ------------
 
-## Before we start
+## Before we get started
+
+- **Open <a href="https://ondemand.osc.edu/" target="_blank">https://ondemand.osc.edu</a>.**
+
+------------
+
+## <a href="slides/03-shell.html" target="_blank">Click here for the slides</a>
 
 <br> <br>
