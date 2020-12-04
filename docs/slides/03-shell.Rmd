@@ -40,14 +40,19 @@ We will also be working in a bash shell at OSC.
 
 **The shell:**
 
-- Provides a powerful way to manage and manipulate
-  text files.
-  
+- Provides a powerful way to manage and manipulate files.
+
+--
+
 - Is the most efficient (or only) way to run many programs
   and submit scripts, especially when dealing with bioinformatic data.
-  
+
+--
+
 - Is the most efficient (or only) way to interact with remote
   computers such as OSC clusters.
+
+--
 
 - Makes it easy to keep *exact* track of all your actions.
 
@@ -64,6 +69,8 @@ OSC allows us to use a shell within the browser at
 <img src=figs_shell/OSC_shell.png width="900">
 </p>
 
+<br>
+
 - In the "`Clusters`" dropdown, Click "`Pitzer Shell Access`".
 
 
@@ -79,15 +86,339 @@ OSC allows us to use a shell within the browser at
 <img src=figs_shell/OSC_welcome2.png width="900">
 </p>
 
-### And a **prompt**:
+--
+
+### And a **prompt** -- this is where we type.
 
 <p align="center">
 <img src=figs_shell/OSC_prompt.png width="900">
 </p>
 
 ---
+class: center middle
+
+# Everything you type in the shell <br> is supposed to be a command
+
+### Basic usage is just memorizing common commands
+
+---
+
+## A trivial example: the `cal` command
+
+- Just typing "cal" calls this command, which prints a calendar to screen:
+
+  ```sh
+  cal
+  ```
+
+- We can use the "-j" or "-m" **options** (flags):
+  ```sh
+  cal -j    # Show a Julian calendar
+  cal -m    # Have weeks start on Monday
+  ```
+
+- We can use a year as an **argument** (parameter):
+  
+  ```sh
+  cal 2020  # Print the calendar for 2020
+  ```
+
+- We can combine options and arguments, e.g.:
+
+  ```sh
+  cal -j -m 2020
+  
+  cal -jm 2020     # Shorter notation!
+  ```
+
+---
+
+## Recap ;)
+
+- We used *options* (flags) and *arguments* (parameters) <br> to modify what a command does.
+
+- These arguments and options are separated by **spaces**.
+
+- Note that everything after a "`#`" is ignored -- useful for comments!
+
+---
+
+## How do we know the options to a command?
+
+Many commands have a "`--help`" option:
+
+```sh
+cal --help
+# Usage:
+#  cal [options] [[[day] month] year]
+
+# Options:
+#  -1, --one        show only current month (default)
+#  -3, --three      show previous, current and next month
+#  -s, --sunday     Sunday as first day of week
+#  -m, --monday     Monday as first day of week
+#  -j, --julian     output Julian dates
+#  -y, --year       show whole current year
+#  -V, --version    display version information and exit
+#  -h, --help       display this help text and exit
+```
+
+---
+
+## How do we know the options to a command? (Cont.)
+
+- Using the `man` ("manual") command,   
+  whose argument is the command or utility we want the manual for:
+
+```sh
+$ man ls
+```
+<p align="center">
+<img src=figs_shell/man_ls.png width="600">
+</p>
 
 
+---
+class: center middle inverse
+
+## Let's learn some useful commands
+
+<br><br>
+
+--
+
+# Part A: <br><br> Navigation
+
+---
+
+## Navigation: overview
+
+```sh
+$ pwd   # Provide Working Directory (where am I?)
+
+$ ls    # List files and dirs in your current working directory
+
+$ cd    # Change working directory
+```
+
+--
+
+<br>
+
+- Which of these commands needs an *argument*?
+
+--
+
+```sh
+$ cd <to>
+```
+
+---
+
+## Navigation I: `pwd` (Provide Working Directory)
+
+```sh
+$ pwd
+# /users/PAS0471/jelmer/CSB
+```
+
+--
+
+<br>
+
+- Notice that directories are separated by <br> forward slashes "`/`" in Unix environments.
+
+<br>
+
+- When moving files around,   
+  it is useful to know that **"`.`"** is a shortcut
+  for the current working directory
+
+---
+
+## Navigation II: `ls` (LiSt)
+
+```sh
+$ ls
+
+# data_wrangling git good_code LICENSE README.md
+```
+
+--
+
+<br>
+
+We can try some options to modify the output:
+
+```sh
+$ ls -l -h   # -l: long format / -h: human-readable file sizes
+
+# drwxr-xr-x 7 jelmer PAS0471 4.0K Dec  4 11:23 data_wrangling
+# drwxr-xr-x 5 jelmer PAS0471 4.0K Dec  4 11:23 git
+# drwxr-xr-x 5 jelmer PAS0471 4.0K Dec  4 11:23 good_code
+# -rw-r--r-- 1 jelmer PAS0471  35K Dec  4 11:23 LICENSE
+# -rw-r--r-- 1 jelmer PAS0471 2.4K Dec  4 11:23 README.md
+```
+
+--
+
+Again, these options can be "pasted together":
+
+```sh
+ls -lha     # We've added the "-a" option to show hidden files
+```
+
+---
+
+## Navigation III: cd (Change Directory)
+
+- Using a **relative** path:
+```sh
+cd data_wrangling/
+```
+
+- Using an **absolute** (full) path:
+```sh
+cd /users/PAS0471/jelmer/CSB/data_wrangling
+```
+
+### Tricks!
+
+```sh
+cd ..     # Move on directory up
+cd ../..  # Move two directories up
+cd ~      # Move to your home directory
+cd -      # Go back to last visited dir (like "Back" in a browser)
+
+cd .      # What does this do?
+```
+
+---
+class: center middle inverse
+
+# Part B : <br><br> Managing files
+
+---
+
+## Managing files: overview
+
+```sh
+$ mkdir <dirname> # Make a new directory
+$ cp <from> <to>  # Copy files or dirs
+$ mv <from> <to>  # Move files or dirs (also functions as rename!)
+$ rm <file>       # Remove a file or directory
+```
+
+--
+
+<br>
+
+### Operating on directories:
+
+- For `cp` and `rm`,   
+  the "`-r`" option is needed to act on directories
+  (and their contents!)
+
+  ```sh
+  cp -r unix/data . # Recall that "`.`" stands for the current dir 
+  rm -r my_dir/     # Beware: there is NO THRASH BIN in the shell!
+  ```
+
+
+---
+
+## Managing files: An example set of commands
+
+```sh
+mkdir my_fantastic_dir # DON'T use spaces!
+
+cp README.md my_fantastic_dir/
+
+cd my_fantastic_dir/
+
+ls
+
+mv README.md README.txt
+
+ls
+```
+
+---
+
+## Managing files: Wildcards
+
+|Wildcard | Matches |
+|-|-|
+| * | Any number of any character, including nothing |
+| ? | Any single character 
+| [] | One of the "character set" within the brackets   
+
+---
+class: center middle inverse
+
+# Part C :<br><br>Working with text files
+
+---
+
+## Text files: Overview
+
+- `less`
+- `cat`
+- `head` and `tail`
+- `grep`
+
+---
+
+## Text files I: `less`
+
+---
+
+## Text files II: `cat`
+
+---
+
+## Text files II: `head` and `tail`
+
+---
+
+## Text files IV: `grep`
+
+---
+
+## Some other commands worth mentioning:
+
+- `cut`
+- `wc` / `wc -l`
+- `sort`
+
+---
+class: center middle inverse
+
+# Part D :<br><br>Redirection and pipes
+
+---
+
+## Redirection
+
+- STDOUT
+
+```sh
+[COMMAND] > filename
+[COMMAND] >> filename
+
+[COMMAND] < filename
+# Cf [COMMAND] filename
+```
+
+---
+
+## Pipes and STDIN
+
+
+---
+class: center middle inverse
+
+# Submitting jobs (scripts) <br> to the SLURM scheduler 
 
 ---
 
@@ -104,40 +435,94 @@ $ srun --nodes=1 --ntasks-per-node=1 --time=01:00:00 --pty bash -i
 
 ## Batch jobs on `SLURM`
 
-- Unlike in `PBS`, job script needs to start with shebang line:
-```sh
-#!/bin/bash
-```
-
-- Submit a job:
+- To submit a job:
 ```sh
 $ sbatch myscript.sh [script-options] [script-args]
 ```
 
-- Monitor your jobs:
+- To monitor your jobs:
 ```bash
 $ squeue -u <username>
 ```
 
 ---
 
-## Some common `sbatch` options:
+## Inside the script
+
+### Start with a *shebang* line
+
+A job script needs to start with a "*shebang*" line,
+which points the computer to the program to be used:
+```sh
+#!/bin/bash
+```
+
+### Then, provide options to `sbatch`. Some common ones:
 
 ```sh
 #SBATCH --nodes=<N>
 #SBATCH --ntasks-per-node=<N>
 #SBATCH --time=HH:MM:SS
-#SBATCH --mem=Xgb               # Default is Mb, hence "gb" specification
+#SBATCH --mem=Xgb
 #SBATCH --job-name=<myjobname>
 #SBATCH --account=<projectID>
 ```
 
---- 
+---
 
-## Some more advanced `sbatch` options:
+## A very minimal example
+
+- A script called `hello.sh`:
 
 ```sh
---begin=2020-10-20T12:00:00
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=01:00:00
+
+echo "Hello $1"
+```
+--
+
+<br>
+
+- We can submit it to the queue using:
+
+```sh
+sbatch hello.sh Jelmer
+# Submitted batch job 2451088
 ```
 
 ---
+
+## A very minimal example (cont.)
+
+- We can check what's happening:
+
+  ```sh
+  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  # 2451088 serial-40 hello.sh   jelmer PD       0:00      1 (None) 
+  ```
+
+- And again a little later:
+
+  ```sh
+  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  ```
+
+- Do we have output?
+
+  ```sh
+  ls slurm*
+  # slurm-2451088.out
+  ```
+
+- Let's check it out:
+
+  ```sh
+  cat slurm-2451088.out
+  # Hello Jelmer
+  ```
+
+
+
