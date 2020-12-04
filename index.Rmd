@@ -2,6 +2,12 @@
 title: "<br>Microbiomics Workshop"
 ---
 
+<style>
+.mytable table {
+  width:70%;
+}
+</style>
+
 <br>
 
 <span style="font-size: 18px">**This website contains materials for an online
@@ -15,19 +21,27 @@ For pre-workshop computer setup, see the [Setup](setup.html) page.
 
 ### Day 1 (Wed, Dec 16)
 
-| When  | Type | Instructor | What |
-|-------|------|-----|------|
-| 10:00 | Lecture | Antonino | [Introduction to Microbiomics](01-microbiomics.html)  |
-| 11:30 | Lecture | Jelmer | [Introduction to OSC](02-OSC.html) <a href="slides/02-OSC.html" target="_blank">(slides)</a>         |
-| 11:50 | Hands-on | Jelmer | [Introduction to the shell](03-shell.html) |
-| 12:15 | Hands-on | Jelmer | [Introduction to R](04-R.html)             |
+<div class="mytable">
+
+| When  | Type | Instructor | Topic | Material | Slides
+|-|-|-|-|-|-|
+| 10:00 | Lecture | Antonino | _Introduction to Microbiomics_ | <a href="01-microbiomics.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+| 11:30 | Lecture | Jelmer | _Introduction to OSC_ | <a href="02-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/02-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
+| 11:50 | Mix | Jelmer | _Introduction to the shell_ | <a href="03-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/03-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
+| 12:15 | Hands-on | Jelmer | _Introduction to R_ | <a href="04-R.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+
+</mytable>
 
 ### Day 2 (Thu, Dec 17)
 
-| When  | Type | Instructor | What |
-|-------|------|-----|------|
-| 10:00 | Hands-on | all | [From reads to an ASV table](05-reads-to-ASV.html)  |
-| 11:30 | Hands-on | all | [Analyzing ASV data](06-ASV-analysis.html)         |
+<div class="mytable">
+
+| When  | Type | Instructor | Topic | Material | Slides
+|-|-|-|-|-|-|
+| 10:00 | Hands-on | all | _From reads to an ASV table_ | <a href="05-reads-to-ASV.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+| 11:30 | Hands-on | all | _Analyzing ASV data_ | <a href="06-ASV-analysis.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+
+</mytable>
 
 ----
 
