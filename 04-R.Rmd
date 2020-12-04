@@ -2,6 +2,7 @@
 title: "<br>An Introduction to R"
 output:
   rmarkdown::html_document:
+    code_download: true
     theme: cerulean
     toc: true
     toc_float: true
@@ -820,9 +821,6 @@ heights[!is.na(heights)]
 na.omit(heights)
 ```
 
-
-----
-
 ### Packages
 
 The functions that we have been using so far (and *many*, *many* more) are available
@@ -850,9 +848,6 @@ install.packages("BiocManager")  # Install the BiocManager package
 BiocManager::install("dada2")    # Install the edgeR package from Bioconductor
 ```
 
-
-------
-
 ### S4 Objects
 
 "S4" objects are most certainly an advanced R topic,
@@ -863,8 +858,6 @@ In a nutshell, S4 objects allow for complicated, multifaceted datasets
 to be represented in a single object.
 
 <span style="color: #eb4034">TODO: EXPAND</span>
-
-----
 
 ### Saving your data
 
