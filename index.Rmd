@@ -18,7 +18,7 @@ For pre-workshop computer setup, see the [Setup](setup.html) page.
 | When  | Type | Who | What |
 |-------|------|-----|------|
 | 10:00 | Lecture | Antonino | [Introduction to Microbiomics](01-microbiomics.html)  |
-| 11:30 | Hands-on | Jelmer | [Introduction to OSC](02-OSC.html)         |
+| 11:30 | Lecture | Jelmer | [Introduction to OSC](02-OSC.html) <a href="slides/02-OSC.html" target="_blank">(slides)</a>         |
 | 11:50 | Hands-on | Jelmer | [Introduction to the shell](03-shell.html) |
 | 12:15 | Hands-on | Jelmer | [Introduction to R](04-R.html)             |
 

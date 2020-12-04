@@ -14,13 +14,13 @@ navbar:
     
     - text: "Day 1"
       menu:
-        - text: "Lecture:"
+        - text: "Lectures:"
         - text: "Intro to Microbiomics"
           href: "01-microbiomics.html"
-        - text: "---------"
-        - text: "Hands-on Sessions:"
         - text: "Intro to OSC"
           href: "02-OSC.html"
+        - text: "---------"
+        - text: "Hands-on Sessions:"
         - text: "Intro to the Shell"
           href: "03-shell.html"
         - text: "Intro to R"
