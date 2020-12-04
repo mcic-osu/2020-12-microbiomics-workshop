@@ -15,7 +15,7 @@ For pre-workshop computer setup, see the [Setup](setup.html) page.
 
 ### Day 1 (Wed, Dec 16)
 
-| When  | Type | Who | What |
+| When  | Type | Instructor | What |
 |-------|------|-----|------|
 | 10:00 | Lecture | Antonino | [Introduction to Microbiomics](01-microbiomics.html)  |
 | 11:30 | Lecture | Jelmer | [Introduction to OSC](02-OSC.html) <a href="slides/02-OSC.html" target="_blank">(slides)</a>         |
@@ -24,7 +24,7 @@ For pre-workshop computer setup, see the [Setup](setup.html) page.
 
 ### Day 2 (Thu, Dec 17)
 
-| When  | Type | Who | What |
+| When  | Type | Instructor | What |
 |-------|------|-----|------|
 | 10:00 | Hands-on | all | [From reads to an ASV table](05-reads-to-ASV.html)  |
 | 11:30 | Hands-on | all | [Analyzing ASV data](06-ASV-analysis.html)         |
