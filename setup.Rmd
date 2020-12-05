@@ -3,6 +3,7 @@ title: "<br>Pre-workshop Setup"
 ---
 
 <br>
+
 ----
 
 ## Access to OSC
@@ -28,4 +29,5 @@ and access to an active OSC project.
 Enter Project Code `PAS0471` in the red box.
 </p>
 
+<br> <br> <br> <br>
 

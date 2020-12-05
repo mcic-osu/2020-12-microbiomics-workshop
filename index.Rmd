@@ -53,4 +53,4 @@ For pre-workshop computer setup, see the [Setup](setup.html) page.
 
 - [Jelmer Poelstra](mailto:poelstra.1@osu.edu) -- Bioinformatician, [MCIC Wooster](https://mcic.osu.edu)
 
-<br>
+<br> <br> <br>
