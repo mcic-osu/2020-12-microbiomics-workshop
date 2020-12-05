@@ -18,50 +18,55 @@ options(htmltools.dir.version = FALSE)
 
 ## What is a shell?
 
-The shell is a command-line interface (CLI) to the operating system
-for Unix-like operating systems, such as Linux and Mac.
+- The shell is a **command-line interface (CLI) to the
+  operating system**.
 
-(In Windows, there isn't really a shell, but there are [ways to get one](#windows-shell)).
+- At least, for Unix-like operating systems,
+  such as Linux and Mac.   
+  (In Windows, there isn't really a shell, but there are [ways to   get one](#windows-shell)).
 
 --
 
 <br>
 
-There are many shell flavors that are mostly very similar.
-The most common shell, and the default in Mac and Linux, is called **bash**.
+### Shell flavors
 
-We will also be working in a bash shell at OSC.
+- Many shell flavors exist but are very similar.
+
+- We will be using **bash shell**.   
+  This is most common shell, and the default in Mac and Linux,
+  including at OSC (which runs Linux).
 
 ---
 
-## But what does the shell do?
+## But what can I do in the shell?
 
 --
 
 **The shell:**
 
-- Provides a powerful way to manage and manipulate files.
+- Provides a powerful way to **manage and manipulate files**.
 
 --
 
-- Is the most efficient (or only) way to run many programs
-  and submit scripts, especially when dealing with bioinformatic data.
+- Is the most efficient (or only) way to **run many programs
+  and submit scripts** -- especially when dealing with bioinformatic data.
 
 --
 
-- Is the most efficient (or only) way to interact with remote
-  computers such as OSC clusters.
+- Is the most efficient (or only) way to **interact with remote
+  computers** such as the OSC clusters.
 
 --
 
-- Makes it easy to keep *exact* track of all your actions.
+- Makes it easy to **keep *exact* track of what you've done**.
 
 ---
 
 ## Let's open up a shell at OSC!
 
 OSC allows us to use a shell within the browser at 
-<https://ondemand.osc.edu/>
+<https://ondemand.osc.edu/>.
 
 <br>
 
@@ -99,51 +104,103 @@ class: center middle
 
 # Everything you type in the shell <br> is supposed to be a command
 
+--
+
 ### Basic usage is just memorizing common commands
 
 ---
 
-## A trivial example: the `cal` command
+## A trivial example: the "`cal`" command
 
-- Just typing "cal" calls this command, which prints a calendar to screen:
+- Just typing `cal` prints a calendar to screen:
 
   ```sh
-  cal
+  $ cal      # I'm using a $ to indicate the prompt
+  ```
+
+--
+
+<p align="left">
+<img src=figs_shell/cal.png width="400">
+</p>
+
+---
+
+## A trivial example: the "`cal`" command
+
+- Just typing `cal` prints a calendar to screen:
+
+  ```sh
+  $ cal      # I'm using a $ to indicate the prompt
   ```
 
 - We can use the "-j" or "-m" **options** (flags):
   ```sh
-  cal -j    # Show a Julian calendar
-  cal -m    # Have weeks start on Monday
+  $ cal -j    # Show a Julian calendar
+  $ cal -m    # Have weeks start on Monday
   ```
+
+--
 
 - We can use a year as an **argument** (parameter):
   
   ```sh
-  cal 2020  # Print the calendar for 2020
+  $ cal 2020  # Print the calendar for 2020
   ```
+
+--
 
 - We can combine options and arguments, e.g.:
 
   ```sh
-  cal -j -m 2020
+  $ cal -j -m 2020
   
-  cal -jm 2020     # Shorter notation!
+  $ cal -jm 2020     # Shorter notation!
   ```
+
+---
+class: middle center inverse
+
+# `cal` 
+-----
+
+# THE DEMO
+
 
 ---
 
 ## Recap ;)
 
-- We used *options* (flags) and *arguments* (parameters) <br> to modify what a command does.
+- We can use **options (flags) and arguments (parameters)** <br> to
+  modify or determine what a command does.
 
-- These arguments and options are separated by **spaces**.
+- These arguments and options are **separated by spaces**.
 
 - Note that everything after a "`#`" is ignored -- useful for comments!
 
+--
+
+<br>
+
+### What if my argument, e.g. a file name, has a space in it?
+
+--
+
+**Quote it!**
+
+
+```sh
+$ echo "Hello World"
+# Hello World
+
+$ mv "My bad file name.docx" "My_better_file_name.docx"
+```
+
+**And avoid spaces in file names...**
+
 ---
 
-## How do we know the options to a command?
+## How can we know a command's options?
 
 Many commands have a "`--help`" option:
 
@@ -165,7 +222,7 @@ cal --help
 
 ---
 
-## How do we know the options to a command? (Cont.)
+## How can we know a command's options? (Cont.)
 
 - Using the `man` ("manual") command,   
   whose argument is the command or utility we want the manual for:
@@ -181,11 +238,12 @@ $ man ls
 ---
 class: center middle inverse
 
-## Let's learn some useful commands
+## Let's learn some useful commands, maybe
 
 <br><br>
 
---
+---
+class: center middle inverse
 
 # Part A: <br><br> Navigation
 
@@ -205,17 +263,17 @@ $ cd    # Change working directory
 
 <br>
 
-- Which of these commands needs an *argument*?
+- Which of these commands might need an *argument*?
 
 --
 
 ```sh
-$ cd <to>
+$ cd <destination-dir>
 ```
 
 ---
 
-## Navigation I: `pwd` (Provide Working Directory)
+## Navigation I: **`pwd`** (Provide Working Directory)
 
 ```sh
 $ pwd
@@ -226,13 +284,17 @@ $ pwd
 
 <br>
 
-- Notice that directories are separated by <br> forward slashes "`/`" in Unix environments.
+- Notice that directories are separated by **forward slashes "`/`"** <br> in Unix environments.
 
 <br>
 
-- When moving files around,   
-  it is useful to know that **"`.`"** is a shortcut
-  for the current working directory
+- When moving files around, it is useful to know the following shortcut
+  for the current working directory:
+
+  ```sh
+  .
+  ```
+
 
 ---
 
@@ -248,7 +310,7 @@ $ ls
 
 <br>
 
-We can try some options to modify the output:
+- We can try some options to modify the output:
 
 ```sh
 $ ls -l -h   # -l: long format / -h: human-readable file sizes
@@ -262,7 +324,7 @@ $ ls -l -h   # -l: long format / -h: human-readable file sizes
 
 --
 
-Again, these options can be "pasted together":
+- Again, these options can be "pasted together":
 
 ```sh
 ls -lha     # We've added the "-a" option to show hidden files
@@ -272,22 +334,24 @@ ls -lha     # We've added the "-a" option to show hidden files
 
 ## Navigation III: cd (Change Directory)
 
-- Using a **relative** path:
+- Using a **relative path** (i.e., not starting from the root dir):
 ```sh
 cd data_wrangling/
 ```
 
-- Using an **absolute** (full) path:
+- Using an **absolute path** (i.e., starting from the root dir):
 ```sh
 cd /users/PAS0471/jelmer/CSB/data_wrangling
 ```
 
+--
+
 ### Tricks!
 
 ```sh
-cd ..     # Move on directory up
+cd ..     # Move one directory up
 cd ../..  # Move two directories up
-cd ~      # Move to your home directory
+cd ~      # Move to your home dir (~ is always /home/<user>/ !)
 cd -      # Go back to last visited dir (like "Back" in a browser)
 
 cd .      # What does this do?
@@ -319,28 +383,48 @@ $ rm <file>       # Remove a file or directory
   the "`-r`" option is needed to act on directories
   (and their contents!)
 
-  ```sh
-  cp -r unix/data . # Recall that "`.`" stands for the current dir 
-  rm -r my_dir/     # Beware: there is NO THRASH BIN in the shell!
-  ```
+```sh
+# Copy "unix/data/" to the current dir (recall the "." shortcut) 
+cp -r unix/data . 
+  
+# Remove "my_dir" and its contents.
+# Beware: there is NO THRASH BIN in the shell!
+rm -r my_dir/
+```
 
 
 ---
 
-## Managing files: An example set of commands
+## Your turn
+
+1. Go to **XXX**
+
+1. Create a new directory with your name (no spaces!)
+
+1. Copy README.md into the directory
+
+1. Move into your directory
+
+1. Rename README.md to README.txt
+
+1. Remove your namesake directory and all its contents
+
+---
+
+## Solution
 
 ```sh
-mkdir my_fantastic_dir # DON'T use spaces!
+mkdir jelmer_poelstra
 
-cp README.md my_fantastic_dir/
+cp README.md jelmer_poelstra/ # Trailing slash can be omitted
 
-cd my_fantastic_dir/
-
-ls
+cd jelmer_poelstra/           # Idem
 
 mv README.md README.txt
 
-ls
+cd ..
+
+rm -r jelmer_poelstra         # Non-interactive: "rm -rf"
 ```
 
 ---
@@ -352,6 +436,7 @@ ls
 | * | Any number of any character, including nothing |
 | ? | Any single character 
 | [] | One of the "character set" within the brackets   
+| [^] | None of the "character set" within the brackets   
 
 ---
 class: center middle inverse
@@ -362,22 +447,142 @@ class: center middle inverse
 
 ## Text files: Overview
 
-- `less`
-- `cat`
-- `head` and `tail`
-- `grep`
+.pull-left[
+### `less`
+A file "pager".
+
+<br>
+
+### `cat`
+Print contents of (a) file(s).   
+Short for conCATenate.
+]
+
+.pull-right[
+### `head` / `tail`
+Show the first or last lines of a file.
+
+<br>
+
+### `grep`
+Search for contents within files.
+]
 
 ---
 
 ## Text files I: `less`
 
+- `less` does not load entire files into memory,   
+  **so you can easily look at enormous files.**
+
+  ```sh
+  less myfile.txt
+  ```
+
+- Now you'll be inside the pager, and your prompt is gone.
+
+--
+
+<br>
+
+- Leave `less` by pressing "<kbd>q</kbd>"
+
+- Many keyboard shortcuts to navigate:
+  - `d` / `u` &nbsp; &nbsp; go down / up half a page
+  - `g` / `G` &nbsp; &nbsp; go to the first / last line
+  - `/` &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; then type keyword to search for
+  - `n` / `N` &nbsp; &nbsp; go to next/previous search match
+
+--
+
+### Less try it!
+
 ---
 
 ## Text files II: `cat`
 
+- `cat` will print one or more files to screen.   
+  
+  ```sh
+  cat my_file.txt
+  
+  cat my_file.txt > new_file.txt    # What did we do here?
+  ```
+
+--
+
+<br>
+
+- If you have, say, 10,000 `fasta` files in a directory,
+  each representing a gene, and you want to put them all into
+  a single `fasta` file:
+  
+  ```sh
+  cat *.fasta > all.fasta # Wow!
+  ```
+  Here, the **`*`** allowed us to match all files ending in ".fasta".
+
+--
+
+<br>
+
+- `z` counterparts of these functions directly show zipped files:
+
+  ```sh
+  zcat my_fastq.gz
+  ```
+
 ---
 
 ## Text files II: `head` and `tail`
+
+- `head` / `tail` will simply show the first / last few lines of a file.
+
+```sh
+head my_file.txt        # By default, shows the first 6 lines
+head -n 1 my_file.txt   # Just show the first line
+```
+
+--
+
+```sh
+tail my_file.txt       # By default, shows the first 6 lines
+tail -n 1 my_file.txt  # Just show the last line
+```
+
+- Showing the last line of a 100 GB file outside of the
+  shell would be quite an ordeal, while in the shell it's
+  extremely simple and lightning fast.
+
+---
+
+## Text files II: `head` and `tail` (cont.)
+
+### More useful options:
+
+- Skip the first line of a file:
+
+  ```sh
+  tail -n +2 file
+  ```
+
+<br>
+
+- Skip the last line of a file:
+  
+  ```sh
+  head -n -1 file
+  ```
+
+--
+
+<br>
+
+- Print line number 1866:
+  
+  ```sh
+  head -n 1866 file | tail -n 1   # We'll talk about the "|" more
+  ```
 
 ---
 
@@ -414,11 +619,28 @@ class: center middle inverse
 
 ## Pipes and STDIN
 
+---
+class: center middle inverse
+
+# Part E :<br><br>Keyboard shortcuts and general tricks
+
+---
+
+- CTRL+C
+- CTRL+D / exit
+- CTRL+L / clear
+
+- Tab completion
+- Up arrow
+- CTRL+R to search history
+
+
+---
 
 ---
 class: center middle inverse
 
-# Submitting jobs (scripts) <br> to the SLURM scheduler 
+# Part F :<br><br>Submitting jobs (scripts) <br> to the SLURM scheduler 
 
 ---
 
@@ -444,6 +666,12 @@ $ sbatch myscript.sh [script-options] [script-args]
 ```bash
 $ squeue -u <username>
 ```
+
+--
+
+<br>
+
+### Okay, but what's inside the script?
 
 ---
 
@@ -480,7 +708,7 @@ which points the computer to the program to be used:
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=01:00:00
 
-echo "Hello $1"
+echo "Hello $1"    # $1 is standard input!
 ```
 --
 
@@ -504,11 +732,15 @@ sbatch hello.sh Jelmer
   # 2451088 serial-40 hello.sh   jelmer PD       0:00      1 (None) 
   ```
 
+--
+
 - And again a little later:
 
   ```sh
   # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
   ```
+
+--
 
 - Do we have output?
 
@@ -517,6 +749,8 @@ sbatch hello.sh Jelmer
   # slurm-2451088.out
   ```
 
+--
+
 - Let's check it out:
 
   ```sh
@@ -524,5 +758,9 @@ sbatch hello.sh Jelmer
   # Hello Jelmer
   ```
 
+---
+class: center middle inverse
+
+# Questions?
 
 
