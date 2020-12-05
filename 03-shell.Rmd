@@ -10,7 +10,14 @@ output:
 
 > ## Learning Objectives
 >
-> * ...
+> * Learn what the shell and why you would want to use it.
+> * Learn about "standard input" and "standard output"
+> * In the shell, learn how to:
+>   * Navigate
+>   * Organize files
+>   * Examine files in the shell
+>   * Manage input and output streams
+> * Bonus: Learn how to submit a shell script as a job at OSC
 
 ------------
 
@@ -22,4 +29,4 @@ output:
 
 ## <a href="slides/03-shell.html" target="_blank">Click here for the slides</a>
 
-<br> <br>
+<br> <br> <br> <br>
