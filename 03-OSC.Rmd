@@ -20,6 +20,6 @@ output:
 
 ------------
 
-## <a href="slides/02-OSC.html" target="_blank">Click here for the slides</a>
+## <a href="slides/03-OSC.html" target="_blank">Click here for the slides</a>
 
 <br> <br>
