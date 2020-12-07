@@ -7,22 +7,22 @@ navbar:
     - text: "Overview"
       icon: fa-home
       href: index.html
-    
+
     - text: "Setup"
       icon: fa-gear
       href: "setup.html"
-    
+
     - text: "Day 1"
       menu:
         - text: "Lectures:"
         - text: "Intro to Microbiomics"
           href: "01-microbiomics.html"
-        - text: "Intro to OSC"
-          href: "02-OSC.html"
         - text: "---------"
-        - text: "Hands-on Sessions:"
+        - text: "Hands-on/Mixed Sessions:"
         - text: "Intro to the Shell"
-          href: "03-shell.html"
+          href: "02-shell.html"
+        - text: "Intro to OSC"
+          href: "03-OSC.html"
         - text: "Intro to R"
           href: "04-R.html"
 
