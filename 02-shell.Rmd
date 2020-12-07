@@ -19,12 +19,6 @@ output:
 
 ------------
 
-## Before we get started
-
-- **Open <a href="https://ondemand.osc.edu/" target="_blank">https://ondemand.osc.edu</a>.**
-
-------------
-
-## <a href="slides/03-shell.html" target="_blank">Click here for the slides</a>
+## <a href="slides/02-shell.html" target="_blank">Click here for the slides</a>
 
 <br> <br> <br> <br>
