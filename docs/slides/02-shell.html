@@ -15,12 +15,56 @@ class: center, middle, inverse, title-slide
 # An Introduction to the shell
 ### Jelmer Poelstra
 ### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-04)
+### 2020/12/16 (updated: 2020-12-06)
 
 ---
 
+class:inverse middle center
 
 
+# Overview
+
+.pull-left[
+### [Introduction](#intro)
+### [First Command: `cal`](#cal)
+### [Navigation](#navigation)
+### [Managing Files](#managing_files)
+]
+
+---
+class:inverse middle center
+name: overview
+
+# Overview
+
+.pull-left[
+### [Introduction](#intro)
+### [First Command: `cal`](#cal)
+### [Navigation](#navigation)
+### [Managing Files](#managing_files)
+]
+
+.pull-right[
+### [Working with Text Files](#text_files)
+### [Keyboard Shortcuts and Tricks](#tricks)
+### [A Very Minimal Script](#script)
+]
+
+
+
+---
+class:inverse middle center
+name:intro
+
+# Introduction
+
+-----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
+---
 
 ## What is a shell?
 
@@ -37,9 +81,10 @@ class: center, middle, inverse, title-slide
 
 ### Shell flavors
 
-- Many shell flavors exist but are very similar.
+- Many shell variants exist but are very similar.
 
-- We will be using **bash shell**.   
+- We will be using the **bash shell**.   
+  
   This is most common shell, and the default in Mac and Linux,
   including at OSC (which runs Linux).
 
@@ -71,8 +116,8 @@ class: center, middle, inverse, title-slide
 
 ## Let's open up a shell at OSC!
 
-OSC allows us to use a shell within the browser at 
-&lt;https://ondemand.osc.edu/&gt;.
+- The Ohio Supercomputer Center (OSC) allows us to use a shell   
+  *within* a browser at &lt;https://ondemand.osc.edu/&gt;.
 
 &lt;br&gt;
 
@@ -82,24 +127,26 @@ OSC allows us to use a shell within the browser at
 
 &lt;br&gt;
 
-- In the "`Clusters`" dropdown, Click "`Pitzer Shell Access`".
+- In the "`Clusters`" dropdown menu, click "`Pitzer Shell Access`".
 
 
 ---
 
-## Lots of welcome messages
+## The shell prompt
+
+- OSC show us lots of welcome messages and information:
 
 &lt;p align="left"&gt;
-&lt;img src=figs_shell/OSC_welcome.png width="600"&gt;
+&lt;img src=figs_shell/OSC_welcome.png width="550"&gt;
 &lt;/p&gt;
 
 &lt;p align="center"&gt;
-&lt;img src=figs_shell/OSC_welcome2.png width="900"&gt;
+&lt;img src=figs_shell/OSC_welcome2.png width="1000"&gt;
 &lt;/p&gt;
 
 --
 
-### And a **prompt** -- this is where we type.
+- And a **prompt** -- this is where we type.
 
 &lt;p align="center"&gt;
 &lt;img src=figs_shell/OSC_prompt.png width="900"&gt;
@@ -108,11 +155,25 @@ OSC allows us to use a shell within the browser at
 ---
 class: center middle
 
-# Everything you type in the shell &lt;br&gt; is supposed to be a command
+# In the shell, &lt;br&gt; we're mostly typing commands
 
 --
 
-### Basic usage is just memorizing common commands
+### Basic usage is just memorizing commands for common utilities
+
+---
+class:inverse middle center
+name:cal
+
+# Our first command:
+# `cal`
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
 
 ---
 
@@ -165,7 +226,7 @@ class: center middle
   ```
 
 ---
-class: middle center inverse
+class: middle center
 
 # `cal` 
 -----
@@ -175,14 +236,12 @@ class: middle center inverse
 
 ---
 
-## Recap ;)
+## What we've learned from `cal`
 
 - We can use **options (flags) and arguments (parameters)** &lt;br&gt; to
   modify or determine what a command does.
 
 - These arguments and options are **separated by spaces**.
-
-- Note that everything after a "`#`" is ignored -- useful for comments!
 
 --
 
@@ -192,17 +251,20 @@ class: middle center inverse
 
 --
 
-**Quote it!**
+- Quote it! (And avoid spaces in file names.)
 
+  ```sh
+  $ echo "Hello World"
+  # Hello World
 
-```sh
-$ echo "Hello World"
-# Hello World
+  $ mv "My bad file name.docx" "My_better_file_name.docx"
+  ```
 
-$ mv "My bad file name.docx" "My_better_file_name.docx"
-```
+--
 
-**And avoid spaces in file names...**
+&lt;br&gt;
+
+- Note that everything after a "`#`" is ignored -- useful for comments!
 
 ---
 
@@ -228,7 +290,7 @@ cal --help
 
 ---
 
-## How can we know a command's options? (Cont.)
+## How can we know a command's options? (cont.)
 
 - Using the `man` ("manual") command,   
   whose argument is the command or utility we want the manual for:
@@ -242,16 +304,26 @@ $ man ls
 
 
 ---
-class: center middle inverse
+class: center middle
 
-## Let's learn some useful commands, maybe
+# Let's learn some useful commands, maybe
 
 &lt;br&gt;&lt;br&gt;
 
+
+
+
 ---
 class: center middle inverse
+name:navigation
 
-# Part A: &lt;br&gt;&lt;br&gt; Navigation
+# Navigation
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
 
 ---
 
@@ -363,10 +435,20 @@ cd -      # Go back to last visited dir (like "Back" in a browser)
 cd .      # What does this do?
 ```
 
+
+
+
 ---
 class: center middle inverse
+name:managing_files
 
-# Part B : &lt;br&gt;&lt;br&gt; Managing files
+# Managing Files
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
 
 ---
 
@@ -416,6 +498,7 @@ rm -r my_dir/
 1. Remove your namesake directory and all its contents
 
 ---
+background-color: #ededed
 
 ## Solution
 
@@ -444,10 +527,20 @@ rm -r jelmer_poelstra         # Non-interactive: "rm -rf"
 | [] | One of the "character set" within the brackets   
 | [^] | None of the "character set" within the brackets   
 
+
+
 ---
 class: center middle inverse
+name:text_files
 
-# Part C :&lt;br&gt;&lt;br&gt;Working with text files
+# Working With Text Files
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
 
 ---
 
@@ -532,7 +625,7 @@ Search for contents within files.
 
 &lt;br&gt;
 
-- `z` counterparts of these functions directly show zipped files:
+- "`z`" counterparts of these functions directly show zipped files:
 
   ```sh
   zcat my_fastq.gz
@@ -598,172 +691,193 @@ tail -n 1 my_file.txt  # Just show the last line
 
 ## Some other commands worth mentioning:
 
-- `cut`
-- `wc` / `wc -l`
-- `sort`
+- **`cut`**: cut (select) one or more columns from a tabular file
+  
+  ```sh
+  cut -f 2-5 &lt; my.gff   # Cut the 2nd through 5th column 
+  ```
+
+- **`wc` / `wc -l`**: count words or lines (`-l` flag).
+  
+  ```sh
+  wc -l my.fastq   # Count the number of lines in a fastq file.
+  ```
+
+- **`sort`**: sort a file by a specified column
+  
+  ```sh
+  sort -k5,5 my.bed
+  ```
+  
+- **`uniq` / `uniq -c`**: retain or count (`-c` flag) unique occurences (*if in order!*)
+
+  ```sh
+  uniq ....
+  ```
+
+- **Combining these commands to get a sorted list of ... :**
+  
+  ```sh
+  cut -f X my.gff | sort | uniq -c | sort -k2
+  ```
+  
+
 
 ---
 class: center middle inverse
+name:redirection
 
-# Part D :&lt;br&gt;&lt;br&gt;Redirection and pipes
+# Redirection and Pipes
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
 
 ---
 
-## Redirection
+## Standard out, standard error, and redirection
 
-- STDOUT
+- The regular output of a command is called "standard out" ("*stdout*").   
+  By default, this is printed to screen, but it can be *redirected*
+  to a file.
 
+- Output to file -- will create file if it doesn't exist,
 ```sh
-[COMMAND] &gt; filename
-[COMMAND] &gt;&gt; filename
-
-[COMMAND] &lt; filename
-# Cf [COMMAND] filename
+$ grep "Gene001" my.gff &gt; selected_genes.gff
 ```
 
----
-
-## Pipes and STDIN
-
----
-class: center middle inverse
-
-# Part E :&lt;br&gt;&lt;br&gt;Keyboard shortcuts and general tricks
+- **Append** to file
+  ```
+  $ grep "Gene002" my.gff &gt;&gt; selected_genes.gff
+  ```
 
 ---
 
-- CTRL+C
-- CTRL+D / exit
-- CTRL+L / clear
+## Standard input and pipes
 
-- Tab completion
-- Up arrow
-- CTRL+R to search history
+- A filename can be given as an argument to most commands.   
+  If a filename is provided, this file will be read and
+  represent the *input* upon which the command will act:
 
-
----
-
----
-class: center middle inverse
-
-# Part F :&lt;br&gt;&lt;br&gt;Submitting jobs (scripts) &lt;br&gt; to the SLURM scheduler 
-
----
-
-## Interactive jobs on `SLURM`
-
-- Start a 1-hour, single-core interactive job with a `bash` shell:
-```sh
-$ srun --nodes=1 --ntasks-per-node=1 --time=01:00:00 --pty bash -i
-```
-
-- Can also use `salloc` and `sinteractive`.
-
----
-
-## Batch jobs on `SLURM`
-
-- To submit a job:
-```sh
-$ sbatch myscript.sh [script-options] [script-args]
-```
-
-- To monitor your jobs:
-```bash
-$ squeue -u &lt;username&gt;
-```
+  ```sh
+  grep -v "#" my.vcf
+  ```
 
 --
 
-&lt;br&gt;
+- Most command *also* accept input from "standard input" (*stdin*),   
+  using the pipe:
 
-### Okay, but what's inside the script?
+  ```sh
+  cat my.vcf | grep -v "#"  # Equivalent to the previous command
+  ```
+  
+  The pipe `|` presents the output (*stdout*) of `cat` as
+  input (*stdin*) to `grep`.
+  
+--
+
+- Some commands *only* accept input from *stdin*.
+  When not using these commands in a "pipeline", you can also redirect
+  the input:
+  ```sh
+  cut -f 6 &lt; my.vcf
+  
+  cut -f 6 &lt; my.vcf &gt; my_column.txt   # Redirect stdin and stdout
+  cat my.vcf | cut -f 6 &gt; my_column.txt # A bit more intuitive?
+  ```
+
+
+
+---
+class: center middle inverse
+name:tricks
+
+# Keyboard Shortcuts and General Tricks
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
 
 ---
 
-## Inside the script
+# Keyboard Shortcuts and Tricks I
 
-### Start with a *shebang* line
-
-A job script needs to start with a "*shebang*" line,
-which points the computer to the program to be used:
-```sh
-#!/bin/bash
-```
-
-### Then, provide options to `sbatch`. Some common ones:
-
-```sh
-#SBATCH --nodes=&lt;N&gt;
-#SBATCH --ntasks-per-node=&lt;N&gt;
-#SBATCH --time=HH:MM:SS
-#SBATCH --mem=Xgb
-#SBATCH --job-name=&lt;myjobname&gt;
-#SBATCH --account=&lt;projectID&gt;
-```
+| Shortcut | Command | Function
+|--|--|
+| `Tab` | | Tab completion! Files, commands, etc. &lt;br&gt; Double `Tab` to show options when &lt;br&gt; multiple are still available.|
+| Up/Down arrow | | Cycle through command history|
+| `CTRL` + `R` | | Enter characters to search for in the history &lt;br&gt; (repeat `CTRL` + `R` to keep going back, &lt;br&gt; `ENTER` to put command in prompt) |
+| `CTRL` + `C` | | Abort (kill) current process |
+| `CTRL` + `D` | `exit` | Exit the current shell (/ interactive job) |
+| `CTRL` + `Z` | (`bg` / `fg`)| Suspend (pause) a process, &lt;br&gt; then use `bg` to move to background|
 
 ---
 
-## A very minimal example
+# Keyboard Shortcuts and Tricks II
+
+| Shortcut | Function
+|--|--|
+| `Ctrl` + `Shift` + `c`  | Copy |
+| `Ctrl` + `Shift` + `v`  | Paste |
+| `Ctrl` + `a` | Go to beginning of line |
+| `Ctrl` + `e` | Go to end of line |
+| `Ctrl` + `u` | Cut to beginning of line |
+| `Ctrl` + `k` | Cut to end of line |
+| `Ctrl` + `w` | Cut previous word |
+| `Ctrl` + `y` | Paste previously cut element |
+| `Alt` + `.` | Paste last argument of last command |
+
+
+---
+class: center middle inverse
+name:script
+
+# Running a Very Minimal Script
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
+---
+
+## A very minimal script
 
 - A script called `hello.sh`:
 
-```sh
-#!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --time=01:00:00
-
-echo "Hello $1"    # $1 is standard input!
-```
---
-
-&lt;br&gt;
-
-- We can submit it to the queue using:
-
-```sh
-sbatch hello.sh Jelmer
-# Submitted batch job 2451088
-```
-
----
-
-## A very minimal example (cont.)
-
-- We can check what's happening:
-
   ```sh
-  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
-  # 2451088 serial-40 hello.sh   jelmer PD       0:00      1 (None) 
+  #!/bin/bash
+  set -e -u -o pipefail
+
+  echo "Hello ${1}!"    # ${1} is standard input!
   ```
 
 --
 
-- And again a little later:
+- Run the script:
 
   ```sh
-  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  hello.sh Jelmer
+  # Hello Jelmer!
   ```
 
 --
 
-- Do we have output?
-
-  ```sh
-  ls slurm*
-  # slurm-2451088.out
-  ```
-
---
-
-- Let's check it out:
-
-  ```sh
-  cat slurm-2451088.out
-  # Hello Jelmer
-  ```
-
+- We can also redirect the output to a file:
+ 
+   ```sh
+  hello.sh Jelmer &gt; hello.txt
+  
+  cat hello txt
+  # Hello Jelmer!
+  ``` 
+  
 ---
 class: center middle inverse
 

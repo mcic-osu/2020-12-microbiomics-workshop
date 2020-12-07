@@ -1,0 +1,1039 @@
+---
+title: "A Practical Introduction to OSC"
+author: "Jelmer Poelstra"
+institute: "MCIC Wooster"
+date: "2020/12/16 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class:inverse middle center
+name: overview
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+# Overview
+
+.pull-left[
+### [Introduction](#introduction)
+### [Connecting to OSC](#connect)
+### [Transferring Files](#transfer)
+### [Software at OSC](#software)
+]
+
+.pull-right[
+### [Starting a Compute Job](#jobs)
+### [Compute Job Options](#job_options)
+### [Bonus Material](#bonus)
+]
+
+---
+class:inverse middle center
+name: introduction
+
+# Introduction
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## What is OSC?
+
+- The **Ohio Supercomputer Center (OSC)** provides computing
+  resources across the state of Ohio (it is not a part of OSU).
+
+- Their main services are two supercomputers,   
+  and the infrastructure for their usage.
+
+--
+
+<br>
+
+- Research usage is charged but via institutions
+  at [heavily subsidized rates](https://www.osc.edu/content/academic_fee_model_faq).
+
+---
+
+## Supercomputer?
+
+- **A highly interconnected set of many processors and storage units.**
+
+- Also known as:
+  - A **cluster**
+  - A High-Performance Computing cluster (**HPC cluster**)
+
+<br>
+
+--
+
+### When do we need a supercomputer?
+
+1. When our dataset is too large to be handled by our computer.
+
+--
+
+2. We have analyses that *could* run on our own computer,  
+  but we save (a lot of) time with a cluster if:
+  
+  - We need to repeat a computation (or have many datasets).
+
+  - We could distribute a single analysis across multiple computers.
+  
+---
+
+## Learning about OSC
+
+- OSC provides excellent introductory material at their   
+  [Getting Started Page](https://www.osc.edu/resources/getting_started).
+**Do read these!**
+
+<br>
+
+<p align="center">
+<img src=figs_OSC/gettingstarted.png width="560">
+</p>
+
+---
+
+## Learning about OSC (cont.)
+
+- Also have a look at all the ["HOWTO" pages](https://www.osc.edu/resources/getting_started/howto) --   
+  includes more advanced material.
+
+<br>
+
+<p align="center">
+<img src=figs_OSC/HOWTOs.png width="500">
+</p>
+
+---
+
+## Learning about OSC (cont.)
+
+- OSC regularly has online introductory sessions,   
+  both overviews and more hands-on sessions --
+  see the [OSC Events page](https://www.osc.edu/events).
+
+<br/>
+
+- There is also a Carpentry-style tutorial available [here](https://khill42.github.io/OSC_IntroHPC).
+
+---
+
+## Terminology: cluster and node
+
+#### Cluster
+
+- Many processors and storage units tied together.
+
+- OSC currently has two clusters: **_Pitzer_** and **_Owens_**.   
+  Largely separate, but same long-term storage space is accessed by both.
+
+<br>
+
+--
+
+#### Node
+
+- Essentially a (large/powerful) computer -- one of many in a cluster.
+
+- Most jobs run on a single node.   
+  (Parallelization across nodes is possible but advanced.)
+
+---
+
+## Terminology: core
+
+#### Core
+
+- One of often many *processors* in a node --   
+  e.g. standard *Pitzer* nodes have 40-48 cores.
+
+--
+
+- Each core can run and be reserved independently.
+
+- But, using multiple cores for a job is also common, to:
+  - Parallelize computations across cores
+  - Access more memory
+
+--
+
+- **Note:** *SLURM* often uses the terms **CPU** and core interchangeably.
+
+---
+
+## Terminology: cluster > node > core
+
+<br>
+
+<p align="center">
+<img src=figs_OSC/cluster-node-core.png width="100%">
+</p>
+
+---
+
+## Terminology (cont.)
+
+#### Memory
+
+- RAM (Random Access Memory), not to be confused with hard disk storage.
+
+- Many programs, including R, load all the data that is used into memory.   
+
+---
+class:inverse middle center
+name:connect
+
+# Connecting to OSC
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+---
+
+## Connecting to OSC with "OnDemand"
+
+- You can make use of OSC not only through `ssh` at the command line,   
+but also through the web browser: from https://ondemand.osc.edu.
+
+<p align="center">
+<img src=figs_OSC/ondemand1.png width="900">
+</p>
+
+--
+
+- At OnDemand, you can e.g.:
+
+  - Browse and upload files
+  - Submit and manage jobs visually
+  - Access a terminal
+  - Run RStudio Server
+
+--
+
+<br>
+
+- **Interface Demo**
+
+--
+
+<br>
+
+- See the bonus slides starting [here](#ssh) for logging in from your local terminal.
+
+
+---
+
+## Login nodes
+
+- After logging in to OSC, you're on a **login node**.
+
+<p align="center">
+<img src=figs_OSC/cluster_diagram.png width="900">
+</p>
+
+
+---
+
+## Login nodes: best practices
+
+- Use login nodes for *navigation*, *housekeeping*, and *job submission*.
+
+- Any process that is active for >20 minutes or uses >1GB **will be killed**.
+
+- It is good practice to avoid even getting close to these limits:   
+  login nodes are *shared by everyone*, and can get clogged.   
+
+<br>
+
+--
+ 
+- Fore more info, see OSC's page [Login environment at OSC](https://www.osc.edu/supercomputing/login-environment-at-osc).
+
+---
+class: inverse middle center
+name: transfer
+
+# Transferring Files
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## Transferring files
+
+There are several ways to transfer files between your local computer and OSC,
+depending on your preferences and **the size of the transfer**.
+
+---
+
+## Transferring files: OnDemand and Globus
+
+#### For small transfers (<1 GB): use OnDemand
+
+<p align="center">
+<img src=figs_OSC/ondemand2_circle.png width="900">
+</p>
+
+--
+
+----
+
+<p align="center">
+<img src=figs_OSC/ondemand3_circle.png width="900">
+</p>
+
+--
+
+-----
+
+<br>
+
+#### For large transfers (>1 GB): use Globus
+
+- Especially useful for very large and/or complex transfers.
+
+- Does need a [local installation](https://www.osc.edu/resources/getting_started/howto/howto_transfer_files_using_globus_connect) and some set-up.
+
+---
+background-color: #ededed
+
+## Transferring files: at the command line
+
+#### For small transfers (<1 GB): use `scp` / `rsync`
+
+```bash
+# scp
+$ scp /path/in/local/file.txt <user>@owens.osc.edu:/path/in/remote/
+```
+
+```bash
+# rsync (recommended, especially to keep folders synched)
+$ rsync -avrz --progress /path/in/local/dir \
+    <user>@owens.osc.edu:/path/in/remote/
+```
+
+-----
+
+#### For any transfer size: use `sftp`
+
+```bash
+$ sftp sftp.osc.edu
+sftp> put /path/in/local/file.txt /path/in/remote
+
+sftp> put file.txt    # From local working dir to $HOME in remote
+
+sftp> get /path/in/remote/file.txt /path/in/local/
+```
+
+
+---
+class:inverse middle center
+name:software
+
+# Software at OSC
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## Available software at OSC
+ 
+- For a list of software that has been installed at OSC,   
+  and is available for all users, see:      
+  <https://www.osc.edu/resources/available_software>.
+
+---
+background-color: #ededed
+
+## Available software at OSC (cont.)
+
+- Loading software is also done with `module` commands:
+```bash
+$ module load R               # Load default version
+$ module load R/4.0.2-gnu9.1  # Load a specific version (better)
+$ module unload R
+```
+
+<br>
+
+-----
+
+<br>
+
+- You can also check for software availability on the command line:
+```bash
+$ module spider [search-term]  # All installed software
+$ module avail [search-term]   # Available software,
+                                   # given current environment
+```
+
+
+---
+
+## What if software isn't installed at OSC?
+
+### 1. Install it yourself
+
+- Possible but can be tricky due to lack of admin rights.
+
+--
+
+### 2. Get others to install it
+
+- For commonly used software, send an email to <oschelp@osc.edu>.
+
+- I can help with (more niche) bioinformatics software.
+
+--
+
+### 3. Alternative approaches
+
+- The **`conda`** software management system, and **`Singularity` containers**
+  are alternatives when installation is tricky.
+
+- These are also superior for reproducibility purposes.   
+  For a `conda` example, see the bonus slides starting from [here](#conda).
+
+
+---
+class:inverse middle center
+name:jobs
+
+# Starting a Compute Job
+# (i.e., Accessing Compute Nodes)
+
+<br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## Starting a compute job: background
+
+- To do analyses at OSC, you need access to a **compute node**.
+  
+- **Automated scheduling software** allows 100s of people with different         requirements to access cluster effectively and fairly.
+
+--
+
+- Since Dec 15, 2020, both Pitzer and Owens use the **_SLURM_ scheduler**.
+
+---
+
+## Starting a compute job: how?
+
+- In OnDemand, start an "**Interactive App**" like RStudio Server.   
+
+- Provide *SLURM* directives in or along with **scripts**.
+  
+- Run an **interactive shell job**.
+
+--
+
+<br>
+
+#### You'll always need to provide instructions to the *SLURM* scheduler to reserve the desired resources.
+
+
+---
+
+## Starting a compute job: OnDemand Apps
+
+<p align="center">
+<img src=figs_OSC/apps.png width="570">
+</p>
+
+---
+
+## Starting a compute job: OnDemand Apps (cont.)
+
+<p align="center">
+<img src=figs_OSC/submit-RStudio.png width="500">
+</p>
+
+---
+background-color: #ededed
+
+## Starting a compute job: Shell script
+
+- To submit a job:
+
+  ```sh
+  $ sbatch my_script_name.sh
+  ```
+
+<br>
+
+- The `sbatch` instructions go to the top of your script:
+
+  ```sh
+  #!/bin/bash
+  
+  #SBATCH --account=PAS0471
+  #SBATCH --time=00:45:00
+  #SBATCH --nodes=1-1
+  #SBATCH --cpus-per-task=2
+  #SBATCH --mem=8G
+  ```
+
+---
+background-color: #ededed
+
+## Starting a compute job: Interactive job
+
+- To start a 30-minute, single-core job:
+
+  ```sh
+  sinteractive
+  ```
+
+- This will provide you interactive shell access on a compute node. 
+
+---
+class:inverse middle center
+name:job_options
+
+# Compute Job Options
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## Compute job options: Nodes and cores
+
+- Only ask for >1 **node** when you have explicit parallelization   
+  (*you probably don't*).
+
+- R will not even use multiple **cores** by default,   
+  though some of the packages we'll work with *can* do this.
+
+
+<br> <br> <br> <br> <br> <br> <br>
+
+```sh
+#SBATCH --nodes=1-1             # 1 node min. and max. 
+
+# Two ways to ask for two cores:
+
+#SBATCH --cpus-per-task=2       # Preferred for multi-threading
+#SBATCH --ntasks-per-node=2     # Preferred for multi-process
+```
+
+---
+
+## Compute job options: Memory
+
+- If you request more memory than that available on a single core,   
+  **you will automatically be assigned multiple cores**.
+
+--
+
+<br>
+
+- **If your job hits the memory limit, it may be killed!**
+  
+  I.e., a process will not be automatically prevented from
+  using too much memory.
+
+--
+
+  - Many *programs* will allow you to specify maximum memory usage.
+  
+  - But your jobs may have inherent minimum memory requirements
+    (e.g. When your job involves loading a 10 GB file into memory),
+    so make sure to **ask for sufficient memory**.
+
+<br> <br> <br>
+
+--
+
+```sh
+#SBATCH --mem=20G       # Default unit is MB; use "G" for GB
+```
+
+---
+
+## Compute job options: Time
+
+- You need to specify a **time limit** for your job (= "wall time").
+
+- Your job **gets killed** as soon as it hits the time limit!
+
+--
+
+- Specifying time can be a trade-off: shorter jobs are likely to start sooner.   
+Still, **ask for (much) more time than you think you will need**.
+  - Better safe than sorry.
+  - Your project will be charged for the time *actually used*.
+
+--
+
+<br> <br>
+
+```sh
+# Acceptable time formats include "minutes", "minutes:seconds",
+# "hours:minutes:seconds","days-hours", "days-hours:minutes" and
+# "days-hours:minutes:seconds".          
+
+#SBATCH --time=60            # 1 hour
+
+#SBATCH --time=03:30:00      # 3.5 hours
+
+#SBATCH --time=5-0           # 5 days
+```
+
+
+---
+
+## Compute job options: Project
+
+- Your jobs always needs to be billed to a project.   
+  (If you have only one project, no need to specify it.)
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+```sh
+#SBATCH --account=PAS0471
+```
+
+---
+
+## Compute job options: Queue
+
+There are several "queues" that jobs can be submitted to.
+
+- **The default queue (no specification) will work in most cases.**
+
+- There are separate queues for jobs that require many nodes,
+  jobs that use *GPUs*, etc.: [list of queues at Owens](https://www.osc.edu/resources/technical_support/supercomputers/owens/queues_and_reservations) and [list of queues at Pitzer](https://www.osc.edu/supercomputing/computing/pitzer/queues_and_reservations).
+
+--
+
+- **The maximum walltime** for most queues is 168 h (1 week).   
+  For longer jobs, *request access* to the `longserial` queue on Pitzer.
+  
+<br><br><br><br><br><br><br><br><br>
+
+--
+
+```sh
+#SBATCH --partition=longserial
+```
+
+---
+class: inverse center middle
+name:job_example
+
+# A Simple Job Example
+
+-----
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## Job example: script -- boilerplate stuff
+
+- #### Start with a *shebang* line
+
+  A job script needs to start with a "*shebang*" line,   
+  which points the computer to the program to be used:
+
+  ```sh
+  #!/bin/bash
+  ```
+
+- #### Then, provide options to `sbatch`.
+
+  ```sh
+  #!/bin/bash
+  set -e -u -o -pipefail
+  
+  #SBATCH --nodes=1
+  #SBATCH --ntasks-per-node=1
+  #SBATCH --time=60
+  #SBATCH --job-name=fastqc_test
+  #SBATCH --account=PAS0471
+  ```
+
+---
+
+## Job example: Script -- the actual code
+
+```sh
+fastqc_file=$1
+
+date
+echo "Running fastqc for file: ${fastqc_file}"
+
+module load fastqc
+
+fastqc ${fastqc_file}
+
+echo "All done!"
+date
+```
+
+---
+
+## Submit the job
+
+- We need to provide the script with a fastq file,
+  whose name we will store in a variable:
+  
+  ```sh
+  fastqc_file=XXXX
+  ```
+
+- Now we can submit the job:
+
+  ```sh
+  sbatch fastqc.sh $fastqc_file
+  # Submitted batch job 2451088
+  ```
+
+---
+
+## Monitor the job
+
+- We can check what's happening:
+
+  ```sh
+  $ squeue -u jelmer
+  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  # 2451088 serial-40 fastqc_test.sh   jelmer PD       0:00      1 (None) 
+  ```
+
+--
+
+- And again a little later:
+
+  ```sh
+  $ squeue -u jelmer
+  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  ```
+
+--
+
+- We could get more statistics about our job using:
+
+  ```sh
+  $ scontrol show job 2451088
+  ```
+
+---
+
+## Example job: Check the output
+
+```sh
+$ ls
+```
+
+<br>
+
+```sh
+less XXX
+```
+
+---
+class: center middle inverse
+
+# Questions?
+
+-----
+
+
+---
+class: inverse center middle
+name:bonus
+
+# Bonus Materials
+
+-----
+
+### I: [OSC File Systems](#filesystems)
+### II: [Accessing OSC In Your Shell (`ssh`)](#shell)
+### III: [Monitoring *SLURM* Jobs](#monitor)
+### IV: [`conda`](#conda)
+
+<br><br>
+
+### [[Back to overview]](#overview)
+
+---
+class: inverse center middle
+name:filesystems
+
+# Bonus Material I:
+# OSC File Systems
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+background-color: #ededed
+
+## OSC file systems
+
+- OSC has several file systems with different typical use cases:
+  we'll discuss in terms of short-term versus long-terms storage. 
+
+---
+background-color: #ededed
+
+## File systems: long-term storage locations
+
+### Home dir
+
+- Can always be accessed with shortcuts **`$HOME`** and **`~`**.
+
+- 500 GB capacity, daily back-ups.
+
+- Your home dir will include your first project ID, e.g. `/users/PAS0471/jelmer`.
+  (However, this is not the project dir!)
+
+--
+
+### Project dir
+  
+- `/fs/project/<projectID>`. (MCIC project: `/fs/project/PAS0471`)
+  
+- The total storage limit is whatever a PI sets this too.   
+    Charges are for the reserved space, not actual usage.
+  
+- Daily back-ups.
+
+---
+background-color: #ededed
+
+## File systems: short-term storage locations
+
+### scratch
+
+- `/fs/scratch/<projectID>`, sometimes `fs/ess/scratch/<projectID>`.
+
+- Fast I/O, good to use for large input and output files.
+
+- Temporary: deleted after 120 days, and not backed up.
+
+--
+
+### `$TMPDIR`
+
+- Represents storage space *on your compute node*. 1 TB max.
+
+- Available in the job script through the environment variable `$TMPDIR`.
+
+- **Deleted after job ends** -- so copy to/from in job scripts!
+
+- See [this bonus slide](#tmpdir) for some example code for working with `$TMPDIR`.
+
+---
+name: tmpdir
+background-color: #ededed
+
+## Working with `$TMPDIR` in scripts
+
+#### Copy input to $TMPDIR, copy output to home:
+
+```bash
+cp -R $HOME/my/data/ $TMPDIR/
+#[...analyze data with I/O happening in $TMPDIR....]
+cp -R $TMPDIR/* $HOME/my/data/
+```
+
+<br>
+
+#### This trick will copy the data even if the job is killed:
+
+```bash
+trap "cd $PBS_O_WORKDIR;mkdir $PBS_JOBID;cp -R $TMPDIR/* $PBS_JOBID;exit" TERM
+```
+
+---
+background-color: #ededed
+
+## File systems: in closing
+
+<br>
+
+#### If this was a bit much:
+
+For those working with "small" NGS datasets
+(like from MiSeq runs),   
+you may be able to **stick to your home dir** both for storage and computing.
+
+<br>
+
+#### See [here](https://www.osc.edu/supercomputing/storage-environment-at-osc/available-file-systems) for more info about the file systems.
+
+---
+class: inverse center middle
+name: ssh
+
+# Bonus Material II:
+# Accessing OSC In Your Shell (`ssh`)
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+background-color: #ededed
+
+## Connecting to OSC with `ssh`
+
+- If you want to log in from your *own local terminal*,   
+  you need to **connect through `ssh`.**
+  
+- Basic `ssh` usage:
+  
+  ```sh
+  $ ssh <username>@pitzer.osc.edu  # e.g. jelmer@pitzer.osc.edu     
+  $ ssh <username>@owens.osc.edu   # e.g. jelmer@ownes.osc.edu     
+  ```
+  
+  - You will be prompted for your OSC password.
+
+---
+background-color: #ededed
+
+## `ssh` set-up: avoid being prompted for password
+
+1. On your own computer, generate a key:
+```bash
+$ ssh-keygen -t rsa
+```
+
+1. On your own computer, transfer the key to the remote computer:
+```bash
+$ cat ~/.ssh/id_rsa.pub | ssh <user>@owens.osc.edu 'mkdir -p .ssh && cat >> .ssh/authorized_keys'
+```
+
+1. On remote computer (OSC), set permissions:
+```bash
+$ chmod 700 .ssh; chmod 640 .ssh/authorized_keys
+```
+
+<br>
+
+- For more details, see this [Tecmint post](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/).
+
+---
+background-color: #ededed
+
+## `ssh` set-up: use shortcuts
+
+1. Create a file called `~/.ssh/config`:
+```bash
+$ touch `~/.ssh/config`
+```
+
+1. Open the file and add your alias(es):
+```bash
+> Host <arbitrary-alias-name>    
+>     HostName <remote-name>
+>     User <user-name>
+```
+
+--
+
+<br>
+
+- This is what it looks like on my machine, so I can login using "`ssh jo`":
+<br/>
+
+<p align="center">
+<img src=figs_OSC/ssh.png width="400">
+</p>
+
+
+---
+name: monitor
+class: inverse center middle
+
+# Bonus Material III:
+# Monitoring *SLURM* Jobs
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+background-color: #ededed
+
+---
+name: conda
+class: inverse center middle
+
+# Bonus Material IV:
+# `conda`
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+background-color: #ededed
+
+## `conda`
+
+**`conda` is a software environment manager**
+  
+- Install software *into a conda environment*, no need for admin (`sudo`) rights
+  
+- Takes care of software dependencies.
+  
+- You can easily have different "environments" that each have a different version
+  of the same software - load and unload similar to the `module` system.
+  
+- A *lot* of bioinformatics software is available through `conda`.
+
+---
+background-color: #ededed
+
+## `conda` in practice
+
+- Load the `conda` module at OSC (part of Python): 
+
+  ```bash
+  $ module load python/3.6-conda5.2
+  ```
+
+<br>
+
+- Create a new environment with "`multiqc`" installed:
+
+  ```bash
+  $ conda create -y -n my-multiqc-env -c bioconda multiqc
+  ```
+
+<br>
+
+- Activate the `multiqc` environment and see if we can run it:
+
+  ```bash
+  [<user>@owens-login01 ~]$ conda activate my-multiqc-env
+
+  # Note environment indicator
+  (multiqc) [<user>@owens-login01 ~]$ multiqc --help
+  ```
