@@ -1,0 +1,14 @@
+---
+title: "<br>Workflow part I:<br>Processing Fastq Files"
+output:
+  rmarkdown::html_document:
+    code_download: true
+    theme: cerulean
+    toc: true
+    toc_float: true
+    css: my.css
+---
+
+## Step 1: Quality Control
+
+## Step 2: Adapter Removal

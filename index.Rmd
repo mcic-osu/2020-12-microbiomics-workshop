@@ -26,9 +26,9 @@ For pre-workshop computer setup, see the [Setup](00_setup.html) page.
 | When  | Type | Instructor | Topic | Material | Slides
 |-|-|-|-|-|-|
 | 10:00 | Lecture | Antonino | _Introduction to Microbiomics_ | <a href="01-microbiomics.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
-| 11:30 | Mixed | Jelmer | _Introduction to the shell_ | <a href="02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
+| 11:30 | Mixed | Jelmer | _Introduction to the Shell_ | <a href="02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
 | 12:00 | Mixed | Jelmer | _Introduction to OSC_ | <a href="03-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/03-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
-| 12:30 | Hands-on | Jelmer | _Introduction to R_ | <a href="04-R.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+| 12:30 | Hands-on | Jelmer | _Workflow part I: Preprocessing the Reads_ | <a href="04-preprocess-reads.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
 
 </mytable>
 
@@ -38,8 +38,9 @@ For pre-workshop computer setup, see the [Setup](00_setup.html) page.
 
 | When  | Type | Instructor | Topic | Material | Slides
 |-|-|-|-|-|-|
-| 10:00 | Hands-on | all | _From reads to an ASV table_ | <a href="05-reads-to-ASV.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
-| 11:30 | Hands-on | all | _Analyzing ASV data_ | <a href="06-ASV-analysis.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+| 10:00 | Mixed | Jelmer | _Introduction to R_ | <a href="04-R.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+| 10:45 | Hands-on | all | _Workflow part II: From Reads to an ASV Table_ | <a href="05-reads-to-ASV.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
+| 11:45 | Hands-on | all | _Workflow part III: Analyzing ASV Data_ | <a href="06-ASV-analysis.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
 
 </mytable>
 
