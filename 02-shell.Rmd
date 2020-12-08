@@ -21,4 +21,20 @@ output:
 
 ## <a href="slides/02-shell.html" target="_blank">Click here for the slides</a>
 
+
+**Or jump straight to a section within the slides:**
+
+- [Introduction](slides/02-shell.html#intro)
+- [Navigation](slides/02-shell.html#navigation)
+- [Standard in/out and Pipes](slides/02-shell.html#stdin)
+- [Managing Files](slides/02-shell.html#managing_files)
+- [Wildcards](slides/02-shell.html#wildcards)
+- [Working with Text Files](slides/02-shell.html#text_files)
+- [A Very Minimal Script](slides/02-shell.html#script)
+- [Bonus Material](slides/02-shell.html#bonus)
+  - I: [Keyboard Shortcuts and General Tricks](slides/02-shell.html#tricks)
+  - II: [Text File Data Tools](slides/02-shell.html#datatools)
+  - III: [The `less` Pager](slides/02-shell.html#less)
+  - IV: [Standard Error](slides/02-shell.html#stderr)
+
 <br> <br> <br> <br>

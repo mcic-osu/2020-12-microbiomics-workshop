@@ -10,7 +10,7 @@ navbar:
 
     - text: "Setup"
       icon: fa-gear
-      href: "setup.html"
+      href: "00-setup.html"
 
     - text: "Day 1"
       menu:

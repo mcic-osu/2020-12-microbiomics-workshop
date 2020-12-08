@@ -12,11 +12,23 @@ output:
       countIncrementalSlides: false
 ---
 class:inverse middle center
-name: overview
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
+
+# Overview
+
+.pull-left[
+### [Introduction](#introduction)
+### [Connecting to OSC](#connect)
+### [Transferring Files](#transfer)
+### [Software at OSC](#software)
+]
+
+---
+class:inverse middle center
+name: overview
 
 # Overview
 
@@ -38,6 +50,8 @@ class:inverse middle center
 name: introduction
 
 # Introduction
+
+-----
 
 <br><br><br><br>
 
@@ -195,6 +209,8 @@ name:connect
 
 # Connecting to OSC
 
+-----
+
 <br><br><br><br>
 
 ### [[Back to overview]](#overview)
@@ -265,6 +281,8 @@ name: transfer
 
 # Transferring Files
 
+-----
+
 <br><br><br><br>
 
 ### [[Back to overview]](#overview)
@@ -309,7 +327,7 @@ depending on your preferences and **the size of the transfer**.
 ---
 background-color: #ededed
 
-## Transferring files: at the command line
+## Transferring files: using your **local** shell
 
 #### For small transfers (<1 GB): use `scp` / `rsync`
 
@@ -343,6 +361,8 @@ class:inverse middle center
 name:software
 
 # Software at OSC
+
+-----
 
 <br><br><br><br>
 
@@ -415,6 +435,8 @@ name:jobs
 
 # Starting a Compute Job
 # (i.e., Accessing Compute Nodes)
+
+-----
 
 <br><br><br>
 
@@ -508,6 +530,8 @@ class:inverse middle center
 name:job_options
 
 # Compute Job Options
+
+-----
 
 <br><br><br><br>
 
@@ -650,63 +674,112 @@ name:job_example
 
 ---
 
-## Job example: script -- boilerplate stuff
+## Job example: *shebang* and *SLURM* directives
 
-- #### Start with a *shebang* line
-
-  A job script needs to start with a "*shebang*" line,   
+- A job script needs to start with a **"*shebang*" line**,   
   which points the computer to the program to be used:
 
   ```sh
   #!/bin/bash
   ```
 
-- #### Then, provide options to `sbatch`.
+- Then, provide the **_SLURM_ directives**:
 
   ```sh
   #!/bin/bash
-  set -e -u -o -pipefail
+  set -e -u -o pipefail
   
   #SBATCH --nodes=1
   #SBATCH --ntasks-per-node=1
   #SBATCH --time=60
-  #SBATCH --job-name=fastqc_test
   #SBATCH --account=PAS0471
   ```
 
 ---
+## Job example: Processing arguments
 
-## Job example: Script -- the actual code
+- Our script will have **two arguments**, and:
+  - If the output dir doesn't exist yet, we'll create it.
+  - We'll print the arguments back to screen to check whether all is well.
+
+  ```sh
+  output_dir=${1}
+  fastqc_file=${2}
+  
+  mkdir -p ${output_dir}
+  
+  echo "Output dir: ${output_dir}"
+  echo "Running fastqc for file: ${fastqc_file}"
+  ```
+
+--
+
+- We need to load the `fastqc` module:
+  ```sh
+  module load fastqc
+  ```
+
+- Finally, we'll run `fastqc`:  
+  ```sh
+  fastqc --outdir=${output_dir} ${fastqc_file}
+  ```
+
+---
+
+## Job example: The full script
+
+- The script is saved as `scripts/01-fastqc.sh`
 
 ```sh
-fastqc_file=$1
+#!/bin/bash
+set -e -u -o pipefail
+  
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=60
+#SBATCH --account=PAS0471
 
-date
+output_dir=${1}  
+fastqc_file=${2}
+
+mkdir -p ${output_dir}
+
+echo "Output dir: ${output_dir}"
 echo "Running fastqc for file: ${fastqc_file}"
 
 module load fastqc
 
-fastqc ${fastqc_file}
+fastqc --outdir=${output_dir} ${fastqc_file}
 
 echo "All done!"
-date
 ```
 
 ---
 
 ## Submit the job
 
-- We need to provide the script with a fastq file,
-  whose name we will store in a variable:
+- First, we go to our workshop's directory:
+  ```sh
+  cd /fs/project/PAS0471/workshops/2020-12_micro/
+  ```
+  
+- We need to provide the script with an output dir and a fastq file,   
+  whose names we will store in variables:
   
   ```sh
-  fastqc_file=XXXX
+  output_dir=analysis/fastqc/$USER
+  fastqc_file=data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  ```
+
+- We will also name our *SLURM* log file:
+  ```sh
+  log=slurm-fastqc-$USER-%j.log
   ```
 
 - Now we can submit the job:
 
   ```sh
-  sbatch fastqc.sh $fastqc_file
+  sbatch -o $log scripts/01-fastqc.sh $output_dir $fastqc_file
   # Submitted batch job 2451088
   ```
 
@@ -743,15 +816,48 @@ date
 
 ## Example job: Check the output
 
-```sh
-$ ls
-```
+- Let's look for *SLURM* log files: 
 
-<br>
+  ```sh
+  $ ls
+  # slurm-2451088.out
+  ```
 
-```sh
-less XXX
-```
+--
+
+- Let's look at the contents of the log file:
+
+  ```sh
+  less slurm-2451088.out
+  # Output dir: analysis/fastqc/jelmer
+  # Running fastqc for file: data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  # Started analysis of 502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  # Approx 5% complete for 502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  # ....
+  ```
+
+--
+
+- Let's check the output dir:
+
+  ```sh
+  ls -lh $output_dir
+  # -rw-r--r-- 1 jelmer PAS0471 501K Dec  7 13:54 502-S4-V4-V5_S66_L001_R1_001_fastqc.html
+# -rw-r--r-- 1 jelmer PAS0471 659K Dec  7 13:54 502-S4-V4-V5_S66_L001_R1_001_fastqc.zip
+  ```
+
+---
+
+## Example job: Housekeeping
+
+- Finally let's keep things tidy and organized,
+  and move the log file to the analysis dir:
+
+  ```sh
+  logdir=analysis/fastqc/$USER/logs
+  mkdir -p $logdir
+  mv slurm-XXX $logdir
+  ```
 
 ---
 class: center middle inverse
@@ -888,10 +994,12 @@ you may be able to **stick to your home dir** both for storage and computing.
 
 ---
 class: inverse center middle
-name: ssh
+name: shell
 
 # Bonus Material II:
 # Accessing OSC In Your Shell (`ssh`)
+
+-----
 
 <br><br><br><br>
 
@@ -974,6 +1082,8 @@ class: inverse center middle
 # Bonus Material III:
 # Monitoring *SLURM* Jobs
 
+-----
+
 <br><br><br><br>
 
 ### [[Back to overview]](#overview)
@@ -981,12 +1091,17 @@ class: inverse center middle
 ---
 background-color: #ededed
 
+## Monitoring *SLURM* Jobs
+
+
 ---
 name: conda
 class: inverse center middle
 
 # Bonus Material IV:
 # `conda`
+
+-----
 
 <br><br><br><br>
 
