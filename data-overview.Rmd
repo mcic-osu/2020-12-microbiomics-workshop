@@ -1,0 +1,69 @@
+---
+title: "<br>Overview of the Dataset and Workflow"
+output:
+  rmarkdown::html_document:
+    code_download: true
+    theme: cerulean
+    toc: true
+    toc_float: true
+    css: my.css
+---
+
+
+<br>
+
+-----
+
+## The Dataset
+
+This dataset consists of 16S-V4 gene-marker sequence data collected from soil DNA samples collected from an Ohio rye cover cropping experiment.
+
+**Four treatments** correspond to different cover crop management regiments:   
+
+- T1 = no cover crop   
+- T2 = Early termiation (2 weeks before soybean planting)   
+- T3 = Mid termination (1 day before soybean planting)   
+- T4 = Late termination (5 days after soybean planting).   
+   
+Samples were collected at **four time points**:    
+
+- S1 = Fall 2019 (baseline)   
+- S2 = Spring 2020 (pre-cover crop termination)   
+- S3 = Spring 2020 (post-termination)   
+- S4 = Summer 2020 (soybean seedling stage).   
+   
+DNA samples were subjected to PCR using 16S-V4 paired primers.
+
+Amplicons were then pooled and analyzed by 300 cycles of Illumina paired-end sequencing.
+
+
+-----
+
+## The Workflow
+
+1. **Primer and adapter trimming**
+    
+    - Using `cutadapt`
+
+1. **ASV inference and taxon assignment (with _DADA2_)**
+    
+    - Trim and filter reads.
+    
+    - Infer sequence variants from reads.
+    
+    - Merge sequence variants from Forward and Reverse reads to
+      obtain full-length Amplicon Sequence Variants (ASVs).
+      
+    - Estimate phylogenetic relatedness using the *phangorn* R package.
+    
+    - Assign taxonomy using a marker gene database (*SILVA*).
+
+
+1. **Analyzing ASV Data**
+    
+    - Contaminant identification and removal with *decontam* R package.
+    
+    - R packages: phyloseq, ampvis2, DESeq2, etc.
+
+<br> <br> <br>  
+  
