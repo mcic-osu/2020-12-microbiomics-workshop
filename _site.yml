@@ -25,20 +25,20 @@ navbar:
           href: "03-OSC.html"
         - text: "---------"
         - text: "Workflow Sessions:"
-        - text: "I: Preprocessing Reads"
+        - text: "I: Adapter and Primer Removal"
           href: "04-preprocess-reads.html"
 
     - text: "Day 2"
       menu:
         - text: "Lecture/Code-along:"
         - text: "Intro to R"
-          href: "04-R.html"
+          href: "05-R.html"
         - text: "---------"
         - text: "Workflow Sessions:"
-        - text: "II: From Reads to an ASV Table"
-          href: "05-reads-to-ASV.html"
+        - text: "II: ASV Infererence and Taxon Assignment"
+          href: "06-reads-to-ASV.html"
         - text: "III: Analyzing ASV Data"
-          href: "06-ASV-analysis.html"
+          href: "07-ASV-analysis.html"
   right:
     - icon: fa-github fa-lg
       href: https://github.com/mcic-osu/2020-12-microbiomics-workshop.git

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> Workflow part II: ASV Infererence and Taxon Assignment</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="my.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Microbiomics Workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Overview
+  </a>
+</li>
+<li>
+  <a href="00-setup.html">
+    <span class="fa fa-gear"></span>
+     
+    Setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lectures:</li>
+    <li>
+      <a href="01-microbiomics.html">Intro to Microbiomics</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Lecture/Code-along:</li>
+    <li>
+      <a href="02-shell.html">Intro to the Shell</a>
+    </li>
+    <li>
+      <a href="03-OSC.html">Intro to OSC</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Workflow Sessions:</li>
+    <li>
+      <a href="04-preprocess-reads.html">I: Adapter and Primer Removal</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lecture/Code-along:</li>
+    <li>
+      <a href="05-R.html">Intro to R</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Workflow Sessions:</li>
+    <li>
+      <a href="06-reads-to-ASV.html">II: ASV Infererence and Taxon Assignment</a>
+    </li>
+    <li>
+      <a href="07-ASV-analysis.html">III: Analyzing ASV Data</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mcic-osu/2020-12-microbiomics-workshop.git">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><br>Workflow part II:<br>ASV Infererence and Taxon Assignment</h1>
+
+</div>
+
+
+<p><br></p>
+<hr />
+<div id="goals" class="section level2">
+<h2>Goals</h2>
+<p>Process metabarcoding reads, post-adapter removal, including:</p>
+<ul>
+<li>Evaluation of quality</li>
+<li>Quality trimming and filtering</li>
+<li>Error correction and denoising</li>
+<li>Read merging</li>
+<li>Assigning taxonomy</li>
+</ul>
+<hr />
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<ul>
+<li><p>This documented was adapted from <a href="https://f1000research.com/articles/5-1492/v2">Callahan et al. 2006</a> by Matthew Willman, with further edits by Soledad Benitez Ponce and Jelmer Poelstra."</p></li>
+<li><p>You can download this <code>Rmd</code> (R Markdown) file by clicking the <code>Code</code> button in the top-right of this page. To convert an <code>Rmd</code> file to an R script, type the following in an R console: <code>knitr::purl(input="&lt;filename&gt;.Rmd")</code>.</p></li>
+</ul>
+<hr />
+</div>
+<div id="step-1-setup" class="section level2">
+<h2>Step 1: Setup</h2>
+<div id="install-and-load-packages" class="section level3">
+<h3>Install and load packages</h3>
+<pre class="r r_code"><code>.cran_packages &lt;- c(&quot;ggplot2&quot;, &quot;gridExtra&quot;)
+.bioc_packages &lt;- c(&quot;dada2&quot;, &quot;phyloseq&quot;, &quot;DECIPHER&quot;, &quot;phangorn&quot;)
+
+.inst &lt;- .cran_packages %in% installed.packages()
+if(any(!.inst)) {
+   install.packages(.cran_packages[!.inst])
+}
+
+.inst &lt;- .bioc_packages %in% installed.packages()
+if(any(!.inst)) {
+   BiocManager::install(.bioc_packages[!.inst])
+}
+
+sapply(c(.cran_packages, .bioc_packages), require, character.only = TRUE)</code></pre>
+</div>
+<div id="set-the-file-paths" class="section level3">
+<h3>Set the file paths</h3>
+<pre class="r r_code"><code>input &lt;- &quot;/Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq/cutadapt_out/16S/second_trim/&quot;
+output&lt;- &quot;for_dada2/dada2_out/&quot;
+tax_key&lt;- &quot;for_dada2/silva_nr99_v138_train_set.fa&quot; #check up to date version https://benjjneb.github.io/dada2/training.html
+sample_names&lt;- &quot;for_dada2/sample_meta.txt&quot;
+dir.create(output, recursive=T)</code></pre>
+</div>
+<div id="assign-files-to-forward-and-reverse-reads" class="section level3">
+<h3>Assign files to forward and reverse reads</h3>
+<p>For forward and reverse fastq filenames which have the following name format: <code>&lt;SAMPLENAME&gt;_R1_001.fastq</code> and <code>&lt;SAMPLENAME&gt;_R2_001.fastq</code>.</p>
+<pre class="r r_code"><code>fnFs &lt;- sort(list.files(input, pattern=&quot;_R1_001.fastq.gz&quot;, full.names = TRUE))
+fnRs &lt;- sort(list.files(input, pattern=&quot;_R2_001.fastq.gz&quot;, full.names = TRUE))</code></pre>
+</div>
+<div id="extract-sample-names" class="section level3">
+<h3>Extract sample names</h3>
+<p>Extract the sample names from the <code>.fastq</code> file names, assuming file names have format: <code>&lt;SAMPLENAME&gt;_XXX.fastq</code>.</p>
+<p>The resulting <code>sample.names</code> should match the SampleID column in the <code>sample_data_example</code> file.</p>
+<pre class="r r_code"><code>sample.names &lt;- sapply(strsplit(basename(fnFs), &quot;-V4-V5_&quot;), `[`, 1)</code></pre>
+<hr />
+</div>
+</div>
+<div id="step-2-qc" class="section level2">
+<h2>Step 2: QC</h2>
+<div id="plot-sequence-quality-data" class="section level3">
+<h3>Plot sequence quality data</h3>
+<p>You can generate and evaluate plots individually:</p>
+<pre class="r r_code"><code>plotQualityProfile(fnFs[1:2])</code></pre>
+<p><br></p>
+<p>Or generate pdf files to inspect multiple plots at once:</p>
+<pre class="r r_code"><code>ii &lt;- sample(length(fnFs), 3)
+pdf(&quot;Error_profiles.pdf&quot;)
+par(mfrow=c(2,3))
+for (i in ii) { print (plotQualityProfile(fnFs[i]) + ggtitle(&quot;Fwd&quot;)) }
+ii &lt;- sample(length(fnRs), 3)
+for (i in ii) { print (plotQualityProfile(fnRs[i]) + ggtitle(&quot;Rev&quot;)) }
+dev.off()</code></pre>
+<hr />
+</div>
+</div>
+<div id="step-3-trimming" class="section level2">
+<h2>Step 3: Trimming</h2>
+<p>The <code>truncLen</code> parameters should be based on sequence quality visualized above. It is suggested to trim first 10 nucleotides of each read, empirical observations across Illumina datasets show these positions are likely to contain pathological errors. Trimming length could be different for R1 and R2, but ideally not too drastically so, in order to maximize merging pairs in subsequent steps.</p>
+<p>First, define paths for trimming:</p>
+<pre class="r r_code"><code>filtFs &lt;- file.path(output, &quot;filtered&quot;, paste0(sample.names, &quot;_F_filt.fastq&quot;))
+filtRs &lt;- file.path(output, &quot;filtered&quot;, paste0(sample.names, &quot;_R_filt.fastq&quot;))</code></pre>
+<p><br></p>
+<p>Then, perform the trimming:</p>
+<pre class="r r_code"><code>print(&quot;filter and Trimming&quot;)
+Sys.time()
+out &lt;- filterAndTrim(fnFs, filtFs, fnRs, filtRs, trimLeft=10, truncLen=c(250,210), maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=F, compress=FALSE, multithread=TRUE, verbose=TRUE) 
+print(&quot;done&quot;)
+Sys.time()</code></pre>
+<hr />
+</div>
+<div id="step-4-dereplication-error-training" class="section level2">
+<h2>Step 4: Dereplication &amp; Error Training</h2>
+<pre class="r r_code"><code>derepFs &lt;- derepFastq(filtFs, verbose=F)
+derepRs &lt;- derepFastq(filtRs, verbose=F)
+
+print(&quot;learning Errors&quot;)
+Sys.time()
+errF&lt;- learnErrors(derepFs, multithread=T, verbose=T)
+errR&lt;- learnErrors(derepRs, multithread=T, verbose=T)
+print(&quot;done&quot;)
+Sys.time()
+
+names(derepFs) &lt;- sample.names
+names(derepRs) &lt;- sample.names</code></pre>
+<p><br></p>
+<p>Plot errors to verify that error rates have been reasonable well-estimated. Observe the fit between observed error rates (points) and fitted error rates (lines):</p>
+<pre class="r r_code"><code>plotErrors(errF, nominalQ=TRUE)
+plotErrors(errR, nominalQ=TRUE)</code></pre>
+<hr />
+</div>
+<div id="step-5-infer-asvs" class="section level2">
+<h2>Step 5: Infer ASVs</h2>
+<p>We will run the dada algorithm to infer ASVs.</p>
+<p>This step is more computationally intensity. Indepedant inference by sample (pool=F) will keep memory requirements linear to sample number. Pooling will increase computation time but improve detection of rare variants seen once or twice in an individual sample but many times across all samples.</p>
+<pre class="r r_code"><code>print(&quot;inferring ASVs (running dada algorithm)&quot;)
+Sys.time()
+dadaFs &lt;- dada(derepFs, err=errF, multithread=T, pool=F)
+dadaRs &lt;- dada(derepRs, err=errR, multithread=T, pool=F)
+print(&quot;done&quot;)
+Sys.time()
+
+#inspect object
+dadaFs[[1]]</code></pre>
+<hr />
+</div>
+<div id="step-6-merge-read-pairs" class="section level2">
+<h2>Step 6: Merge Read Pairs</h2>
+<p>In this step, we will merge read pairs and generate sequence table of paired ASVs.</p>
+<pre class="r r_code"><code>mergers &lt;- mergePairs(dadaFs, derepFs, dadaRs, derepRs, verbose=TRUE)
+
+seqtab.all &lt;- makeSequenceTable(mergers)
+dim(seqtab.all)</code></pre>
+<hr />
+</div>
+<div id="step-7-summarize-sequences-and-remove-chimeras" class="section level2">
+<h2>Step 7: Summarize Sequences and Remove Chimeras</h2>
+<pre class="r r_code"><code># Inspect distribution of sequence lengths
+table(nchar(getSequences(seqtab.all)))
+
+#seqtab2 &lt;- seqtab[,nchar(colnames(seqtab.all)) %in% seq(250,256)] #If need to remove sequences of a particular length (e.g. too long)
+
+#remove chimeras 
+seqtab &lt;- removeBimeraDenovo(seqtab.all, method=&quot;consensus&quot;, multithread=TRUE, verbose=TRUE)
+dim(seqtab)
+
+#proportion of removed sequences
+sum(seqtab)/sum(seqtab.all)
+
+#save seqtab file as rds object
+
+saveRDS(seqtab, file=&quot;seqtab_V4.rds&quot;) </code></pre>
+<hr />
+</div>
+<div id="step-8-generate-a-summary-table" class="section level2">
+<h2>Step 8: Generate a Summary Table</h2>
+<p>In this step, we will generate a summary table of the number of sequences processed and outputs of different steps of the pipeline.</p>
+<p>This information is generally used to further evaluate characteristics and quality of the run, sample-to-sample variation, and resulting sequencing depth for each sample.</p>
+<pre class="r r_code"><code>getN &lt;- function(x) sum(getUniques(x))
+
+track &lt;- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab))
+
+# If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
+
+colnames(track) &lt;- c(&quot;input&quot;, &quot;filtered&quot;, &quot;denoisedF&quot;, &quot;denoisedR&quot;, &quot;merged&quot;, &quot;nonchim&quot;)
+rownames(track) &lt;- sample.names
+head(track)
+
+write.table(track, file=&quot;track.txt&quot;)</code></pre>
+<hr />
+</div>
+<div id="step-9-assign-taxonomy-to-asvs" class="section level2">
+<h2>Step 9: Assign Taxonomy to ASVs</h2>
+<p>Depending on the marker gene and the data, you will choose the appropriate file for this step. Several files have been formatted for taxony assignments in DADA2 pipeline and are available in the following website: <a href="https://benjjneb.github.io/dada2/index.html" class="uri">https://benjjneb.github.io/dada2/index.html</a></p>
+<pre class="r r_code"><code>print(&quot;Assigning taxa to ASVs&quot;)
+Sys.time()
+taxa &lt;- assignTaxonomy(seqtab, tax_key, multithread=TRUE)
+colnames(taxa) &lt;- c(&quot;Kingdom&quot;, &quot;Phylum&quot;, &quot;Class&quot;, &quot;Order&quot;, &quot;Family&quot;, &quot;Genus&quot;)
+print(&quot;done&quot;)
+Sys.time()</code></pre>
+<hr />
+</div>
+<div id="step-10-phylogenetic-tree-estimation" class="section level2">
+<h2>Step 10: Phylogenetic Tree Estimation</h2>
+<p>A phylogenetic tree can be estimated for the sequence data you generated. Depending on the number of ASVs recovered and the phylogenetic tree algorithm of choice, this step could take several days. Simpler trees will be less computationally intensive. Depending on the marker gene you are working on, you might choose or not to use this option.</p>
+<pre class="r r_code"><code>#seqtab&lt;- readRDS(&quot;seqtab_V4.rds&quot;)
+seqs &lt;- getSequences(seqtab)
+names(seqs) &lt;- seqs # This propagates to the tip labels of the tree. At this stage ASV labels are full ASV sequence
+alignment &lt;- AlignSeqs(DNAStringSet(seqs), anchor=NA, iterations = 5, refinements = 5)
+
+print(&quot;Computing pairwise distances from ASVs&quot;)
+Sys.time()
+phang.align &lt;- phyDat(as(alignment, &quot;matrix&quot;), type=&quot;DNA&quot;)
+dm &lt;- dist.ml(phang.align)
+treeNJ &lt;- NJ(dm) # Note, tip order != sequence order
+fit = pml(treeNJ, data=phang.align)
+print(&quot;done&quot;)
+Sys.time()
+
+fitGTR &lt;- update(fit, k=4, inv=0.2)
+print(&quot;done&quot;)
+Sys.time()
+
+print(&quot;Computing likelihood of tree&quot;)
+Sys.time()
+fitGTR &lt;- optim.pml(fitGTR, model=&quot;GTR&quot;, optInv=TRUE, optGamma=TRUE,
+                      rearrangement = &quot;stochastic&quot;, control = pml.control(trace = 0))
+print(&quot;done&quot;)
+Sys.time()</code></pre>
+<hr />
+</div>
+<div id="step-11-generate-output-files" class="section level2">
+<h2>Step 11: Generate Output Files</h2>
+<p>In this step, we will generate output files formatted for downstream analysis in phyloseq</p>
+<p>Data will be extracted from the DADA2 outputs and formatted for downstream analysis and data inspection. The last step of this pipeline saves a phyloseq object as an .RDS file and can be imported directly in phyloseq.</p>
+<pre class="r r_code"><code>#rename ASV names 
+asv_seqs&lt;- colnames(seqtab)
+asv_headers&lt;- vector(dim(seqtab)[2], mode=&quot;character&quot;)
+
+for (i in 1:dim(seqtab)[2]) {
+    asv_headers[i] &lt;- paste(&quot;&gt;ASV&quot;, i, sep=&quot;_&quot;)
+}
+
+#write ASV fasta for final ASV seqs. This fasta file can also be used for phylogenetic tree inference in different platforms
+asv_fasta&lt;- c(rbind(asv_headers, asv_seqs))
+write(asv_fasta, &quot;ASVs.fa&quot;)
+
+#count table
+asv_tab &lt;- t(seqtab)
+row.names(asv_tab) &lt;- sub(&quot;&gt;&quot;, &quot;&quot;, asv_headers)
+write.table(asv_tab, &quot;ASVs_counts.tsv&quot;, sep=&quot;\t&quot;, quote=F, col.names=NA)
+
+#tax table
+asv_tax &lt;- taxa
+row.names(asv_tax) &lt;- sub(&quot;&gt;&quot;, &quot;&quot;, asv_headers)
+write.table(asv_tax, &quot;ASVs_taxonomy.tsv&quot;, sep=&quot;\t&quot;, quote=F, col.names=NA)
+
+count_tab&lt;- read.table(&quot;ASVs_counts.tsv&quot;, header=T, row.names=1, check.names=F, sep=&quot;\t&quot;)
+tax_tab&lt;- as.matrix(read.table(&quot;ASVs_taxonomy.tsv&quot;, header=T, row.names=1, check.names=F, sep=&quot;\t&quot;))
+
+#Load and prepare sample data (prepared separately)
+samdf &lt;- read.table(file=sample_names, sep=(&quot;\t&quot;), header=TRUE)
+colnames(samdf)[1]&lt;- &quot;SampleID&quot;
+rownames(samdf)&lt;- samdf$SampleID
+
+ps &lt;- phyloseq(otu_table(count_tab, taxa_are_rows=T), sample_data(samdf), tax_table(tax_tab), phy_tree(fitGTR$tree))
+
+saveRDS(ps, file=&quot;ps_V4.rds&quot;)
+
+print(&quot;done&quot;)</code></pre>
+<hr />
+</div>
+<div id="resources" class="section level2">
+<h2>Resources</h2>
+<ul>
+<li><a href="https://f1000research.com/articles/5-1492/v2">Callahan et al. 2006: “Bioconductor Workflow for Microbiome Data Analysis: from raw reads to community analyses”</a></li>
+<li><a href="https://benjjneb.github.io/dada2/index.html"><code>dada2</code> documentation and tutorials</a></li>
+<li><a href="https://benjjneb.github.io/dada2/training.html">Taxonomic references for <code>dada2</code></a></li>
+<li><a href="https://cutadapt.readthedocs.io/en/stable/index.html"><code>cutadapt</code> documentation and tutorials</a></li>
+</ul>
+<hr />
+</div>
+<div id="bonus-submit-script-as-an-osc-job" class="section level2">
+<h2>Bonus: Submit script as an OSC job</h2>
+<p>TODO</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPldvcmtmbG93IHBhcnQgSUk6PGJyPkFTViBJbmZlcmVyZW5jZSBhbmQgVGF4b24gQXNzaWdubWVudCIKb3V0cHV0OgogIHJtYXJrZG93bjo6aHRtbF9kb2N1bWVudDoKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjZXJ1bGVhbgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNzczogbXkuY3NzCi0tLQoKYGBge3Iga25pdHJfb3B0aW9ucywgZWNobz1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KHJlc3VsdHM9J2hpZGUnLAogICAgICAgICAgICAgICAgICAgICAgZXZhbCA9IEZBTFNFLAogICAgICAgICAgICAgICAgICAgICAgY2xhc3Muc291cmNlPSJyX2NvZGUiLAogICAgICAgICAgICAgICAgICAgICAgY2xhc3Mub3V0cHV0PSJyX291dHB1dCIsCiAgICAgICAgICAgICAgICAgICAgICBjbGFzcy53YXJuaW5nPSJyX3dhcm5pbmciLAogICAgICAgICAgICAgICAgICAgICAgY2xhc3MubWVzc2FnZT0icl93YXJuaW5nIiwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLmVycm9yPSJyX2Vycm9yIikKYGBgCgo8YnI+CgotLS0tLQoKIyMgR29hbHMKClByb2Nlc3MgbWV0YWJhcmNvZGluZyByZWFkcywgcG9zdC1hZGFwdGVyIHJlbW92YWwsIGluY2x1ZGluZzoKCi0gRXZhbHVhdGlvbiBvZiBxdWFsaXR5Ci0gUXVhbGl0eSB0cmltbWluZyBhbmQgZmlsdGVyaW5nCi0gRXJyb3IgY29ycmVjdGlvbiBhbmQgZGVub2lzaW5nCi0gUmVhZCBtZXJnaW5nCi0gQXNzaWduaW5nIHRheG9ub215CgotLS0tLQoKIyMgTm90ZXMKCi0gVGhpcyBkb2N1bWVudGVkIHdhcyBhZGFwdGVkIGZyb20gW0NhbGxhaGFuIGV0IGFsLiAyMDA2XShodHRwczovL2YxMDAwcmVzZWFyY2guY29tL2FydGljbGVzLzUtMTQ5Mi92MikKICBieSBNYXR0aGV3IFdpbGxtYW4sIHdpdGggZnVydGhlciBlZGl0cyBieSBTb2xlZGFkIEJlbml0ZXogUG9uY2UgYW5kIEplbG1lciBQb2Vsc3RyYS4iCiAgCi0gWW91IGNhbiBkb3dubG9hZCB0aGlzIGBSbWRgIChSIE1hcmtkb3duKSBmaWxlIGJ5IGNsaWNraW5nIHRoZSBgQ29kZWAgYnV0dG9uIGluCiAgdGhlIHRvcC1yaWdodCBvZiB0aGlzIHBhZ2UuCiAgVG8gY29udmVydCBhbiBgUm1kYCBmaWxlIHRvIGFuIFIgc2NyaXB0LAogIHR5cGUgdGhlIGZvbGxvd2luZyBpbiBhbiBSIGNvbnNvbGU6IGBrbml0cjo6cHVybChpbnB1dD0iPGZpbGVuYW1lPi5SbWQiKWAuCgoKLS0tLS0KCiMjIFN0ZXAgMTogU2V0dXAKCiMjIyBJbnN0YWxsIGFuZCBsb2FkIHBhY2thZ2VzCgpgYGB7cn0KLmNyYW5fcGFja2FnZXMgPC0gYygiZ2dwbG90MiIsICJncmlkRXh0cmEiKQouYmlvY19wYWNrYWdlcyA8LSBjKCJkYWRhMiIsICJwaHlsb3NlcSIsICJERUNJUEhFUiIsICJwaGFuZ29ybiIpCgouaW5zdCA8LSAuY3Jhbl9wYWNrYWdlcyAlaW4lIGluc3RhbGxlZC5wYWNrYWdlcygpCmlmKGFueSghLmluc3QpKSB7CiAgIGluc3RhbGwucGFja2FnZXMoLmNyYW5fcGFja2FnZXNbIS5pbnN0XSkKfQoKLmluc3QgPC0gLmJpb2NfcGFja2FnZXMgJWluJSBpbnN0YWxsZWQucGFja2FnZXMoKQppZihhbnkoIS5pbnN0KSkgewogICBCaW9jTWFuYWdlcjo6aW5zdGFsbCguYmlvY19wYWNrYWdlc1shLmluc3RdKQp9CgpzYXBwbHkoYyguY3Jhbl9wYWNrYWdlcywgLmJpb2NfcGFja2FnZXMpLCByZXF1aXJlLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpCgpgYGAKCiMjIyBTZXQgdGhlIGZpbGUgcGF0aHMKCmBgYHtyfQppbnB1dCA8LSAiL1VzZXJzL2Jlbml0ZXpwb25jZS4xL0JveC9IQ0NfQW1wU2VxX3N1YnNldC9WNC9mYXN0cS9jdXRhZGFwdF9vdXQvMTZTL3NlY29uZF90cmltLyIKb3V0cHV0PC0gImZvcl9kYWRhMi9kYWRhMl9vdXQvIgp0YXhfa2V5PC0gImZvcl9kYWRhMi9zaWx2YV9ucjk5X3YxMzhfdHJhaW5fc2V0LmZhIiAjY2hlY2sgdXAgdG8gZGF0ZSB2ZXJzaW9uIGh0dHBzOi8vYmVuampuZWIuZ2l0aHViLmlvL2RhZGEyL3RyYWluaW5nLmh0bWwKc2FtcGxlX25hbWVzPC0gImZvcl9kYWRhMi9zYW1wbGVfbWV0YS50eHQiCmRpci5jcmVhdGUob3V0cHV0LCByZWN1cnNpdmU9VCkKYGBgCgojIyMgQXNzaWduIGZpbGVzIHRvIGZvcndhcmQgYW5kIHJldmVyc2UgcmVhZHMgCgpGb3IgZm9yd2FyZCBhbmQgcmV2ZXJzZSBmYXN0cSBmaWxlbmFtZXMgd2hpY2ggaGF2ZSB0aGUgZm9sbG93aW5nIG5hbWUgZm9ybWF0OiBgPFNBTVBMRU5BTUU+X1IxXzAwMS5mYXN0cWAgYW5kIGA8U0FNUExFTkFNRT5fUjJfMDAxLmZhc3RxYC4KCmBgYHtyfQpmbkZzIDwtIHNvcnQobGlzdC5maWxlcyhpbnB1dCwgcGF0dGVybj0iX1IxXzAwMS5mYXN0cS5neiIsIGZ1bGwubmFtZXMgPSBUUlVFKSkKZm5ScyA8LSBzb3J0KGxpc3QuZmlsZXMoaW5wdXQsIHBhdHRlcm49Il9SMl8wMDEuZmFzdHEuZ3oiLCBmdWxsLm5hbWVzID0gVFJVRSkpCmBgYAoKIyMjIEV4dHJhY3Qgc2FtcGxlIG5hbWVzCgpFeHRyYWN0IHRoZSBzYW1wbGUgbmFtZXMgZnJvbSB0aGUgYC5mYXN0cWAgZmlsZSBuYW1lcywgYXNzdW1pbmcgZmlsZSBuYW1lcyBoYXZlIGZvcm1hdDogYDxTQU1QTEVOQU1FPl9YWFguZmFzdHFgLgoKVGhlIHJlc3VsdGluZyBgc2FtcGxlLm5hbWVzYCBzaG91bGQgbWF0Y2ggdGhlIFNhbXBsZUlEIGNvbHVtbiBpbiB0aGUgYHNhbXBsZV9kYXRhX2V4YW1wbGVgIGZpbGUuCgpgYGB7cn0Kc2FtcGxlLm5hbWVzIDwtIHNhcHBseShzdHJzcGxpdChiYXNlbmFtZShmbkZzKSwgIi1WNC1WNV8iKSwgYFtgLCAxKQpgYGAKCi0tLS0tCgojIyBTdGVwIDI6IFFDCgojIyMgUGxvdCBzZXF1ZW5jZSBxdWFsaXR5IGRhdGEKCllvdSBjYW4gZ2VuZXJhdGUgYW5kIGV2YWx1YXRlIHBsb3RzIGluZGl2aWR1YWxseToKCmBgYHtyfQpwbG90UXVhbGl0eVByb2ZpbGUoZm5Gc1sxOjJdKQpgYGAKCjxicj4KCk9yIGdlbmVyYXRlIHBkZiBmaWxlcyB0byBpbnNwZWN0IG11bHRpcGxlIHBsb3RzIGF0IG9uY2U6CgpgYGB7cn0KaWkgPC0gc2FtcGxlKGxlbmd0aChmbkZzKSwgMykKcGRmKCJFcnJvcl9wcm9maWxlcy5wZGYiKQpwYXIobWZyb3c9YygyLDMpKQpmb3IgKGkgaW4gaWkpIHsgcHJpbnQgKHBsb3RRdWFsaXR5UHJvZmlsZShmbkZzW2ldKSArIGdndGl0bGUoIkZ3ZCIpKSB9CmlpIDwtIHNhbXBsZShsZW5ndGgoZm5ScyksIDMpCmZvciAoaSBpbiBpaSkgeyBwcmludCAocGxvdFF1YWxpdHlQcm9maWxlKGZuUnNbaV0pICsgZ2d0aXRsZSgiUmV2IikpIH0KZGV2Lm9mZigpCmBgYAoKCgoKLS0tLS0KCiMjIFN0ZXAgMzogVHJpbW1pbmcKClRoZSBgdHJ1bmNMZW5gIHBhcmFtZXRlcnMgc2hvdWxkIGJlIGJhc2VkIG9uIHNlcXVlbmNlIHF1YWxpdHkgdmlzdWFsaXplZCBhYm92ZS4KSXQgaXMgc3VnZ2VzdGVkIHRvIHRyaW0gZmlyc3QgMTAgbnVjbGVvdGlkZXMgb2YgZWFjaCByZWFkLAplbXBpcmljYWwgb2JzZXJ2YXRpb25zIGFjcm9zcyBJbGx1bWluYSBkYXRhc2V0cyBzaG93IHRoZXNlIHBvc2l0aW9ucyBhcmUgbGlrZWx5IHRvIGNvbnRhaW4gcGF0aG9sb2dpY2FsIGVycm9ycy4gVHJpbW1pbmcgbGVuZ3RoIGNvdWxkIGJlIGRpZmZlcmVudCBmb3IgUjEgYW5kIFIyLApidXQgaWRlYWxseSBub3QgdG9vIGRyYXN0aWNhbGx5IHNvLCBpbiBvcmRlciB0byBtYXhpbWl6ZSBtZXJnaW5nIHBhaXJzIGluIHN1YnNlcXVlbnQgc3RlcHMuCgpGaXJzdCwgZGVmaW5lIHBhdGhzIGZvciB0cmltbWluZzoKCmBgYHtyfQpmaWx0RnMgPC0gZmlsZS5wYXRoKG91dHB1dCwgImZpbHRlcmVkIiwgcGFzdGUwKHNhbXBsZS5uYW1lcywgIl9GX2ZpbHQuZmFzdHEiKSkKZmlsdFJzIDwtIGZpbGUucGF0aChvdXRwdXQsICJmaWx0ZXJlZCIsIHBhc3RlMChzYW1wbGUubmFtZXMsICJfUl9maWx0LmZhc3RxIikpCmBgYAoKPGJyPgoKVGhlbiwgcGVyZm9ybSB0aGUgdHJpbW1pbmc6CgpgYGB7cn0KcHJpbnQoImZpbHRlciBhbmQgVHJpbW1pbmciKQpTeXMudGltZSgpCm91dCA8LSBmaWx0ZXJBbmRUcmltKGZuRnMsIGZpbHRGcywgZm5ScywgZmlsdFJzLCB0cmltTGVmdD0xMCwgdHJ1bmNMZW49YygyNTAsMjEwKSwgbWF4Tj0wLCBtYXhFRT1jKDIsMiksIHRydW5jUT0yLCBybS5waGl4PUYsIGNvbXByZXNzPUZBTFNFLCBtdWx0aXRocmVhZD1UUlVFLCB2ZXJib3NlPVRSVUUpIApwcmludCgiZG9uZSIpClN5cy50aW1lKCkKYGBgCgoKLS0tLS0KCiMjIFN0ZXAgNDogRGVyZXBsaWNhdGlvbiAmIEVycm9yIFRyYWluaW5nCgpgYGB7cn0KZGVyZXBGcyA8LSBkZXJlcEZhc3RxKGZpbHRGcywgdmVyYm9zZT1GKQpkZXJlcFJzIDwtIGRlcmVwRmFzdHEoZmlsdFJzLCB2ZXJib3NlPUYpCgpwcmludCgibGVhcm5pbmcgRXJyb3JzIikKU3lzLnRpbWUoKQplcnJGPC0gbGVhcm5FcnJvcnMoZGVyZXBGcywgbXVsdGl0aHJlYWQ9VCwgdmVyYm9zZT1UKQplcnJSPC0gbGVhcm5FcnJvcnMoZGVyZXBScywgbXVsdGl0aHJlYWQ9VCwgdmVyYm9zZT1UKQpwcmludCgiZG9uZSIpClN5cy50aW1lKCkKCm5hbWVzKGRlcmVwRnMpIDwtIHNhbXBsZS5uYW1lcwpuYW1lcyhkZXJlcFJzKSA8LSBzYW1wbGUubmFtZXMKYGBgCgo8YnI+CgpQbG90IGVycm9ycyB0byB2ZXJpZnkgdGhhdCBlcnJvciByYXRlcyBoYXZlIGJlZW4gcmVhc29uYWJsZSB3ZWxsLWVzdGltYXRlZC4KT2JzZXJ2ZSB0aGUgZml0IGJldHdlZW4gb2JzZXJ2ZWQgZXJyb3IgcmF0ZXMgKHBvaW50cykgYW5kIGZpdHRlZCBlcnJvciByYXRlcyAobGluZXMpOgoKYGBge3J9CnBsb3RFcnJvcnMoZXJyRiwgbm9taW5hbFE9VFJVRSkKcGxvdEVycm9ycyhlcnJSLCBub21pbmFsUT1UUlVFKQpgYGAKCi0tLS0tCgojIyBTdGVwIDU6IEluZmVyIEFTVnMKCldlIHdpbGwgcnVuIHRoZSBkYWRhIGFsZ29yaXRobSB0byBpbmZlciBBU1ZzLgoKVGhpcyBzdGVwIGlzIG1vcmUgY29tcHV0YXRpb25hbGx5IGludGVuc2l0eS4gSW5kZXBlZGFudCBpbmZlcmVuY2UgYnkgc2FtcGxlIChwb29sPUYpIHdpbGwga2VlcCBtZW1vcnkgcmVxdWlyZW1lbnRzIGxpbmVhciB0byBzYW1wbGUgbnVtYmVyLiBQb29saW5nIHdpbGwgaW5jcmVhc2UgY29tcHV0YXRpb24gdGltZSBidXQgaW1wcm92ZSBkZXRlY3Rpb24gb2YgcmFyZSB2YXJpYW50cyBzZWVuIG9uY2Ugb3IgdHdpY2UgaW4gYW4gaW5kaXZpZHVhbCBzYW1wbGUgYnV0IG1hbnkgdGltZXMgYWNyb3NzIGFsbCBzYW1wbGVzLgoKYGBge3J9CnByaW50KCJpbmZlcnJpbmcgQVNWcyAocnVubmluZyBkYWRhIGFsZ29yaXRobSkiKQpTeXMudGltZSgpCmRhZGFGcyA8LSBkYWRhKGRlcmVwRnMsIGVycj1lcnJGLCBtdWx0aXRocmVhZD1ULCBwb29sPUYpCmRhZGFScyA8LSBkYWRhKGRlcmVwUnMsIGVycj1lcnJSLCBtdWx0aXRocmVhZD1ULCBwb29sPUYpCnByaW50KCJkb25lIikKU3lzLnRpbWUoKQoKI2luc3BlY3Qgb2JqZWN0CmRhZGFGc1tbMV1dCmBgYAoKLS0tLS0KCiMjIFN0ZXAgNjogTWVyZ2UgUmVhZCBQYWlycwoKSW4gdGhpcyBzdGVwLCB3ZSB3aWxsIG1lcmdlIHJlYWQgcGFpcnMgYW5kIGdlbmVyYXRlIHNlcXVlbmNlIHRhYmxlIG9mIHBhaXJlZCBBU1ZzLgoKYGBge3J9Cm1lcmdlcnMgPC0gbWVyZ2VQYWlycyhkYWRhRnMsIGRlcmVwRnMsIGRhZGFScywgZGVyZXBScywgdmVyYm9zZT1UUlVFKQoKc2VxdGFiLmFsbCA8LSBtYWtlU2VxdWVuY2VUYWJsZShtZXJnZXJzKQpkaW0oc2VxdGFiLmFsbCkKYGBgCgotLS0tLQoKIyMgU3RlcCA3OiBTdW1tYXJpemUgU2VxdWVuY2VzIGFuZCBSZW1vdmUgQ2hpbWVyYXMKCmBgYHtyfQojIEluc3BlY3QgZGlzdHJpYnV0aW9uIG9mIHNlcXVlbmNlIGxlbmd0aHMKdGFibGUobmNoYXIoZ2V0U2VxdWVuY2VzKHNlcXRhYi5hbGwpKSkKCiNzZXF0YWIyIDwtIHNlcXRhYlssbmNoYXIoY29sbmFtZXMoc2VxdGFiLmFsbCkpICVpbiUgc2VxKDI1MCwyNTYpXSAjSWYgbmVlZCB0byByZW1vdmUgc2VxdWVuY2VzIG9mIGEgcGFydGljdWxhciBsZW5ndGggKGUuZy4gdG9vIGxvbmcpCgojcmVtb3ZlIGNoaW1lcmFzIApzZXF0YWIgPC0gcmVtb3ZlQmltZXJhRGVub3ZvKHNlcXRhYi5hbGwsIG1ldGhvZD0iY29uc2Vuc3VzIiwgbXVsdGl0aHJlYWQ9VFJVRSwgdmVyYm9zZT1UUlVFKQpkaW0oc2VxdGFiKQoKI3Byb3BvcnRpb24gb2YgcmVtb3ZlZCBzZXF1ZW5jZXMKc3VtKHNlcXRhYikvc3VtKHNlcXRhYi5hbGwpCgojc2F2ZSBzZXF0YWIgZmlsZSBhcyByZHMgb2JqZWN0CgpzYXZlUkRTKHNlcXRhYiwgZmlsZT0ic2VxdGFiX1Y0LnJkcyIpIApgYGAKCgotLS0tLQoKCiMjIFN0ZXAgODogR2VuZXJhdGUgYSBTdW1tYXJ5IFRhYmxlCgpJbiB0aGlzIHN0ZXAsIHdlIHdpbGwgZ2VuZXJhdGUgYSBzdW1tYXJ5IHRhYmxlIG9mIHRoZSBudW1iZXIgb2Ygc2VxdWVuY2VzCnByb2Nlc3NlZCBhbmQgb3V0cHV0cyBvZiBkaWZmZXJlbnQgc3RlcHMgb2YgdGhlIHBpcGVsaW5lLgoKVGhpcyBpbmZvcm1hdGlvbiBpcyBnZW5lcmFsbHkgdXNlZCB0byBmdXJ0aGVyIGV2YWx1YXRlIGNoYXJhY3RlcmlzdGljcyBhbmQKcXVhbGl0eSBvZiB0aGUgcnVuLCBzYW1wbGUtdG8tc2FtcGxlIHZhcmlhdGlvbiwKYW5kIHJlc3VsdGluZyBzZXF1ZW5jaW5nIGRlcHRoIGZvciBlYWNoIHNhbXBsZS4gCgpgYGB7cn0KZ2V0TiA8LSBmdW5jdGlvbih4KSBzdW0oZ2V0VW5pcXVlcyh4KSkKCnRyYWNrIDwtIGNiaW5kKG91dCwgc2FwcGx5KGRhZGFGcywgZ2V0TiksIHNhcHBseShkYWRhUnMsIGdldE4pLCBzYXBwbHkobWVyZ2VycywgZ2V0TiksIHJvd1N1bXMoc2VxdGFiKSkKCiMgSWYgcHJvY2Vzc2luZyBhIHNpbmdsZSBzYW1wbGUsIHJlbW92ZSB0aGUgc2FwcGx5IGNhbGxzOiBlLmcuIHJlcGxhY2Ugc2FwcGx5KGRhZGFGcywgZ2V0Tikgd2l0aCBnZXROKGRhZGFGcykKCmNvbG5hbWVzKHRyYWNrKSA8LSBjKCJpbnB1dCIsICJmaWx0ZXJlZCIsICJkZW5vaXNlZEYiLCAiZGVub2lzZWRSIiwgIm1lcmdlZCIsICJub25jaGltIikKcm93bmFtZXModHJhY2spIDwtIHNhbXBsZS5uYW1lcwpoZWFkKHRyYWNrKQoKd3JpdGUudGFibGUodHJhY2ssIGZpbGU9InRyYWNrLnR4dCIpCmBgYAoKLS0tLS0KCiMjIFN0ZXAgOTogQXNzaWduIFRheG9ub215IHRvIEFTVnMKCkRlcGVuZGluZyBvbiB0aGUgbWFya2VyIGdlbmUgYW5kIHRoZSBkYXRhLCB5b3Ugd2lsbCBjaG9vc2UgdGhlIGFwcHJvcHJpYXRlIGZpbGUgZm9yIHRoaXMgc3RlcC4gU2V2ZXJhbCBmaWxlcyBoYXZlIGJlZW4gZm9ybWF0dGVkIGZvciB0YXhvbnkgYXNzaWdubWVudHMgaW4gREFEQTIgcGlwZWxpbmUgYW5kIGFyZSBhdmFpbGFibGUgaW4gdGhlIGZvbGxvd2luZyB3ZWJzaXRlOiBodHRwczovL2JlbmpqbmViLmdpdGh1Yi5pby9kYWRhMi9pbmRleC5odG1sIAoKYGBge3J9CnByaW50KCJBc3NpZ25pbmcgdGF4YSB0byBBU1ZzIikKU3lzLnRpbWUoKQp0YXhhIDwtIGFzc2lnblRheG9ub215KHNlcXRhYiwgdGF4X2tleSwgbXVsdGl0aHJlYWQ9VFJVRSkKY29sbmFtZXModGF4YSkgPC0gYygiS2luZ2RvbSIsICJQaHlsdW0iLCAiQ2xhc3MiLCAiT3JkZXIiLCAiRmFtaWx5IiwgIkdlbnVzIikKcHJpbnQoImRvbmUiKQpTeXMudGltZSgpCmBgYAoKLS0tLS0KCiMjIFN0ZXAgMTA6IFBoeWxvZ2VuZXRpYyBUcmVlIEVzdGltYXRpb24KCkEgcGh5bG9nZW5ldGljIHRyZWUgY2FuIGJlIGVzdGltYXRlZCBmb3IgdGhlIHNlcXVlbmNlIGRhdGEgeW91IGdlbmVyYXRlZC4gRGVwZW5kaW5nIG9uIHRoZSBudW1iZXIgb2YgQVNWcyByZWNvdmVyZWQgYW5kIHRoZSBwaHlsb2dlbmV0aWMgdHJlZSBhbGdvcml0aG0gb2YgY2hvaWNlLCB0aGlzIHN0ZXAgY291bGQgdGFrZSBzZXZlcmFsIGRheXMuIFNpbXBsZXIgdHJlZXMgd2lsbCBiZSBsZXNzIGNvbXB1dGF0aW9uYWxseSBpbnRlbnNpdmUuIERlcGVuZGluZyBvbiB0aGUgbWFya2VyIGdlbmUgeW91IGFyZSB3b3JraW5nIG9uLCB5b3UgbWlnaHQgY2hvb3NlIG9yIG5vdCB0byB1c2UgdGhpcyBvcHRpb24uIAoKYGBge3IsIGV2YWw9RkFMU0V9CiNzZXF0YWI8LSByZWFkUkRTKCJzZXF0YWJfVjQucmRzIikKc2VxcyA8LSBnZXRTZXF1ZW5jZXMoc2VxdGFiKQpuYW1lcyhzZXFzKSA8LSBzZXFzICMgVGhpcyBwcm9wYWdhdGVzIHRvIHRoZSB0aXAgbGFiZWxzIG9mIHRoZSB0cmVlLiBBdCB0aGlzIHN0YWdlIEFTViBsYWJlbHMgYXJlIGZ1bGwgQVNWIHNlcXVlbmNlCmFsaWdubWVudCA8LSBBbGlnblNlcXMoRE5BU3RyaW5nU2V0KHNlcXMpLCBhbmNob3I9TkEsIGl0ZXJhdGlvbnMgPSA1LCByZWZpbmVtZW50cyA9IDUpCgpwcmludCgiQ29tcHV0aW5nIHBhaXJ3aXNlIGRpc3RhbmNlcyBmcm9tIEFTVnMiKQpTeXMudGltZSgpCnBoYW5nLmFsaWduIDwtIHBoeURhdChhcyhhbGlnbm1lbnQsICJtYXRyaXgiKSwgdHlwZT0iRE5BIikKZG0gPC0gZGlzdC5tbChwaGFuZy5hbGlnbikKdHJlZU5KIDwtIE5KKGRtKSAjIE5vdGUsIHRpcCBvcmRlciAhPSBzZXF1ZW5jZSBvcmRlcgpmaXQgPSBwbWwodHJlZU5KLCBkYXRhPXBoYW5nLmFsaWduKQpwcmludCgiZG9uZSIpClN5cy50aW1lKCkKCmZpdEdUUiA8LSB1cGRhdGUoZml0LCBrPTQsIGludj0wLjIpCnByaW50KCJkb25lIikKU3lzLnRpbWUoKQoKcHJpbnQoIkNvbXB1dGluZyBsaWtlbGlob29kIG9mIHRyZWUiKQpTeXMudGltZSgpCmZpdEdUUiA8LSBvcHRpbS5wbWwoZml0R1RSLCBtb2RlbD0iR1RSIiwgb3B0SW52PVRSVUUsIG9wdEdhbW1hPVRSVUUsCiAgICAgICAgICAgICAgICAgICAgICByZWFycmFuZ2VtZW50ID0gInN0b2NoYXN0aWMiLCBjb250cm9sID0gcG1sLmNvbnRyb2wodHJhY2UgPSAwKSkKcHJpbnQoImRvbmUiKQpTeXMudGltZSgpCmBgYAoKCgotLS0tLQoKIyMgU3RlcCAxMTogR2VuZXJhdGUgT3V0cHV0IEZpbGVzCgpJbiB0aGlzIHN0ZXAsIHdlIHdpbGwgZ2VuZXJhdGUgb3V0cHV0IGZpbGVzIGZvcm1hdHRlZCBmb3IgZG93bnN0cmVhbSBhbmFseXNpcyBpbiBwaHlsb3NlcQoKRGF0YSB3aWxsIGJlIGV4dHJhY3RlZCBmcm9tIHRoZSBEQURBMiBvdXRwdXRzIGFuZCBmb3JtYXR0ZWQgZm9yIGRvd25zdHJlYW0gYW5hbHlzaXMgYW5kIGRhdGEgaW5zcGVjdGlvbi4gVGhlIGxhc3Qgc3RlcCBvZiB0aGlzIHBpcGVsaW5lIHNhdmVzIGEgcGh5bG9zZXEgb2JqZWN0IGFzIGFuIC5SRFMgZmlsZSBhbmQgY2FuIGJlIGltcG9ydGVkIGRpcmVjdGx5IGluIHBoeWxvc2VxLiAKCmBgYHtyfQojcmVuYW1lIEFTViBuYW1lcyAKYXN2X3NlcXM8LSBjb2xuYW1lcyhzZXF0YWIpCmFzdl9oZWFkZXJzPC0gdmVjdG9yKGRpbShzZXF0YWIpWzJdLCBtb2RlPSJjaGFyYWN0ZXIiKQoKZm9yIChpIGluIDE6ZGltKHNlcXRhYilbMl0pIHsKCWFzdl9oZWFkZXJzW2ldIDwtIHBhc3RlKCI+QVNWIiwgaSwgc2VwPSJfIikKfQoKI3dyaXRlIEFTViBmYXN0YSBmb3IgZmluYWwgQVNWIHNlcXMuIFRoaXMgZmFzdGEgZmlsZSBjYW4gYWxzbyBiZSB1c2VkIGZvciBwaHlsb2dlbmV0aWMgdHJlZSBpbmZlcmVuY2UgaW4gZGlmZmVyZW50IHBsYXRmb3Jtcwphc3ZfZmFzdGE8LSBjKHJiaW5kKGFzdl9oZWFkZXJzLCBhc3Zfc2VxcykpCndyaXRlKGFzdl9mYXN0YSwgIkFTVnMuZmEiKQoKI2NvdW50IHRhYmxlCmFzdl90YWIgPC0gdChzZXF0YWIpCnJvdy5uYW1lcyhhc3ZfdGFiKSA8LSBzdWIoIj4iLCAiIiwgYXN2X2hlYWRlcnMpCndyaXRlLnRhYmxlKGFzdl90YWIsICJBU1ZzX2NvdW50cy50c3YiLCBzZXA9Ilx0IiwgcXVvdGU9RiwgY29sLm5hbWVzPU5BKQoKI3RheCB0YWJsZQphc3ZfdGF4IDwtIHRheGEKcm93Lm5hbWVzKGFzdl90YXgpIDwtIHN1YigiPiIsICIiLCBhc3ZfaGVhZGVycykKd3JpdGUudGFibGUoYXN2X3RheCwgIkFTVnNfdGF4b25vbXkudHN2Iiwgc2VwPSJcdCIsIHF1b3RlPUYsIGNvbC5uYW1lcz1OQSkKCmNvdW50X3RhYjwtIHJlYWQudGFibGUoIkFTVnNfY291bnRzLnRzdiIsIGhlYWRlcj1ULCByb3cubmFtZXM9MSwgY2hlY2submFtZXM9Riwgc2VwPSJcdCIpCnRheF90YWI8LSBhcy5tYXRyaXgocmVhZC50YWJsZSgiQVNWc190YXhvbm9teS50c3YiLCBoZWFkZXI9VCwgcm93Lm5hbWVzPTEsIGNoZWNrLm5hbWVzPUYsIHNlcD0iXHQiKSkKCiNMb2FkIGFuZCBwcmVwYXJlIHNhbXBsZSBkYXRhIChwcmVwYXJlZCBzZXBhcmF0ZWx5KQpzYW1kZiA8LSByZWFkLnRhYmxlKGZpbGU9c2FtcGxlX25hbWVzLCBzZXA9KCJcdCIpLCBoZWFkZXI9VFJVRSkKY29sbmFtZXMoc2FtZGYpWzFdPC0gIlNhbXBsZUlEIgpyb3duYW1lcyhzYW1kZik8LSBzYW1kZiRTYW1wbGVJRAoKcHMgPC0gcGh5bG9zZXEob3R1X3RhYmxlKGNvdW50X3RhYiwgdGF4YV9hcmVfcm93cz1UKSwgc2FtcGxlX2RhdGEoc2FtZGYpLCB0YXhfdGFibGUodGF4X3RhYiksIHBoeV90cmVlKGZpdEdUUiR0cmVlKSkKCnNhdmVSRFMocHMsIGZpbGU9InBzX1Y0LnJkcyIpCgpwcmludCgiZG9uZSIpCmBgYAoKLS0tLS0KCiMjIFJlc291cmNlcwoKLSBbQ2FsbGFoYW4gZXQgYWwuIDIwMDY6ICJCaW9jb25kdWN0b3IgV29ya2Zsb3cgZm9yIE1pY3JvYmlvbWUgRGF0YSBBbmFseXNpczogZnJvbSByYXcgcmVhZHMgdG8gY29tbXVuaXR5IGFuYWx5c2VzIl0oaHR0cHM6Ly9mMTAwMHJlc2VhcmNoLmNvbS9hcnRpY2xlcy81LTE0OTIvdjIpCi0gW2BkYWRhMmAgZG9jdW1lbnRhdGlvbiBhbmQgdHV0b3JpYWxzXShodHRwczovL2JlbmpqbmViLmdpdGh1Yi5pby9kYWRhMi9pbmRleC5odG1sICkKLSBbVGF4b25vbWljIHJlZmVyZW5jZXMgZm9yIGBkYWRhMmBdKGh0dHBzOi8vYmVuampuZWIuZ2l0aHViLmlvL2RhZGEyL3RyYWluaW5nLmh0bWwpCi0gW2BjdXRhZGFwdGAgZG9jdW1lbnRhdGlvbiBhbmQgdHV0b3JpYWxzXShodHRwczovL2N1dGFkYXB0LnJlYWR0aGVkb2NzLmlvL2VuL3N0YWJsZS9pbmRleC5odG1sKQoKCi0tLS0tCgojIyBCb251czogU3VibWl0IHNjcmlwdCBhcyBhbiBPU0Mgam9iCgpUT0RPCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("06-reads-to-ASV.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

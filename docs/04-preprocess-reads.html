@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> Workflow part I: Adapter and Primer Removal</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="my.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Microbiomics Workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Overview
+  </a>
+</li>
+<li>
+  <a href="00-setup.html">
+    <span class="fa fa-gear"></span>
+     
+    Setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lectures:</li>
+    <li>
+      <a href="01-microbiomics.html">Intro to Microbiomics</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Lecture/Code-along:</li>
+    <li>
+      <a href="02-shell.html">Intro to the Shell</a>
+    </li>
+    <li>
+      <a href="03-OSC.html">Intro to OSC</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Workflow Sessions:</li>
+    <li>
+      <a href="04-preprocess-reads.html">I: Adapter and Primer Removal</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lecture/Code-along:</li>
+    <li>
+      <a href="05-R.html">Intro to R</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Workflow Sessions:</li>
+    <li>
+      <a href="06-reads-to-ASV.html">II: ASV Infererence and Taxon Assignment</a>
+    </li>
+    <li>
+      <a href="07-ASV-analysis.html">III: Analyzing ASV Data</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mcic-osu/2020-12-microbiomics-workshop.git">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><br>Workflow part I:<br>Adapter and Primer Removal</h1>
+
+</div>
+
+
+<p><br></p>
+<hr />
+<div id="goals" class="section level2">
+<h2>Goals</h2>
+<ul>
+<li>Remove adapters and primers for our raw <code>fastq</code> files.</li>
+</ul>
+<hr />
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<ul>
+<li>You can download this <code>Rmd</code> (R Markdown) file by clicking the <code>Code</code> button in the top-right of this page. To convert an <code>Rmd</code> file to an R script, type the following in an R console: <code>knitr::purl(input="&lt;filename&gt;.Rmd")</code>.</li>
+</ul>
+<hr />
+</div>
+<div id="removing-primers-and-adapters-using-cutadapt" class="section level2">
+<h2>Removing primers and adapters using <code>cutadapt</code></h2>
+<p><a href="https://cutadapt.readthedocs.io/en/stable/index.html"><code>cutadapt</code></a> is a software package to remove any adapters and primers that may be present in raw sequence data.</p>
+<p>We will use the output from <code>cutadapt</code> as input for the next step in our workflow, <a href="06-reads-to-ASV.html">ASV Infererence and Taxon Assignment</a>.</p>
+<pre class="sh"><code>#! /bin/bash
+
+#installation information: https://cutadapt.readthedocs.io/en/stable/installation.html
+
+#&gt;515F
+#GAGTGYCAGCMGCCGCGGTAA
+#&gt;806R
+#ACGGACTACNVGGGTWTCTAAT
+#&gt;515F reverse complement
+#TTACCGCGGCKGCTGRCACTC
+#&gt;806R reverse complement
+#ATTAGAWACCCBNGTAGTCCGT
+
+cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq
+
+mkdir cutadapt_out
+mkdir cutadapt_out/16S
+mkdir cutadapt_out/16S/first_trim
+mkdir cutadapt_out/16S/second_trim
+
+cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq 
+
+#make list files with the names of the files to truncate
+ls *V4*_R1_*.fastq.gz &gt; list1.txt
+ls *V4*_R2_*.fastq.gz &gt; list2.txt
+
+cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq 
+
+while IFS= read R1 &amp;&amp; IFS= read R2 &lt;&amp;3
+do
+    cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o cutadapt_out/16S/first_trim/$R1 -p cutadapt_out/16S/first_trim/$R2 $R1 $R2
+    #add second trim
+    cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC -o cutadapt_out/16S/second_trim/$R1 -p cutadapt_out/16S/second_trim/$R2 cutadapt_out/16S/first_trim/$R1 cutadapt_out/16S/first_trim/$R2
+
+done &lt; list1.txt 3&lt;list2.txt</code></pre>
+<hr />
+</div>
+<div id="bonus-material" class="section level2">
+<h2>Bonus Material</h2>
+<div id="quality-control-with-fastqc-and-multiqc" class="section level3">
+<h3>Quality Control with FastQC and MultiQC</h3>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPldvcmtmbG93IHBhcnQgSTo8YnI+QWRhcHRlciBhbmQgUHJpbWVyIFJlbW92YWwiCm91dHB1dDoKICBybWFya2Rvd246Omh0bWxfZG9jdW1lbnQ6CiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogY2VydWxlYW4KICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjc3M6IG15LmNzcwotLS0KCjxicj4KCi0tLS0tCgojIyBHb2FscwoKLSBSZW1vdmUgYWRhcHRlcnMgYW5kIHByaW1lcnMgZm9yIG91ciByYXcgYGZhc3RxYCBmaWxlcy4KCi0tLS0tCgojIyBOb3RlcwoKLSBZb3UgY2FuIGRvd25sb2FkIHRoaXMgYFJtZGAgKFIgTWFya2Rvd24pIGZpbGUgYnkgY2xpY2tpbmcgdGhlIGBDb2RlYCBidXR0b24gaW4KICB0aGUgdG9wLXJpZ2h0IG9mIHRoaXMgcGFnZS4KICBUbyBjb252ZXJ0IGFuIGBSbWRgIGZpbGUgdG8gYW4gUiBzY3JpcHQsCiAgdHlwZSB0aGUgZm9sbG93aW5nIGluIGFuIFIgY29uc29sZTogYGtuaXRyOjpwdXJsKGlucHV0PSI8ZmlsZW5hbWU+LlJtZCIpYC4KCi0tLS0tCgojIyBSZW1vdmluZyBwcmltZXJzIGFuZCBhZGFwdGVycyB1c2luZyBgY3V0YWRhcHRgCgpbYGN1dGFkYXB0YF0oaHR0cHM6Ly9jdXRhZGFwdC5yZWFkdGhlZG9jcy5pby9lbi9zdGFibGUvaW5kZXguaHRtbCkgaXMgYSBzb2Z0d2FyZQpwYWNrYWdlIHRvIHJlbW92ZSBhbnkgYWRhcHRlcnMgYW5kIHByaW1lcnMgdGhhdCBtYXkgYmUgcHJlc2VudCBpbiByYXcgc2VxdWVuY2UgZGF0YS4KCldlIHdpbGwgdXNlIHRoZSBvdXRwdXQgZnJvbSBgY3V0YWRhcHRgIGFzIGlucHV0IGZvciB0aGUgbmV4dCBzdGVwIGluIG91ciB3b3JrZmxvdywKW0FTViBJbmZlcmVyZW5jZSBhbmQgVGF4b24gQXNzaWdubWVudF0oMDYtcmVhZHMtdG8tQVNWLmh0bWwpLgoKYGBgc2gKIyEgL2Jpbi9iYXNoCgojaW5zdGFsbGF0aW9uIGluZm9ybWF0aW9uOiBodHRwczovL2N1dGFkYXB0LnJlYWR0aGVkb2NzLmlvL2VuL3N0YWJsZS9pbnN0YWxsYXRpb24uaHRtbAoKIz41MTVGCiNHQUdUR1lDQUdDTUdDQ0dDR0dUQUEKIz44MDZSCiNBQ0dHQUNUQUNOVkdHR1RXVENUQUFUCiM+NTE1RiByZXZlcnNlIGNvbXBsZW1lbnQKI1RUQUNDR0NHR0NLR0NUR1JDQUNUQwojPjgwNlIgcmV2ZXJzZSBjb21wbGVtZW50CiNBVFRBR0FXQUNDQ0JOR1RBR1RDQ0dUCgpjZCAvVXNlcnMvYmVuaXRlenBvbmNlLjEvQm94L0hDQ19BbXBTZXFfc3Vic2V0L1Y0L2Zhc3RxCgpta2RpciBjdXRhZGFwdF9vdXQKbWtkaXIgY3V0YWRhcHRfb3V0LzE2Uwpta2RpciBjdXRhZGFwdF9vdXQvMTZTL2ZpcnN0X3RyaW0KbWtkaXIgY3V0YWRhcHRfb3V0LzE2Uy9zZWNvbmRfdHJpbQoKY2QgL1VzZXJzL2Jlbml0ZXpwb25jZS4xL0JveC9IQ0NfQW1wU2VxX3N1YnNldC9WNC9mYXN0cSAKCiNtYWtlIGxpc3QgZmlsZXMgd2l0aCB0aGUgbmFtZXMgb2YgdGhlIGZpbGVzIHRvIHRydW5jYXRlCmxzICpWNCpfUjFfKi5mYXN0cS5neiA+IGxpc3QxLnR4dApscyAqVjQqX1IyXyouZmFzdHEuZ3ogPiBsaXN0Mi50eHQKCmNkIC9Vc2Vycy9iZW5pdGV6cG9uY2UuMS9Cb3gvSENDX0FtcFNlcV9zdWJzZXQvVjQvZmFzdHEgCgp3aGlsZSBJRlM9IHJlYWQgUjEgJiYgSUZTPSByZWFkIFIyIDwmMwpkbwoJY3V0YWRhcHQgLWcgR0FHVEdZQ0FHQ01HQ0NHQ0dHVEFBIC1HIEFDR0dBQ1RBQ05WR0dHVFdUQ1RBQVQgLS1kaXNjYXJkLXVudHJpbW1lZCAtLXBhaXItZmlsdGVyPWFueSAtbyBjdXRhZGFwdF9vdXQvMTZTL2ZpcnN0X3RyaW0vJFIxIC1wIGN1dGFkYXB0X291dC8xNlMvZmlyc3RfdHJpbS8kUjIgJFIxICRSMgoJI2FkZCBzZWNvbmQgdHJpbQoJY3V0YWRhcHQgLWEgQVRUQUdBV0FDQ0NCTkdUQUdUQ0NHVCAtQSBUVEFDQ0dDR0dDS0dDVEdSQ0FDVEMgLW8gY3V0YWRhcHRfb3V0LzE2Uy9zZWNvbmRfdHJpbS8kUjEgLXAgY3V0YWRhcHRfb3V0LzE2Uy9zZWNvbmRfdHJpbS8kUjIgY3V0YWRhcHRfb3V0LzE2Uy9maXJzdF90cmltLyRSMSBjdXRhZGFwdF9vdXQvMTZTL2ZpcnN0X3RyaW0vJFIyCgpkb25lIDwgbGlzdDEudHh0IDM8bGlzdDIudHh0CmBgYAoKLS0tLS0tLS0KCiMjIEJvbnVzIE1hdGVyaWFsCgojIyMgUXVhbGl0eSBDb250cm9sIHdpdGggRmFzdFFDIGFuZCBNdWx0aVFDCgoK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04-preprocess-reads.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

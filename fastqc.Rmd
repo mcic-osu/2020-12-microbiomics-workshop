@@ -1,0 +1,212 @@
+---
+title: "An OSC Job Example with FastQC"
+author: "Jelmer Poelstra"
+institute: "MCIC Wooster"
+date: "2020/12/16 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse center middle
+name:job_example
+
+
+# A Simple Job Example
+
+-----
+
+<br><br><br><br>
+
+### [[Back to overview]](#overview)
+
+---
+
+## Job example: *shebang* and *SLURM* directives
+
+- A job script needs to start with a **"*shebang*" line**,   
+  which points the computer to the program to be used:
+
+  ```sh
+  #!/bin/bash
+  ```
+
+- Then, provide the **_SLURM_ directives**:
+
+  ```sh
+  #!/bin/bash
+  set -e -u -o pipefail
+  
+  #SBATCH --nodes=1
+  #SBATCH --ntasks-per-node=1
+  #SBATCH --time=60
+  #SBATCH --account=PAS0471
+  ```
+
+---
+## Job example: Processing arguments
+
+- Our script will have **two arguments**, and:
+  - If the output dir doesn't exist yet, we'll create it.
+  - We'll print the arguments back to screen to check whether all is well.
+
+  ```sh
+  output_dir=${1}
+  fastqc_file=${2}
+  
+  mkdir -p ${output_dir}
+  
+  echo "Output dir: ${output_dir}"
+  echo "Running fastqc for file: ${fastqc_file}"
+  ```
+
+--
+
+- We need to load the `fastqc` module:
+  ```sh
+  module load fastqc
+  ```
+
+- Finally, we'll run `fastqc`:  
+  ```sh
+  fastqc --outdir=${output_dir} ${fastqc_file}
+  ```
+
+---
+
+## Job example: The full script
+
+- The script is saved as `scripts/01-fastqc.sh`
+
+```sh
+#!/bin/bash
+set -e -u -o pipefail
+  
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=60
+#SBATCH --account=PAS0471
+
+output_dir=${1}  
+fastqc_file=${2}
+
+mkdir -p ${output_dir}
+
+echo "Output dir: ${output_dir}"
+echo "Running fastqc for file: ${fastqc_file}"
+
+module load fastqc
+
+fastqc --outdir=${output_dir} ${fastqc_file}
+
+echo "All done!"
+```
+
+---
+
+## Submit the job
+
+- First, we go to our workshop's directory:
+  ```sh
+  cd /fs/project/PAS0471/workshops/2020-12_micro/
+  ```
+  
+- We need to provide the script with an output dir and a fastq file,   
+  whose names we will store in variables:
+  
+  ```sh
+  output_dir=analysis/fastqc/$USER
+  fastqc_file=data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  ```
+
+- We will also name our *SLURM* log file:
+  ```sh
+  log=slurm-fastqc-$USER-%j.log
+  ```
+
+- Now we can submit the job:
+
+  ```sh
+  sbatch -o $log scripts/01-fastqc.sh $output_dir $fastqc_file
+  # Submitted batch job 2451088
+  ```
+
+---
+
+## Monitor the job
+
+- We can check what's happening:
+
+  ```sh
+  $ squeue -u jelmer
+  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  # 2451088 serial-40 fastqc_test.sh   jelmer PD       0:00      1 (None) 
+  ```
+
+--
+
+- And again a little later:
+
+  ```sh
+  $ squeue -u jelmer
+  # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+  ```
+
+--
+
+- We could get more statistics about our job using:
+
+  ```sh
+  $ scontrol show job 2451088
+  ```
+
+---
+
+## Example job: Check the output
+
+- Let's look for *SLURM* log files: 
+
+  ```sh
+  $ ls
+  # slurm-2451088.out
+  ```
+
+--
+
+- Let's look at the contents of the log file:
+
+  ```sh
+  less slurm-2451088.out
+  # Output dir: analysis/fastqc/jelmer
+  # Running fastqc for file: data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  # Started analysis of 502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  # Approx 5% complete for 502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  # ....
+  ```
+
+--
+
+- Let's check the output dir:
+
+  ```sh
+  ls -lh $output_dir
+  # -rw-r--r-- 1 jelmer PAS0471 501K Dec  7 13:54 502-S4-V4-V5_S66_L001_R1_001_fastqc.html
+  # -rw-r--r-- 1 jelmer PAS0471 659K Dec  7 13:54 502-S4-V4-V5_S66_L001_R1_001_fastqc.zip
+  ```
+
+---
+
+## Example job: Housekeeping
+
+- Finally let's keep things tidy and organized,
+  and move the log file to the analysis dir:
+
+  ```sh
+  logdir=analysis/fastqc/$USER/logs
+  mkdir -p $logdir
+  mv slurm-XXX $logdir
+  ```
+  

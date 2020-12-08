@@ -1,5 +1,5 @@
 ---
-title: "<br>Workflow part I:<br>Processing Fastq Files"
+title: "<br>Workflow part I:<br>Adapter and Primer Removal"
 output:
   rmarkdown::html_document:
     code_download: true
@@ -9,6 +9,75 @@ output:
     css: my.css
 ---
 
-## Step 1: Quality Control
+<br>
 
-## Step 2: Adapter Removal
+-----
+
+## Goals
+
+- Remove adapters and primers for our raw `fastq` files.
+
+-----
+
+## Notes
+
+- You can download this `Rmd` (R Markdown) file by clicking the `Code` button in
+  the top-right of this page.
+  To convert an `Rmd` file to an R script,
+  type the following in an R console: `knitr::purl(input="<filename>.Rmd")`.
+
+-----
+
+## Removing primers and adapters using `cutadapt`
+
+[`cutadapt`](https://cutadapt.readthedocs.io/en/stable/index.html) is a software
+package to remove any adapters and primers that may be present in raw sequence data.
+
+We will use the output from `cutadapt` as input for the next step in our workflow,
+[ASV Infererence and Taxon Assignment](06-reads-to-ASV.html).
+
+```sh
+#! /bin/bash
+
+#installation information: https://cutadapt.readthedocs.io/en/stable/installation.html
+
+#>515F
+#GAGTGYCAGCMGCCGCGGTAA
+#>806R
+#ACGGACTACNVGGGTWTCTAAT
+#>515F reverse complement
+#TTACCGCGGCKGCTGRCACTC
+#>806R reverse complement
+#ATTAGAWACCCBNGTAGTCCGT
+
+cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq
+
+mkdir cutadapt_out
+mkdir cutadapt_out/16S
+mkdir cutadapt_out/16S/first_trim
+mkdir cutadapt_out/16S/second_trim
+
+cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq 
+
+#make list files with the names of the files to truncate
+ls *V4*_R1_*.fastq.gz > list1.txt
+ls *V4*_R2_*.fastq.gz > list2.txt
+
+cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq 
+
+while IFS= read R1 && IFS= read R2 <&3
+do
+	cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o cutadapt_out/16S/first_trim/$R1 -p cutadapt_out/16S/first_trim/$R2 $R1 $R2
+	#add second trim
+	cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC -o cutadapt_out/16S/second_trim/$R1 -p cutadapt_out/16S/second_trim/$R2 cutadapt_out/16S/first_trim/$R1 cutadapt_out/16S/first_trim/$R2
+
+done < list1.txt 3<list2.txt
+```
+
+--------
+
+## Bonus Material
+
+### Quality Control with FastQC and MultiQC
+
+

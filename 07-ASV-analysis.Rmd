@@ -1,4 +1,5 @@
 ---
+title: "<br>Workflow part III:<br>Analyzing ASV Data"
 output:
   html_document:
     theme: cerulean
@@ -19,21 +20,28 @@ knitr::opts_chunk$set(results='hide',
 
 <br>
 
-# Microbiome Marker-Gene Count Table Analysis
+-----
 
-## Before We Get Started
+## Goals
 
-### Attribution
+Analyze microbiome experimental data as a phyloseq object - explore ecological metrics and identify differentially abundant taxa.
 
-This is a slightly modified version of a document created by [Matthew Willman](mailto:willman.18@osu.edu).
+-----
 
-### Goal
-Analyze microbiome experimental data as a phyloseq object - explore ecological metrics and identify differentially abundant taxa.   
+## Notes
 
-### Want to run this code and get rid of the prose?   
-To convert Rmd to R script, R or RStudio and use: `knitr::purl(input="<filename>.Rmd")`   
+- This is a slightly modified version of a document created by [Matthew Willman](mailto:willman.18@osu.edu).
 
-### Packages
+- You can download this `Rmd` (R Markdown) file by clicking the `Code` button in
+  the top-right of this page.
+  To convert an `Rmd` file to an R script,
+  type the following in an R console: `knitr::purl(input="<filename>.Rmd")`.
+  
+-----
+
+## Setup
+
+### Install and Load Packages
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(ggplot2)
@@ -48,7 +56,9 @@ library(metagenomeSeq)
 library(breakaway)
 ```
 
-# Input & filter data
+-----
+
+## Input & filter data
 
 The phyloseq object in this tutorial was generated using gene-marker sequence data collected from soil DNA samples collected from an Ohio rye cover cropping experiment. Four treatments correspond to different cover crop management regiments:   
 T1 = no cover crop   
@@ -64,9 +74,13 @@ S4 = Summer 2020 (soybean seedling stage).
    
 DNA samples were subjected to PCR using 16S-V4 paired primers. Amplicons were then pooled and analyzed by 300 cycles of Illumina paired-end sequencing.   
 Primer sequence was removed using cutadapt (Martin, 2011). The `DADA2` R package v1.14.0 (Callahan et al., 2016) was used to trim and filter reads, infer sequence variants, and merge the resulting sequence variants to obtain full length Amplicon Sequence Variants (ASVs). Following sequence alignment using the `DECIPHER` R package v2.14.0 (Wright, 2016), phylogenetic relatedness of all ASVs was estimated by fitting a generalized time-reversable with Gamma rate variation (GTR+G+I) maximum likelihood tree using the `phangorn` R package v2.5.5 (Schliep, 2011).  
-   
+
+-----
+
 ## Load data
+
 Just like tables can be saved in R using `write.table` or `write.csv`, R objects can be saved using `saveRDS`. The resulting *.rds file can then be loaded into an R environment using `readRDS`. This is a convenient way to save R objects that require a lot of computation time or merging of multiple files.
+
 ```{r data}
 ps.raw<- readRDS("ps_16S_V4.rds")
 ```
@@ -87,7 +101,11 @@ taxa_names(ps.raw) <- paste("ASV", 1:ntaxa(ps.raw), sep="_")
 ps.raw
 taxa_names(ps.raw)[1:3]
 ```
+
+-----
+
 ## Filter taxa
+
 ### Identify and Remove Contaminants
 It is possible to introduce contaminating microbes during sample preparation. Before analyzing the data, we will identify and remove probable contaminants using the [decontam package](https://benjjneb.github.io/decontam/vignettes/decontam_intro.html).   
 
@@ -182,8 +200,11 @@ ps<- subset_samples(ps.bac_arc, Experiment=="HCC")
 
 ps
 ```
-   
+
+-----
+
 ## Filter samples
+
 Let's begin to investigate our samples. First, how many counts do we have for each sample?
 ```{r sums}
 sums<- sample_sums(ps)
@@ -205,10 +226,16 @@ head(t(otu_table(ps)[1:10]))
 head(tax_table(ps))
 ```
 
-# Normalization
+-----
+
+## Normalization
+
 Normalization is currently a much-discussed issue of microbiome studies. Differences in read depth between samples often need to be corrected before analysis. Several normalization methods have been proposed, and no one method is perfect. It may be that the most appropriate method depends on the analysis. In this tutorial, we will use rarefyed data to estimate ecological metrics and variance stabilizing transformation normalized data (via DESeq2) to identify differentially abundant taxa. For more detail, read [McMurdie and Holmes 2014](https://dx.plos.org/10.1371/journal.pcbi.1003531) and [McKnight et al. 2019](http://doi.wiley.com/10.1111/2041-210X.13115).   
    
+-----
+
 ## Rarefying
+
 Rarefying can be used to subset data such that library depth is equal for each sample. Because sampling of the data is random, rarefaction can account for an effect of total read count on taxa richness. However, rarefying is regarded as wasteful because it discards large amounts of data.
 ```{r, rarefy, message=FALSE, warning=FALSE}
 ps.rarefied<- rarefy_even_depth(ps, rngseed=1, sample.size=min(sample_sums(ps)), 
@@ -220,13 +247,20 @@ Compare these sample sums to the non-rarified data sums.
 ```{r, non-rar_sums}
 head(sample_sums(ps))
 ```
+
+-----
+
 ## Proportions
+
 Proportion normalization involves dividing each OTU count by the total sum for each sample. The resulting count data will add up to 1 (100%) for each sample. The `microbiome::transform` function can be used to easily normalize count data as proportions in a phyloseq object.
 ```{r norm_proportions}
 ps.proportions<- transform(ps, "compositional")
 otu_table(ps.proportions)[1:5,1:5]
 head(sample_sums(ps.proportions))
 ```
+
+-----
+
 ## Cumulative sum scaling
 The metagenomeSeq Cumulative Sum Scaling (CSS) normalization is another option developed for microbiome data. For more information, read [Paulson,Stine, Bravo, & Pop 2013](http://www.nature.com/articles/nmeth.2658).
 ```{r norm_css, message=FALSE}
@@ -244,7 +278,11 @@ head(sample_sums(ps))
 otu_table(ps.css)[1:5,1:5]
 head(sample_sums(ps.css))
 ```
+
+-----
+
 ## Variance stabilizing transformation
+
 This transformation method available in [DESeq2](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html) normalizes data with respect to library size as well as dispersion. Use `?vst` or read [Anders and Huber 2010](http://dx.doi.org/10.1186/gb-2010-11-10-r106) for more information.
 ```{r norm_vst, message=FALSE, warning=FALSE}
 dds<- phyloseq_to_deseq2(ps, ~1)
@@ -255,23 +293,28 @@ t(vst_counts)[1:5,1:5]
 ps.vst<- ps
 ```
 
-# Plot abundances
+-----
+
+## Plot abundances
+
 ```{r plot_abundance}
 T1<- subset_samples(ps.rarefied, Treatment=="T1")
 T1.phylum<- tax_glom(T1, taxrank="Phylum", NArm=FALSE)
 T1.phylum<- subset_taxa(T1.phylum, taxa_sums(T1.phylum)>50)
 plot_bar(T1.phylum, fill="Phylum",) + facet_wrap(~Timepoint, scales="free_x", nrow=1)
 ```
-   
-# Alpha diversity
+  
+-----
+
+## Alpha diversity
 Alpha diversity measures taxonomic diversity within a single population. Measures of alpha diversity include taxonomic richness (i.e. number of taxa), and indices which combine taxonomic richness with some measure of evenness.   
    
 *Note:* Many of these methods are greatly influenced by singleton data (i.e. taxa represented by a single count), meaning they may be unreliable if your data excludes singletons. DADA2 does not output singletons if it is run individually on each sample. Thus, if using dada2 to infer ASVs, it is advisable to use pool=T when running the dada algorithm. This will allow calling per-sample singletons, but not per-study singletons.   
    
-## Taxonomic richness
+### Taxonomic richness
 Our goal in defining richness is to determine the number of unique taxa within each population (in our case, each plot). This is difficult, as our samples contain only a portion of the total richness in within our plots. As sequence depth increases for each sample, so does the number of taxa. This can be illustrated with a rarefaction plot.   
    
-### Rarefaction
+### Rarefaction plit
 To make a rarefaction plot, we draw random samples from our data and count the number of unique ASVs as samples are drawn. The resulting rarefaction curve is expected to rise quickly then plateu as the most abundant taxa are represented. We can make a quick rarefaction curve plot directly from our `phyloseq` object of all samples using the [`vegan` package](https://peat-clark.github.io/BIO381/veganTutorial.html):
 ```{r rarecurve}
 rarecurve(otu_table(ps), step=500, xlab="Sample Size", ylab="Taxa")
@@ -360,7 +403,8 @@ bt_group_f_block_r<- betta_random(chats = combined_richness$estimate,
 bt_group_f_block_r$table
 ```
  
-   
+-----
+
 ## Indices
 We can use several indecies to explore how evenly species are distributed within each sample. Here will look at several indices for non-normalized and rarefied data. Note that 'Observed' is the sample taxanomic richness. The other three indices combine richness and abundance data for each taxon.
 ```{r alpha_div}
@@ -371,11 +415,16 @@ plot_richness(ps.rarefied, x="Timepoint", shape="Treatment", color="Treatment",
 ```
    
 Notice that several T2:S3 samples have low measures, suggesting they have low diversity (i.e. abundances are dominated by a few taxa) compared to the other samples.
-   
-# Beta diversity
+ 
+-----
+
+## Beta diversity
 Beta diversity measures differences in microbial compositions between populations. We can use a phylogenetic tree and otu table to estimate the [UniFrac](https://doi.org/10.1128/AEM.71.12.8228-8235.2005) for each sample pair. The result is a distance matrix with height and width equal to the number of samples. UniFrac may be [weighted or unweighted](https://doi.org/10.1128/AEM.01996-06). Selection of weighted or unweighted will depend on the question you want to answer. Unweighted UniFrac uses only presence or absence of a taxon from the otu table (i.e. 1000 will be treated the same as 1). It is appropriate if you want to test qualitative taxa differences between samples. Weighted UniFrac uses presence as well as quantity data (i.e. 1 < 1000). We are interested to know what changes to taxon abundance may be driven by our treatments, so we will use weighted UniFrac.   
-   
+
+-----
+
 ## Ordination
+
 First we'll make a weighted UniFrac distance matrix.
 ```{r wUF, warning=FALSE, cache=FALSE}
 set.seed(100)
@@ -407,8 +456,11 @@ plot_ordination(ps.rarefied, do, type ="samples", color ="Treatment",
 ```
    
 We can see some grouping by timepoint.
-   
+
+-----
+
 ## Hierarchical Clustering   
+
 Using the UniFrac distance matrix from earlier, we'll perform UPGMA clustering.
 ```{r, warning=FALSE}
 ps.hclust<- hclust(wUF, method="average")
@@ -440,8 +492,11 @@ treat.cols<- treat.colorScale[get_variable(ps, "Treatment")]
 plot(as.phylo(hclust.group), type="unrooted", cex=0.6, no.margin=TRUE, 
      tip.color=treat.cols)
 ```
-   
+
+-----
+
 ## Permutational analysis of variance (PERMANOVA)
+
 Finally, we'll test whether there is a significant ecological level treatment effect. PERMANOVA sounds fancy, but it is essentially ANOVA performed using computation. Permutations are used to determine how data may appear if there is no treatment effect and group differences are due to random chance. Observed data are then compared to the randomized data to calculate a p-value.   
    
 Treatments are independant within Timepoints, so we will first subset the data by Timepoint.
@@ -461,8 +516,11 @@ permanova<- adonis2(unifrac.dist ~ Treatment, data=metadata, permutations=10000)
 permanova
 ```
 A low p-value (0.0077) suggests that within the S3 timepoint (post-termination), there is a significant treatment effect.   
-   
-# Differential taxon abundance (DESeq)
+ 
+-----
+
+## Differential taxon abundance (DESeq)
+
 Here we will use [DESeq2](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html) to identify differentially abundant taxa. DESeq2 was designed to analyze RNAseq datasets, which are similar to OTU/ASV datasets in that both handle large, sparse contingency tables generated from Illumina sequencing data. For more detail, read [McMurdie and Holmes 2014](https://dx.plos.org/10.1371/journal.pcbi.1003531).  
   
 First, we'll convert our non-normalized count data to a DESeq object.
@@ -537,25 +595,23 @@ head(sig.taxa)
 write.csv(cbind(sig,sig.taxa), "DATaxa_T1S1_T1S4.csv")
 ```
 
-# Resources
-`decontam` tutorial   
-https://benjjneb.github.io/decontam/vignettes/decontam_intro.html   
-`vegan` tutorial   
-https://peat-clark.github.io/BIO381/veganTutorial.html  
-DESeq2 tutorial   
-http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html   
-Intro course on microbiome analysis  
-https://mibwurrepo.github.io/Microbial-bioinformatics-introductory-course-Material-2018/   
-UniFrac publication   
-https://doi.org/10.1128/AEM.71.12.8228-8235.2005   
-additional UniFrac publication
-https://doi.org/10.1128/AEM.01996-06   
-Articles on data normalization:   
-Waste not, want not: why rarifying microbiome data is inadmissible   
-https://dx.plos.org/10.1371/journal.pcbi.1003531   
-Microbiome datasets are compositional: and this is not optional
-http://journal.frontiersin.org/article/10.3389/fmicb.2017.02224/full  
-Methods for normalizing microbiome data: an ecological perspective   
-http://doi.wiley.com/10.1111/2041-210X.13115   
-Differential abundance analysis for microbial marker-gene surveys   
-http://www.nature.com/articles/nmeth.2658   
+-----
+
+## Resources
+
+- [`decontam` tutorial](https://benjjneb.github.io/decontam/vignettes/decontam_intro.html)
+
+- [`vegan` tutorial](https://peat-clark.github.io/BIO381/veganTutorial.html)
+
+- [`DESeq2` tutorial](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
+
+- [Intro course on microbiome analysis](https://mibwurrepo.github.io/Microbial-bioinformatics-introductory-course-Material-2018/)
+
+- [UniFrac publication](https://doi.org/10.1128/AEM.71.12.8228-8235.2005)
+- [Additional UniFrac publication](https://doi.org/10.1128/AEM.01996-06)
+
+- **Articles on data normalization:**   
+   - [Waste not, want not: why rarifying microbiome data is inadmissible](https://dx.plos.org/10.1371/journal.pcbi.1003531)
+   - [Microbiome datasets are compositional: and this is not optional](http://journal.frontiersin.org/article/10.3389/fmicb.2017.02224/full)
+   - [Methods for normalizing microbiome data: an ecological perspective](http://doi.wiley.com/10.1111/2041-210X.13115)
+   - [Differential abundance analysis for microbial marker-gene surveys](http://www.nature.com/articles/nmeth.2658)

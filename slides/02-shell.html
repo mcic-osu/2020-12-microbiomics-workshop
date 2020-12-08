@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # An Introduction to the shell
 ### Jelmer Poelstra
 ### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-06)
+### 2020/12/16 (updated: 2020-12-07)
 
 ---
 
@@ -26,8 +26,8 @@ class:inverse middle center
 
 .pull-left[
 ### [Introduction](#intro)
-### [First Command: `cal`](#cal)
 ### [Navigation](#navigation)
+### [Standard in/out and Pipes](#stdin)
 ### [Managing Files](#managing_files)
 ]
 
@@ -39,15 +39,17 @@ name: overview
 
 .pull-left[
 ### [Introduction](#intro)
-### [First Command: `cal`](#cal)
 ### [Navigation](#navigation)
+### [Standard in/out and Pipes](#stdin)
 ### [Managing Files](#managing_files)
 ]
 
 .pull-right[
+
+### [Wildcards](#wildcards)
 ### [Working with Text Files](#text_files)
-### [Keyboard Shortcuts and Tricks](#tricks)
 ### [A Very Minimal Script](#script)
+### [Bonus Material](#bonus)
 ]
 
 
@@ -71,7 +73,7 @@ name:intro
 - The shell is a **command-line interface (CLI) to the
   operating system**.
 
-- At least, for Unix-like operating systems,
+- That is, for Unix-like operating systems,
   such as Linux and Mac.   
   (In Windows, there isn't really a shell, but there are [ways to   get one](#windows-shell)).
 
@@ -157,32 +159,18 @@ class: center middle
 
 # In the shell, &lt;br&gt; we're mostly typing commands
 
---
-
 ### Basic usage is just memorizing commands for common utilities
 
----
-class:inverse middle center
-name:cal
-
-# Our first command:
-# `cal`
-
-----
-
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-### [[Back to overview]](#overview)
-
 
 ---
 
-## A trivial example: the "`cal`" command
+## A first example: the "`cal`" command
 
 - Just typing `cal` prints a calendar to screen:
 
   ```sh
-  $ cal      # I'm using a $ to indicate the prompt
+  $ cal      # I'm using a $ to indicate the prompt.
+               # Everything after a "#" is ignored.
   ```
 
 --
@@ -193,12 +181,13 @@ name:cal
 
 ---
 
-## A trivial example: the "`cal`" command
+## A first example: the "`cal`" command
 
 - Just typing `cal` prints a calendar to screen:
 
   ```sh
-  $ cal      # I'm using a $ to indicate the prompt
+  $ cal      # I'm using a $ to indicate the prompt.
+               # Everything after a "#" is ignored.
   ```
 
 - We can use the "-j" or "-m" **options** (flags):
@@ -226,18 +215,12 @@ name:cal
   ```
 
 ---
-class: middle center
-
-# `cal` 
------
-
-# THE DEMO
-
-
----
 
 ## What we've learned from `cal`
 
+- After typing a command, we issue it using `Enter`, the result will
+  be printed to screen, and we get our prompt back.
+  
 - We can use **options (flags) and arguments (parameters)** &lt;br&gt; to
   modify or determine what a command does.
 
@@ -247,33 +230,16 @@ class: middle center
 
 &lt;br&gt;
 
-### What if my argument, e.g. a file name, has a space in it?
-
---
-
-- Quote it! (And avoid spaces in file names.)
-
-  ```sh
-  $ echo "Hello World"
-  # Hello World
-
-  $ mv "My bad file name.docx" "My_better_file_name.docx"
-  ```
-
---
-
-&lt;br&gt;
-
-- Note that everything after a "`#`" is ignored -- useful for comments!
+- Note that everything after a **"`#`"** is ignored -- useful for comments!
 
 ---
 
 ## How can we know a command's options?
 
-Many commands have a "`--help`" option:
+Many commands have a **"`--help`"** option:
 
 ```sh
-cal --help
+$ cal --help
 # Usage:
 #  cal [options] [[[day] month] year]
 
@@ -292,7 +258,7 @@ cal --help
 
 ## How can we know a command's options? (cont.)
 
-- Using the `man` ("manual") command,   
+- Using the **`man`** ("manual") command,   
   whose argument is the command or utility we want the manual for:
 
 ```sh
@@ -306,7 +272,7 @@ $ man ls
 ---
 class: center middle
 
-# Let's learn some useful commands, maybe
+# Let's learn some useful commands...
 
 &lt;br&gt;&lt;br&gt;
 
@@ -327,17 +293,34 @@ name:navigation
 
 ---
 
-## Navigation: overview
+## Commands for navigation: Overview
+
+.pull-left[
+### `pwd`
+Print the Working Directory
+
+&lt;br&gt;
+
+### `cd`
+Change (working) Directory
+]
+
+.pull-right[
+### `ls`
+LiSt files and directories
+]
+
+---
+
+## Commands for navigation: Overview
 
 ```sh
-$ pwd   # Provide Working Directory (where am I?)
-
-$ ls    # List files and dirs in your current working directory
+$ pwd   # Print Working Directory (where am I?)
 
 $ cd    # Change working directory
-```
 
---
+$ ls    # List files and dirs in your current working directory
+```
 
 &lt;br&gt;
 
@@ -351,12 +334,14 @@ $ cd &lt;destination-dir&gt;
 
 ---
 
-## Navigation I: **`pwd`** (Provide Working Directory)
+## Navigation: `pwd`
 
-```sh
-$ pwd
-# /users/PAS0471/jelmer/CSB
-```
+To let the shell tell you what your working directory is, &lt;br&gt; use **`pwd`** (Print Working Directory):
+
+  ```sh
+  $ pwd
+  # /users/PAS0471/jelmer/
+  ```
 
 --
 
@@ -366,22 +351,60 @@ $ pwd
 
 &lt;br&gt;
 
-- When moving files around, it is useful to know the following shortcut
-  for the current working directory:
+---
 
+## Navigation: `cd`
+
+To change working directory, use **`cd`** (Change Directory)
+
+- Using a **relative path** (i.e., not starting from the root dir):
+```sh
+$ cd workshops/2020-12_micro/
+```
+
+- Using an **absolute path** (i.e., starting from the root dir):
+  
   ```sh
-  .
+  $ cd /fs/project/PAS0471/workshops/2020-12_micro/
   ```
 
+--
+
+&lt;br&gt;
+
+- **Note that the shell did not give us any feedback!** (This is normal.)
+
+  Check whether it worked:
+  ```sh
+  $ pwd
+  # /fs/project/PAS0471/workshops/2020-12_micro/
+  ```
 
 ---
 
-## Navigation II: `ls` (LiSt)
+## Navigation: `cd` (cont.)
+
+### Tricks!
+
+```sh
+$ cd ..     # Move one directory up
+$ cd ../..  # Move two directories up
+$ cd ~      # Move to your home dir (~ is always /home/&lt;user&gt;/ !)
+$ cd -      # Go back to last visited dir (like "Back" in a browser)
+
+$ cd .      # This doesn't move you anywhere, as `.` is a shortcut
+            # for the current working directory (useful elsewhere)
+```
+
+---
+
+## Navigation: `ls`
+
+#### To list the contents of our current working directory, use **`ls`** (LiSt)
 
 ```sh
 $ ls
-
-# data_wrangling git good_code LICENSE README.md
+# TODO: OUTPUT
 ```
 
 --
@@ -390,53 +413,134 @@ $ ls
 
 - We can try some options to modify the output:
 
-```sh
-$ ls -l -h   # -l: long format / -h: human-readable file sizes
-
-# drwxr-xr-x 7 jelmer PAS0471 4.0K Dec  4 11:23 data_wrangling
-# drwxr-xr-x 5 jelmer PAS0471 4.0K Dec  4 11:23 git
-# drwxr-xr-x 5 jelmer PAS0471 4.0K Dec  4 11:23 good_code
-# -rw-r--r-- 1 jelmer PAS0471  35K Dec  4 11:23 LICENSE
-# -rw-r--r-- 1 jelmer PAS0471 2.4K Dec  4 11:23 README.md
-```
+  ```sh
+  $ ls -l -h   # -l: long format / -h: human-readable file sizes
+  # TODO: OUTPUT 
+  ```
 
 --
 
 - Again, these options can be "pasted together":
 
-```sh
-ls -lha     # We've added the "-a" option to show hidden files
-```
+  ```sh
+  $ ls -lha     # Also added the "-a" option to show hidden files
+  ```
 
 ---
 
-## Navigation III: cd (Change Directory)
+## Navigation: `ls` (cont.)
 
-- Using a **relative path** (i.e., not starting from the root dir):
-```sh
-cd data_wrangling/
-```
+- We can also provide a directory or file name as an argument:
 
-- Using an **absolute path** (i.e., starting from the root dir):
-```sh
-cd /users/PAS0471/jelmer/CSB/data_wrangling
-```
+  ```sh
+  $ ls -lh Experiment description
+  ```
+  
+---
+
+## Navigation: `ls` (cont.)
+
+- We can also provide a directory or file name as an argument:
+
+  ```sh
+  $ ls -lh Experiment description
+  # ls: cannot access Experiment: No such file or directory
+  # ls: cannot access description: No such file or directory
+  ```
+
+  What just happened? And how do we get around this?
+
+&lt;br&gt;
 
 --
 
-### Tricks!
+- **To interpret spaces literally**, quote the full string or "escape" the space:
 
-```sh
-cd ..     # Move one directory up
-cd ../..  # Move two directories up
-cd ~      # Move to your home dir (~ is always /home/&lt;user&gt;/ !)
-cd -      # Go back to last visited dir (like "Back" in a browser)
+  ```sh
+  $ ls "Experiment description"
+  
+  $ ls Experiment\ description
+  ```
 
-cd .      # What does this do?
-```
+--
+
+&lt;br&gt;
+
+- **But, better to avoid spaces in file names!**
 
 
 
+---
+class: center middle inverse
+name:stdin
+
+# Standard input/output and Pipes
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
+---
+
+## Standard output and redirection
+
+- The regular output of a command is called **"standard out"** ("*stdout*").   
+  By default, this is printed to screen,
+  but it can be **redirected to a file**.
+
+--
+
+- When redirecting output to a file with `&gt;`:
+  - Will create file if it doesn't exist.
+  - Will **overwrite** any contents if the file does exist. 
+
+  ```sh
+  $ ls -lhr project_A &gt; lift_of_files.txt
+  ```
+
+--
+
+- **Append** the output to a file with `&gt;&gt;`:
+
+  ```sh
+  $ ls -lhr project_B &gt;&gt; lift_of_files.txt
+  ```
+
+--
+
+&lt;br&gt;
+
+- See the [bonus materials](#stderr) to learn about redirecting **error** messages.
+
+
+---
+
+## Standard input and pipes
+
+- A file name can be given as an argument to most commands.   
+  If a file name is provided, this file will be read and
+  represent the *input* upon which the command will act:
+
+  ```sh
+  $ grep "missing_file" lift_of_files.txt
+  ```
+
+--
+
+&lt;br&gt;
+
+- Most command *also* accept input from "standard input" (*stdin*),   
+  using the pipe:
+
+  ```sh
+  $ cat lift_of_files.txt | grep "missing_file"
+  ```
+  
+  The pipe `|` presents the output (*stdout*) of `cat` as
+  input (*stdin*) to `grep`.
+  
 
 ---
 class: center middle inverse
@@ -452,82 +556,243 @@ name:managing_files
 
 ---
 
-## Managing files: overview
+## Commands to manage files: Overview
 
-```sh
-$ mkdir &lt;dirname&gt; # Make a new directory
-$ cp &lt;from&gt; &lt;to&gt;  # Copy files or dirs
-$ mv &lt;from&gt; &lt;to&gt;  # Move files or dirs (also functions as rename!)
-$ rm &lt;file&gt;       # Remove a file or directory
-```
-
---
+.pull-left[
+### `mkdir`
+Make a new directory.
 
 &lt;br&gt;
 
-### Operating on directories:
+### `rm`
+Remove files (and directories).
+]
 
-- For `cp` and `rm`,   
-  the "`-r`" option is needed to act on directories
-  (and their contents!)
+--
+
+.pull-right[
+### `cp`
+Copy files (and directories).
+
+&lt;br&gt;
+### `mv`
+Move or rename files and directories.
+]
+
+---
+
+## Commands to manage files
 
 ```sh
-# Copy "unix/data/" to the current dir (recall the "." shortcut) 
-cp -r unix/data . 
+$ mkdir &lt;dirname&gt; # Make a new directory
+$ rm &lt;file&gt;       # Remove files (and/or directories)
+                  # BEWARE: There is no Thrash Bin in the shell!
+$ cp &lt;from&gt; &lt;to&gt;  # Copy files (and/or directories)
+$ mv &lt;from&gt; &lt;to&gt;  # Move or rename files and/or directories
+```
+
+&lt;br&gt;
+
+--
+
+- Examples:
   
-# Remove "my_dir" and its contents.
-# Beware: there is NO THRASH BIN in the shell!
-rm -r my_dir/
-```
-
-
+  ```sh
+  mkdir metadata
+  mkdir -p manuscript/fig/supp/      # `-p`: multiple levels
+  ```
+  
+--
+  
+  ```sh
+  mv "Experiment description" experiment_description
+  ```
+  
+  ```sh
+  cp results/fig/Fig1.png .          # `.` for current wd            
+  ```
+  
 ---
 
-## Your turn
-
-1. Go to **XXX**
-
-1. Create a new directory with your name (no spaces!)
-
-1. Copy README.md into the directory
-
-1. Move into your directory
-
-1. Rename README.md to README.txt
-
-1. Remove your namesake directory and all its contents
-
----
-background-color: #ededed
-
-## Solution
+## Commands to manage files (cont.)
 
 ```sh
-mkdir jelmer_poelstra
+$ mkdir &lt;dirname&gt; # Make a new directory
+$ rm &lt;file&gt;       # Remove files (and/or directories)
+                  # BEWARE: There is no Thrash Bin in the shell!
+$ cp &lt;from&gt; &lt;to&gt;  # Copy files (and/or directories)
+$ mv &lt;from&gt; &lt;to&gt;  # Move or rename files and/or directories
+```
 
-cp README.md jelmer_poelstra/ # Trailing slash can be omitted
+&lt;br&gt;
 
-cd jelmer_poelstra/           # Idem
+- For `cp` and `rm`, use **"`-r`"** (for "recursive") to act on directories and their contents:
 
-mv README.md README.txt
+--
 
-cd ..
+  ```sh
+  cp -r my_project/ /home/jelmer/backup/ 
+    
+  rm -r my_project/      # Confirm removal for each file
+  rm -rf my_project/     # `-f` for force, no prompting
+  ```
 
-rm -r jelmer_poelstra         # Non-interactive: "rm -rf"
+--
+
+- The `-r` option is not needed with `mv`.
+
+---
+background-color:#e4ede4
+
+## Your turn: Navigation &amp; Managing files
+
+1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.   
+   **This is our workshop's home directory.**
+
+2. Create a new directory with your name (no spaces!) *within* the users/ directory.
+
+3. Copy `/fs/project/PAS0471/workshops/2020-12_micro/README.txt` into your directory.
+
+4. Move into your directory.
+
+5. Rename `README.txt` to `README.md`.
+
+6. Move back to our workshop's home directory;
+   try to avoid using the full (absolute) path notation to do so.
+
+
+---
+background-color:#e4ede4
+
+## Solutions: Navigation &amp; Managing files
+
+```sh
+# 1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.
+cd /fs/project/PAS0471/workshops/2020-12_micro/
+
+# 2. Create a new dir with your name *within* the users/ directory.
+mkdir users/jelmer
+
+# 3. Copy `README.txt` into your directory:
+cp README.txt users/jelmer/ # Trailing slash can be omitted
+
+# 4. Move into your directory:
+cd users/jelmer/           # Idem
+
+# 5. Rename `README.txt` to `README.md`:
+mv README.txt README.md
+
+# 6. Move back to `/fs/project/PAS0471/workshops/2020-12_micro/`:
+cd ../..                   # Or: "cd -"
+
 ```
 
 ---
+class:inverse middle center
+name:wildcards
 
-## Managing files: Wildcards
+# Wildcards
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
+---
+
+## Matching file names with wildcards
 
 |Wildcard | Matches |
 |-|-|
 | * | Any number of any character, including nothing |
 | ? | Any single character 
-| [] | One of the "character set" within the brackets   
-| [^] | None of the "character set" within the brackets   
+| [] and [^] | One or none (`^`) of the "character set" within the brackets   
 
+--
 
+- Say we have the following files in a directory:
+  ```sh
+  # sample1_F.fastq.gz sample1_R.fastq.gz
+  # sample2_F.fastq.gz sample2_R.fastq.gz
+  # sample3_F.fastq.gz sample3_R.fastq.gz
+  ```
+
+--
+
+&lt;br&gt;
+
+- **To match both "sample1" files:**
+
+  ```sh
+  ls sample1_?.fastq.gz
+  ls sample1*
+  ls sample1*fastq.gz
+  ```
+
+---
+
+## Matching file names with wildcards (cont.)
+
+|Wildcard | Matches |
+|-|-|
+| * | Any number of any character, including nothing |
+| ? | Any single character 
+| [] and [^] | One or none (`^`) of the "character set" within the brackets   
+
+- Say we have the following files in a directory:
+  ```sh
+  # sample1_F.fastq.gz sample1_R.fastq.gz
+  # sample2_F.fastq.gz sample2_R.fastq.gz
+  # sample3_F.fastq.gz sample3_R.fastq.gz
+  ```
+
+&lt;br&gt;
+
+- **To match only files with forward ("F) reads:**
+  
+  ```sh
+  $ ls *F*
+  $ ls *F.fastq.gz
+  ```
+
+---
+
+## Matching file names with wildcards (cont.)
+
+|Wildcard | Matches |
+|-|-|
+| * | Any number of any character, including nothing |
+| ? | Any single character 
+| [] and [^] | One or none (`^`) of the "character set" within the brackets   
+
+- Say we have the following files in a directory:
+  ```sh
+  # sample1_F.fastq.gz sample1_R.fastq.gz
+  # sample2_F.fastq.gz sample2_R.fastq.gz
+  # sample3_F.fastq.gz sample3_R.fastq.gz
+  ```
+
+&lt;br&gt;
+
+- When using a "character set", the presence of *any* of the characters will
+  trigger a match. **To match files for sample1 and sample2 only:**
+  
+  ```sh
+  $ ls sample[12]*   # Use the character class notation
+  $ ls sample[1-2]*  # Can use ranges like [0-9], [A-Z], [a-z].
+  $ ls sample[^3]*   # Other way around: exclude sample3
+  ```
+
+---
+background-color:#e4ede4
+
+## Your turn: Wildcards
+
+---
+background-color:#e4ede4
+
+## Solutions: Wildcards
 
 ---
 class: center middle inverse
@@ -544,190 +809,191 @@ name:text_files
 
 ---
 
-## Text files: Overview
+## Commands to work with text files: Overview
 
 .pull-left[
-### `less`
-A file "pager".
+### `cat`
+Print contents of (a) file(s).   
 
 &lt;br&gt;
 
-### `cat`
-Print contents of (a) file(s).   
-Short for conCATenate.
+### `head` / `tail`
+Show the first or last lines of a file.
 ]
 
 .pull-right[
-### `head` / `tail`
-Show the first or last lines of a file.
+### `grep`
+Search for contents within files.
 
 &lt;br&gt;
 
-### `grep`
-Search for contents within files.
+### (In bonus materials: [`less`](#less))
 ]
 
 ---
 
-## Text files I: `less`
-
-- `less` does not load entire files into memory,   
-  **so you can easily look at enormous files.**
-
-  ```sh
-  less myfile.txt
-  ```
-
-- Now you'll be inside the pager, and your prompt is gone.
-
---
-
-&lt;br&gt;
-
-- Leave `less` by pressing "&lt;kbd&gt;q&lt;/kbd&gt;"
-
-- Many keyboard shortcuts to navigate:
-  - `d` / `u` &amp;nbsp; &amp;nbsp; go down / up half a page
-  - `g` / `G` &amp;nbsp; &amp;nbsp; go to the first / last line
-  - `/` &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; then type keyword to search for
-  - `n` / `N` &amp;nbsp; &amp;nbsp; go to next/previous search match
-
---
-
-### Less try it!
-
----
-
-## Text files II: `cat`
+## Text files: `cat`
 
 - `cat` will print one or more files to screen.   
   
   ```sh
-  cat my_file.txt
+  $ cat my_file.txt
   
-  cat my_file.txt &gt; new_file.txt    # What did we do here?
+  $ cat my_file.txt &gt; new_file.txt  # What did we do here?
   ```
 
 --
-
-&lt;br&gt;
 
 - If you have, say, 10,000 `fasta` files in a directory,
   each representing a gene, and you want to put them all into
   a single `fasta` file:
   
   ```sh
-  cat *.fasta &gt; all.fasta # Wow!
+  $ cat *.fasta &gt; all.fasta        # Recall the `*` wildcard  
   ```
-  Here, the **`*`** allowed us to match all files ending in ".fasta".
 
 --
 
 &lt;br&gt;
 
-- "`z`" counterparts of these functions directly show zipped files:
+### Nice viewing of tabular files: `column -t`
 
   ```sh
-  zcat my_fastq.gz
+  column -t mytable.txt
   ```
+
 
 ---
 
-## Text files II: `head` and `tail`
+## Text files: `head` and `tail`
 
 - `head` / `tail` will simply show the first / last few lines of a file.
 
-```sh
-head my_file.txt        # By default, shows the first 6 lines
-head -n 1 my_file.txt   # Just show the first line
-```
-
---
-
-```sh
-tail my_file.txt       # By default, shows the first 6 lines
-tail -n 1 my_file.txt  # Just show the last line
-```
+  ```sh
+  $ head my_file.txt        # Default: shows first/last 6 lines
+  
+  $ tail -n 1 my_file.txt   # Just show the last/first line
+  ```
 
 - Showing the last line of a 100 GB file outside of the
   shell would be quite an ordeal, while in the shell it's
-  extremely simple and lightning fast.
+  extremely simple and lightning fast!
 
----
+--
 
-## Text files II: `head` and `tail` (cont.)
-
-### More useful options:
+&lt;br&gt;
 
 - Skip the first line of a file:
 
   ```sh
-  tail -n +2 file
-  ```
-
-&lt;br&gt;
-
-- Skip the last line of a file:
-  
-  ```sh
-  head -n -1 file
+  $ tail -n +2 file
   ```
 
 --
 
-&lt;br&gt;
-
 - Print line number 1866:
   
   ```sh
-  head -n 1866 file | tail -n 1   # We'll talk about the "|" more
+  $ head -n 1866 file | tail -n 1
   ```
 
 ---
 
-## Text files IV: `grep`
+## Text files: `grep`
+
+`grep` searches for strings
+(or regular expression patterns) in files.   
+By default, it returns lines for which matches were found.
+
+- Create a file for all annotations for "Gene001":
+  ```sh
+  grep "Gene001" my.gff &gt; Gene001.gff
+  ```
+
+--
+
+- Count the number of lines containing "exon": 
+  ```sh
+  grep -c "exon" my.gff   # -c: count matches
+  ```
+
+--
+
+- Remove the header lines, which start with a `#`, from a VCF file:
+  ```sh  
+  grep -v "^#" my.vcf     # -v: reverse search  
+  ```
+
+--
+
+Many options, e.g.:
+  - `-r` to search recursively (search all your files for a certain word)
+  - `-n` to print line numbers along with matches
+  
 
 ---
+background-color:#e4ede4
 
-## Some other commands worth mentioning:
+## Your turn: Working with text files
 
-- **`cut`**: cut (select) one or more columns from a tabular file
+**Now, we'll look at a file with some metadata for our samples.**
+
+1. Move into the `metadata` folder within our workshop's home directory (`/fs/project/PAS0471/workshops/2020-12_micro/`).
+
+1. Print the entire file to screen with `cat` and with `column -t`.
+   Compare the output, especially in the first lines of the file.
+
+2. Print the first 6 lines of the file, then make them line up with
+  `column -t`.
+
+2. Print everything but the first line, which has the column headers.
+
+3. Print the line for sample "304-S1".
+
+---
+background-color:#e4ede4
+
+## Solutions: Working with text files
+
+1. Move into the `metadata` folder:
   
-  ```sh
-  cut -f 2-5 &lt; my.gff   # Cut the 2nd through 5th column 
+    ```sh
+  mv metadata/
   ```
 
-- **`wc` / `wc -l`**: count words or lines (`-l` flag).
+1. Print the entire file to screen with `cat` and with `column -t`:
   
   ```sh
-  wc -l my.fastq   # Count the number of lines in a fastq file.
+  cat V4_meta.txt
+  column -t V4_meta.txt
+  ```
+  
+2. Print the first 6 lines of the file, then make them line up with
+  `column -t`:
+  
+  ```sh
+  head V4_meta.txt | column -t
+  ```
+  
+2. Print everything but the first line, which has the column headers:
+  
+  ```sh
+  tail -n +2
   ```
 
-- **`sort`**: sort a file by a specified column
-  
+3. Print the line for sample "304-S1":
+    
   ```sh
-  sort -k5,5 my.bed
-  ```
-  
-- **`uniq` / `uniq -c`**: retain or count (`-c` flag) unique occurences (*if in order!*)
-
-  ```sh
-  uniq ....
+  grep "304-S1" V4_meta.txt
   ```
 
-- **Combining these commands to get a sorted list of ... :**
-  
-  ```sh
-  cut -f X my.gff | sort | uniq -c | sort -k2
-  ```
-  
 
 
 ---
 class: center middle inverse
-name:redirection
+name:script
 
-# Redirection and Pipes
+# Running a Very Minimal Script
 
 ----
 
@@ -737,64 +1003,67 @@ name:redirection
 
 ---
 
-## Standard out, standard error, and redirection
+## Running a very minimal script
 
-- The regular output of a command is called "standard out" ("*stdout*").   
-  By default, this is printed to screen, but it can be *redirected*
-  to a file.
+### TODO: Change to fastqc?
 
-- Output to file -- will create file if it doesn't exist,
-```sh
-$ grep "Gene001" my.gff &gt; selected_genes.gff
-```
+- A script called `hello.sh`:
 
-- **Append** to file
+  ```sh
+  #!/bin/bash
+  set -e -u -o pipefail
+
+  echo "Hello ${1}!"    # ${1} is standard input!
   ```
-  $ grep "Gene002" my.gff &gt;&gt; selected_genes.gff
+
+--
+
+- Run the script:
+
+  ```sh
+  $ hello.sh Jelmer
+  # Hello Jelmer!
   ```
+
+--
+
+- We can also redirect the output to a file:
+ 
+   ```sh
+  $ hello.sh Jelmer &gt; hello.txt
+  
+  $ cat hello txt
+  # Hello Jelmer!
+  ``` 
+  
+---
+class: center middle inverse
+
+# Questions?
+
 
 ---
+class: inverse center middle
+name:bonus
 
-## Standard input and pipes
+# Bonus Materials
 
-- A filename can be given as an argument to most commands.   
-  If a filename is provided, this file will be read and
-  represent the *input* upon which the command will act:
+-----
 
-  ```sh
-  grep -v "#" my.vcf
-  ```
+### I: [Keyboard Shortcuts and General Tricks](#tricks)
+### II: [Text File Data Tools](#datatools)
+### III: [The `less` Pager](#less)
+### IV: [Standard Error](#stderr)
 
---
+&lt;br&gt;&lt;br&gt;
 
-- Most command *also* accept input from "standard input" (*stdin*),   
-  using the pipe:
-
-  ```sh
-  cat my.vcf | grep -v "#"  # Equivalent to the previous command
-  ```
-  
-  The pipe `|` presents the output (*stdout*) of `cat` as
-  input (*stdin*) to `grep`.
-  
---
-
-- Some commands *only* accept input from *stdin*.
-  When not using these commands in a "pipeline", you can also redirect
-  the input:
-  ```sh
-  cut -f 6 &lt; my.vcf
-  
-  cut -f 6 &lt; my.vcf &gt; my_column.txt   # Redirect stdin and stdout
-  cat my.vcf | cut -f 6 &gt; my_column.txt # A bit more intuitive?
-  ```
-
-
+### [[Back to overview]](#overview)
 
 ---
 class: center middle inverse
 name:tricks
 
+# Bonus Material I:
 # Keyboard Shortcuts and General Tricks
 
 ----
@@ -832,12 +1101,36 @@ name:tricks
 | `Ctrl` + `y` | Paste previously cut element |
 | `Alt` + `.` | Paste last argument of last command |
 
+---
+
+# Keyboard Shortcuts and Tricks III:&lt;br&gt;The OSC browser shell
+
+- No right-mouse click options
+
+- Double-clicking text will copy it to the clipboard
+
+- `Ctrl` + `v` will paste (no `Shift` needed)
+
+- `Ctrl` + `w` (cut last word) does not work --   
+  reserved browser shortcut to close a tab.
+
+---
+
+## Brace expansion
+
+```sh
+$ touch sample{1,2,3}_{F,R}.fastq.gz
+
+$ ls
+#sample1_F.fastq.gz  sample1_R.fastq.gz  sample2_F.fastq.gz  sample2_R.fastq.gz  sample3_F.fastq.gz  sample3_R.fastq.gz
+```
 
 ---
 class: center middle inverse
-name:script
+name: datatools
 
-# Running a Very Minimal Script
+# Bonus Material II:
+# Text File Data Tools
 
 ----
 
@@ -847,42 +1140,226 @@ name:script
 
 ---
 
-## A very minimal script
+## Text file data tools
 
-- A script called `hello.sh`:
-
+- **`cut`**: cut (select) one or more columns from a tabular file
+  
   ```sh
-  #!/bin/bash
-  set -e -u -o pipefail
+  $ cut -f 2-5 &lt; my.gff   # Cut the 2nd through 5th column 
+  ```
 
-  echo "Hello ${1}!"    # ${1} is standard input!
+- **`wc` / `wc -l`**: count words / lines.
+  
+  ```sh
+  $ wc -l my.fastq   # Count the number of lines in a fastq file.
   ```
 
 --
 
-- Run the script:
+&lt;br&gt;
+
+- **`sort`**: sort a file by a specified column
+  
+  ```sh
+  $ sort -k5,5 my.bed
+  ```
+  
+- **`uniq` / `uniq -c`**: retain / count unique occurrences (*if in order!*)
 
   ```sh
-  hello.sh Jelmer
-  # Hello Jelmer!
+  $ uniq -c list_of_names.txt # Would return count for each name
   ```
+
+---
+
+## Combining these tools can be very powerful!
+
+For instance, the "pipeline" below will return a sorted list (most commmon
+to least common) of annotation types from an annotation file&lt;sup&gt;[1]&lt;/sup&gt;:
+
+```sh
+$ grep -v "^#" my.gff | cut -f3 | sort | uniq -c | sort -rn
+# 36128 exon
+# 25901 CDS
+# 7588 UTR
+# ...
+```
 
 --
 
-- We can also redirect the output to a file:
- 
-   ```sh
-  hello.sh Jelmer &gt; hello.txt
+- Command-by-command (note **`\`** to continue across lines):
+
+  ```sh
+  $ grep -v "^#" my.gff | \ # Excl. header lines starting with `#`
+  +   cut -f3 | \           # Select only the 3rd column
+  +   sort | \              # Sort alphabetically
+  +   uniq -c | \           # Count each unique element
+  +   sort -rn              # Numerically reverse-sort
+  ```
+
+
+.footnote[&lt;sup&gt;[1]&lt;/sup&gt;From: Bioinformatics Data Skills (Buffalo 2015)]
+
+
+---
+background-color:#e4ede4
+
+## Your Turn: Advanced exercises
+
+1. How many samples (lines) do we have for each "Experiment"?
+
+2. How many different "Blocks" do we have?   
+   Hint: Make sure to exclude the lines which have "NA" in the "Blocks" column.
+
+3. Earlier, with `less`, we looked for the pattern *"GAGTGCCAGCCGCCGCGGTAATACGTAGGGTGCGAGCGTTAATCGGAATTACTGGGC"*    
+  in the file `data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz`.
   
-  cat hello txt
-  # Hello Jelmer!
-  ``` 
+  Now, count how many times this pattern occurs in the file using `grep`.
+
+
+---
+background-color:#e4ede4
+
+## Solutions: Advanced exercises
+
+1. How many samples (lines) do we have for each "Experiment"?
   
+  ```sh
+  tail -n +2 V4_meta.txt | cut -f 3 | sort | uniq -c
+  ```
+
+2. How many different "Blocks" do we have?
+
+  ```sh
+  $ tail -n +2 V4_meta.txt | grep -v "NA" | \
+  +    cut -f 6 | sort | uniq | wc -l
+  ```
+
+3. Count occurences of
+  *"GAGTGCCAGCCGCCGCGGTAATACGTAGGGTGCGAGCGTTAATCGGAATTACTGGGC"*
+  in the file `data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz`.
+
+  ```sh
+  $ grep -c "GAGTGCCAGCCGCCGCGGTAATACGTAGGGTGCGAGCGTTAATCGGAATTACTGGGC" \
+  +      data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  ```
+
+
 ---
 class: center middle inverse
+name:less
 
-# Questions?
+# Bonus Material III:
+# The `less` Pager
 
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
+---
+
+## The `less` pager
+
+- `less` doesn't load entire files into memory: **easy to look at large files**.
+
+  ```sh
+  $ less my_file.txt
+  
+  $ zless my_fastq.gz    # `zless` variant to view zipped files!
+  ```
+
+- Now you'll be inside the pager, and your prompt is gone.
+
+--
+
+- Keyboard shortcuts:
+
+| key | function |
+|--|--|
+| `q` | Exit `less` | 
+| `d` / `u` | Go down / up half a page. &lt;br&gt;Note: arrow keys and `pgup` / `pgdn` usually also work.|
+| `g` / `G` | Go to the first / last line (`home` / `end` also work)
+|`/` | Search: next type keyword to search for
+| `n` / `N` | Go to next/previous search match
+
+---
+background-color:#e4ede4
+
+## Your turn: `less`
+
+You should still be in our workshop's home directory (`/fs/project/PAS0471/workshops/2020-12_micro/`).
+
+This directory contains the data we will be working with today and tomorrow.
+In `data/fastq`, you can find the raw gzipped fastq files.
+
+- Open a gzipped fastq file with `less`:
+  
+  
+  ```sh
+  zless data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
+  ```
+
+- Try to move around a bit.
+
+- Jump to the first and last line.
+
+- Now look for the following pattern:
+  "GAGTGCCAGCCGCCGCGGTAATACGTAGGGTGCGAGCGTTAATCGGAATTACTGGGC"
+
+- Exit.
+
+---
+class: center middle inverse
+name:stderr
+
+# Bonus Material IV:
+# Standard Error
+
+----
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### [[Back to overview]](#overview)
+
+---
+
+## Standard error
+
+- When commands run into errors, they will print error messages.  
+  
+  Error messages are **not** part of standard out,   
+  and instead represent a separate output stream: **"standard error"**.
+
+--
+
+- We can see this when we try to list a non-existing directory:
+
+  ```sh
+  ls -lhr solutions/ &gt; solution_files.txt 
+  # ls: cannot access solutions.txt: No such file or directory
+  ```
+
+- The error was printed to screen. What about the file?
+
+--
+
+  ```sh
+  $ ls
+  # solution_files.txt
+  $ cat solution_files.txt
+  $                # We just get our prompt back - file is empty
+  ```
+
+--
+
+- To redirect the standard error:
+
+  ```sh
+  ls -lhr solutions/ &gt; solution_files.txt 2&gt; errors.txt
+  ls -lhr solutions/ &amp;&gt; out.txt # `&amp;&gt;`: combine stdout and stderr
+  ```
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
