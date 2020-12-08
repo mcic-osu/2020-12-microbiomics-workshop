@@ -3,3 +3,4 @@
 .Rproj.user
 *.code-workspace
 *_cache
+docs/slides/*Rmd
