@@ -4,8 +4,9 @@
 *.code-workspace
 *_cache
 docs/slides/*Rmd
-analysis/*
-metadata/*
-processed_data/*
-raw_data/*
+analysis
+metadata
+processed_data
+raw_data
+
 
