@@ -57,9 +57,11 @@ git support, etc.
 
 Conveniently, VS Code is also available as an Interactive App through [OSC OnDemand](https://ondemand.osc.edu).
 
-### shell
+### Unix shell
 
-To get a Unix terminal in Windows, there are a couple of options.
+Mac and Linux users have a Unix shell available by default.
+
+To get a Unix shell in Windows, there are a couple of options.
 
 - If you have Windows 10, consider installing [Windows
   Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
