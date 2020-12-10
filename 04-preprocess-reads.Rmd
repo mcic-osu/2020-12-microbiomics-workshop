@@ -58,7 +58,7 @@ knitr::opts_chunk$set(eval = FALSE)
 package to remove any adapters and primers that may be present in raw sequence data.
 
 We will use the output from `cutadapt` as input for the next step in our workflow,
-[ASV Infererence and Taxon Assignment](06-reads-to-ASV.html).
+[ASV Infererence and Taxon Assignment](07-ASV-inference.html).
 
 
 ### Primers
@@ -514,6 +514,6 @@ ls -lh user/$USER/processed_data/fastq_trimmed/second_trim/
 
 <br>
 
-All done! Our [next step](06-reads-to-ASV.html) will be to further process the `fastq` files with `cutadapt`.
+All done! Our [next step](07-ASV-inference.html) will be to further process the `fastq` files with `cutadapt`.
 
 <br> <br> <br>

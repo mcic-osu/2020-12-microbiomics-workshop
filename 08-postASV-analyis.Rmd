@@ -44,7 +44,7 @@ Analyze microbiome experimental data as a phyloseq object - explore ecological m
 
 - This assumes you still have an active RStudio Server job at OSC;
    if not see the
-   [instructions on the previous page](06-reads-to-ASV.html#start-an-rstudio-server-job-at-osc) to start one.
+   [instructions on the previous page](07-ASV-inference.html#start-an-rstudio-server-job-at-osc) to start one.
 
 - In the Files pane, in the `markdown` directory,
   open the file `07-ASV-analysis.Rmd`. That's this file!

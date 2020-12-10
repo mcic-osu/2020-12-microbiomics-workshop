@@ -20,21 +20,21 @@ output:
 
 ------------
 
-## <a href="slides/03-OSC.html" target="_blank">Click here for the slides</a>
+## <a href="03-OSC-slides.html" target="_blank">Click here for the slides</a>
 
 
 **Or jump straight to a section within the slides:**
 
-- [Introduction](slides/03-OSC.html#introduction)
-- [Connecting to OSC](slides/03-OSC.html#connect)
-- [Transferring Files](slides/03-OSC.html#transfer)
-- [Software at OSC](slides/03-OSC.html#software)
-- [Starting a Compute Job](slides/03-OSC.html#jobs)
-- [Compute Job Options](slides/03-OSC.html#job_options)
-- [Bonus Material](slides/03-OSC.html#bonus)
-  - I: [OSC File Systems](slides/03-OSC.html#filesystems)
-  - II: [Accessing OSC In Your Shell (`ssh`)](slides/03-OSC.html#shell)
-  - III: [Monitoring *SLURM* Jobs](slides/03-OSC.html#monitor)
-  - IV: [`conda`](slides/03-OSC.html#conda)
+- [Introduction](03-OSC-slides.html#introduction)
+- [Connecting to OSC](03-OSC-slides.html#connect)
+- [Transferring Files](03-OSC-slides.html#transfer)
+- [Software at OSC](03-OSC-slides.html#software)
+- [Starting a Compute Job](03-OSC-slides.html#jobs)
+- [Compute Job Options](03-OSC-slides.html#job_options)
+- [Bonus Material](03-OSC-slides.html#bonus)
+  - I: [OSC File Systems](03-OSC-slides.html#filesystems)
+  - II: [Accessing OSC In Your Shell (`ssh`)](03-OSC-slides.html#shell)
+  - III: [Monitoring *SLURM* Jobs](03-OSC-slides.html#monitor)
+  - IV: [`conda`](03-OSC-slides.html#conda)
 
 <br> <br> <br>

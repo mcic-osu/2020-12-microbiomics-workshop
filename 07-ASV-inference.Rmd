@@ -59,7 +59,7 @@ Process metabarcoding reads, post-adapter removal, including:
 <img src=slides/figs_OSC/apps.png width="500">
 </p>
 
-- Fill out the form as shown [here](slides/03-OSC.html#rstudio_server_job)
+- Fill out the form as shown [here](03-OSC-slides.html#rstudio_server_job)
 
 - Once your job has started, click `Launch RStudio Server`.
 
