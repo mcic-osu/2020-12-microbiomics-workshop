@@ -83,10 +83,10 @@ pacman::p_load(char = packages, install = TRUE)
 
 ```{r}
 # Dir with input fastq files:
-indir <- 'analysis/ASV_inference/output/'
+indir <- 'analysis/ASV_inference/master/'
 
 # Dir for output:
-outdir_base <- 'analysis/ASV_analysis/output/'
+outdir_base <- 'analysis/ASV_analysis/'
 me <- system("echo $USER", intern = TRUE)
 outdir <- paste0(outdir_base, '/', me)
 dir.create(outdir, recursive = TRUE)

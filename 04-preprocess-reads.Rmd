@@ -390,7 +390,7 @@ Again, we include `$USER` so each of us we can identify our file,
 and we'll also use the `%j` *SLURM* keyword to include the *SLURM* job number.
 
 ```{bash}
-indir=raw_data/subset
+indir=raw_data/fastq/
 outdir_base=users/$USER/processed_data/fastq_trimmed
 
 # Give a name to the SLURM output file:
@@ -455,21 +455,21 @@ head -n 20 slurm-cutadapt-jelmer-2451088.out
 
 # ## Starting cutadapt script.
 # Wed Dec  9 10:03:00 EST 2020
-# ## Input dir:                 raw_data/subset
+# ## Input dir:                 raw_data/fastq/
 # ## Output dir - first trim:    users/jelmer/processed_data/fastq_trimmed/first_trim
 # ## Input dir - second trim:   users/jelmer/processed_data/fastq_trimmed/first_trim
 # 
 # ## Looping through input files...
 # 
 # ## R1 input file:
-# -r--r--r-- 1 jelmer PAS0471 7.4M Dec  9 08:27 raw_data/subset/201-S4-V4-V5_S53_L001_R1_001.fastq.gz
+# -r--r--r-- 1 jelmer PAS0471 7.4M Dec  9 08:27 raw_data/fastq/201-S4-V4-V5_S53_L001_R1_001.fastq.gz
 # ## R2 input file:
-# -r--r--r-- 1 jelmer PAS0471 8.8M Dec  9 08:27 raw_data/subset/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# -r--r--r-- 1 jelmer PAS0471 8.8M Dec  9 08:27 raw_data/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
 # 
 # 
 # ## Running cutadapt for the first trim:
 # This is cutadapt 3.1 with Python 3.8.6
-# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz raw_data/subset/201-S4-V4-V5_S53_L001_R1_001.fastq.gz raw_data/subset/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz raw_data/fastq/201-S4-V4-V5_S53_L001_R1_001.fastq.gz raw_data/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
 # Processing reads on 1 core in paired-end mode ...
 ```
 
