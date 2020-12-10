@@ -22,7 +22,7 @@ knitr::opts_chunk$set(eval = FALSE)
 - Remove primers and adapters from our sequences.
 - While doing so, we'll learn:
   - How to load a `conda` environment.
-  - Some basics of writing shell script.
+  - Some basics of writing a shell script.
   - How to run `cutadapt`.
   - How to submit and monitor a job with the *SLURM* scheduler. 
 
