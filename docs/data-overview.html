@@ -11,7 +11,7 @@
 
 
 
-<title> Microbiomics Workshop</title>
+<title> Overview of the Dataset and Workflow</title>
 
 <script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -20,7 +20,12 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
@@ -79,6 +84,9 @@ h6 {
 }
 .table th:not([align]) {
   text-align: left;
+}
+#rmd-source-code {
+  display: none;
 }
 </style>
 
@@ -260,7 +268,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -270,6 +344,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -362,142 +446,74 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
-
-
-<h1 class="title toc-ignore"><br>Microbiomics Workshop</h1>
-
-</div>
-
-
-<style>
-.mytable table {
-  width:75%;
-}
-</style>
-<p><br></p>
-<p><span style="font-size: 18px"><strong>This website contains materials for an online OSU microbiomics workshop<br>on December 16 and 17, 2020.</strong></span></p>
-<p>For pre-workshop computer setup, see the <a href="00_setup.html">Setup</a> page.</p>
-<hr />
-<div id="schedule" class="section level2">
-<h2>Schedule</h2>
-<div id="day-1-wed-dec-16" class="section level3">
-<h3>Day 1 (Wed, Dec 16)</h3>
-<div class="mytable">
-
-<table>
-<thead>
-<tr class="header">
-<th>When</th>
-<th>Type</th>
-<th>Instructor</th>
-<th>Topic</th>
-<th>Material</th>
-<th>Slides</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>10:00</td>
-<td>Lecture</td>
-<td>Antonino</td>
-<td><em>Introduction to Microbiomics</em></td>
-<td><a href="01-microbiomics.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>11:30</td>
-<td>Mixed</td>
-<td>Jelmer</td>
-<td><em>Introduction to the Shell</em></td>
-<td><a href="02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td><a href="slides/02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a></td>
-</tr>
-<tr class="odd">
-<td>12:00</td>
-<td>Mixed</td>
-<td>Jelmer</td>
-<td><em>Introduction to OSC</em></td>
-<td><a href="03-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td><a href="slides/03-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a></td>
-</tr>
-<tr class="even">
-<td>12:30</td>
-<td>Lecture</td>
-<td>Soledad</td>
-<td><em>Overview of the Dataset and Workflow</em></td>
-<td><a href="data-overview.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>12:45</td>
-<td>Hands-on</td>
-<td>all</td>
-<td><em>Workflow part I: Adapter and Primer Removal</em></td>
-<td><a href="04-preprocess-reads.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p></mytable></p>
-</div>
-<div id="day-2-thu-dec-17" class="section level3">
-<h3>Day 2 (Thu, Dec 17)</h3>
-<div class="mytable">
-
-<table>
-<thead>
-<tr class="header">
-<th>When</th>
-<th>Type</th>
-<th>Instructor</th>
-<th>Topic</th>
-<th>Material</th>
-<th>Slides</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>10:00</td>
-<td>Mixed</td>
-<td>Jelmer</td>
-<td><em>Introduction to R</em></td>
-<td><a href="05-R.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>10:30</td>
-<td>Hands-on</td>
-<td>all</td>
-<td><em>Workflow part II: ASV Infererence and Taxon Assignment</em></td>
-<td><a href="06-reads-to-ASV.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>11:45</td>
-<td>Hands-on</td>
-<td>all</td>
-<td><em>Workflow part III: Analyzing ASV Data</em></td>
-<td><a href="07-ASV-analysis.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p></mytable></p>
-<hr />
-</div>
-</div>
-<div id="instructors" class="section level2">
-<h2>Instructors</h2>
-<ul>
-<li><p><a href="benitezponce.1@osu.edu">M. Soledad Benitez Ponce</a> – Asst. Prof., <a href="https://plantpath.osu.edu/">Dept. of Plant Pathology</a></p></li>
-<li><p><a href="mailto:malacrino.1@osu.edu">Antonino Malacrino</a> – Postdoc, <a href="https://eeob.osu.edu/">Dept. of EEOB</a></p></li>
-<li><p><a href="mailto:poelstra.1@osu.edu">Jelmer Poelstra</a> – Bioinformatician, <a href="https://mcic.osu.edu">MCIC Wooster</a></p></li>
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
 </ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><br>Overview of the Dataset and Workflow</h1>
+
+</div>
+
+
+<p><br></p>
+<hr />
+<div id="the-dataset" class="section level2">
+<h2>The Dataset</h2>
+<p>This dataset consists of 16S-V4 gene-marker sequence data collected from soil DNA samples collected from an Ohio rye cover cropping experiment.</p>
+<p><strong>Four treatments</strong> correspond to different cover crop management regiments:</p>
+<ul>
+<li>T1 = no cover crop<br />
+</li>
+<li>T2 = Early termiation (2 weeks before soybean planting)<br />
+</li>
+<li>T3 = Mid termination (1 day before soybean planting)<br />
+</li>
+<li>T4 = Late termination (5 days after soybean planting).</li>
+</ul>
+<p>Samples were collected at <strong>two time points</strong>:</p>
+<ul>
+<li>S1 = Fall 2019 (baseline)<br />
+</li>
+<li>S4 = Summer 2020 (soybean seedling stage).</li>
+</ul>
+<p>DNA samples were subjected to PCR using 16S-V4 paired primers.</p>
+<p>Amplicons were then pooled and analyzed by 300 cycles of Illumina paired-end sequencing.</p>
+<hr />
+</div>
+<div id="the-workflow" class="section level2">
+<h2>The Workflow</h2>
+<ol style="list-style-type: decimal">
+<li><p><strong>Primer and adapter trimming</strong></p>
+<ul>
+<li>Using <code>cutadapt</code></li>
+</ul></li>
+<li><p><strong>ASV inference and taxon assignment (with <em>DADA2</em>)</strong></p>
+<ul>
+<li><p>Trim and filter reads.</p></li>
+<li><p>Infer sequence variants from reads.</p></li>
+<li><p>Merge sequence variants from Forward and Reverse reads to obtain full-length Amplicon Sequence Variants (ASVs).</p></li>
+<li><p>Estimate phylogenetic relatedness using the <em>phangorn</em> R package.</p></li>
+<li><p>Assign taxonomy using a marker gene database (<em>SILVA</em>).</p></li>
+</ul></li>
+<li><p><strong>Analyzing ASV Data</strong></p>
+<ul>
+<li><p>Contaminant identification and removal with <em>decontam</em> R package.</p></li>
+<li><p>R packages: phyloseq, ampvis2, DESeq2, etc.</p></li>
+</ul></li>
+</ol>
 <p><br> <br> <br></p>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPk92ZXJ2aWV3IG9mIHRoZSBEYXRhc2V0IGFuZCBXb3JrZmxvdyIKb3V0cHV0OgogIHJtYXJrZG93bjo6aHRtbF9kb2N1bWVudDoKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjZXJ1bGVhbgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNzczogbXkuY3NzCi0tLQoKCjxicj4KCi0tLS0tCgojIyBUaGUgRGF0YXNldAoKVGhpcyBkYXRhc2V0IGNvbnNpc3RzIG9mIDE2Uy1WNCBnZW5lLW1hcmtlciBzZXF1ZW5jZSBkYXRhIGNvbGxlY3RlZCBmcm9tIHNvaWwgRE5BIHNhbXBsZXMgY29sbGVjdGVkIGZyb20gYW4gT2hpbyByeWUgY292ZXIgY3JvcHBpbmcgZXhwZXJpbWVudC4KCioqRm91ciB0cmVhdG1lbnRzKiogY29ycmVzcG9uZCB0byBkaWZmZXJlbnQgY292ZXIgY3JvcCBtYW5hZ2VtZW50IHJlZ2ltZW50czogICAKCi0gVDEgPSBubyBjb3ZlciBjcm9wICAgCi0gVDIgPSBFYXJseSB0ZXJtaWF0aW9uICgyIHdlZWtzIGJlZm9yZSBzb3liZWFuIHBsYW50aW5nKSAgIAotIFQzID0gTWlkIHRlcm1pbmF0aW9uICgxIGRheSBiZWZvcmUgc295YmVhbiBwbGFudGluZykgICAKLSBUNCA9IExhdGUgdGVybWluYXRpb24gKDUgZGF5cyBhZnRlciBzb3liZWFuIHBsYW50aW5nKS4gICAKICAgClNhbXBsZXMgd2VyZSBjb2xsZWN0ZWQgYXQgKip0d28gdGltZSBwb2ludHMqKjogICAgCgotIFMxID0gRmFsbCAyMDE5IChiYXNlbGluZSkgICAKLSBTNCA9IFN1bW1lciAyMDIwIChzb3liZWFuIHNlZWRsaW5nIHN0YWdlKS4KCkROQSBzYW1wbGVzIHdlcmUgc3ViamVjdGVkIHRvIFBDUiB1c2luZyAxNlMtVjQgcGFpcmVkIHByaW1lcnMuCgpBbXBsaWNvbnMgd2VyZSB0aGVuIHBvb2xlZCBhbmQgYW5hbHl6ZWQgYnkgMzAwIGN5Y2xlcyBvZiBJbGx1bWluYSBwYWlyZWQtZW5kIHNlcXVlbmNpbmcuCgoKLS0tLS0KCiMjIFRoZSBXb3JrZmxvdwoKMS4gKipQcmltZXIgYW5kIGFkYXB0ZXIgdHJpbW1pbmcqKgogICAgCiAgICAtIFVzaW5nIGBjdXRhZGFwdGAKCjEuICoqQVNWIGluZmVyZW5jZSBhbmQgdGF4b24gYXNzaWdubWVudCAod2l0aCBfREFEQTJfKSoqCiAgICAKICAgIC0gVHJpbSBhbmQgZmlsdGVyIHJlYWRzLgogICAgCiAgICAtIEluZmVyIHNlcXVlbmNlIHZhcmlhbnRzIGZyb20gcmVhZHMuCiAgICAKICAgIC0gTWVyZ2Ugc2VxdWVuY2UgdmFyaWFudHMgZnJvbSBGb3J3YXJkIGFuZCBSZXZlcnNlIHJlYWRzIHRvCiAgICAgIG9idGFpbiBmdWxsLWxlbmd0aCBBbXBsaWNvbiBTZXF1ZW5jZSBWYXJpYW50cyAoQVNWcykuCiAgICAgIAogICAgLSBFc3RpbWF0ZSBwaHlsb2dlbmV0aWMgcmVsYXRlZG5lc3MgdXNpbmcgdGhlICpwaGFuZ29ybiogUiBwYWNrYWdlLgogICAgCiAgICAtIEFzc2lnbiB0YXhvbm9teSB1c2luZyBhIG1hcmtlciBnZW5lIGRhdGFiYXNlICgqU0lMVkEqKS4KCgoxLiAqKkFuYWx5emluZyBBU1YgRGF0YSoqCiAgICAKICAgIC0gQ29udGFtaW5hbnQgaWRlbnRpZmljYXRpb24gYW5kIHJlbW92YWwgd2l0aCAqZGVjb250YW0qIFIgcGFja2FnZS4KICAgIAogICAgLSBSIHBhY2thZ2VzOiBwaHlsb3NlcSwgYW1wdmlzMiwgREVTZXEyLCBldGMuCgo8YnI+IDxicj4gPGJyPiAgCiAgCg==</div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -529,7 +545,38 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("data-overview.Rmd");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

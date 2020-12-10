@@ -863,7 +863,7 @@ Search for contents within files.
 - `head` / `tail` will simply show the first / last few lines of a file.
 
   ```sh
-  $ head my_file.txt        # Default: shows first/last 6 lines
+  $ head my_file.txt        # Default: shows first/last 10 lines
   
   $ tail -n 1 my_file.txt   # Just show the last/first line
   ```

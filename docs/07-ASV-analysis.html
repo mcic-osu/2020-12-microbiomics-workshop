@@ -452,63 +452,81 @@ div.tocify {
 <p>Analyze microbiome experimental data as a phyloseq object - explore ecological metrics and identify differentially abundant taxa.</p>
 <hr />
 </div>
-<div id="notes" class="section level2">
-<h2>Notes</h2>
+<div id="before-we-get-started" class="section level2">
+<h2>Before We Get Started</h2>
+<div id="notes" class="section level3">
+<h3>Notes</h3>
 <ul>
 <li><p>This is a slightly modified version of a document created by <a href="mailto:willman.18@osu.edu">Matthew Willman</a>.</p></li>
-<li><p>You can download this <code>Rmd</code> (R Markdown) file by clicking the <code>Code</code> button in the top-right of this page. To convert an <code>Rmd</code> file to an R script, type the following in an R console: <code>knitr::purl(input="&lt;filename&gt;.Rmd")</code>.</p></li>
+<li><p>To convert an <code>Rmd</code> (R Markdown) file to an R script, type the following in an R console: <code>knitr::purl(input="&lt;filename&gt;.Rmd")</code>. (You can download this <code>Rmd</code> file by clicking the <code>Code</code> button in the top-right of this page – but we will open it at OSC.)</p></li>
+</ul>
+</div>
+<div id="open-this-file-in-rstudio-server-at-osc" class="section level3">
+<h3>Open this file in RStudio Server at OSC</h3>
+<ul>
+<li><p>This assumes you still have an active RStudio Server job at OSC; if not see the <a href="06-reads-to-ASV.html#start-an-rstudio-server-job-at-osc">instructions on the previous page</a> to start one.</p></li>
+<li><p>In the Files pane, in the <code>markdown</code> directory, open the file <code>07-ASV-analysis.Rmd</code>. That’s this file!</p></li>
 </ul>
 <hr />
 </div>
-<div id="setup" class="section level2">
-<h2>Setup</h2>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
 <div id="install-and-load-packages" class="section level3">
 <h3>Install and Load Packages</h3>
-<pre class="r r_code"><code>library(ggplot2)
-library(vegan)
-library(phyloseq)
-library(decontam)
-library(ampvis2)
-library(ape)
-library(DESeq2)
-library(microbiome)
-library(metagenomeSeq)
-library(breakaway)</code></pre>
-<hr />
+<p>To save time, we have already installed all the necessary R packages at OSC into a custom library. To add this library for the current R session:</p>
+<pre class="r r_code"><code>.libPaths(new = &#39;/fs/project/PAS0471/.R/4.0/&#39;)</code></pre>
+<pre class="r r_code"><code>packages &lt;- c(&#39;ggplot2&#39;, &#39;vegan&#39;, &#39;phyloseq&#39;, &#39;decontam&#39;, &#39;ape&#39;,
+              &#39;DESeq2&#39;, &#39;microbiome&#39;, &#39;metagenomeSeq&#39;, &#39;remotes&#39;,
+              &#39;ampvis2&#39;, &#39;breakaway&#39;)
+pacman::p_load(char = packages, install = TRUE)
+
+# If you wanted to install and load these packages yourself,
+# first make sure you have the pacman package installed:
+## install.packages(&#39;pacman&#39;)
+# Then, the code above would work except for the last two packages,
+# which are available from Github only. To install these, you would run:
+## remotes::install_github(&quot;MadsAlbertsen/ampvis2&quot;)
+## remotes::install_github(&quot;adw96/breakaway&quot;)</code></pre>
 </div>
+<div id="set-directories" class="section level3">
+<h3>Set Directories</h3>
+<pre class="r r_code"><code># Dir with input fastq files:
+indir &lt;- &#39;analysis/ASV_inference/output/&#39;
+
+# Dir for output:
+outdir_base &lt;- &#39;analysis/ASV_analysis/output/&#39;
+me &lt;- system(&quot;echo $USER&quot;, intern = TRUE)
+outdir &lt;- paste0(outdir_base, &#39;/&#39;, me)
+dir.create(outdir, recursive = TRUE)
+outdir</code></pre>
 </div>
-<div id="input-filter-data" class="section level2">
-<h2>Input &amp; filter data</h2>
-<p>The phyloseq object in this tutorial was generated using gene-marker sequence data collected from soil DNA samples collected from an Ohio rye cover cropping experiment. Four treatments correspond to different cover crop management regiments:<br />
-T1 = no cover crop<br />
-T2 = Early termiation (2 weeks before soybean planting)<br />
-T3 = Mid termination (1 day before soybean planting)<br />
-T4 = Late termination (5 days after soybean planting).</p>
-<p>Samples were collected at four timepoints:<br />
-S1 = Fall 2019 (baseline)<br />
-S2 = Spring 2020 (pre-cover crop termination)<br />
-S3 = Spring 2020 (post-termination)<br />
-S4 = Summer 2020 (soybean seedling stage).</p>
-<p>DNA samples were subjected to PCR using 16S-V4 paired primers. Amplicons were then pooled and analyzed by 300 cycles of Illumina paired-end sequencing.<br />
-Primer sequence was removed using cutadapt (Martin, 2011). The <code>DADA2</code> R package v1.14.0 (Callahan et al., 2016) was used to trim and filter reads, infer sequence variants, and merge the resulting sequence variants to obtain full length Amplicon Sequence Variants (ASVs). Following sequence alignment using the <code>DECIPHER</code> R package v2.14.0 (Wright, 2016), phylogenetic relatedness of all ASVs was estimated by fitting a generalized time-reversable with Gamma rate variation (GTR+G+I) maximum likelihood tree using the <code>phangorn</code> R package v2.5.5 (Schliep, 2011).</p>
-<hr />
-</div>
-<div id="load-data" class="section level2">
-<h2>Load data</h2>
+<div id="load-the-data" class="section level3">
+<h3>Load the Data</h3>
+<p>This session starts with a <em>phyloseq</em> object that was generated in the <a href="06-reads-to-ASV.Rmd">previous session</a> using <em>DADA2</em>.</p>
 <p>Just like tables can be saved in R using <code>write.table</code> or <code>write.csv</code>, R objects can be saved using <code>saveRDS</code>. The resulting *.rds file can then be loaded into an R environment using <code>readRDS</code>. This is a convenient way to save R objects that require a lot of computation time or merging of multiple files.</p>
-<pre class="r r_code"><code>ps.raw&lt;- readRDS(&quot;ps_16S_V4.rds&quot;)</code></pre>
-<p>Our phyloseq object is made up of components: otu_table, sample_data, tax_table, and phy_tree.</p>
-<pre class="r r_code"><code>ps.raw</code></pre>
-<p>Let’s look at the assigned taxa names.</p>
-<pre class="r r_code"><code>taxa_names(ps.raw)[1:3]</code></pre>
-<p>As we can see, taxa names are currently the associated sequences. We can create a new phyloseq component to store these sequences, then rename the ASVs so something shorter (ASV_1, ASV_2, etc.).</p>
-<pre class="r r_code"><code>dna&lt;- Biostrings::DNAStringSet(taxa_names(ps.raw))
-names(dna)&lt;- taxa_names(ps.raw)
-ps.raw&lt;- merge_phyloseq(ps.raw, dna)
-taxa_names(ps.raw) &lt;- paste(&quot;ASV&quot;, 1:ntaxa(ps.raw), sep=&quot;_&quot;)
-ps.raw
-taxa_names(ps.raw)[1:3]</code></pre>
+<pre class="r r_code"><code>RDS_file &lt;- file.path(indir, &#39;ps_16S_V4.rds&#39;)
+ps_raw &lt;- readRDS(RDS_file)</code></pre>
+<p>Our <em>phyloseq</em> object is made up of the following components:</p>
+<ul>
+<li><code>otu_table</code></li>
+<li><code>sample_data</code></li>
+<li><code>tax_table</code></li>
+</ul>
+<p>A <em>phyloseq</em> object can also contain a phylogenetic tree, but we don’t have one here.</p>
+<pre class="r r_code"><code>ps_raw</code></pre>
+<p>Let’s look at the assigned taxa names:</p>
+<pre class="r r_code"><code>taxa_names(ps_raw)[1:3]</code></pre>
+<p>As we can see, taxon names are currently the associated sequences.<br />
+We can create a new <em>phyloseq</em> component to store these sequences, then rename the ASVs so something shorter (ASV_1, ASV_2, etc.).</p>
+<pre class="r r_code"><code>dna&lt;- Biostrings::DNAStringSet(taxa_names(ps_raw))
+names(dna)&lt;- taxa_names(ps_raw)
+ps_raw&lt;- merge_phyloseq(ps_raw, dna)
+taxa_names(ps_raw) &lt;- paste(&quot;ASV&quot;, 1:ntaxa(ps_raw), sep=&quot;_&quot;)
+ps_raw
+taxa_names(ps_raw)[1:3]</code></pre>
 <hr />
+</div>
 </div>
 <div id="filter-taxa" class="section level2">
 <h2>Filter taxa</h2>
@@ -516,36 +534,36 @@ taxa_names(ps.raw)[1:3]</code></pre>
 <h3>Identify and Remove Contaminants</h3>
 <p>It is possible to introduce contaminating microbes during sample preparation. Before analyzing the data, we will identify and remove probable contaminants using the <a href="https://benjjneb.github.io/decontam/vignettes/decontam_intro.html">decontam package</a>.</p>
 <p>In this case, we will define a conataminant as an ASV whose abundance correlates with DNA concentration (post-PCR). Our assumption here is that each soil taxon’s abundance should be independant of DNA concentration. However, if we were to spike each sample with a contaminant, that contaminant would show a greater abundance in samples with lower DNA concentrations. To do this, we need DNA concentration measured after PCR and before pooling of the samples. These data are in column 14 of the sample data component.</p>
-<pre class="r r_code"><code>head(sample_data(ps.raw))</code></pre>
+<pre class="r r_code"><code>head(sample_data(ps_raw))</code></pre>
 <p>MCIC measured our DNA concentration by comparing band intensities to a single reference band. MCIC’s DNA concentration measurements range from 0 to 1 (the reference). Zero in this case is coded as NA. Decontam can’t handle NA’s or 0’s, so we need to change them to a small value (e.g. 0.1).</p>
-<pre class="r r_code"><code>sample_data(ps.raw)$PCR_prod_V4.V5[is.na(sample_data(ps.raw)$PCR_prod_V4.V5)] &lt;- 0.1</code></pre>
+<pre class="r r_code"><code>sample_data(ps_raw)$PCR_prod_V4.V5[is.na(sample_data(ps_raw)$PCR_prod_V4.V5)] &lt;- 0.1</code></pre>
 <p>We will use <code>decontam::isContaminant(method="frequency")</code> to test each taxon against the null hypothesis: abundance is not associated with DNA concentration. MCIC’s DNA concentrations are not very accurate, so I chose a relaxed p-value (0.2) to reject the null hypothesis.</p>
-<pre class="r r_code"><code>contamdf.freq &lt;- isContaminant(ps.raw, method=&quot;frequency&quot;, conc=&quot;PCR_prod_V4.V5&quot;, 
+<pre class="r r_code"><code>contamdf.freq &lt;- isContaminant(ps_raw, method=&quot;frequency&quot;, conc=&quot;PCR_prod_V4.V5&quot;, 
                                threshold=0.2)
 head(contamdf.freq)</code></pre>
 <p>As we can see, the top 3 ASVs are identified as probable contaminants. How many contaminants were identified (TRUE)?</p>
 <pre class="r r_code"><code>table(contamdf.freq$contaminant)</code></pre>
 <p>What are the most abundant contaminant taxa?</p>
 <pre class="r r_code"><code>head(which(contamdf.freq$contaminant))
-ps.contam&lt;- prune_taxa(contamdf.freq$contaminant, ps.raw)
+ps.contam&lt;- prune_taxa(contamdf.freq$contaminant, ps_raw)
 head(tax_table(ps.contam))</code></pre>
 <p>Lets take a look at our tested associations for several taxa.</p>
-<pre class="r r_code"><code>plot_frequency(ps.raw, taxa_names(ps.raw)[c(1,2,3,4,5,11)], conc=&quot;PCR_prod_V4.V5&quot;) + 
+<pre class="r r_code"><code>plot_frequency(ps_raw, taxa_names(ps_raw)[c(1,2,3,4,5,11)], conc=&quot;PCR_prod_V4.V5&quot;) + 
    xlab(&quot;DNA Concentration (relative to single marker)&quot;)</code></pre>
 <p>As we can see, abundance of ASVs 1, 2, 3, and 11 are particularly high in samples with low DNA concentration. I expect that if we were to use more accurate measures of DNA concentration (e.g. fluorometric or gel electrophoresis with a standard curve), we would find a stronger association (lower p-value) between DNA concentration and taxon abundance for these ASVs.</p>
 <p>Which samples have highest abundances of the ID’d contaminants?</p>
-<pre class="r r_code"><code>asv1&lt;- otu_table(ps.raw)[,1]
+<pre class="r r_code"><code>asv1&lt;- otu_table(ps_raw)[,1]
 head(asv1[order(asv1, decreasing=TRUE)])
-asv2&lt;- otu_table(ps.raw)[,2]
+asv2&lt;- otu_table(ps_raw)[,2]
 head(asv2[order(asv2, decreasing=TRUE)])</code></pre>
 <p>How do these overlap with ASVs present in the negative control?</p>
-<pre class="r r_code"><code>otu_table(ps.raw)[70:75,1:11]</code></pre>
+<pre class="r r_code"><code>otu_table(ps_raw)[70:75,1:11]</code></pre>
 <p>ASVs have high read counts in the extraction negative control. Thus, we can be fairly certain these are contaminants and not representative of our experimental samples.</p>
 <p>Remove ID’d contaminants.</p>
-<pre class="r r_code"><code>ps.noncontam &lt;- prune_taxa(!contamdf.freq$contaminant, ps.raw)
+<pre class="r r_code"><code>ps.noncontam &lt;- prune_taxa(!contamdf.freq$contaminant, ps_raw)
 ps.noncontam</code></pre>
 <p>What proportion of our count data were removed as contaminants?</p>
-<pre class="r r_code"><code>pre&lt;- sum(sample_sums(ps.raw))
+<pre class="r r_code"><code>pre&lt;- sum(sample_sums(ps_raw))
 post&lt;- sum(sample_sums(ps.noncontam))
 (pre-post)/pre</code></pre>
 <p>r (pre-post)/pre*100`%</p>
@@ -565,7 +583,7 @@ ps.bac_arc&lt;- prune_taxa(myTaxa, ps.noncontam)</code></pre>
 post&lt;- sum(sample_sums(ps.bac_arc))
 (pre-post)/pre</code></pre>
 <p>r (pre-post)/pre*100`%</p>
-<p>We’ll also remove non-experimental samples (e.g. negative controls).</p>
+<p>We’ll also remove non-experimental samples (e.g. negative controls). However, non-experimental samples are important for evaluating the quality of your reagents, consistency across sequencing runs and contaminaiton.</p>
 <pre class="r r_code"><code>ps&lt;- subset_samples(ps.bac_arc, Experiment==&quot;HCC&quot;)
 
 ps</code></pre>
@@ -589,7 +607,26 @@ head(tax_table(ps))</code></pre>
 </div>
 <div id="normalization" class="section level2">
 <h2>Normalization</h2>
-<p>Normalization is currently a much-discussed issue of microbiome studies. Differences in read depth between samples often need to be corrected before analysis. Several normalization methods have been proposed, and no one method is perfect. It may be that the most appropriate method depends on the analysis. In this tutorial, we will use rarefyed data to estimate ecological metrics and variance stabilizing transformation normalized data (via DESeq2) to identify differentially abundant taxa. For more detail, read <a href="https://dx.plos.org/10.1371/journal.pcbi.1003531">McMurdie and Holmes 2014</a> and <a href="http://doi.wiley.com/10.1111/2041-210X.13115">McKnight et al. 2019</a>.</p>
+<p>Normalization is currently a much-discussed issue of microbiome studies. Differences in read depth between samples often need to be corrected before analysis. Several normalization methods have been proposed, and no one method is perfect. It may be that the most appropriate method depends on the analysis. In this tutorial, we will use proportions data to estimate ecological metrics and variance stabilizing transformation normalized data (via DESeq2) to identify differentially abundant taxa. For more detail, read <a href="https://dx.plos.org/10.1371/journal.pcbi.1003531">McMurdie and Holmes 2014</a> and <a href="http://doi.wiley.com/10.1111/2041-210X.13115">McKnight et al. 2019</a>.However, for your reference, codes for other normalization methods are also presented.</p>
+<hr />
+</div>
+<div id="proportion-normalization" class="section level2">
+<h2>Proportion Normalization</h2>
+<p>Proportion normalization involves dividing each OTU count by the total sum for each sample. The resulting count data will add up to 1 (100%) for each sample. The <code>microbiome::transform</code> function can be used to easily normalize count data as proportions in a phyloseq object.</p>
+<pre class="r r_code"><code>ps.proportions&lt;- transform(ps, &quot;compositional&quot;)
+otu_table(ps.proportions)[1:5,1:5]
+head(sample_sums(ps.proportions))</code></pre>
+<hr />
+</div>
+<div id="variance-stabilizing-transformation" class="section level2">
+<h2>Variance stabilizing transformation</h2>
+<p>This transformation method available in <a href="https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html">DESeq2</a> normalizes data with respect to library size as well as dispersion. Use <code>?vst</code> or read <a href="http://dx.doi.org/10.1186/gb-2010-11-10-r106">Anders and Huber 2010</a> for more information.</p>
+<pre class="r r_code"><code>dds&lt;- phyloseq_to_deseq2(ps, ~1)
+dds&lt;- estimateSizeFactors(dds)
+dds.vst&lt;- vst(dds, blind=T)
+vst_counts&lt;- assay(dds.vst)
+t(vst_counts)[1:5,1:5]
+ps.vst&lt;- ps</code></pre>
 <hr />
 </div>
 <div id="rarefying" class="section level2">
@@ -603,16 +640,8 @@ head(sample_sums(ps.rarefied))</code></pre>
 <pre class="r r_code"><code>head(sample_sums(ps))</code></pre>
 <hr />
 </div>
-<div id="proportions" class="section level2">
-<h2>Proportions</h2>
-<p>Proportion normalization involves dividing each OTU count by the total sum for each sample. The resulting count data will add up to 1 (100%) for each sample. The <code>microbiome::transform</code> function can be used to easily normalize count data as proportions in a phyloseq object.</p>
-<pre class="r r_code"><code>ps.proportions&lt;- transform(ps, &quot;compositional&quot;)
-otu_table(ps.proportions)[1:5,1:5]
-head(sample_sums(ps.proportions))</code></pre>
-<hr />
-</div>
 <div id="cumulative-sum-scaling" class="section level2">
-<h2>Cumulative sum scaling</h2>
+<h2>Cumulative Sum Scaling</h2>
 <p>The metagenomeSeq Cumulative Sum Scaling (CSS) normalization is another option developed for microbiome data. For more information, read <a href="http://www.nature.com/articles/nmeth.2658">Paulson,Stine, Bravo, &amp; Pop 2013</a>.</p>
 <pre class="r r_code"><code>mgs&lt;- phyloseq_to_metagenomeSeq(ps)
 mgs.css&lt;- mgs
@@ -627,20 +656,10 @@ otu_table(ps.css)[1:5,1:5]
 head(sample_sums(ps.css))</code></pre>
 <hr />
 </div>
-<div id="variance-stabilizing-transformation" class="section level2">
-<h2>Variance stabilizing transformation</h2>
-<p>This transformation method available in <a href="https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html">DESeq2</a> normalizes data with respect to library size as well as dispersion. Use <code>?vst</code> or read <a href="http://dx.doi.org/10.1186/gb-2010-11-10-r106">Anders and Huber 2010</a> for more information.</p>
-<pre class="r r_code"><code>dds&lt;- phyloseq_to_deseq2(ps, ~1)
-dds&lt;- estimateSizeFactors(dds)
-dds.vst&lt;- vst(dds, blind=T)
-vst_counts&lt;- assay(dds.vst)
-t(vst_counts)[1:5,1:5]
-ps.vst&lt;- ps</code></pre>
-<hr />
-</div>
 <div id="plot-abundances" class="section level2">
 <h2>Plot abundances</h2>
-<pre class="r r_code"><code>T1&lt;- subset_samples(ps.rarefied, Treatment==&quot;T1&quot;)
+<p>In this, and following examples we will use the proportions data.</p>
+<pre class="r r_code"><code>T1&lt;- subset_samples(ps.proportions, Treatment==&quot;T1&quot;)
 T1.phylum&lt;- tax_glom(T1, taxrank=&quot;Phylum&quot;, NArm=FALSE)
 T1.phylum&lt;- subset_taxa(T1.phylum, taxa_sums(T1.phylum)&gt;50)
 plot_bar(T1.phylum, fill=&quot;Phylum&quot;,) + facet_wrap(~Timepoint, scales=&quot;free_x&quot;, nrow=1)</code></pre>
@@ -654,8 +673,8 @@ plot_bar(T1.phylum, fill=&quot;Phylum&quot;,) + facet_wrap(~Timepoint, scales=&q
 <h3>Taxonomic richness</h3>
 <p>Our goal in defining richness is to determine the number of unique taxa within each population (in our case, each plot). This is difficult, as our samples contain only a portion of the total richness in within our plots. As sequence depth increases for each sample, so does the number of taxa. This can be illustrated with a rarefaction plot.</p>
 </div>
-<div id="rarefaction-plit" class="section level3">
-<h3>Rarefaction plit</h3>
+<div id="rarefaction-plot" class="section level3">
+<h3>Rarefaction plot</h3>
 <p>To make a rarefaction plot, we draw random samples from our data and count the number of unique ASVs as samples are drawn. The resulting rarefaction curve is expected to rise quickly then plateu as the most abundant taxa are represented. We can make a quick rarefaction curve plot directly from our <code>phyloseq</code> object of all samples using the <a href="https://peat-clark.github.io/BIO381/veganTutorial.html"><code>vegan</code> package</a>:</p>
 <pre class="r r_code"><code>rarecurve(otu_table(ps), step=500, xlab=&quot;Sample Size&quot;, ylab=&quot;Taxa&quot;)</code></pre>
 <p>We can also split rarefaction curves by group using the <a href="https://madsalbertsen.github.io/ampvis2/articles/ampvis2.html"><code>ampvis2</code> package</a>.</p>
@@ -693,106 +712,54 @@ ggplot(freq_ct, aes(Frequency, Count)) +
 <pre class="r r_code"><code>sum(freq_ct$Count)</code></pre>
 <p>3193 of 8640 taxa observed in this sample (37%) are represented by single (paired) reads! How many more taxa might we observe if we increased our sampling?</p>
 </div>
-<div id="inference" class="section level3">
-<h3>Inference</h3>
-<p>Population richness can be inferred using the <a href="https://adw96.github.io/breakaway/index.html"><code>breakaway</code> package</a>. For details on the methods used, read <a href="http://doi.wiley.com/10.1111/biom.12332">Willis and Bunge 2015</a></p>
-<pre class="r r_code"><code>estimated_richness&lt;- breakaway(ps, cutoff=12)
-richness&lt;- data.frame(summary(estimated_richness))
-head(richness)[1:5]
-meta&lt;- data.frame(sample_data(ps))
-meta$Group&lt;- paste(meta$Treatment, meta$Timepoint, sep=&quot;:&quot;)
-combined_richness&lt;- cbind(meta, richness)
-betta_pic(combined_richness$estimate, se=combined_richness$error)</code></pre>
-<p>Here we see very large confidence intervals. This is because estimating unobserved taxa is difficult and uncertain.<br />
-The <code>betta</code> function allows us to test for heterogeneity of total diversity between our treatments. We’ll define treatments as Treatment-by-Timepoint combintations.</p>
-<pre class="r r_code"><code>bt_group_f&lt;- betta(chats = combined_richness$estimate, 
-                   ses = combined_richness$error, 
-                   X = model.matrix(~Group, data=combined_richness))
-bt_group_f$table</code></pre>
-<p>Here we find significant differences in richness between T1:S1 and two treatments - T2:S3 and T3:S3 at a cut-off p &lt; 0.05.</p>
-<p>We can also use <code>betta_random</code> to fit a model including random block effects.</p>
-<pre class="r r_code"><code>bt_group_f_block_r&lt;- betta_random(chats = combined_richness$estimate, 
-                                  ses = combined_richness$error, 
-                                  X = model.matrix(~Group, data=combined_richness),
-                                  groups=combined_richness$Block)
-bt_group_f_block_r$table</code></pre>
-<hr />
 </div>
-</div>
-<div id="indices" class="section level2">
-<h2>Indices</h2>
-<p>We can use several indecies to explore how evenly species are distributed within each sample. Here will look at several indices for non-normalized and rarefied data. Note that ‘Observed’ is the sample taxanomic richness. The other three indices combine richness and abundance data for each taxon.</p>
+<div id="diversity-indices" class="section level2">
+<h2>Diversity Indices</h2>
+<p>We can use several indices to explore how evenly species are distributed within each sample. Note that ‘Observed’ is the sample taxanomic richness. The other three indices combine richness and abundance data for each taxon.</p>
 <pre class="r r_code"><code>plot_richness(ps, x=&quot;Timepoint&quot;, shape=&quot;Treatment&quot;, color=&quot;Treatment&quot;, 
-              measures=c(&quot;Observed&quot;, &quot;Shannon&quot;, &quot;Simpson&quot;, &quot;InvSimpson&quot;))
-plot_richness(ps.rarefied, x=&quot;Timepoint&quot;, shape=&quot;Treatment&quot;, color=&quot;Treatment&quot;, 
               measures=c(&quot;Observed&quot;, &quot;Shannon&quot;, &quot;Simpson&quot;, &quot;InvSimpson&quot;))</code></pre>
 <p>Notice that several T2:S3 samples have low measures, suggesting they have low diversity (i.e. abundances are dominated by a few taxa) compared to the other samples.</p>
 <hr />
-</div>
-<div id="beta-diversity" class="section level2">
-<h2>Beta diversity</h2>
-<p>Beta diversity measures differences in microbial compositions between populations. We can use a phylogenetic tree and otu table to estimate the <a href="https://doi.org/10.1128/AEM.71.12.8228-8235.2005">UniFrac</a> for each sample pair. The result is a distance matrix with height and width equal to the number of samples. UniFrac may be <a href="https://doi.org/10.1128/AEM.01996-06">weighted or unweighted</a>. Selection of weighted or unweighted will depend on the question you want to answer. Unweighted UniFrac uses only presence or absence of a taxon from the otu table (i.e. 1000 will be treated the same as 1). It is appropriate if you want to test qualitative taxa differences between samples. Weighted UniFrac uses presence as well as quantity data (i.e. 1 &lt; 1000). We are interested to know what changes to taxon abundance may be driven by our treatments, so we will use weighted UniFrac.</p>
+<div id="beta-diversity" class="section level3">
+<h3>Beta diversity</h3>
+<p>Beta diversity measures differences in microbial compositions between populations. If available (use ps_16S_V4_withtree.rds), we can use a phylogenetic tree and otu table to estimate the <a href="https://doi.org/10.1128/AEM.71.12.8228-8235.2005">UniFrac</a> for each sample pair. The result is a distance matrix with height and width equal to the number of samples. UniFrac may be <a href="https://doi.org/10.1128/AEM.01996-06">weighted or unweighted</a>. Selection of weighted or unweighted will depend on the question you want to answer. Unweighted UniFrac uses only presence or absence of a taxon from the otu table (i.e. 1000 will be treated the same as 1). It is appropriate if you want to test qualitative taxa differences between samples. Weighted UniFrac uses presence as well as quantity data (i.e. 1 &lt; 1000). We are interested to know what changes to taxon abundance may be driven by our treatments, so we will use weighted UniFrac.</p>
 <hr />
 </div>
-<div id="ordination" class="section level2">
-<h2>Ordination</h2>
-<p>First we’ll make a weighted UniFrac distance matrix.</p>
+<div id="ordination" class="section level3">
+<h3>Ordination</h3>
+<p>First we’ll make a weighted UniFrac distance matrix. For UniFrac you require a tree as part of your phyloseq object.</p>
 <pre class="r r_code"><code>set.seed(100)
-wUF&lt;- phyloseq::distance(ps.rarefied, method=&quot;wunifrac&quot;)
+wUF&lt;- phyloseq::distance(ps, method=&quot;wunifrac&quot;)
 as.matrix(wUF)[1:6,1:6]</code></pre>
 <p>If your phyloseq object lacks a phylogenetic tree, you could use a dissimilarity index that does not require one, such as Bray-Curtis.</p>
-<pre class="r r_code"><code>bray&lt;- vegan::vegdist(otu_table(ps.rarefied), method=&quot;bray&quot;)
+<pre class="r r_code"><code>bray&lt;- vegan::vegdist(otu_table(ps), method=&quot;bray&quot;)
 as.matrix(bray)[1:6,1:6]</code></pre>
 <p>Then perform Principal Coordinate Analysis (PCoA) on your favorite distance matrix. In this case, we are using weighted UniFrac.</p>
-<pre class="r r_code"><code>do&lt;- ordinate(ps.rarefied, method=&quot;PCoA&quot;, distance=wUF)
+<pre class="r r_code"><code>do&lt;- ordinate(ps, method=&quot;PCoA&quot;, distance=wUF)
 
-plot_ordination(ps.rarefied, do, type =&quot;samples&quot;, color =&quot;Treatment&quot;, 
+plot_ordination(ps, do, type =&quot;samples&quot;, color =&quot;Treatment&quot;, 
                 shape =&quot;Timepoint&quot;) + 
    geom_point(size=2) + 
    ggtitle(&quot;HCC ordination, all samples\nmethod=PCoA, distance=weighted UniFrac&quot;)
-plot_ordination(ps.rarefied, do, type = &quot;samples&quot;, color = &quot;Treatment&quot;, 
+plot_ordination(ps, do, type = &quot;samples&quot;, color = &quot;Treatment&quot;, 
                 shape = &quot;Timepoint&quot;) + 
    geom_point(size = 1) + 
    geom_text(aes(label=SampleID),size = 3.5, color=&quot;black&quot;)
-plot_ordination(ps.rarefied, do, type =&quot;samples&quot;, color =&quot;Treatment&quot;, 
+plot_ordination(ps, do, type =&quot;samples&quot;, color =&quot;Treatment&quot;, 
                 shape =&quot;Timepoint&quot;) + 
    geom_point(size=2) + 
    ggtitle(&quot;HCC ordination, all samples\nmethod=PCoA, distance=weighted UniFrac&quot;) +
    facet_wrap(~Timepoint, 2)</code></pre>
-<p>We can see some grouping by timepoint.</p>
+<p>We can see some grouping by timepoint. Depending on your experiment and questions, you might want to consider other ordination or clustering approaches.</p>
 <hr />
 </div>
-<div id="hierarchical-clustering" class="section level2">
-<h2>Hierarchical Clustering</h2>
-<p>Using the UniFrac distance matrix from earlier, we’ll perform UPGMA clustering.</p>
-<pre class="r r_code"><code>ps.hclust&lt;- hclust(wUF, method=&quot;average&quot;)
-plot(ps.hclust, cex=0.6)</code></pre>
-<p>We can use the <a href="http://ape-package.ird.fr/"><code>ape</code> package</a> to make prettier plots.</p>
-<pre class="r r_code"><code>colorScale&lt;- hcl.colors(length(levels(get_variable(ps, &quot;Timepoint&quot;))), palette=&quot;Dark 2&quot;)
-cols&lt;- colorScale[get_variable(ps, &quot;Timepoint&quot;)] 
-plot(as.phylo(ps.hclust), type=&quot;unrooted&quot;, cex=0.6, no.margin=TRUE, tip.color=cols)</code></pre>
-<p>Label Treatment by Timepoint instead of sample name.</p>
-<pre class="r r_code"><code>sample_data(ps)$Group&lt;- paste(sample_data(ps)$Treatment, sample_data(ps)$Timepoint, 
-                              sep=&quot;:&quot;)
-hclust.group&lt;- ps.hclust
-ps.tip.labels &lt;- (get_variable(ps, &quot;Group&quot;))
-hclust.group$labels&lt;- ps.tip.labels
-plot(as.phylo(hclust.group), type=&quot;unrooted&quot;, cex=0.6, no.margin=TRUE, tip.color=cols)</code></pre>
-<p>Color by Treatment.</p>
-<pre class="r r_code"><code>treat.colorScale&lt;- hcl.colors(length(levels(get_variable(ps, &quot;Treatment&quot;))), 
-                              palette=&quot;Dark 2&quot;)
-treat.cols&lt;- treat.colorScale[get_variable(ps, &quot;Treatment&quot;)]
-plot(as.phylo(hclust.group), type=&quot;unrooted&quot;, cex=0.6, no.margin=TRUE, 
-     tip.color=treat.cols)</code></pre>
-<hr />
-</div>
-<div id="permutational-analysis-of-variance-permanova" class="section level2">
-<h2>Permutational analysis of variance (PERMANOVA)</h2>
+<div id="permutational-analysis-of-variance-permanova" class="section level3">
+<h3>Permutational analysis of variance (PERMANOVA)</h3>
 <p>Finally, we’ll test whether there is a significant ecological level treatment effect. PERMANOVA sounds fancy, but it is essentially ANOVA performed using computation. Permutations are used to determine how data may appear if there is no treatment effect and group differences are due to random chance. Observed data are then compared to the randomized data to calculate a p-value.</p>
 <p>Treatments are independant within Timepoints, so we will first subset the data by Timepoint.</p>
-<pre class="r r_code"><code>ps.S1&lt;- subset_samples(ps.rarefied, Timepoint==&quot;S1&quot;)
-ps.S3&lt;- subset_samples(ps.rarefied, Timepoint==&quot;S3&quot;)
-ps.S4&lt;- subset_samples(ps.rarefied, Timepoint==&quot;S4&quot;)</code></pre>
+<pre class="r r_code"><code>ps.S1&lt;- subset_samples(ps, Timepoint==&quot;S1&quot;)
+ps.S3&lt;- subset_samples(ps, Timepoint==&quot;S3&quot;)
+ps.S4&lt;- subset_samples(ps, Timepoint==&quot;S4&quot;)</code></pre>
 <p>Subset metadata and estimate UniFrac for S3.</p>
 <pre class="r r_code"><code>metadata &lt;- as(sample_data(ps.S3), &quot;data.frame&quot;)
 unifrac.dist&lt;- UniFrac(ps.S3, weighted=T)</code></pre>
@@ -801,6 +768,7 @@ unifrac.dist&lt;- UniFrac(ps.S3, weighted=T)</code></pre>
 permanova</code></pre>
 <p>A low p-value (0.0077) suggests that within the S3 timepoint (post-termination), there is a significant treatment effect.</p>
 <hr />
+</div>
 </div>
 <div id="differential-taxon-abundance-deseq" class="section level2">
 <h2>Differential taxon abundance (DESeq)</h2>
@@ -823,12 +791,6 @@ summary(res)</code></pre>
 <p>We can sort results by p-value and look at the top ASVs.</p>
 <pre class="r r_code"><code>res.order&lt;- res[order(res$pvalue),]
 head(res.order)[c(1:2,6)]</code></pre>
-<p>What about the contrast, T1S1 : T1S4 (no cc, baseline : no cc, seedling stage)?</p>
-<pre class="r r_code"><code>res&lt;- results(dds, contrast=c(&quot;Group&quot;, &quot;T1S1&quot;, &quot;T1S4&quot;))
-summary(res)</code></pre>
-<p>Lowest p-value ASVs.</p>
-<pre class="r r_code"><code>res.order&lt;- res[order(res$pvalue),]
-head(res.order)[c(1:2,6)]</code></pre>
 <p>And plot counts for the first in the ordered list ASV.</p>
 <pre class="r r_code"><code>plotCounts(dds, gene=res.order@rownames[1], intgroup=&quot;Group&quot;)</code></pre>
 <p>We can also plot counts by SampleID.</p>
@@ -840,13 +802,17 @@ ggplot(d, aes(x=Group, y=count)) +
   scale_y_log10() +
   ggtitle(expression(paste(&quot;ASV 48, log&quot;[10],&quot;-scale&quot;)))</code></pre>
 <p>We can also subset our differentially abundant taxa to keep those with an adjusted p-value &lt; 0.05.</p>
-<pre class="r r_code"><code>sig&lt;- subset(res.order, padj&lt;=0.05)
+<pre class="r r_code"><code>sig &lt;- subset(res.order, padj&lt;=0.05)
 head(sig)</code></pre>
 <p>What taxa are associated with significant differentially abundant ASVs?</p>
-<pre class="r r_code"><code>sig.asv&lt;- rownames(sig)
-sig.taxa&lt;- tax_table(ps)[sig.asv,]
+<pre class="r r_code"><code>sig.asv &lt;- rownames(sig)
+sig.taxa &lt;- tax_table(ps)[sig.asv,]
 head(sig.taxa)
-write.csv(cbind(sig,sig.taxa), &quot;DATaxa_T1S1_T1S4.csv&quot;)</code></pre>
+
+sig_write &lt;- cbind(sig, sig.taxa)
+
+outfile_sig &lt;- file.path(outdir, &#39;DATaxa_T1S1_T1S4.csv&#39;)
+write.csv(sig_write, outfile_sig)</code></pre>
 <hr />
 </div>
 <div id="resources" class="section level2">

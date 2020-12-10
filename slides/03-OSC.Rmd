@@ -480,12 +480,18 @@ name:jobs
 </p>
 
 ---
+name:rstudio_server_job
 
 ## Starting a compute job: OnDemand Apps (cont.)
 
 <p align="center">
-<img src=figs_OSC/submit-RStudio.png width="500">
+<img src=figs_OSC/submit-RStudio.png width="400">
 </p>
+
+<p align="center">
+<img src=figs_OSC/submit-RStudio2.png width="400">
+</p>
+
 
 ---
 background-color: #ededed
