@@ -1,27 +1,21 @@
-<!DOCTYPE html>
-<html lang="" xml:lang="">
-  <head>
-    <title>A Practical Introduction to OSC</title>
-    <meta charset="utf-8" />
-    <meta name="author" content="Jelmer Poelstra" />
-    <script src="libs/header-attrs-2.5/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
-  </head>
-  <body>
-    <textarea id="source">
-class: center, middle, inverse, title-slide
-
-# A Practical Introduction to OSC
-### Jelmer Poelstra
-### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-08)
-
 ---
+title: "A Practical Introduction to OSC"
+author: "Jelmer Poelstra"
+institute: "MCIC Wooster"
+date: "2020/12/16 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse middle center
 
-class:inverse middle center
-
-
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
 
 # Overview
 
@@ -52,14 +46,14 @@ name: overview
 ]
 
 ---
-class:inverse middle center
+class: inverse middle center
 name: introduction
 
 # Introduction
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -75,7 +69,7 @@ name: introduction
 
 --
 
-&lt;br&gt;
+<br>
 
 - Research usage is charged but via institutions
   at [heavily subsidized rates](https://www.osc.edu/content/academic_fee_model_faq).
@@ -90,7 +84,7 @@ name: introduction
   - A **cluster**
   - A High-Performance Computing cluster (**HPC cluster**)
 
-&lt;br&gt;
+<br>
 
 --
 
@@ -115,11 +109,11 @@ name: introduction
   [Getting Started Page](https://www.osc.edu/resources/getting_started).
 **Do read these!**
 
-&lt;br&gt;
+<br>
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/gettingstarted.png width="560"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/gettingstarted.png width="560">
+</p>
 
 ---
 
@@ -128,11 +122,11 @@ name: introduction
 - Also have a look at all the ["HOWTO" pages](https://www.osc.edu/resources/getting_started/howto) --   
   includes more advanced material.
 
-&lt;br&gt;
+<br>
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/HOWTOs.png width="500"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/HOWTOs.png width="500">
+</p>
 
 ---
 
@@ -142,7 +136,7 @@ name: introduction
   both overviews and more hands-on sessions --
   see the [OSC Events page](https://www.osc.edu/events).
 
-&lt;br/&gt;
+<br/>
 
 - There is also a Carpentry-style tutorial available [here](https://khill42.github.io/OSC_IntroHPC).
 
@@ -157,7 +151,7 @@ name: introduction
 - OSC currently has two clusters: **_Pitzer_** and **_Owens_**.   
   Largely separate, but same long-term storage space is accessed by both.
 
-&lt;br&gt;
+<br>
 
 --
 
@@ -191,13 +185,13 @@ name: introduction
 
 ---
 
-## Terminology: cluster &gt; node &gt; core
+## Terminology: cluster > node > core
 
-&lt;br&gt;
+<br>
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/cluster-node-core.png width="100%"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/cluster-node-core.png width="100%">
+</p>
 
 ---
 
@@ -217,9 +211,10 @@ name:connect
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
+
 ---
 
 ## Connecting to OSC with "OnDemand"
@@ -227,9 +222,9 @@ name:connect
 - You can make use of OSC not only through `ssh` at the command line,   
 but also through the web browser: from https://ondemand.osc.edu.
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/ondemand1.png width="900"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/ondemand1.png width="900">
+</p>
 
 --
 
@@ -242,13 +237,13 @@ but also through the web browser: from https://ondemand.osc.edu.
 
 --
 
-&lt;br&gt;
+<br>
 
 - **Interface Demo**
 
 --
 
-&lt;br&gt;
+<br>
 
 - See the bonus slides starting [here](#ssh) for logging in from your local terminal.
 
@@ -259,9 +254,9 @@ but also through the web browser: from https://ondemand.osc.edu.
 
 - After logging in to OSC, you're on a **login node**.
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/cluster_diagram.png width="900"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/cluster_diagram.png width="900">
+</p>
 
 
 ---
@@ -270,12 +265,12 @@ but also through the web browser: from https://ondemand.osc.edu.
 
 - Use login nodes for *navigation*, *housekeeping*, and *job submission*.
 
-- Any process that is active for &gt;20 minutes or uses &gt;1GB **will be killed**.
+- Any process that is active for >20 minutes or uses >1GB **will be killed**.
 
 - It is good practice to avoid even getting close to these limits:   
   login nodes are *shared by everyone*, and can get clogged.   
 
-&lt;br&gt;
+<br>
 
 --
  
@@ -289,7 +284,7 @@ name: transfer
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -304,27 +299,27 @@ depending on your preferences and **the size of the transfer**.
 
 ## Transferring files: OnDemand and Globus
 
-#### For small transfers (&lt;1 GB): use OnDemand
+#### For small transfers (<1 GB): use OnDemand
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/ondemand2_circle.png width="900"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/ondemand2_circle.png width="900">
+</p>
 
 --
 
 ----
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/ondemand3_circle.png width="900"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/ondemand3_circle.png width="900">
+</p>
 
 --
 
 -----
 
-&lt;br&gt;
+<br>
 
-#### For large transfers (&gt;1 GB): use Globus
+#### For large transfers (>1 GB): use Globus
 
 - Especially useful for very large and/or complex transfers.
 
@@ -335,17 +330,17 @@ background-color: #ededed
 
 ## Transferring files: using your **local** shell
 
-#### For small transfers (&lt;1 GB): use `scp` / `rsync`
+#### For small transfers (<1 GB): use `scp` / `rsync`
 
 ```bash
 # scp
-$ scp /path/in/local/file.txt &lt;user&gt;@owens.osc.edu:/path/in/remote/
+$ scp /path/in/local/file.txt <user>@owens.osc.edu:/path/in/remote/
 ```
 
 ```bash
 # rsync (recommended, especially to keep folders synched)
 $ rsync -avrz --progress /path/in/local/dir \
-    &lt;user&gt;@owens.osc.edu:/path/in/remote/
+    <user>@owens.osc.edu:/path/in/remote/
 ```
 
 -----
@@ -354,23 +349,23 @@ $ rsync -avrz --progress /path/in/local/dir \
 
 ```bash
 $ sftp sftp.osc.edu
-sftp&gt; put /path/in/local/file.txt /path/in/remote
+sftp> put /path/in/local/file.txt /path/in/remote
 
-sftp&gt; put file.txt    # From local working dir to $HOME in remote
+sftp> put file.txt    # From local working dir to $HOME in remote
 
-sftp&gt; get /path/in/remote/file.txt /path/in/local/
+sftp> get /path/in/remote/file.txt /path/in/local/
 ```
 
 
 ---
-class:inverse middle center
-name:software
+class: inverse middle center
+name: software
 
 # Software at OSC
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -380,7 +375,7 @@ name:software
  
 - For a list of software that has been installed at OSC,   
   and is available for all users, see:      
-  &lt;https://www.osc.edu/resources/available_software&gt;.
+  <https://www.osc.edu/resources/available_software>.
 
 ---
 background-color: #ededed
@@ -394,11 +389,11 @@ $ module load R/4.0.2-gnu9.1  # Load a specific version (better)
 $ module unload R
 ```
 
-&lt;br&gt;
+<br>
 
 -----
 
-&lt;br&gt;
+<br>
 
 - You can also check for software availability on the command line:
 ```bash
@@ -420,7 +415,7 @@ $ module avail [search-term]   # Available software,
 
 ### 2. Get others to install it
 
-- For commonly used software, send an email to &lt;oschelp@osc.edu&gt;.
+- For commonly used software, send an email to <oschelp@osc.edu>.
 
 - I can help with (more niche) bioinformatics software.
 
@@ -436,15 +431,15 @@ $ module avail [search-term]   # Available software,
 
 
 ---
-class:inverse middle center
-name:jobs
+class: inverse middle center
+name: jobs
 
 # Starting a Compute Job
 # (i.e., Accessing Compute Nodes)
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -472,7 +467,7 @@ name:jobs
 
 --
 
-&lt;br&gt;
+<br>
 
 #### You'll always need to provide instructions to the *SLURM* scheduler to reserve the desired resources.
 
@@ -481,22 +476,22 @@ name:jobs
 
 ## Starting a compute job: OnDemand Apps
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/apps.png width="570"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/apps.png width="570">
+</p>
 
 ---
 name:rstudio_server_job
 
 ## Starting a compute job: OnDemand Apps (cont.)
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/submit-RStudio.png width="400"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/submit-RStudio.png width="400">
+</p>
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/submit-RStudio2.png width="400"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/submit-RStudio2.png width="400">
+</p>
 
 
 ---
@@ -510,7 +505,7 @@ background-color: #ededed
   $ sbatch my_script_name.sh
   ```
 
-&lt;br&gt;
+<br>
 
 - The `sbatch` instructions go to the top of your script:
 
@@ -538,14 +533,14 @@ background-color: #ededed
 - This will provide you interactive shell access on a compute node. 
 
 ---
-class:inverse middle center
-name:job_options
+class: inverse middle center
+name: job_options
 
 # Compute Job Options
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -553,14 +548,14 @@ name:job_options
 
 ## Compute job options: Nodes and cores
 
-- Only ask for &gt;1 **node** when you have explicit parallelization   
+- Only ask for >1 **node** when you have explicit parallelization   
   (*you probably don't*).
 
 - R will not even use multiple **cores** by default,   
   though some of the packages we'll work with *can* do this.
 
 
-&lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt;
+<br> <br> <br> <br> <br> <br> <br>
 
 ```sh
 #SBATCH --nodes=1-1             # 1 node min. and max. 
@@ -580,7 +575,7 @@ name:job_options
 
 --
 
-&lt;br&gt;
+<br>
 
 - **If your job hits the memory limit, it may be killed!**
   
@@ -595,7 +590,7 @@ name:job_options
     (e.g. When your job involves loading a 10 GB file into memory),
     so make sure to **ask for sufficient memory**.
 
-&lt;br&gt; &lt;br&gt; &lt;br&gt;
+<br> <br> <br>
 
 --
 
@@ -620,7 +615,7 @@ Still, **ask for (much) more time than you think you will need**.
 
 --
 
-&lt;br&gt; &lt;br&gt;
+<br> <br>
 
 ```sh
 # Acceptable time formats include "minutes", "minutes:seconds",
@@ -642,7 +637,7 @@ Still, **ask for (much) more time than you think you will need**.
 - Your jobs always needs to be billed to a project.   
   (If you have only one project, no need to specify it.)
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ```sh
 #SBATCH --account=PAS0471
@@ -664,7 +659,7 @@ There are several "queues" that jobs can be submitted to.
 - **The maximum walltime** for most queues is 168 h (1 week).   
   For longer jobs, *request access* to the `longserial` queue on Pitzer.
   
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br><br><br><br><br><br>
 
 --
 
@@ -693,7 +688,7 @@ name:bonus
 ### III: [Monitoring *SLURM* Jobs](#monitor)
 ### IV: [`conda`](#conda)
 
-&lt;br&gt;&lt;br&gt;
+<br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -704,7 +699,7 @@ name:filesystems
 # Bonus Material I:
 # OSC File Systems
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -734,7 +729,7 @@ background-color: #ededed
 
 ### Project dir
   
-- `/fs/project/&lt;projectID&gt;`. (MCIC project: `/fs/project/PAS0471`)
+- `/fs/project/<projectID>`. (MCIC project: `/fs/project/PAS0471`)
   
 - The total storage limit is whatever a PI sets this too.   
     Charges are for the reserved space, not actual usage.
@@ -748,7 +743,7 @@ background-color: #ededed
 
 ### scratch
 
-- `/fs/scratch/&lt;projectID&gt;`, sometimes `fs/ess/scratch/&lt;projectID&gt;`.
+- `/fs/scratch/<projectID>`, sometimes `fs/ess/scratch/<projectID>`.
 
 - Fast I/O, good to use for large input and output files.
 
@@ -780,7 +775,7 @@ cp -R $HOME/my/data/ $TMPDIR/
 cp -R $TMPDIR/* $HOME/my/data/
 ```
 
-&lt;br&gt;
+<br>
 
 #### This trick will copy the data even if the job is killed:
 
@@ -793,7 +788,7 @@ background-color: #ededed
 
 ## File systems: in closing
 
-&lt;br&gt;
+<br>
 
 #### If this was a bit much:
 
@@ -801,7 +796,7 @@ For those working with "small" NGS datasets
 (like from MiSeq runs),   
 you may be able to **stick to your home dir** both for storage and computing.
 
-&lt;br&gt;
+<br>
 
 #### See [here](https://www.osc.edu/supercomputing/storage-environment-at-osc/available-file-systems) for more info about the file systems.
 
@@ -814,7 +809,7 @@ name: shell
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -829,8 +824,8 @@ background-color: #ededed
 - Basic `ssh` usage:
   
   ```sh
-  $ ssh &lt;username&gt;@pitzer.osc.edu  # e.g. jelmer@pitzer.osc.edu     
-  $ ssh &lt;username&gt;@owens.osc.edu   # e.g. jelmer@ownes.osc.edu     
+  $ ssh <username>@pitzer.osc.edu  # e.g. jelmer@pitzer.osc.edu     
+  $ ssh <username>@owens.osc.edu   # e.g. jelmer@ownes.osc.edu     
   ```
   
   - You will be prompted for your OSC password.
@@ -847,7 +842,7 @@ $ ssh-keygen -t rsa
 
 1. On your own computer, transfer the key to the remote computer:
 ```bash
-$ cat ~/.ssh/id_rsa.pub | ssh &lt;user&gt;@owens.osc.edu 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'
+$ cat ~/.ssh/id_rsa.pub | ssh <user>@owens.osc.edu 'mkdir -p .ssh && cat >> .ssh/authorized_keys'
 ```
 
 1. On remote computer (OSC), set permissions:
@@ -855,7 +850,7 @@ $ cat ~/.ssh/id_rsa.pub | ssh &lt;user&gt;@owens.osc.edu 'mkdir -p .ssh &amp;&am
 $ chmod 700 .ssh; chmod 640 .ssh/authorized_keys
 ```
 
-&lt;br&gt;
+<br>
 
 - For more details, see this [Tecmint post](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/).
 
@@ -871,21 +866,21 @@ $ touch `~/.ssh/config`
 
 1. Open the file and add your alias(es):
 ```bash
-&gt; Host &lt;arbitrary-alias-name&gt;    
-&gt;     HostName &lt;remote-name&gt;
-&gt;     User &lt;user-name&gt;
+> Host <arbitrary-alias-name>    
+>     HostName <remote-name>
+>     User <user-name>
 ```
 
 --
 
-&lt;br&gt;
+<br>
 
 - This is what it looks like on my machine, so I can login using "`ssh jo`":
-&lt;br/&gt;
+<br/>
 
-&lt;p align="center"&gt;
-&lt;img src=figs_OSC/ssh.png width="400"&gt;
-&lt;/p&gt;
+<p align="center">
+<img src=figs_OSC/ssh.png width="400">
+</p>
 
 
 ---
@@ -897,7 +892,7 @@ class: inverse center middle
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -916,7 +911,7 @@ class: inverse center middle
 
 -----
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+<br><br><br><br>
 
 ### [[Back to overview]](#overview)
 
@@ -947,7 +942,7 @@ background-color: #ededed
   $ module load python/3.6-conda5.2
   ```
 
-&lt;br&gt;
+<br>
 
 - Create a new environment with "`multiqc`" installed:
 
@@ -955,136 +950,13 @@ background-color: #ededed
   $ conda create -y -n my-multiqc-env -c bioconda multiqc
   ```
 
-&lt;br&gt;
+<br>
 
 - Activate the `multiqc` environment and see if we can run it:
 
   ```bash
-  [&lt;user&gt;@owens-login01 ~]$ conda activate my-multiqc-env
+  [<user>@owens-login01 ~]$ conda activate my-multiqc-env
 
   # Note environment indicator
-  (multiqc) [&lt;user&gt;@owens-login01 ~]$ multiqc --help
+  (multiqc) [<user>@owens-login01 ~]$ multiqc --help
   ```
-    </textarea>
-<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
-<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
-<script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
-});
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
-  window.dispatchEvent(new Event('resize'));
-});
-(function(d) {
-  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
-  if (!r) return;
-  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
-  d.head.appendChild(s);
-})(document);
-
-(function(d) {
-  var el = d.getElementsByClassName("remark-slides-area");
-  if (!el) return;
-  var slide, slides = slideshow.getSlides(), els = el[0].children;
-  for (var i = 1; i < slides.length; i++) {
-    slide = slides[i];
-    if (slide.properties.continued === "true" || slide.properties.count === "false") {
-      els[i - 1].className += ' has-continuation';
-    }
-  }
-  var s = d.createElement("style");
-  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
-  d.head.appendChild(s);
-})(document);
-// delete the temporary CSS (for displaying all slides initially) when the user
-// starts to view slides
-(function() {
-  var deleted = false;
-  slideshow.on('beforeShowSlide', function(slide) {
-    if (deleted) return;
-    var sheets = document.styleSheets, node;
-    for (var i = 0; i < sheets.length; i++) {
-      node = sheets[i].ownerNode;
-      if (node.dataset["target"] !== "print-only") continue;
-      node.parentNode.removeChild(node);
-    }
-    deleted = true;
-  });
-})();
-(function() {
-  "use strict"
-  // Replace <script> tags in slides area to make them executable
-  var scripts = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container script'
-  );
-  if (!scripts.length) return;
-  for (var i = 0; i < scripts.length; i++) {
-    var s = document.createElement('script');
-    var code = document.createTextNode(scripts[i].textContent);
-    s.appendChild(code);
-    var scriptAttrs = scripts[i].attributes;
-    for (var j = 0; j < scriptAttrs.length; j++) {
-      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
-    }
-    scripts[i].parentElement.replaceChild(s, scripts[i]);
-  }
-})();
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-// adds .remark-code-has-line-highlighted class to <pre> parent elements
-// of code chunks containing highlighted lines with class .remark-code-line-highlighted
-(function(d) {
-  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
-  const preParents = [];
-  const findPreParent = function(line, p = 0) {
-    if (p > 1) return null; // traverse up no further than grandparent
-    const el = line.parentElement;
-    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
-  };
-
-  for (let line of hlines) {
-    let pre = findPreParent(line);
-    if (pre && !preParents.includes(pre)) preParents.push(pre);
-  }
-  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
-})(document);</script>
-
-<script>
-slideshow._releaseMath = function(el) {
-  var i, text, code, codes = el.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
-  }
-};
-slideshow._releaseMath(document);
-</script>
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-(function () {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
-  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
-    script.src  = script.src.replace(/^https?:/, '');
-  document.getElementsByTagName('head')[0].appendChild(script);
-})();
-</script>
-  </body>
-</html>
