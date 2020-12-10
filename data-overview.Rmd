@@ -25,13 +25,11 @@ This dataset consists of 16S-V4 gene-marker sequence data collected from soil DN
 - T3 = Mid termination (1 day before soybean planting)   
 - T4 = Late termination (5 days after soybean planting).   
    
-Samples were collected at **four time points**:    
+Samples were collected at **two time points**:    
 
 - S1 = Fall 2019 (baseline)   
-- S2 = Spring 2020 (pre-cover crop termination)   
-- S3 = Spring 2020 (post-termination)   
-- S4 = Summer 2020 (soybean seedling stage).   
-   
+- S4 = Summer 2020 (soybean seedling stage).
+
 DNA samples were subjected to PCR using 16S-V4 paired primers.
 
 Amplicons were then pooled and analyzed by 300 cycles of Illumina paired-end sequencing.

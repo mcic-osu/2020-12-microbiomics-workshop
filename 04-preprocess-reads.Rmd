@@ -1,5 +1,5 @@
 ---
-title: "<br>Workflow part I:<br>Adapter and Primer Removal"
+title: "<br>Workflow part I:<br>Primer and Adapter Removal"
 output:
   rmarkdown::html_document:
     code_download: true
@@ -11,24 +11,48 @@ output:
 
 <br>
 
+```{r knitr_options, echo=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+ 
 -----
 
 ## Goals
 
-- Remove adapters and primers for our raw `fastq` files.
+- Remove primers and adapters from our sequences.
+- While doing so, we'll learn:
+  - How to load a `conda` environment.
+  - Some basics of writing shell script.
+  - How to run `cutadapt`.
+  - How to submit and monitor a job with the *SLURM* scheduler. 
 
 -----
 
-## Notes
+## Before We Get Started
+
+### Notes
 
 - You can download this `Rmd` (R Markdown) file by clicking the `Code` button in
   the top-right of this page.
   To convert an `Rmd` file to an R script,
   type the following in an R console: `knitr::purl(input="<filename>.Rmd")`.
 
+### Setup
+
+- Login to OSC at <https://ondemand.osc.edu>.
+
+- Enter a terminal in your browser at OSC by clicking `Cluster` > `Pitzer Shell Access`.
+  (Or use [this direct link](https://ondemand.osc.edu/pun/sys/shell/ssh/pitzer.osc.edu).)
+
+- Go to this workshop's directory at OSC:
+
+  ```sh
+  cd /fs/project/PAS0471/workshops/2020-12_micro
+  ```
+
 -----
 
-## Removing primers and adapters using `cutadapt`
+## Getting Started
 
 [`cutadapt`](https://cutadapt.readthedocs.io/en/stable/index.html) is a software
 package to remove any adapters and primers that may be present in raw sequence data.
@@ -36,48 +60,460 @@ package to remove any adapters and primers that may be present in raw sequence d
 We will use the output from `cutadapt` as input for the next step in our workflow,
 [ASV Infererence and Taxon Assignment](06-reads-to-ASV.html).
 
+
+### Primers
+
+These are the primers that were used in this amplicon sequencing.
+we want to remove:
+
+- 515F: *GAGTGYCAGCMGCCGCGGTAA*
+- 806R: *ACGGACTACNVGGGTWTCTAAT*
+- 515F reverse complement: *TTACCGCGGCKGCTGRCACTC*
+- 806R reverse complement: *ATTAGAWACCCBNGTAGTCCGT*
+
+We will specify these primers when running `cutadapt`.
+
+### Load the `conda` environment with `cutadapt` 
+
+`cutadapt` is not available as a module at OSC.
+However, it can be easily installed there through `conda`,
+see this [webpage](https://cutadapt.readthedocs.io/en/stable/installation.html#installation-with-conda).   
+We have already done this for you to save some time,
+so we just need to load the `conda` environment.
+
+To work with `conda` at OSC, we first need to load the `conda` module:
+
 ```sh
-#! /bin/bash
-
-#installation information: https://cutadapt.readthedocs.io/en/stable/installation.html
-
-#>515F
-#GAGTGYCAGCMGCCGCGGTAA
-#>806R
-#ACGGACTACNVGGGTWTCTAAT
-#>515F reverse complement
-#TTACCGCGGCKGCTGRCACTC
-#>806R reverse complement
-#ATTAGAWACCCBNGTAGTCCGT
-
-cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq
-
-mkdir cutadapt_out
-mkdir cutadapt_out/16S
-mkdir cutadapt_out/16S/first_trim
-mkdir cutadapt_out/16S/second_trim
-
-cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq 
-
-#make list files with the names of the files to truncate
-ls *V4*_R1_*.fastq.gz > list1.txt
-ls *V4*_R2_*.fastq.gz > list2.txt
-
-cd /Users/benitezponce.1/Box/HCC_AmpSeq_subset/V4/fastq 
-
-while IFS= read R1 && IFS= read R2 <&3
-do
-	cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o cutadapt_out/16S/first_trim/$R1 -p cutadapt_out/16S/first_trim/$R2 $R1 $R2
-	#add second trim
-	cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC -o cutadapt_out/16S/second_trim/$R1 -p cutadapt_out/16S/second_trim/$R2 cutadapt_out/16S/first_trim/$R1 cutadapt_out/16S/first_trim/$R2
-
-done < list1.txt 3<list2.txt
+module load python/3.6-conda5.2
 ```
 
---------
+Assuming that you haven't worked with conda before at OSC,
+we also need to a bit of additional setup:
 
-## Bonus Material
+```{bash}
+# This will add a line to your bash config file, which runs every time you start
+# a shell, to run the conda setup script:
+echo ". /apps/python/3.6-conda5.2/etc/profile.d/conda.sh" >> ~/.bashrc
 
-### Quality Control with FastQC and MultiQC
+# Next, we source (run) the config file in our current shell to also run the conda
+# setup script right now:
+source ~/.bashrc
+```
+
+Then, we activate our `conda` environment for `cutadapt`:
+
+```{bash}
+conda activate /users/PAS0471/osu5685/.conda/envs/cutadaptenv
+```
+
+<br>
+
+Now, `cutadapt` should be in `$PATH`, i.e. we can simply call it by its name to run it.
+To test this:
+
+```{bash}
+cutadapt --version     # Will just print the version number
+cutadapt --help        # Will print a whole lot of documentation
+```
 
 
+-----
+
+## A Script to Run `cutadapt`
+
+### Part A: Boilerplate and *SLURM* directives
+
+1. Our first line, `#!/bin/bash`, is the *"shebang"* line that tells us what
+  program (language) our script uses, which is `bash` in this case.
+
+2. We'll provide the `SLURM` directives one line at a time,
+  using the `#SBATCH` keyword followed by an option: `nodes` for the number of
+  nodes, `ntasks-per-node` for the number of cores, `time` for the maximum
+  walltime of the job (here specificed using just minutes), and `account` for
+  the OSC project that should be billed.
+
+3. We'll set a couple of options with `set` that make `bash` run safer,
+  by making it stop the script whenever an error is encountered (by default,
+  the script will keep running.)
+
+4. We'll use an `echo` statement to print to screen what script we are
+  running, and the `date` command to keep track of the script's runtime.
+  (The `-e` option to `echo` allows us to print newlines using `\n`).
+
+```{bash}
+#!/bin/bash                   # 1. First line should be the shebang line
+#SBATCH --nodes=1             # 2. Provide sbatch directives
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=60
+#SBATCH --account=PAS0471
+
+# 3. Run bash in "safe mode", basically
+set -e -u -o pipefail    
+
+# 4. Report:
+echo -e "\n## Starting cutadapt script."
+date
+```
+
+### Part B: Parse arguments and set up directories
+
+1. So-called "positional" arguments that are passed onto a script using the
+   syntax `./script.sh arg1 arg2` are represented inside a script as the
+   variables `$1`, `$2`, etc. First, we will give these variables a more
+   informative name.
+
+2. We'll define the two separate dirs we'll have for the first and
+   second round of trimming that we'll do by extending the "base" output dir.
+
+3. We'll create the output directories if they don't already exist.
+   Using the `-p` option, `mkdir` can create multiple levels at once,
+   and will not complain if the dir(s) already exist.
+
+4. We'll report the directory variables to screen,
+   which will be helpful e.g. if we'd need to debug our script.
+
+
+```{bash}
+# SETUP --------------------------------------------------------
+# 1. Command-line arguments:
+indir=$1
+outdir_base=$2
+
+# 2. Define output directories for first and second trim:
+outdir_trim1=$outdir_base/first_trim
+outdir_trim2=$outdir_base/second_trim
+
+# 3. Create output directories if they don't already exist:
+mkdir -p $outdir_trim1
+mkdir -p $outdir_trim2
+
+# 4. Report:
+echo "## Input dir:                 $indir"
+echo "## Output dir - first trim:   $outdir_trim1"
+echo "## Input dir - second trim:   $outdir_trim1"
+```
+
+### Part C: Loop through `fastq` files and run `cutadapt` for each pair:
+
+We will run `cutadapt` separately for each sample, using a `for` loop to cycle
+through all the files.
+This is made a little more complicated because we have **two files** for each sample:
+one with forwards reads (which has "R1" in its filename)
+and one with reverse reads ("R2").
+
+1. We'll initialize the `for` loop, which is done using `for X in XYZ` syntax.
+   What we'll loop over (XYZ above) are all the "R1" fastq files,
+   i.e. the ones with the forward reads.
+   We list all of those by taking advantage of the `*` wildcard.
+
+2. Now, `$R1` (defined using `R1` in the loop initiation line) contains,
+   in each rendition of the loop, a single file name.
+   Because it also contains the dir name, we will extract the file name only
+   using the `basename command`.
+   The `$()` notation is called command substitution,
+   and simply allows us to assign the output of a command to a variable.
+   
+3. To get the corresponding file with reverse reads, which should always
+   have the exact same name except that it contains "R2" rather than "R1",
+   we simply substitute "R1" by "R2" in the file name using a little trick
+   with the syntax `${variable_name/pattern/replacement}`.
+
+4. To make sure all is well, we list the R1 and R2 input files.
+
+5. Now, we'll do the first round of trimming using the forward *primer* sequences.
+   We use `\` just to allow the command to continue across multiple lines for
+   easy of reading (the `\` "escapes" the return/newline).
+
+6. We'll do the second round of trimming using the reverse *primer* sequences.
+
+7. We tell the loop that is done using `done`.
+
+```{bash}
+# RUN CUTADAPT --------------------------------------------------------
+# 1. Initialize the loop:
+for R1 in $indir/*_R1_*.fastq.gz
+do
+  # 2. Get the filenames for the fastq files with forward (R1) and reverse (R2) reads:
+  R1=$(basename $R1)   # `basename` will strip the directory from the name
+  
+  # 3. 
+  R2=${R1/_R1_/_R2_}   # This will substitute "_R1_" with "_R2_" in the filename.
+  
+  # 4. Report input files:
+  echo "## R1 input file:"
+  ls -lh $indir/$R1
+  echo "## R2 input file:"
+  ls -lh $indir/$R2
+
+  # 5. First trim:
+  echo -e "\n\n## Running cutadapt for the first trim:"
+	
+	cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \
+	--discard-untrimmed --pair-filter=any \
+	-o $outdir_trim1/$R1 -p $outdir_trim1/$R2 \
+	$indir/$R1 $indir/$R2
+	
+	# 6. Second trim:
+  echo -e "\n\n## Running cutadapt for the second trim:"
+	
+	cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \
+	-o $outdir_trim2/$R1 -p $outdir_trim2/$R2 \
+	$outdir_trim1/$R1 $outdir_trim1/$R2
+  
+  # 7. Exit the loop using the `done` keyword
+done
+```
+
+### Part D: List output files as a check:
+
+Finally, we'll list our output files, as another way to check whether the script
+has run as it was supposed, and we'll also print the `date` again to check
+the (date and) time that our script finished running.
+
+```{bash}
+# REPORT AND FINALIZE --------------------------------------------------------
+echo -e "\n\n## Listing output files - first trim:"
+ls -lh $outdir_trim1
+
+echo -e "\n\n## Listing output files - second trim:"
+ls -lh $outdir_trim1
+
+echo -e "\n\n## Done with cutadapt script."
+date
+```
+
+### The entire script
+
+<details>
+<summary>
+Click here to see the entire script.
+</summary>
+
+```sh
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=60
+#SBATCH --account=PAS0471
+
+set -e -u -o pipefail    # Run bash in "safe mode", basically
+
+# Report:
+echo -e "\n## Starting cutadapt script."
+date
+
+# SETUP --------------------------------------------------------
+# Command-line arguments:
+indir=$1
+outdir_base=$2
+
+# Define output directories for first and second trim:
+outdir_trim1=$outdir_base/first_trim
+outdir_trim2=$outdir_base/second_trim
+
+# Create output directories if they don't already exist:
+mkdir -p $outdir_trim1
+mkdir -p $outdir_trim2
+
+# Report:
+echo "## Input dir:                 $indir"
+echo "## Otput dir - first trim:    $outdir_trim1"
+echo "## Input dir - second trim:   $outdir_trim1"
+
+# RUN CUTADAPT --------------------------------------------------------
+echo -e "\n## Looping through input files...\n"
+
+for R1 in $indir/*_R1_*.fastq.gz
+do
+  R1=$(basename $R1)
+  R2=${R1/_R1_/_R2_}
+  
+  # Report input files:
+  echo "## R1 input file:"
+  ls -lh $indir/$R1
+  echo "## R2 input file:"
+  ls -lh $indir/$R2
+
+  # First trim:
+  echo -e "\n\n## Running cutadapt for the first trim:"
+	
+	cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \
+	  --discard-untrimmed --pair-filter=any \
+	  -o $outdir_trim1/$R1 -p $outdir_trim1/$R2 \
+	  $indir/$R1 $indir/$R2
+	
+	# Second trim:
+  echo -e "\n\n## Running cutadapt for the second trim:"
+	
+	cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \
+	  -o $outdir_trim2/$R1 -p $outdir_trim2/$R2 \
+	  $outdir_trim1/$R1 $outdir_trim1/$R2
+
+done
+
+# REPORT AND FINALIZE --------------------------------------------------------
+echo -e "\n\n## Listing output files - first trim:"
+ls -lh $outdir_trim1
+
+echo -e "\n\n## Listing output files - second trim:"
+ls -lh $outdir_trim1
+
+echo -e "\n\n## Done with cutadapt script."
+date
+```
+
+</details>
+
+-----
+
+## Submit the Script
+
+We'll first check whether we are in the correct directory,
+so that our relative paths will work:
+
+```{bash}
+# Let's check we are in the correct directory:
+pwd
+# Should return: /fs/project/PAS0471/workshops/2020-12_micro/. If not, run:
+# cd /fs/project/PAS0471/workshops/2020-12_micro/
+```
+
+<br>
+
+Then we assign our input directory and base output directory to the variables
+`indir` and `outdir_base`, respectively.
+(In the output dir, we use the environment variable `$USER` so that the output
+of each of us ends up in a different directory that carries our OSC user name).
+
+We'll also assign the name we want to give to the *SLURM* log file to a variable.
+Again, we include `$USER` so each of us we can identify our file,
+and we'll also use the `%j` *SLURM* keyword to include the *SLURM* job number.
+
+```{bash}
+indir=raw_data/subset
+outdir_base=users/$USER/processed_data/fastq_trimmed
+
+# Give a name to the SLURM output file:
+# (The -o flag sets the SLURM log file name, and `%j` represents the job ID)
+slurm_file=slurm-cutadapt-$USER-%j.out
+```
+
+<br>
+
+Finally, we're ready to **submit the script**!
+```sh
+sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir_base
+```
+
+-----
+
+## Monitor the Job and Its Output
+
+
+### Monitor the job
+
+We can check what's going on with our job using `squeue`:
+
+```{bash}
+# Initially the job may be queued (`PD` in the `ST` column):
+squeue -u $USER
+# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+# 2451088 serial-40 01-cutad   jelmer PD       0:00      1 (None) 
+
+# Then the job should be running:
+squeue -u $USER
+# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+# 2451088 serial-40 01-cutad   jelmer R       0:43      1 (None) 
+
+# When the job has finished, squeue will return nothing:
+squeue -u $USER
+# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+
+```
+
+<br>
+
+We could also get more statistics about our job using `scontrol`:
+
+```{bash}
+scontrol show job 2451088   # Replace the number with your JOBID
+```
+
+### Check the output
+
+Let's see if we have a log file:
+
+```{bash}
+ls slurm*$USER*
+# slurm-cutadapt-jelmer-2451088.out
+```
+
+Let's look at the start of the *SLURM* log file:
+
+```{bash}
+head -n 20 slurm-cutadapt-jelmer-2451088.out
+
+# ## Starting cutadapt script.
+# Wed Dec  9 10:03:00 EST 2020
+# ## Input dir:                 raw_data/subset
+# ## Output dir - first trim:    users/jelmer/processed_data/fastq_trimmed/first_trim
+# ## Input dir - second trim:   users/jelmer/processed_data/fastq_trimmed/first_trim
+# 
+# ## Looping through input files...
+# 
+# ## R1 input file:
+# -r--r--r-- 1 jelmer PAS0471 7.4M Dec  9 08:27 raw_data/subset/201-S4-V4-V5_S53_L001_R1_001.fastq.gz
+# ## R2 input file:
+# -r--r--r-- 1 jelmer PAS0471 8.8M Dec  9 08:27 raw_data/subset/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# 
+# 
+# ## Running cutadapt for the first trim:
+# This is cutadapt 3.1 with Python 3.8.6
+# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz raw_data/subset/201-S4-V4-V5_S53_L001_R1_001.fastq.gz raw_data/subset/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# Processing reads on 1 core in paired-end mode ...
+```
+
+Let's also look at the end of the file:
+
+```{bash}
+tail slurm-cutadapt-jelmer-2451088.out
+
+# -rw-rw-r-- 1 jelmer PAS0471 1.1M Dec  8 08:13 blankM-V4-V5_S73_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 1.4M Dec  8 08:13 blankM-V4-V5_S73_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471  56K Dec  8 08:13 H20-V4-V5_S88_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471  66K Dec  8 08:13 H20-V4-V5_S88_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 3.8M Dec  8 08:13 Zymo-V4-V5_S82_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 4.4M Dec  8 08:13 Zymo-V4-V5_S82_L001_R2_001.fastq.gz
+# 
+# 
+# ## Done with cutadapt script.
+# Wed Dec  9 12:46:33 EST 2020
+```
+
+
+<br>
+
+Finally, we can directly check one of the output dirs:
+
+```{bash}
+ls -lh user/$USER/processed_data/fastq_trimmed/second_trim/
+
+# total 474M
+# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  8 08:09 101-S1-V4-V5_S1_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 9.8M Dec  8 08:09 101-S1-V4-V5_S1_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 9.6M Dec  8 08:09 101-S4-V4-V5_S49_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471  13M Dec  8 08:09 101-S4-V4-V5_S49_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 6.8M Dec  8 08:09 102-S4-V4-V5_S50_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 8.3M Dec  8 08:09 102-S4-V4-V5_S50_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 6.2M Dec  8 08:09 103-S4-V4-V5_S51_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  8 08:09 103-S4-V4-V5_S51_L001_R2_001.fastq.gz
+# ....[other files not shown]
+
+
+```
+
+<br>
+
+All done! Our [next step](06-reads-to-ASV.html) will be to further process the `fastq` files with `cutadapt`.
+
+<br> <br> <br>
