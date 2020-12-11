@@ -45,7 +45,8 @@ Enter Project Code `PAS0471` in the red box.
 you don't need to have any of the following locally installed for the
 workshop.**
 
-For your general benefit, we do recommend you have access to the following on your local computer.
+But you may be interested in having some essential computing software
+installed on your local computer for future work, if you don't already:
 
 ### Text editor
 
