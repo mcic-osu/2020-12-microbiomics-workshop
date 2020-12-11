@@ -17,7 +17,7 @@ For pre-workshop computer setup, see the [Setup](00_setup.html) page.
 
 ----
 
-## Schedule
+## Tentative Schedule
 
 ### Day 1 (Wed, Dec 16)
 
