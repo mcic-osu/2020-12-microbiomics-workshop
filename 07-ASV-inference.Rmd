@@ -97,7 +97,7 @@ pacman::p_load(char = packages, install = TRUE)
 
 ```{r}
 # Dir with input fastq files:
-indir <- "processed_data/fastq_trimmed/second_trim/"
+indir <- "data/processed/fastq_trimmed/second_trim/"
 
 # Dir for output:
 outdir <- 'analysis/ASV_inference/'

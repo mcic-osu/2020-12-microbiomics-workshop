@@ -554,7 +554,7 @@ name:stdin
   - If the file does exist, any contents will be *overwritten*. 
 
   ```sh
-  $ ls -lhr raw_data > list_of_files.txt
+  $ ls -lhr data/raw > list_of_files.txt
   ```
 
 --
@@ -698,7 +698,7 @@ $ rm <file>       # Remove files (and/or directories)
 --
 
   ```sh
-  cp -r raw_data/ backup/ 
+  cp -r data/raw/ backup/
     
   rm -r backup/      # Confirm removal for each file
   rm -rf backup/     # `-f` for force, no prompting
