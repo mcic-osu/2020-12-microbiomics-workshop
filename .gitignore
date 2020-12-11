@@ -8,5 +8,4 @@ analysis
 metadata
 processed_data
 raw_data
-
-
+slides/*html
