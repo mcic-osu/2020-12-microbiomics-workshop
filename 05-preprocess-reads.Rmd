@@ -389,7 +389,7 @@ We'll also assign the name we want to give to the *SLURM* log file to a variable
 Here, we'll also use the `%j` *SLURM* keyword to include the *SLURM* job number.
 
 ```{bash}
-indir=raw_data/fastq/
+indir=raw_data/fastq_subsample/
 outdir_base=processed_data/fastq_trimmed
 
 # Give a name to the SLURM output file:
