@@ -7,6 +7,8 @@
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -15,7 +17,7 @@ class: center, middle, inverse, title-slide
 # A Practical Introduction to OSC
 ### Jelmer Poelstra
 ### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-09)
+### 2020/12/16 (updated: 2020-12-10)
 
 ---
 
@@ -65,13 +67,12 @@ name: introduction
 
 ---
 
-## What is OSC?
+## What is the OSC?
 
 - The **Ohio Supercomputer Center (OSC)** provides computing
   resources across the state of Ohio (it is not a part of OSU).
 
-- Their main services are two supercomputers,   
-  and the infrastructure for their usage.
+- OSC has two supercomputers and lots of infrastructure for their usage.
 
 --
 
@@ -84,7 +85,7 @@ name: introduction
 
 ## Supercomputer?
 
-- **A highly interconnected set of many processors and storage units.**
+- A highly interconnected set of many processors and storage units.
 
 - Also known as:
   - A **cluster**
@@ -96,26 +97,25 @@ name: introduction
 
 ### When do we need a supercomputer?
 
-1. When our dataset is too large to be handled by our computer.
+- Our dataset is too large to be handled (efficiently) by our computer.
 
---
-
-2. We have analyses that *could* run on our own computer,  
-  but we save (a lot of) time with a cluster if:
+- Long-running analyses can be sped up by using more computing power.
   
-  - We need to repeat a computation (or have many datasets).
-
-  - We could distribute a single analysis across multiple computers.
+- We need to repeat a computation (or have many datasets).
   
 ---
 
 ## Learning about OSC
 
+- OSC regularly has online introductory sessions,   
+  both overviews and more hands-on sessions --
+  see the [OSC Events page](https://www.osc.edu/events).
+
+--
+
 - OSC provides excellent introductory material at their   
   [Getting Started Page](https://www.osc.edu/resources/getting_started).
 **Do read these!**
-
-&lt;br&gt;
 
 &lt;p align="center"&gt;
 &lt;img src=figs_OSC/gettingstarted.png width="560"&gt;
@@ -126,25 +126,13 @@ name: introduction
 ## Learning about OSC (cont.)
 
 - Also have a look at all the ["HOWTO" pages](https://www.osc.edu/resources/getting_started/howto) --   
-  includes more advanced material.
+  very specific and includes more advanced material.
 
 &lt;br&gt;
 
 &lt;p align="center"&gt;
 &lt;img src=figs_OSC/HOWTOs.png width="500"&gt;
 &lt;/p&gt;
-
----
-
-## Learning about OSC (cont.)
-
-- OSC regularly has online introductory sessions,   
-  both overviews and more hands-on sessions --
-  see the [OSC Events page](https://www.osc.edu/events).
-
-&lt;br/&gt;
-
-- There is also a Carpentry-style tutorial available [here](https://khill42.github.io/OSC_IntroHPC).
 
 ---
 
@@ -155,7 +143,7 @@ name: introduction
 - Many processors and storage units tied together.
 
 - OSC currently has two clusters: **_Pitzer_** and **_Owens_**.   
-  Largely separate, but same long-term storage space is accessed by both.
+  (Largely separate, but same long-term storage space is accessed by both.)
 
 &lt;br&gt;
 
@@ -182,12 +170,9 @@ name: introduction
 - Each core can run and be reserved independently.
 
 - But, using multiple cores for a job is also common, to:
-  - Parallelize computations across cores
-  - Access more memory
+  - Parallelize computations across cores.
+  - Access more memory.
 
---
-
-- **Note:** *SLURM* often uses the terms **CPU** and core interchangeably.
 
 ---
 
@@ -199,15 +184,6 @@ name: introduction
 &lt;img src=figs_OSC/cluster-node-core.png width="100%"&gt;
 &lt;/p&gt;
 
----
-
-## Terminology (cont.)
-
-#### Memory
-
-- RAM (Random Access Memory), not to be confused with hard disk storage.
-
-- Many programs, including R, load all the data that is used into memory.   
 
 ---
 class:inverse middle center
@@ -279,16 +255,21 @@ but also through the web browser: from https://ondemand.osc.edu.
 &lt;br&gt;
 
 --
- 
-- Fore more info, see OSC's page [Login environment at OSC](https://www.osc.edu/supercomputing/login-environment-at-osc).
+
+.content-box-purple[
+<i class="fas  fa-info-circle "></i> &amp;nbsp; For more info, see OSC's page [Login environment at OSC](https://www.osc.edu/supercomputing/login-environment-at-osc).
+]
+
 
 ---
 class: inverse middle center
 name: transfer
 
-# Transferring Files
+# Transferring Files with GUIs
 
 -----
+### For shell options, see the [Bonus Material](#shell_transfer).
+
 
 &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
@@ -332,38 +313,6 @@ depending on your preferences and **the size of the transfer**.
 - Does need a [local installation](https://www.osc.edu/resources/getting_started/howto/howto_transfer_files_using_globus_connect) and some set-up.
 
 ---
-background-color: #ededed
-
-## Transferring files: using your **local** shell
-
-#### For small transfers (&lt;1 GB): use `scp` / `rsync`
-
-```bash
-# scp
-$ scp /path/in/local/file.txt &lt;user&gt;@owens.osc.edu:/path/in/remote/
-```
-
-```bash
-# rsync (recommended, especially to keep folders synched)
-$ rsync -avrz --progress /path/in/local/dir \
-    &lt;user&gt;@owens.osc.edu:/path/in/remote/
-```
-
------
-
-#### For any transfer size: use `sftp`
-
-```bash
-$ sftp sftp.osc.edu
-sftp&gt; put /path/in/local/file.txt /path/in/remote
-
-sftp&gt; put file.txt    # From local working dir to $HOME in remote
-
-sftp&gt; get /path/in/remote/file.txt /path/in/local/
-```
-
-
----
 class: inverse middle center
 name: software
 
@@ -383,58 +332,14 @@ name: software
   and is available for all users, see:      
   &lt;https://www.osc.edu/resources/available_software&gt;.
 
----
-background-color: #ededed
-
-## Available software at OSC (cont.)
+--
 
 - Loading software is also done with `module` commands:
 ```bash
 $ module load R               # Load default version
-$ module load R/4.0.2-gnu9.1  # Load a specific version (better)
+$ module load R/4.0.2-gnu9.1  # Load a specific version
 $ module unload R
 ```
-
-&lt;br&gt;
-
------
-
-&lt;br&gt;
-
-- You can also check for software availability on the command line:
-```bash
-$ module spider [search-term]  # All installed software
-$ module avail [search-term]   # Available software,
-                                   # given current environment
-```
-
-
----
-
-## What if software isn't installed at OSC?
-
-### 1. Install it yourself
-
-- Possible but can be tricky due to lack of admin rights.
-
---
-
-### 2. Get others to install it
-
-- For commonly used software, send an email to &lt;oschelp@osc.edu&gt;.
-
-- I can help with (more niche) bioinformatics software.
-
---
-
-### 3. Alternative approaches
-
-- The **`conda`** software management system, and **`Singularity` containers**
-  are alternatives when installation is tricky.
-
-- These are also superior for reproducibility purposes.   
-  For a `conda` example, see the bonus slides starting from [here](#conda).
-
 
 ---
 class: inverse middle center
@@ -459,7 +364,9 @@ name: jobs
 
 --
 
-- Since Dec 15, 2020, both Pitzer and Owens use the **_SLURM_ scheduler**.
+- Since Dec 15, 2020, both Pitzer and Owens use the **_SLURM_ scheduler**   
+  (see [here](https://www.osc.edu/supercomputing/knowledge-base/slurm_migration)
+  for OSC SLURM info).
 
 ---
 
@@ -475,7 +382,10 @@ name: jobs
 
 &lt;br&gt;
 
-#### You'll always need to provide instructions to the *SLURM* scheduler to reserve the desired resources.
+.content-box-purple[
+<i class="fas  fa-info-circle "></i> &amp;nbsp; For all these options, you can provide      
+&amp;nbsp; &amp;nbsp;  &amp;nbsp; instructions to the *SLURM* scheduler to reserve X nodes/cores/time, etc.
+]
 
 
 ---
@@ -501,14 +411,13 @@ name:rstudio_server_job
 
 
 ---
-background-color: #ededed
 
 ## Starting a compute job: Shell script
 
 - To submit a job:
 
   ```sh
-  $ sbatch my_script_name.sh
+  $ sbatch hello.sh
   ```
 
 &lt;br&gt;
@@ -516,8 +425,6 @@ background-color: #ededed
 - The `sbatch` instructions go to the top of your script:
 
   ```sh
-  #!/bin/bash
-  
   #SBATCH --account=PAS0471
   #SBATCH --time=00:45:00
   #SBATCH --nodes=1-1
@@ -526,17 +433,18 @@ background-color: #ededed
   ```
 
 ---
-background-color: #ededed
 
 ## Starting a compute job: Interactive job
 
-- To start a 30-minute, single-core job:
+- To start an [interactive job](https://www.osc.edu/supercomputing/knowledge-base/slurm_migration/how_to_monitor_and_manage_jobs):
 
   ```sh
-  sinteractive
+  sinteractive            # Default: 30-mins, 1-core, 1-node
+  
+  sinteractive -time=120  # Two hours 
   ```
 
-- This will provide you interactive shell access on a compute node. 
+- This will get you interactive shell access on a compute node. 
 
 ---
 class: inverse middle center
@@ -557,7 +465,7 @@ name: job_options
 - Only ask for &gt;1 **node** when you have explicit parallelization   
   (*you probably don't*).
 
-- R will not even use multiple **cores** by default,   
+- By default, R will not even use multiple **cores**,   
   though some of the packages we'll work with *can* do this.
 
 
@@ -574,38 +482,6 @@ name: job_options
 
 ---
 
-## Compute job options: Memory
-
-- If you request more memory than that available on a single core,   
-  **you will automatically be assigned multiple cores**.
-
---
-
-&lt;br&gt;
-
-- **If your job hits the memory limit, it may be killed!**
-  
-  I.e., a process will not be automatically prevented from
-  using too much memory.
-
---
-
-  - Many *programs* will allow you to specify maximum memory usage.
-  
-  - But your jobs may have inherent minimum memory requirements
-    (e.g. When your job involves loading a 10 GB file into memory),
-    so make sure to **ask for sufficient memory**.
-
-&lt;br&gt; &lt;br&gt; &lt;br&gt;
-
---
-
-```sh
-#SBATCH --mem=20G       # Default unit is MB; use "G" for GB
-```
-
----
-
 ## Compute job options: Time
 
 - You need to specify a **time limit** for your job (= "wall time").
@@ -614,10 +490,13 @@ name: job_options
 
 --
 
-- Specifying time can be a trade-off: shorter jobs are likely to start sooner.   
-Still, **ask for (much) more time than you think you will need**.
-  - Better safe than sorry.
+&lt;br&gt;
+
+- **Ask for (much) more time than you think you will need**.
+  
   - Your project will be charged for the time *actually used*.
+  
+  - Slight trade-off: shorter jobs are likely to start sooner.   
 
 --
 
@@ -635,43 +514,32 @@ Still, **ask for (much) more time than you think you will need**.
 #SBATCH --time=5-0           # 5 days
 ```
 
-
 ---
+
+## Compute job options: Memory
+
+- Specify a maximum amount of RAM (Random Access Memory),
+  not to be confused with disk storage.   
+
+- Your job **gets killed** when it hits the memory limit!
+
+- Still, default amounts memory may often be enough.   
+  R reads all data into memory, so larger data sets = more memory needed.
+
+  ```sh
+  #SBATCH --mem=20G       # Default unit is MB; use "G" for GB
+  ```
+
+--
 
 ## Compute job options: Project
 
 - Your jobs always needs to be billed to a project.   
   (If you have only one project, no need to specify it.)
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-```sh
-#SBATCH --account=PAS0471
-```
-
----
-
-## Compute job options: Queue
-
-There are several "queues" that jobs can be submitted to.
-
-- **The default queue (no specification) will work in most cases.**
-
-- There are separate queues for jobs that require many nodes,
-  jobs that use *GPUs*, etc.: [list of queues at Owens](https://www.osc.edu/resources/technical_support/supercomputers/owens/queues_and_reservations) and [list of queues at Pitzer](https://www.osc.edu/supercomputing/computing/pitzer/queues_and_reservations).
-
---
-
-- **The maximum walltime** for most queues is 168 h (1 week).   
-  For longer jobs, *request access* to the `longserial` queue on Pitzer.
-  
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
---
-
-```sh
-#SBATCH --partition=longserial
-```
+  ```sh
+  #SBATCH --account=PAS0471
+  ```
 
 ---
 class: center middle inverse
@@ -685,14 +553,14 @@ class: center middle inverse
 class: inverse center middle
 name:bonus
 
-# Bonus Materials
+# Bonus Material
 
 -----
 
 ### I: [OSC File Systems](#filesystems)
-### II: [Accessing OSC In Your Shell (`ssh`)](#shell)
+### II: [OSC Access &amp; File Transfer In Your Shell](#shell)
 ### III: [Monitoring *SLURM* Jobs](#monitor)
-### IV: [`conda`](#conda)
+### IV: [More on Software at OSC](#conda)
 
 &lt;br&gt;&lt;br&gt;
 
@@ -811,7 +679,7 @@ class: inverse center middle
 name: shell
 
 # Bonus Material II:
-# Accessing OSC In Your Shell (`ssh`)
+# OSC Access &amp; File Transfer In Your Shell
 
 -----
 
@@ -888,6 +756,37 @@ $ touch `~/.ssh/config`
 &lt;img src=figs_OSC/ssh.png width="400"&gt;
 &lt;/p&gt;
 
+---
+background-color: #ededed
+name: shell_transfer
+
+## Transferring files: using your *local* shell
+
+#### For small transfers (&lt;1 GB): use `scp` / `rsync`
+
+```bash
+# scp
+$ scp /path/in/local/file.txt &lt;user&gt;@owens.osc.edu:/path/in/remote/
+```
+
+```bash
+# rsync (recommended, especially to keep folders synched)
+$ rsync -avrz --progress /path/in/local/dir \
+    &lt;user&gt;@owens.osc.edu:/path/in/remote/
+```
+
+-----
+
+#### For any transfer size: use `sftp`
+
+```bash
+$ sftp sftp.osc.edu
+sftp&gt; put /path/in/local/file.txt /path/in/remote
+
+sftp&gt; put file.txt    # From local working dir to $HOME in remote
+
+sftp&gt; get /path/in/remote/file.txt /path/in/local/
+```
 
 ---
 name: monitor
@@ -913,13 +812,40 @@ name: conda
 class: inverse center middle
 
 # Bonus Material IV:
-# `conda`
+# More on software at OSC
 
 -----
 
 &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 ### [[Back to overview]](#overview)
+
+---
+
+## What if software isn't installed at OSC?
+
+### 1. Install it yourself
+
+- Possible but can be tricky due to lack of admin rights.
+
+--
+
+### 2. Get others to install it
+
+- For commonly used software, send an email to &lt;oschelp@osc.edu&gt;.
+
+- I can help with (more niche) bioinformatics software.
+
+--
+
+### 3. Alternative approaches
+
+- The **`conda`** software management system, and **`Singularity` containers**
+  are alternatives when installation is tricky.
+
+- These are also superior for reproducibility purposes.   
+  For a `conda` example, see the bonus slides starting from [here](#conda).
+
 
 ---
 background-color: #ededed

@@ -398,10 +398,10 @@ div.tocify {
     <li class="divider"></li>
     <li class="dropdown-header">Workflow Sessions:</li>
     <li>
-      <a href="04-data-overview.html">I: Overview</a>
+      <a href="04-data-overview.html">Overview</a>
     </li>
     <li>
-      <a href="05-preprocess-reads.html">II: Adapter and Primer Removal</a>
+      <a href="05-preprocess-reads.html">I: Adapter and Primer Removal</a>
     </li>
   </ul>
 </li>
@@ -419,10 +419,10 @@ div.tocify {
     <li class="divider"></li>
     <li class="dropdown-header">Workflow Sessions:</li>
     <li>
-      <a href="07-ASV-inference.html">III: ASV Inference</a>
+      <a href="07-ASV-inference.html">II: ASV Inference</a>
     </li>
     <li>
-      <a href="08-postASV-analysis.html">IV: ASV Analysis</a>
+      <a href="08-postASV-analysis.html">III: ASV Analysis</a>
     </li>
   </ul>
 </li>
@@ -468,7 +468,7 @@ div.tocify {
 <h3>Open this file in RStudio Server at OSC</h3>
 <ul>
 <li><p>This assumes you still have an active RStudio Server job at OSC; if not see the <a href="07-ASV-inference.html#start-an-rstudio-server-job-at-osc">instructions on the previous page</a> to start one.</p></li>
-<li><p>In the Files pane, in the <code>markdown</code> directory, open the file <code>07-ASV-analysis.Rmd</code>. That’s this file!</p></li>
+<li><p>In the Files pane, in the <code>markdown</code> directory, open the file <code>08-postASV-analysis.Rmd</code>. That’s this file!</p></li>
 </ul>
 <hr />
 </div>
@@ -498,11 +498,7 @@ pacman::p_load(char = packages, install = TRUE)
 indir &lt;- &#39;analysis/ASV_inference/master/&#39;
 
 # Dir for output:
-outdir_base &lt;- &#39;analysis/ASV_analysis/&#39;
-me &lt;- system(&quot;echo $USER&quot;, intern = TRUE)
-outdir &lt;- paste0(outdir_base, &#39;/&#39;, me)
-dir.create(outdir, recursive = TRUE)
-outdir</code></pre>
+outdir &lt;- &#39;analysis/postASV_analysis/&#39;</code></pre>
 </div>
 <div id="load-the-data" class="section level3">
 <h3>Load the Data</h3>
