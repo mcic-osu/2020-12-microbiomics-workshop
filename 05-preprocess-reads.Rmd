@@ -475,16 +475,16 @@ Let's also look at the end of the file:
 ```{bash}
 tail slurm-cutadapt-jelmer-2451088.out
 
-# -rw-rw-r-- 1 jelmer PAS0471 1.1M Dec  8 08:13 blankM-V4-V5_S73_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 1.4M Dec  8 08:13 blankM-V4-V5_S73_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  56K Dec  8 08:13 H20-V4-V5_S88_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  66K Dec  8 08:13 H20-V4-V5_S88_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 3.8M Dec  8 08:13 Zymo-V4-V5_S82_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 4.4M Dec  8 08:13 Zymo-V4-V5_S82_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 1.1M Dec  11 10:05 blankM-V4-V5_S73_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 1.4M Dec  11 10:05 blankM-V4-V5_S73_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471  56K Dec  11 10:05 H20-V4-V5_S88_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471  66K Dec  11 10:05 H20-V4-V5_S88_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 3.8M Dec  11 10:05 Zymo-V4-V5_S82_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 4.4M Dec  11 10:05 Zymo-V4-V5_S82_L001_R2_001.fastq.gz
 # 
 # 
 # ## Done with cutadapt script.
-# Wed Dec  9 12:46:33 EST 2020
+# Fri Dec  11 10:05:33 EST 2020
 ```
 
 
@@ -496,14 +496,14 @@ Finally, we can directly check one of the output dirs:
 ls -lh data/processed/fastq_trimmed/second_trim/
 
 # total 474M
-# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  8 08:09 101-S1-V4-V5_S1_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 9.8M Dec  8 08:09 101-S1-V4-V5_S1_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 9.6M Dec  8 08:09 101-S4-V4-V5_S49_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  13M Dec  8 08:09 101-S4-V4-V5_S49_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 6.8M Dec  8 08:09 102-S4-V4-V5_S50_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 8.3M Dec  8 08:09 102-S4-V4-V5_S50_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 6.2M Dec  8 08:09 103-S4-V4-V5_S51_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  8 08:09 103-S4-V4-V5_S51_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 9.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 9.6M Dec  11 10:05 101-S4-V4-V5_S49_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471  13M Dec  11 10:05 101-S4-V4-V5_S49_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 6.8M Dec  11 10:05 102-S4-V4-V5_S50_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 8.3M Dec  11 10:05 102-S4-V4-V5_S50_L001_R2_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 6.2M Dec  11 10:05 103-S4-V4-V5_S51_L001_R1_001.fastq.gz
+# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 103-S4-V4-V5_S51_L001_R2_001.fastq.gz
 # ....[other files not shown]
 
 
