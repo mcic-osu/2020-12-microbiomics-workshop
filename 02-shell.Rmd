@@ -19,22 +19,22 @@ output:
 
 ------------
 
-## <a href="02-shell-slides.html" target="_blank">Click here for the slides</a>
+## <a href="slides/02-shell-slides.html" target="_blank">Click here for the slides</a>
 
 
 **Or jump straight to a section within the slides:**
 
-- [Introduction](02-shell-slides.html#intro)
-- [Navigation](02-shell-slides.html#navigation)
-- [Standard in/out and Pipes](02-shell-slides.html#stdin)
-- [Managing Files](02-shell-slides.html#managing_files)
-- [Wildcards](02-shell-slides.html#wildcards)
-- [Working with Text Files](02-shell-slides.html#text_files)
-- [A Very Minimal Script](02-shell-slides.html#script)
-- [Bonus Material](02-shell-slides.html#bonus)
-  - I: [Keyboard Shortcuts and General Tricks](02-shell-slides.html#tricks)
-  - II: [Text File Data Tools](02-shell-slides.html#datatools)
-  - III: [The `less` Pager](02-shell-slides.html#less)
-  - IV: [Standard Error](02-shell-slides.html#stderr)
+- [Introduction](slides/02-shell-slides.html#intro)
+- [Navigation](slides/02-shell-slides.html#navigation)
+- [Standard in/out and Pipes](slides/02-shell-slides.html#stdin)
+- [Managing Files](slides/02-shell-slides.html#managing_files)
+- [Wildcards](slides/02-shell-slides.html#wildcards)
+- [Viewing Text Files](slides/02-shell-slides.html#text_files)
+- [Variables and Scripts](slides/02-shell-slides.html#script)
+- [Bonus Material](slides/02-shell-slides.html#bonus)
+  - I: [Keyboard Shortcuts and General Tricks](slides/02-shell-slides.html#tricks)
+  - II: [Text File Data Tools](slides/02-shell-slides.html#datatools)
+  - III: [The `less` Pager](slides/02-shell-slides.html#less)
+  - IV: [Standard Error](slides/02-shell-slides.html#stderr)
 
 <br> <br> <br> <br>

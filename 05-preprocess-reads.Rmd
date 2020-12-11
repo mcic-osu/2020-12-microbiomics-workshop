@@ -44,10 +44,10 @@ knitr::opts_chunk$set(eval = FALSE)
 - Enter a terminal in your browser at OSC by clicking `Cluster` > `Pitzer Shell Access`.
   (Or use [this direct link](https://ondemand.osc.edu/pun/sys/shell/ssh/pitzer.osc.edu).)
 
-- Go to this workshop's directory at OSC:
+- Go to this your directory for this workshop at OSC:
 
   ```sh
-  cd /fs/project/PAS0471/workshops/2020-12_micro
+  cd /fs/project/PAS0471/workshops/2020-12_micro/$USER
   ```
 
 -----
@@ -386,12 +386,11 @@ Then we assign our input directory and base output directory to the variables
 of each of us ends up in a different directory that carries our OSC user name).
 
 We'll also assign the name we want to give to the *SLURM* log file to a variable.
-Again, we include `$USER` so each of us we can identify our file,
-and we'll also use the `%j` *SLURM* keyword to include the *SLURM* job number.
+Here, we'll also use the `%j` *SLURM* keyword to include the *SLURM* job number.
 
 ```{bash}
 indir=raw_data/fastq/
-outdir_base=users/$USER/processed_data/fastq_trimmed
+outdir_base=processed_data/fastq_trimmed
 
 # Give a name to the SLURM output file:
 # (The -o flag sets the SLURM log file name, and `%j` represents the job ID)
@@ -456,8 +455,8 @@ head -n 20 slurm-cutadapt-jelmer-2451088.out
 # ## Starting cutadapt script.
 # Wed Dec  9 10:03:00 EST 2020
 # ## Input dir:                 raw_data/fastq/
-# ## Output dir - first trim:    users/jelmer/processed_data/fastq_trimmed/first_trim
-# ## Input dir - second trim:   users/jelmer/processed_data/fastq_trimmed/first_trim
+# ## Output dir - first trim:   processed_data/fastq_trimmed/first_trim
+# ## Input dir - second trim:   processed_data/fastq_trimmed/first_trim
 # 
 # ## Looping through input files...
 # 
@@ -469,7 +468,7 @@ head -n 20 slurm-cutadapt-jelmer-2451088.out
 # 
 # ## Running cutadapt for the first trim:
 # This is cutadapt 3.1 with Python 3.8.6
-# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p users/jelmer/processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz raw_data/fastq/201-S4-V4-V5_S53_L001_R1_001.fastq.gz raw_data/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o /processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p /processed_data/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz raw_data/fastq/201-S4-V4-V5_S53_L001_R1_001.fastq.gz raw_data/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
 # Processing reads on 1 core in paired-end mode ...
 ```
 
@@ -496,7 +495,7 @@ tail slurm-cutadapt-jelmer-2451088.out
 Finally, we can directly check one of the output dirs:
 
 ```{bash}
-ls -lh user/$USER/processed_data/fastq_trimmed/second_trim/
+ls -lh processed_data/fastq_trimmed/second_trim/
 
 # total 474M
 # -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  8 08:09 101-S1-V4-V5_S1_L001_R1_001.fastq.gz

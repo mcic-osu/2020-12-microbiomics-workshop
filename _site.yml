@@ -25,9 +25,9 @@ navbar:
           href: "03-OSC.html"
         - text: "---------"
         - text: "Workflow Sessions:"
-        - text: "I: Overview"
+        - text: "Overview"
           href: "04-data-overview.html"
-        - text: "II: Adapter and Primer Removal"
+        - text: "I: Adapter and Primer Removal"
           href: "05-preprocess-reads.html"
 
     - text: "Day 2"
@@ -37,9 +37,9 @@ navbar:
           href: "06-R.html"
         - text: "---------"
         - text: "Workflow Sessions:"
-        - text: "III: ASV Inference"
+        - text: "II: ASV Inference"
           href: "07-ASV-inference.html"
-        - text: "IV: ASV Analysis"
+        - text: "III: ASV Analysis"
           href: "08-postASV-analysis.html"
   right:
     - icon: fa-github fa-lg

@@ -59,26 +59,18 @@ Process metabarcoding reads, post-adapter removal, including:
 <img src=slides/figs_OSC/apps.png width="500">
 </p>
 
-- Fill out the form as shown [here](03-OSC-slides.html#rstudio_server_job)
+- Fill out the form as shown [here](slides/03-OSC-slides.html#rstudio_server_job).
 
 - Once your job has started, click `Launch RStudio Server`.
 
-- In the R console, enter:
-
-  ```sh
-  setwd('/fs/project/PAS0471/workshops/2020-12_micro')
-  ```
-
-- Then in the Files pane, in the bottom right, click the Gear icon and
-  then `Go To Working Directory`, as shown below:
-  
-<p align="center">
-<img src=img/RStudio_go-to-wd.png width="500">
-</p>
+- You should automatically be in your personal dir inside the dir
+  '/fs/project/PAS0471/workshops/2020-12_micro'.
+  (In the `Files` pane, you should see your `.Rproj` file. 
+  If not, type `setwd('/fs/project/PAS0471/workshops/2020-12_micro')`
+  and then click on the dir with your name in the `Files` pane).
 
 - Now, click on the `markdown` directory in the Files pane,
   and open the file `06-reads-to-ASV.Rmd`. That's this file!
-
 
 -----
 
@@ -108,11 +100,8 @@ pacman::p_load(char = packages, install = TRUE)
 indir <- "processed_data/fastq_trimmed/second_trim/"
 
 # Dir for output:
-outdir_base <- 'analysis/ASV_inference/'
-me <- system("echo $USER", intern = TRUE)
-outdir <- file.path(outdir_base, me)
+outdir <- 'analysis/ASV_inference/'
 dir.create(outdir, recursive = TRUE)
-outdir
 
 # Fasta file with training data:
 # (Check for an up-to-date version at <https://benjjneb.github.io/dada2/training.html>)

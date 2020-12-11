@@ -40,17 +40,13 @@ klippy::klippy(position = 'right',
 
 ------------
 
-## Before we start
+## Before We Get Started
 
 ### Attribution
 
 This material was modified after material from [The Carpentries](https://carpentries.org/),
 especially from [this Data Carpentry workshop](http://uw-madison-aci.github.io/2016-06-01-uwmadison/)
 and [this "R for Ecology" workshop](https://datacarpentry.org/R-ecology-lesson).
-
-### Notes on Terminology
-
-- The terms "directory" and "folder" are used interchangeably.
 
 ### Why R?
 
@@ -60,11 +56,11 @@ useful for *statistics* and *data visualization*.
 **Yes, there is a learning curve, and many of us just want to get on with our analysis --    
 but investing in learning R will pay off:**
 
-- R gives you greater flexibility to do anything you want.
+- R gives you greater **flexibility** to do anything you want.
 
-- A greater reproducibility of scripting vs clicking.
+- A greater **reproducibility** of scripting vs clicking.
 
-- R is highly interdisciplinary -- e.g. nowadays very useful for **analyzing sequencing data**,  
+- R is highly **interdisciplinary** -- e.g. very useful for analyzing sequencing data  
   but can also be used to create maps and perform GIS analyses, and so on!
 
 - R is more than a platform to perform analysis.
@@ -78,16 +74,36 @@ Furthermore, R:
 
 - Has a large and welcoming user community.
 
+-----
+
+## Getting Started
+
 ### Start an RStudio Server session at OSC
 
-- Go to <https://ondemand.osc.edu>.
-- In the blue top bar, click the `Interactive Apps` dropdown menu.
-- All the way in the bottom of the dropdown, click `RStudio Server (Owens and Pitzer)`.
-- In the submission form, keep all the defaults, unless you want to select
-  a particular project, and then click `Launch`.
-- Wait until the top bar of the little job box turns green and says "Running",
-  and then click the blue `Connect to RStudio Server` button in the bottom of the Box.
-- You're in!
+- Login to OSC at <https://ondemand.osc.edu>.
+
+- Click on `Interactive Apps` (top bar) > `RStudio Server (Owens and Pitzer)`
+
+<p align="center">
+<img src=slides/figs_OSC/apps.png width="500">
+</p>
+
+- Fill out the form as shown [here](slides/03-OSC-slides.html#rstudio_server_job).
+
+- Now, you should see a box like this:
+
+<p align="center">
+<img src=img/osc_queued.png width="700">
+</p>
+
+
+- Your job should start running pretty soon, and when it's ready the box should look like this: 
+
+<p align="center">
+<img src=img/osc_running.png width="700">
+</p>
+
+- Click `Connect to RStudio Server` at the bottom of the box, and an RStudio Server instance will open. You're ready to go!
 
 ### R vs. RStudio
 
@@ -123,7 +139,7 @@ is where you can interact with R directly.
 The `>` sign is the R "prompt".
 It indicates that R is ready for you to type something.
 
-Let's start by performing an amazing division:
+Let's start by performing a division:
 
 ```{r add, eval=TRUE, results='show'}
 203 / 2.54
@@ -131,7 +147,7 @@ Let's start by performing an amazing division:
 
 R does the calculation and prints the result, and then you get the `>` prompt again.
 (The `[1]` may look a bit weird when there is only one output element; 
-if there were many, it would keep count of them.)
+this is how you can keep count of output elements.)
 
 You can generally use R as a calculator in this way, with standard symbols:
 
@@ -141,13 +157,13 @@ You can generally use R as a calculator in this way, with standard symbols:
 ```
 
 
-### Let's try some random things!
+### Trying some random things...
 
 ```{r space, eval=TRUE, results="show"}
          203                     - 2.54
 ```
 
-Okay! So R just ignores any extra spaces.
+This works: so R just ignores any extra spaces.
 
 <br>
 
@@ -158,20 +174,19 @@ How about:
 ```
 
 <details>
-
 <summary>
-**Now the prompt is a `+`. What is going on?**
+&nbsp;  `r icon::fa("question-circle")` &nbsp; **Now the prompt is a `+`. What is going on?**
 </summary>
 
 R is waiting for you to finish the command, since you typed an incomplete command:
 something has to come after the `+` to be added to what came before.
 
-OK, so this was easy, but in practice,
-you will type incomplete commands without realizing you did so.
+While it was obvious here, you will often type incomplete commands without
+realizing you did so.
 Just remember that when you see the `+` prompt,
 you are missing something in your command:
-oftentimes, you have forgotten a closing parenthesis `)`
-or accidentally opened up an unwanted opening parenthesis `(`.
+often, you'll have forgotten a closing parenthesis `)`
+or you accidentally opened up an unwanted opening parenthesis `(`.
 
 Note also that RStudio will alert you in the script window when you are making syntax errors:
 
@@ -183,7 +198,7 @@ Note also that RStudio will alert you in the script window when you are making s
 
 <br>
 
-Now we just type a number:
+And if we just type a number:
 
 ```{r number, eval=TRUE, results='show'}
 203
@@ -205,7 +220,7 @@ Awesome
 
 <details>
 <summary>
-**What seems to be going wrong here?**
+&nbsp;  `r icon::fa("question-circle")` &nbsp; **What seems to be going wrong here?**
 </summary>
 
 Whenever you type a character string, R expects to find an object with that name.
@@ -239,7 +254,7 @@ organize the scripts and data for a project.
 
 So let's pause for a moment and talk about file organization.
 
-### Creating an RStudio Project
+### Need for RStudio Projects
 
 It is good practice to keep a set of related data, analyses, and text
 self-contained in a single folder,
@@ -252,7 +267,7 @@ which point to where a file is *on a specific computer*).
 
 <details>
 <summary>
-More on absolute vs relative paths
+&nbsp;  `r icon::fa("info-circle")` &nbsp; More on absolute vs relative paths
 </summary>
 
 An absolute path always contains the *root element* (`/` on Unix systems such as
@@ -279,7 +294,7 @@ open it on a different computer, or share it with a collaborator.
 
 **You should avoid using absolute paths as much as possible.**
 
-*P.S.: Another point to note is that in R you can (and should) always use a
+`r icon::fa("info-circle")` In R you can always use a
 forward slash `/` to delimit directories, even if you are on a Windows machine.*
 
 </details>
@@ -299,24 +314,40 @@ and you can safely use relative paths to point to other files.
 
 <br>
 
-**Let's create an RStudio Project:**
+### Create an RStudio Project:
 
-* Under the `File` menu,
-  click on `New project`,
-  choose `Existing directory`, then
-  click the `Browse` and find your `r folder_name` folder.
+We'll use the `create_project()` function from the *usethis* package
+to create a new RStudio Project. The directory should contain our user name,
+so we first get our user name and build the path:
 
-* Click on `Create Project`.
+```{r}
+# Get your user name (by running a shell command via the `system()` function:
+me <- system("echo $USER", intern = TRUE)
+# Build the path to the target dir:
+proj_dir <- file.path('/fs/project/PAS0471/workshops/2020-12_micro', me)
+
+# Create the Project:
+library(usethis)
+create_project(path = proj_dir)
+```
 
 Now, RStudio will reload with the newly created Project open.
-One consequence of this is that your working directory should be the Project's
-directory. Let's see what our working directory is using `getwd()`:
 
-```r
+If you get the pop-up below, click `Don't Save` (do this whenever you get that pop-up):
+
+<p align="center">
+<img src=img/rdata-popup.png width="350">
+</p>
+
+
+Your working directory should be the Project's directory.
+We can check this using `getwd()`:
+
+```{r}
 getwd()
 ```
 
-From now on, we will avoid the temptation (?) to change our working directory,
+From now on, we will not change our working directory,
 and refer to all files relative to our project's top-level directory.
 
 
@@ -324,10 +355,9 @@ and refer to all files relative to our project's top-level directory.
 
 - Create a new R script (`File` > `New File` > `R Script`)
 
-- Click `File` > `Save As` to save the script.   
-  Save it in your `scripts` subfolder
-  (e.g. `~/2020-12_microbiomics-workshop/scripts/`)
-  using the file name `intro-to-R.R`.
+- Click `File` > `Save As` to save the script in the `scripts` dir that you
+  should see within your personal dir.
+  Give it a descriptive name like `intro-to-R.R`.
   
 
 ### Interacting with the R console from your script
@@ -336,17 +366,15 @@ I recommend always *typing your commands into a script*,
 which you'll save for later reference,
 and then executing the commands from there.
 
-We want to make sure to save our wonderful subtraction,
+We want to make sure to save our division,
 so start by typing the following into the R script in the top-left pane:
 
-```{r rscript}
-# R intro
-
+```{r}
 203 / 2.54
 ```
 
-Now place the cursor on the line with `20 - 13` and type
-<kbd>`Ctrl`</kbd> + <kbd>`Enter`</kbd>.
+With the cursor still on this line,
+press <kbd>`Ctrl`</kbd> + <kbd>`Enter`</kbd>.
 The command will be copied to the R console and executed,
 and then the cursor will move to the next line.
 (You can also highlight a bunch of code and execute the block all at
@@ -382,7 +410,7 @@ Type that into your script,
 and use <kbd>`Ctrl`</kbd> + <kbd>`Enter`</kbd> to send it to the console.
 
 If you've assigned a number to an object, you can then use it in
-further calculations:
+other calculations:
 
 ```{r sqrt, eval=TRUE, results='show'}
 wingspan_in * 2.54
@@ -432,7 +460,7 @@ x <- 80
 <details>
 
 <summary>
-Solution (click here)
+&nbsp;  `r icon::fa("check-circle")` &nbsp; Solution (click here)
 </summary>
 
 Objects don't get linked to each other, so if you change one,
@@ -454,28 +482,27 @@ current objects with `ls()`. RStudio also shows the objects in the Environment p
 
 ## Functions
 
-Earlier, we managed to divide `20` by `13` and got `r 20/13`,
+Earlier, we divided `203` by `2.54`,
 but what if we wanted to round the resulting number?
-Like for *many* things you may want to do in R, there is a **function** for that.
+Like for many things you may want to do in R, there is a **function** for that.
 
 Functions are used by typing their name followed by parentheses:
 
 ```{r log, eval=TRUE, results='show'}
-round(1.538462)
+round(203 / 2.54)
 ```
 
 Here, `round()` is a _function_ that rounds a number.
 The value in the parentheses is called a function "argument",
-which is used in the execution of the function
-(usually, the primary argument is converted by the function, like here).
+which is used in the execution of the function.
 
 ### Using named arguments
 
 Functions can have more than one argument, and some of them may have default values.
 
-There are some functions that take many arguments and you can imagine that it might
-get confusing trying to keep them in order.
-In that case, it is often better to explicitly name the arguments.
+There are some functions that take many arguments and it can get confusing
+trying to keep them in order.
+In that case, it is better to explicitly name the arguments.
 
 When you type a function name and pause for a moment,
 the arguments, their names, and their default values
@@ -483,7 +510,7 @@ the arguments, their names, and their default values
 
 <details>
 <summary>
-**What is the second argument for `round()` and what is its default value?**
+&nbsp;  `r icon::fa("question-circle")` &nbsp; What is the second argument for `round()` and what is its default value? (Click here)
 </summary>
 
 `round` has a second argument `digits` whose default 
@@ -508,29 +535,23 @@ round(1.538462, digits = 2)
 
 <br>
 
-Note that we can also directly plug in objects:
+Also here, we can directly plug in objects:
 
 ```r
-my_number <- 20 / 13
-round(my_number)
-```
-
-Or do the initial division inside the function:
-
-```r
-round(20 / 13)
+wingspan_in <- 203 / 2.54
+round(wingspan_in)
 ```
 
 Or nest functions -- here we are adding the `log()` function:
 
 ```r
-log(round(20 / 13 ))
+log(round(203 / 2.54 ))
 ```
 
 <details>
 
 <summary>
-**What is the order of execution in the last command?**
+&nbsp;  `r icon::fa("question-circle")` &nbsp; **What is the order of execution in the last command?** (Click here)
 </summary>
 
 `round()` is executed first,
@@ -557,11 +578,10 @@ Alternatively, you could type:
 
 This documentation is often a bit _too_ detailed, and can be terse,
 so it takes some practice to read.
-I generally focus on *Usage* and *Arguments*, and then on *Examples* at the bottom.
+*Usage*, *Arguments*, and at the bottom, *Examples*, are most useful.
 
-Otherwise, for instance when you don't know a function's name, or even whether
-a function may or may not exist, Google is your friend!
-Try typing "rounding a number in r", and see if you get useful results.
+Googling what you want to do, even if you don't know whether a function
+exists, will work too (e.g. "rounding a number in r").
 
 ----
 
@@ -606,7 +626,7 @@ The 4 most common atomic vector types are:
 
 <details>
 <summary>
-**Vector coercion: when not all elements are of the same type.**
+&nbsp; `r icon::fa("info-circle")` &nbsp; Vector coercion: when not all elements are of the same type. (Click here)
 </summary>
 
 What happens if we try to mix vector types (e.g., "character and numeric")
@@ -639,8 +659,8 @@ types.
 
 ### Vectorization!
 
-Let's say we wanted to convert our wingspans to inches,
-which means that we need to divide each length in centimeters by 2.54.
+Let's say we wanted to convert our vector of wingspans to inches:
+dividing each length in centimeters by 2.54.
 
 How could we do this quickly?
 
@@ -654,7 +674,7 @@ wingspan_in
 <details>
 
 <summary>
-**Why does this work?**
+&nbsp;  `r icon::fa("info-circle")` &nbsp; Why does this work?
 </summary>
 
 R "vectorizes" operations whenever it can.
@@ -698,10 +718,13 @@ used mostly for statistical tests and when plotting.
 ## Data Frames
 
 A data frame (formal object type: `data.frame`) is a rectangular data structure
-in which rows are observations and columns are variables.
-Each column can be of a different type (numeric, character, etc.),
-but since each column is a vector, all the cells within a column are of the same type.
-Also, due to the rectangular structure, all columns have the same length.
+in which:
+
+  - Rows are observations and columns are variables.
+  - Each column can be of a different type (numeric, character, etc.),
+  - Since each column is a vector,
+    all the values (cells) within a column are of the same type.
+  - All columns have the same length.
 
 ### Create, write, and read a data frame
 
@@ -744,8 +767,8 @@ Use `str()` to look at the structure of the data.
 str(birds_df)
 ```
 
-This shows that there are 34,786 rows and 13 columns,
-and then for each column, it gives information about the data
+This tells us the number rows and columns,
+and for each column, gives information about the data
 type and shows the first few values.
 
 Another useful function is `summary()`.
@@ -764,18 +787,18 @@ View(birds_df)
 ### An Overview of Functions to Get an Overview
 
 * **Size:**
-  * `dim()` -- returns a vector with the number of rows in the first element, and the number of columns as the second element (the __dim__ensions of the object)
-  * `nrow()` -- returns the number of rows
-  * `ncol()` -- returns the number of columns
-  * `length()` -- for a dataframe, returns the number of columns. Very commonly used for vectors, for which it will return the number of elements.
+  * `dim()` -- *Dim*ensions: c(number of rows, number of columns)
+  * `nrow()` -- Number of rows
+  * `ncol()` -- Number of columns
+  * `length()` -- For a dataframe: number of columns. For a vector: number of elements.
 
 * **Content:**
   * `head()` -- shows the first 6 rows
   * `tail()` -- shows the last 6 rows
 
 * **Names:**
-  * `names()` -- returns the column names (synonym of `colnames()` for `data.frame` objects)
-  * `rownames()` -- returns the row names
+  * `names()` or `colnames()` -- column names
+  * `rownames()` -- row names
 
 * **Summary:**
   * `str()` -- structure of the object and information about the class, length and content of each column
@@ -848,17 +871,6 @@ install.packages("BiocManager")  # Install the BiocManager package
 BiocManager::install("dada2")    # Install the edgeR package from Bioconductor
 ```
 
-### S4 Objects
-
-"S4" objects are most certainly an advanced R topic,
-but because many bioinformatics packages use them,
-we will briefly discuss them here.
-In a nutshell, S4 objects allow for complicated, multifaceted datasets
-(such as multiple dataframes with distinct but related data as well as with metadata)
-to be represented in a single object.
-
-<span style="color: #eb4034">TODO: EXPAND</span>
-
 ### Saving your data
 
 Some very brief notes on saving your data in R:
@@ -882,6 +894,22 @@ Some very brief notes on saving your data in R:
   especially "overnight". Devise your workflow such that you are always saving
   important objects and results outside of R,
   and can always use your R script to restart from where you left off.
+
+### S4 Objects
+
+While the object types we have discussed so far are so-called "*S3*" object,
+we will also be seeing "*S4*" objects in this workshop. 
+S4 object are commonly used by bioinformatics packages, for instance *phyloseq*.
+
+In a nutshell, S4 objects allow for complicated, multifaceted datasets
+(e.g. multiple dataframes with and metadata) to be represented in a single object
+in a standardized way.
+
+Unlike S3 objects, S4 objects are usually not manipulated by simple assignment
+with `<-`, but with specialized functions that are sure to adhere to the
+strict object definitions.
+
+Its elements are called *slots*, which are accessed with `@` (`object_name@slot_name`). 
 
 ----
 

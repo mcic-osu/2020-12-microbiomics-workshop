@@ -6,6 +6,7 @@ date: "2020/12/16 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     lib_dir: libs
+    css: ["default", "default-fonts",  "slides.css"]
     nature:
       highlightStyle: github
       highlightLines: true
@@ -16,6 +17,8 @@ class:inverse middle center
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
+
+
 # Overview
 
 .pull-left[
@@ -41,8 +44,8 @@ name: overview
 .pull-right[
 
 ### [Wildcards](#wildcards)
-### [Working with Text Files](#text_files)
-### [A Very Minimal Script](#script)
+### [Viewing Text Files](#text_files)
+### [Variables and Scripts](#script)
 ### [Bonus Material](#bonus)
 ]
 
@@ -62,14 +65,24 @@ name:intro
 
 ---
 
+## Terminology
+
+| short | long | meaning |
+|-|-|-|
+| **dir** | directory | folder |
+| **GUI** | Graphical User Interface | Point-and-click interface |
+| **CLI** | Command Line Interface | Interface where you type commands |
+
+
+---
+
 ## What is a shell?
 
 - The shell is a **command-line interface (CLI) to the
   operating system**.
 
-- That is, for Unix-like operating systems,
-  such as Linux and Mac.   
-  (In Windows, there isn't really a shell, but there are [ways to   get one](#windows-shell)).
+- A shell is always available on Unix-like operating systems,
+  such as Linux and Mac. (In Windows, there are [ways to get one](#windows-shell).)
 
 --
 
@@ -77,12 +90,10 @@ name:intro
 
 ### Shell flavors
 
-- Many shell variants exist but are very similar.
-
-- We will be using the **bash shell**.   
+- Of many very similar shell variants, we will be using the **bash shell**.   
   
-  This is most common shell, and the default in Mac and Linux,
-  including at OSC (which runs Linux).
+  This is most common shell -- e.g. the default in Mac and Linux,
+  including at OSC.
 
 ---
 
@@ -96,7 +107,7 @@ name:intro
 
 --
 
-- Is the most efficient (or only) way to **run many programs
+- Is the most effective (or only) way to **run many programs
   and submit scripts** -- especially when dealing with bioinformatic data.
 
 --
@@ -130,7 +141,7 @@ name:intro
 
 ## The shell prompt
 
-- OSC show us lots of welcome messages and information:
+- OSC shows us lots of welcome messages and information:
 
 <p align="left">
 <img src=figs_shell/OSC_welcome.png width="550">
@@ -224,13 +235,15 @@ class: center middle
 
 <br>
 
-- Note that everything after a **"`#`"** is ignored -- useful for comments!
+.content-box-purple[
+`r icon::fa("info-circle")` &nbsp; Everything after a **"`#`"** is ignored -- useful for comments!
+]
 
 ---
 
 ## How can we know a command's options?
 
-Many commands have a **"`--help`"** option:
+Many commands have a "**-h**" help option:
 
 ```sh
 $ cal --help
@@ -247,6 +260,8 @@ $ cal --help
 #  -V, --version    display version information and exit
 #  -h, --help       display this help text and exit
 ```
+
+- Note the short ("**-h**") vs long ("**--help**") option notation!
 
 ---
 
@@ -351,26 +366,81 @@ To let the shell tell you what your working directory is, <br> use **`pwd`** (Pr
 
 To change working directory, use **`cd`** (Change Directory)
 
-- Using a **relative path** (i.e., not starting from the root dir):
-```sh
-$ cd workshops/2020-12_micro/
-```
+- Using an **absolute path** (i.e., starting from the root dir):
+  ```{sh, eval=FALSE}
+  $ cd /fs/project/PAS0471/
+  ```
+
+--
+
+.content-box-green[
+### `r icon::fa("user-edit")` Try this:
+  - You can paste text into your OSC browser shell using **`Ctrl` + `v`**
+  - Shells have tab completion!
+    - Type `/f` and press `Tab` (will autocomplete to `fs/`)
+    - Then add `pr` (`/fs/pr`) and press `Tab`
+    - Add `PAS` (`fs/project/PAS`) and press `Tab Tab`
+    - Add `04` (`fs/project/PAS04`) and press `Tab Tab`
+]
+
+--
+
+---
+
+## Navigation: `cd`
+
+To change working directory, use **`cd`** (Change Directory)
 
 - Using an **absolute path** (i.e., starting from the root dir):
   ```{sh, eval=FALSE}
-  $ cd /fs/project/PAS0471/workshops/2020-12_micro/
+  $ cd /fs/project/PAS0471/
+  ```
+
+- Using a **relative path** (i.e., not starting from the root dir):
+  
+  ```sh
+  $ cd workshops/2020-12_micro/$USER
+  # Absolute: /fs/project/PAS0471/workshops/2020-12_micro/$USER
   ```
 
 --
 
 <br>
 
-- **Note that the shell did not give us any feedback!** (This is normal.)
+- **The shell does not give us any feedback when it succeeds.**
 
   Check whether it worked:
   ```sh
   $ pwd
-  # /fs/project/PAS0471/workshops/2020-12_micro/
+  # /fs/project/PAS0471/workshops/2020-12_micro/jelmer
+  ```
+
+---
+
+## Navigation: `cd`
+
+To change working directory, use **`cd`** (Change Directory)
+
+- Using an **absolute path** (i.e., starting from the root dir):
+  ```{sh, eval=FALSE}
+  $ cd /fs/project/PAS0471/
+  ```
+  
+- Using a **relative path** (i.e., not starting from the root dir):
+  
+  ```sh
+  $ cd workshops/2020-12_micro/$USER
+  # Absolute: /fs/project/PAS0471/workshops/2020-12_micro/$USER
+  ```
+
+<br>
+
+- **The shell does not give us any feedback when it succeeds.**
+
+  What happens when I make a mistake?
+  ```sh
+  $ cd sdkjgkhh
+  # bash: cd: sdkjgkhh: No such file or directory
   ```
 
 ---
@@ -380,9 +450,11 @@ $ cd workshops/2020-12_micro/
 ### Tricks!
 
 ```sh
+$ cd ~      # Move to your home dir (~ is always /home/<user>/ !)
+
 $ cd ..     # Move one directory up
 $ cd ../..  # Move two directories up
-$ cd ~      # Move to your home dir (~ is always /home/<user>/ !)
+
 $ cd -      # Go back to last visited dir (like "Back" in a browser)
 
 $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
@@ -393,31 +465,23 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 
 ## Navigation: `ls`
 
-#### To list the contents of our current working directory, use **`ls`** (LiSt)
-
-```sh
-$ ls
-# TODO: OUTPUT
-```
+- To list the contents of your current working directory, use **`ls`** (LiSt)
+  ```sh
+  $ ls
+  ```
+  <p align="center">
+  <img src=figs_shell/ls.png width="700">
+  </p>
 
 --
-
-<br>
 
 - We can try some options to modify the output:
-
   ```sh
-  $ ls -l -h   # -l: long format / -h: human-readable file sizes
-  # TODO: OUTPUT 
+  $ ls -lh   # -l: long format / -h: human-readable file sizes
   ```
-
---
-
-- Again, these options can be "pasted together":
-
-  ```sh
-  $ ls -lha     # Also added the "-a" option to show hidden files
-  ```
+  <p align="center">
+  <img src=figs_shell/ls-lh.png width="700">
+  </p>
 
 ---
 
@@ -426,7 +490,7 @@ $ ls
 - We can also provide a directory or file name as an argument:
 
   ```sh
-  $ ls -lh Experiment description
+  $ ls -lh metadata/Experiment description
   ```
   
 ---
@@ -436,7 +500,7 @@ $ ls
 - We can also provide a directory or file name as an argument:
 
   ```sh
-  $ ls -lh Experiment description
+  $ ls -lh metadata/Experiment description
   # ls: cannot access Experiment: No such file or directory
   # ls: cannot access description: No such file or directory
   ```
@@ -481,43 +545,48 @@ name:stdin
 
 - The regular output of a command is called **"standard out"** ("*stdout*").   
   By default, this is printed to screen,
-  but it can be **redirected to a file**.
+  but it can be "redirected" to a file.
 
 --
 
-- When redirecting output to a file with `>`:
-  - Will create file if it doesn't exist.
-  - Will **overwrite** any contents if the file does exist. 
+- With **`>`**, we **redirect** output to a file:
+  - If the file doesn't exist, it will be *created*.
+  - If the file does exist, any contents will be *overwritten*. 
 
   ```sh
-  $ ls -lhr project_A > lift_of_files.txt
+  $ ls -lhr raw_data > list_of_files.txt
   ```
 
 --
 
-- **Append** the output to a file with `>>`:
+- With **`>>`**, we **append** the output to a file:
 
   ```sh
-  $ ls -lhr project_B >> lift_of_files.txt
+  $ ls -lhr metadata >> list_of_files.txt
   ```
 
 --
 
 <br>
 
-- See the [bonus materials](#stderr) to learn about redirecting **error** messages.
-
+.content-box-purple[
+`r icon::fa("info-circle")` Error messages are also printed to screen but are **not** part of   
+&nbsp; &nbsp; &nbsp; standard out. See the [bonus materials](#stderr) to learn
+about redirecting   
+&nbsp; &nbsp; &nbsp; **error** messages.
+]
 
 ---
 
 ## Standard input and pipes
 
-- A file name can be given as an argument to most commands.   
-  If a file name is provided, this file will be read and
-  represent the *input* upon which the command will act:
+- A file name can be given as an argument to most commands.
 
+  This `grep` command will search for the string "soil_blank"
+  inside the contents of our metadata file:
+  
   ```sh
-  $ grep "missing_file" lift_of_files.txt
+  $ grep "soil_blank" metadata/sample_meta.txt
   ```
 
 --
@@ -528,10 +597,10 @@ name:stdin
   using the pipe:
 
   ```sh
-  $ cat lift_of_files.txt | grep "missing_file"
+  $ cat metadata/sample_meta.txt | grep "soil_blank"
   ```
   
-  The pipe `|` presents the output (*stdout*) of `cat` as
+  Here, the pipe `|` presents the standard output (*stdout*) of `cat` as   
   input (*stdin*) to `grep`.
   
 
@@ -553,23 +622,24 @@ name:managing_files
 
 .pull-left[
 ### `mkdir`
-Make a new directory.
+Make a new dir
 
 <br>
 
-### `rm`
-Remove files (and directories).
+### `cp`
+Copy files (and dirs)
 ]
 
 --
 
 .pull-right[
-### `cp`
-Copy files (and directories).
+### `mv`
+Move or rename files and dirs
 
 <br>
-### `mv`
-Move or rename files and directories.
+
+### `rm`
+Remove files (and dirs)
 ]
 
 ---
@@ -578,10 +648,10 @@ Move or rename files and directories.
 
 ```sh
 $ mkdir <dirname> # Make a new directory
-$ rm <file>       # Remove files (and/or directories)
-                  # BEWARE: There is no Thrash Bin in the shell!
 $ cp <from> <to>  # Copy files (and/or directories)
 $ mv <from> <to>  # Move or rename files and/or directories
+$ rm <file>       # Remove files (and/or directories)
+                  # BEWARE: There is no Thrash Bin in the shell!
 ```
 
 <br>
@@ -591,19 +661,23 @@ $ mv <from> <to>  # Move or rename files and/or directories
 - Examples:
   
   ```sh
-  mkdir metadata
+  mkdir figures/
   mkdir -p manuscript/fig/supp/      # `-p`: multiple levels
   ```
   
 --
-  
+
   ```sh
-  mv "Experiment description" experiment_description
+  cp metadata/sample_meta.txt .          # `.` for current wd            
   ```
   
   ```sh
-  cp results/fig/Fig1.png .          # `.` for current wd            
+  mv sample_meta.txt meta.txt
   ```
+  ```sh
+  rm meta.tx
+  ```
+
   
 ---
 
@@ -611,10 +685,10 @@ $ mv <from> <to>  # Move or rename files and/or directories
 
 ```sh
 $ mkdir <dirname> # Make a new directory
-$ rm <file>       # Remove files (and/or directories)
-                  # BEWARE: There is no Thrash Bin in the shell!
 $ cp <from> <to>  # Copy files (and/or directories)
 $ mv <from> <to>  # Move or rename files and/or directories
+$ rm <file>       # Remove files (and/or directories)
+                  # BEWARE: There is no Thrash Bin in the shell!
 ```
 
 <br>
@@ -624,61 +698,16 @@ $ mv <from> <to>  # Move or rename files and/or directories
 --
 
   ```sh
-  cp -r my_project/ /home/jelmer/backup/ 
+  cp -r raw_data/ backup/ 
     
-  rm -r my_project/      # Confirm removal for each file
-  rm -rf my_project/     # `-f` for force, no prompting
+  rm -r backup/      # Confirm removal for each file
+  rm -rf backup/     # `-f` for force, no prompting
   ```
 
 --
 
 - The `-r` option is not needed with `mv`.
 
----
-background-color:#e4ede4
-
-## Your turn: Navigation & Managing files
-
-1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.   
-   **This is our workshop's home directory.**
-
-2. Create a new directory with your name (no spaces!) *within* the users/ directory.
-
-3. Copy `/fs/project/PAS0471/workshops/2020-12_micro/README.txt` into your directory.
-
-4. Move into your directory.
-
-5. Rename `README.txt` to `README.md`.
-
-6. Move back to our workshop's home directory;
-   try to avoid using the full (absolute) path notation to do so.
-
-
----
-background-color:#e4ede4
-
-## Solutions: Navigation & Managing files
-
-```sh
-# 1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.
-cd /fs/project/PAS0471/workshops/2020-12_micro/
-
-# 2. Create a new dir with your name *within* the users/ directory.
-mkdir users/jelmer
-
-# 3. Copy `README.txt` into your directory:
-cp README.txt users/jelmer/ # Trailing slash can be omitted
-
-# 4. Move into your directory:
-cd users/jelmer/           # Idem
-
-# 5. Rename `README.txt` to `README.md`:
-mv README.txt README.md
-
-# 6. Move back to `/fs/project/PAS0471/workshops/2020-12_micro/`:
-cd ../..                   # Or: "cd -"
-
-```
 
 ---
 class:inverse middle center
@@ -713,8 +742,6 @@ name:wildcards
 
 --
 
-<br>
-
 - **To match both "sample1" files:**
 
   ```sh
@@ -740,8 +767,6 @@ name:wildcards
   # sample3_F.fastq.gz sample3_R.fastq.gz
   ```
 
-<br>
-
 - **To match only files with forward ("F) reads:**
   
   ```sh
@@ -750,6 +775,7 @@ name:wildcards
   ```
 
 ---
+background-color: #ededed
 
 ## Matching file names with wildcards (cont.)
 
@@ -766,8 +792,6 @@ name:wildcards
   # sample3_F.fastq.gz sample3_R.fastq.gz
   ```
 
-<br>
-
 - When using a "character set", the presence of *any* of the characters will
   trigger a match. **To match files for sample1 and sample2 only:**
   
@@ -780,18 +804,51 @@ name:wildcards
 ---
 background-color:#e4ede4
 
-## Your turn: Wildcards
+## `r icon::fa("user-edit")` Your turn: Navigation, managing files & wildcards
+
+1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/$USER` (if not there already).
+   **This is your base directory for this workshop.**
+
+2. Rename "`metadata/Experiment description`" to
+  "`metadata/Experiment_description`".
+
+3. Check whether this worked.
+
+4. Move up on dir level (to `2020-12_micro`) --
+   try to avoid using the absolute (full) path notation.
+
+5. As the argument to a `ls` command, match *only your* directory
+   using as few characters as possible and one or more wildcards
+   (**`*`** and perhaps **`?`**).
 
 ---
 background-color:#e4ede4
 
-## Solutions: Wildcards
+## Solutions: Navigation, managing files & wildcards
+
+```sh
+# 1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.
+cd /fs/project/PAS0471/workshops/2020-12_micro/$USER
+
+# 2. Rename "`metadata/Experiment description`".
+mv "metadata/Experiment description" metadata/Experiment_description
+
+# 3. Check whether this worked.
+ls metadata
+
+# 4. Move one level up.
+cd ..
+
+# 5. Match your directory.
+ls *lm*
+```
+
 
 ---
 class: center middle inverse
 name:text_files
 
-# Working With Text Files
+# Viewing Text Files
 
 ----
 
@@ -802,7 +859,7 @@ name:text_files
 
 ---
 
-## Commands to work with text files: Overview
+## Commands to view text files: Overview
 
 .pull-left[
 ### `cat`
@@ -814,12 +871,9 @@ Print contents of (a) file(s).
 Show the first or last lines of a file.
 ]
 
+--
+
 .pull-right[
-### `grep`
-Search for contents within files.
-
-<br>
-
 ### (In bonus materials: [`less`](#less))
 ]
 
@@ -827,12 +881,12 @@ Search for contents within files.
 
 ## Text files: `cat`
 
-- `cat` will print one or more files to screen.   
+- `cat` will print one or more files, by default to screen.   
   
   ```sh
-  $ cat my_file.txt
+  $ cat metadata/sample_meta.txt
   
-  $ cat my_file.txt > new_file.txt  # What did we do here?
+  $ cat metadata/sample_meta.txt > tmp.txt
   ```
 
 --
@@ -849,12 +903,9 @@ Search for contents within files.
 
 <br>
 
-### Nice viewing of tabular files: `column -t`
-
-  ```sh
-  column -t mytable.txt
-  ```
-
+.content-box-purple[
+`r icon::fa("info-circle")` &nbsp; Also try "`column -t`" For better viewing of tabular files
+]
 
 ---
 
@@ -869,14 +920,14 @@ Search for contents within files.
   ```
 
 - Showing the last line of a 100 GB file outside of the
-  shell would be quite an ordeal, while in the shell it's
+  shell would (often) be a big pain -- in the shell it's
   extremely simple and lightning fast!
 
 --
 
 <br>
 
-- Skip the first line of a file:
+- Skip the first line of a file (*cut off the header if you only want the data!*):
 
   ```sh
   $ tail -n +2 file
@@ -891,102 +942,10 @@ Search for contents within files.
   ```
 
 ---
-
-## Text files: `grep`
-
-`grep` searches for strings
-(or regular expression patterns) in files.   
-By default, it returns lines for which matches were found.
-
-- Create a file for all annotations for "Gene001":
-  ```sh
-  grep "Gene001" my.gff > Gene001.gff
-  ```
-
---
-
-- Count the number of lines containing "exon": 
-  ```sh
-  grep -c "exon" my.gff   # -c: count matches
-  ```
-
---
-
-- Remove the header lines, which start with a `#`, from a VCF file:
-  ```sh  
-  grep -v "^#" my.vcf     # -v: reverse search  
-  ```
-
---
-
-Many options, e.g.:
-  - `-r` to search recursively (search all your files for a certain word)
-  - `-n` to print line numbers along with matches
-  
-
----
-background-color:#e4ede4
-
-## Your turn: Working with text files
-
-**Now, we'll look at a file with some metadata for our samples.**
-
-1. Move into the `metadata` folder within our workshop's home directory (`/fs/project/PAS0471/workshops/2020-12_micro/`).
-
-1. Print the entire file to screen with `cat` and with `column -t`.
-   Compare the output, especially in the first lines of the file.
-
-2. Print the first 6 lines of the file, then make them line up with
-  `column -t`.
-
-2. Print everything but the first line, which has the column headers.
-
-3. Print the line for sample "304-S1".
-
----
-background-color:#e4ede4
-
-## Solutions: Working with text files
-
-1. Move into the `metadata` folder:
-  
-    ```sh
-  mv metadata/
-  ```
-
-1. Print the entire file to screen with `cat` and with `column -t`:
-  
-  ```sh
-  cat V4_meta.txt
-  column -t V4_meta.txt
-  ```
-  
-2. Print the first 6 lines of the file, then make them line up with
-  `column -t`:
-  
-  ```sh
-  head V4_meta.txt | column -t
-  ```
-  
-2. Print everything but the first line, which has the column headers:
-  
-  ```sh
-  tail -n +2
-  ```
-
-3. Print the line for sample "304-S1":
-    
-  ```sh
-  grep "304-S1" V4_meta.txt
-  ```
-
-
-
----
 class: center middle inverse
 name:script
 
-# Running a Very Minimal Script
+# Variables and Scripts
 
 ----
 
@@ -996,27 +955,101 @@ name:script
 
 ---
 
-## Running a very minimal script
+## Assigning and using variables
 
-### TODO: Change to fastqc?
+.pull-left[
+**Assign** a variable (no **`$`**):
 
-- A script called `hello.sh`:
+```sh
+# Any string:
+my_name=Jelmer
+```
+]
+
+.pull-right[
+**Recall** a variable (with **`$`**):
+
+```sh
+$ echo $my_name
+# Jelmer
+  ```
+]
+
+--
+
+.pull-left[
+```sh
+# A filename:
+my_file="README.txt"
+```
+]
+
+.pull-right[
+```sh
+$ ls -lh $my_file
+# -rw-r--r-- 1 jelmer PAS0471 568 Dec  7 09:58 README.txt
+```
+]
+
+--
+
+.pull-left[  
+```sh
+# Use "command substitution"
+# to assign a command's output
+today=$(date +"%Y-%m-%d")
+```
+]
+
+.pull-right[
+```sh
+$ touch README_$today.txt
+$ ls README_*
+# README_2020-12-10.txt
+```
+]
+
+--
+
+- **It can be useful to use variables for things that:**
+  - May be subject to change over time or in reruns (dir names, settings).
+  - Need to be manipulated.
+  - Are re-used often.
+
+
+---
+
+## A very minimal script
+
+- Create and run a very simple script:
 
   ```sh
-  #!/bin/bash
-  set -e -u -o pipefail
-
-  echo "Hello ${1}!"    # ${1} is standard input!
+  $ echo 'Hello $1' > hello.sh
+  
+  $ bash hello.sh Jelmer
+  # Hello Jelmer
   ```
 
 --
 
-- Run the script:
+.pull-left[
+- Or, assign a variable first:
 
   ```sh
-  $ hello.sh Jelmer
+  $ my_name=Jelmer
+  $ hello.sh $my_name
   # Hello Jelmer!
   ```
+]
+
+.pull-right[
+- Or use `$USER`:
+  
+  ```sh
+  $ hello.sh $USER
+  # Hello jelmer!
+  ```
+]
 
 --
 
@@ -1066,6 +1099,7 @@ name:tricks
 ### [[Back to overview]](#overview)
 
 ---
+background-color: #ededed
 
 # Keyboard Shortcuts and Tricks I
 
@@ -1079,6 +1113,7 @@ name:tricks
 | `CTRL` + `Z` | (`bg` / `fg`)| Suspend (pause) a process, <br> then use `bg` to move to background|
 
 ---
+background-color: #ededed
 
 # Keyboard Shortcuts and Tricks II
 
@@ -1108,6 +1143,7 @@ name:tricks
   reserved browser shortcut to close a tab.
 
 ---
+background-color: #ededed
 
 ## Brace expansion
 
@@ -1132,6 +1168,42 @@ name: datatools
 ### [[Back to overview]](#overview)
 
 ---
+background-color: #ededed
+
+## Text files: `grep`
+
+`grep` searches for strings
+(or regular expression patterns) in files.   
+By default, it returns lines for which matches were found.
+
+- Create a file for all annotations for "Gene001":
+  ```sh
+  grep "Gene001" my.gff > Gene001.gff
+  ```
+
+--
+
+- Count the number of lines containing "exon": 
+  ```sh
+  grep -c "exon" my.gff   # -c: count matches
+  ```
+
+--
+
+- Remove the header lines, which start with a `#`, from a VCF file:
+  ```sh  
+  grep -v "^#" my.vcf     # -v: reverse search  
+  ```
+
+--
+
+Many options, e.g.:
+  - `-r` to search recursively (search all your files for a certain word)
+  - `-n` to print line numbers along with matches
+  
+
+---
+background-color: #ededed
 
 ## Text file data tools
 
@@ -1164,6 +1236,7 @@ name: datatools
   ```
 
 ---
+background-color: #ededed
 
 ## Combining these tools can be very powerful!
 
@@ -1197,7 +1270,63 @@ $ grep -v "^#" my.gff | cut -f3 | sort | uniq -c | sort -rn
 ---
 background-color:#e4ede4
 
-## Your Turn: Advanced exercises
+## `r icon::fa("user-edit")` Your turn: Working with text files I
+
+**Now, we'll look at a file with some metadata for our samples.**
+
+1. Move into the `metadata` folder within our workshop's home directory (`/fs/project/PAS0471/workshops/2020-12_micro/`).
+
+1. Print the entire file to screen with `cat` and with `column -t`.
+   Compare the output, especially in the first lines of the file.
+
+2. Print the first 6 lines of the file, then make them line up with
+  `column -t`.
+
+2. Print everything but the first line, which has the column headers.
+
+3. Print the line for sample "304-S1".
+
+---
+background-color:#e4ede4
+
+## Solutions: Working with text files I
+
+1. Move into the `metadata` folder:
+  
+    ```sh
+  mv metadata/
+  ```
+
+1. Print the entire file to screen with `cat` and with `column -t`:
+  
+  ```sh
+  cat V4_meta.txt
+  column -t V4_meta.txt
+  ```
+  
+2. Print the first 6 lines of the file, then make them line up with
+  `column -t`:
+  
+  ```sh
+  head V4_meta.txt | column -t
+  ```
+  
+2. Print everything but the first line, which has the column headers:
+  
+  ```sh
+  tail -n +2
+  ```
+
+3. Print the line for sample "304-S1":
+    
+  ```sh
+  grep "304-S1" V4_meta.txt
+  ```
+
+---
+background-color:#e4ede4
+
+## `r icon::fa("user-edit")` Your Turn: Working with text files II
 
 1. How many samples (lines) do we have for each "Experiment"?
 
@@ -1213,7 +1342,7 @@ background-color:#e4ede4
 ---
 background-color:#e4ede4
 
-## Solutions: Advanced exercises
+## Solutions: Working with text files II
 
 1. How many samples (lines) do we have for each "Experiment"?
   
@@ -1252,6 +1381,7 @@ name:less
 ### [[Back to overview]](#overview)
 
 ---
+background-color: #ededed
 
 ## The `less` pager
 
@@ -1316,6 +1446,7 @@ name:stderr
 ### [[Back to overview]](#overview)
 
 ---
+background-color: #ededed
 
 ## Standard error
 
