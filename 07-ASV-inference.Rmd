@@ -12,7 +12,7 @@ output:
 ```{r knitr_options, echo=FALSE}
 knitr::opts_chunk$set(results='hide',
                       eval = FALSE,
-                      knitr::opts_knit$set(root.dir = "/fs/project/PAS0471/workshops/2020-12_micro/$USER"),
+                      #knitr::opts_knit$set(root.dir = "/fs/project/PAS0471/workshops/2020-12_micro/$USER"),
                       class.source="r_code",
                       class.output="r_output",
                       class.warning="r_warning",
@@ -86,11 +86,17 @@ To add this library for the current R session:
 .libPaths(new = '/fs/project/PAS0471/.R/4.0/')
 ```
 
+Then, load the packages:
 
 ```{r}
 packages <- c("ggplot2", "gridExtra",
               "dada2", "phyloseq", "DECIPHER", "phangorn")
-pacman::p_load(char = packages, install = TRUE)
+pacman::p_load(char = packages)
+
+# If you wanted to install and load these packages yourself,
+# just make sure you have the pacman package installed:
+## install.packages('pacman')
+# Then, the code above would work, as it will install pacakes as needed.
 ```
 
 ### Set the file paths

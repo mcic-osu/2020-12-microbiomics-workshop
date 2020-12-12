@@ -11,6 +11,7 @@ output:
 ```{r knitr_options, echo=FALSE}
 knitr::opts_chunk$set(results='hide',
                       eval = FALSE,
+                      #knitr::opts_knit$set(root.dir = "/fs/project/PAS0471/workshops/2020-12_micro/$USER"),
                       class.source="r_code",
                       class.output="r_output",
                       class.warning="r_warning",
@@ -56,19 +57,20 @@ Analyze microbiome experimental data as a phyloseq object - explore ecological m
 
 ### Install and Load Packages
 
-To save time, we have already installed all the necessary R packages at OSC
-into a custom library.
-To add this library for the current R session:
+Add our custom library again if you restarted your R session:
 
 ```{r libload}
+# This is only needed if you're not continuing the same Rstudio session
 .libPaths(new = '/fs/project/PAS0471/.R/4.0/')
 ```
+
+And load the necessary packages:
 
 ```{r packages, message=FALSE, warning=FALSE}
 packages <- c('ggplot2', 'vegan', 'phyloseq', 'decontam', 'ape',
               'DESeq2', 'microbiome', 'metagenomeSeq', 'remotes',
               'ampvis2', 'breakaway')
-pacman::p_load(char = packages, install = TRUE)
+pacman::p_load(char = packages)
 
 # If you wanted to install and load these packages yourself,
 # first make sure you have the pacman package installed:
@@ -243,7 +245,7 @@ sums <- sample_sums(ps)
 sums[order(sums)]
 ```
 
-We can see that the lowest count sample, `r names(sums[order(sums)][1])`, has `r min(sums)` taxa count(s). To remove uninformative samples, we will only keep those with over 1,000 counts.We will also remove a technical replicate. Technical replicates are also important for quality control of runs and understanding reproducibility of the methodology. 
+We can see that the lowest count sample, `names(sums[order(sums)][1])`, has `min(sums)` taxa count(s). To remove uninformative samples, we will only keep those with over 1,000 counts.We will also remove a technical replicate. Technical replicates are also important for quality control of runs and understanding reproducibility of the methodology. 
 
 ```{r subset_1k}
 ps <- subset_samples(ps, sample_sums(ps) > 1000)
