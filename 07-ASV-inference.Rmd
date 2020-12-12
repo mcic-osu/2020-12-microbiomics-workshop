@@ -7,19 +7,22 @@ output:
     code_download: true
     toc: true
     toc_float: true
+    css: my.css
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r knitr_options, echo=FALSE}
-knitr::opts_chunk$set(results = 'hide',
-                      eval = FALSE,
-                      #knitr::opts_knit$set(root.dir = "/fs/project/PAS0471/workshops/2020-12_micro/$USER"),
-                      class.source = "r_code",
-                      class.output = "r_output",
-                      class.warning = "r_warning",
-                      class.message = "r_warning",
-                      class.error = "r_error")
+root_dir <- "/fs/project/PAS0471/workshops/2020-12_micro/$USER"
+#knitr::opts_knit$set(root.dir = root_dir) # UNCOMMENT AT OSC
+
+knitr::opts_chunk$set(results='hide',
+                      eval = FALSE, # CHANGE TO TRUE TO RUN UPON COMPILING
+                      class.source="r_code",
+                      class.output="r_output",
+                      class.warning="r_warning",
+                      class.message="r_warning",
+                      class.error="r_error")
 ```
 
 <br>
@@ -194,7 +197,7 @@ setdiff(sort(metadata_df$sample_ID), sample_IDs) # REMOVE MISSING SAMPLES?
 
 ### Plot sequence quality data
 
-You can generate and evaluate plots individually:
+You can generate and evaluate plots individually (forward and reverse side-by-side):
 
 ```{r}
 plotQualityProfile(c(fastqs_raw_F[1], fastqs_raw_R[1]))
@@ -233,17 +236,19 @@ In the interest of time, we skipped these steps during this workshop.
 ## Step 3: Filtering and Quality Trimming
 
 We will now perform quality filtering (removing poor-quality reads)
-and trimming (removing poor-quality bases) on the fastq files.
+and trimming (removing poor-quality bases) on the fastq files
+using DADA2's `filterAndTrim()` function.
 
-The `truncLen` argument defines the read lengths (for *forward* and *reverse* reads)
+The `truncLen` argument defines the read lengths
+(for forward and reverse reads, respectively)
 beyond which additional bases should be removed,
 and these values should be based on the sequence quality visualized above.
-
-The trimming length can thus be different for *forward* and *reverse* reads,
+The trimming length can thus be different for forward and reverse reads,
 but ideally not too drastically so,
-in order to maximize the number of paris that will merge in a subsequent step.
+in order to maximize the number of pairs that will merge in a subsequent step.
 
-It is also suggested to trim first 10 nucleotides of each read,
+It is also suggested to trim the first 10 nucleotides of each read
+(`trimLeft` argument),
 since these positions are likely to contain errors.
 
 The `filterAndTrim()` function will write the filtered and trimmed reads
@@ -260,8 +265,8 @@ fastqs_filt_R <- file.path(filter_dir, paste0(sample_IDs, '_R_filt.fastq'))
 Then, perform the trimming:
 
 ```{r}
-filter_dir('Filtering and Trimming...')
-Sys.time()
+print('Filtering and Trimming...')
+Sys.time()  # Print the time to keep track of running time for individual steps 
 filter_results <-
   filterAndTrim(fastqs_raw_F, fastqs_filt_F,
                 fastqs_raw_R, fastqs_filt_R,
@@ -272,7 +277,7 @@ filter_results <-
                 truncQ = 2,
                 rm.phix = FALSE,
                 compress = FALSE, multithread = TRUE, verbose = TRUE) 
-filter_dir('...Done!')
+print('...Done!')
 Sys.time()
 
 head(filter_results)
@@ -304,8 +309,10 @@ until they converge on a jointly consistent solution.
 print('Learning errors...')
 Sys.time()
 
-errF <- learnErrors(fastqs_derep_F, multithread = TRUE, verbose = TRUE)
-errR <- learnErrors(fastqs_derep_R, multithread = TRUE, verbose = TRUE)
+err_F <- learnErrors(fastqs_derep_F, multithread = TRUE, verbose = TRUE)
+err_R <- learnErrors(fastqs_derep_R, multithread = TRUE, verbose = TRUE)
+#saveRDS(err_F, file = file.path(outdir, "err_F.rds"))
+#saveRDS(err_R, file = file.path(outdir, "err_R.rds"))
 
 print('...Done!')
 Sys.time()
@@ -318,8 +325,8 @@ Observe the fit between observed error rates (points) and fitted error
 rates (lines):
 
 ```{r}
-plotErrors(errF, nominalQ = TRUE)
-plotErrors(errR, nominalQ = TRUE)
+plotErrors(err_F, nominalQ = TRUE)
+plotErrors(err_R, nominalQ = TRUE)
 ```
 
 -----
@@ -339,8 +346,10 @@ but many times across all samples.
 print('Inferring ASVs (running the dada algorithm)...')
 Sys.time()
 
-dadaFs <- dada(fastqs_derep_F, err = errF, pool = FALSE, multithread = TRUE)
-dadaRs <- dada(fastqs_derep_R, err = errR, pool = FALSE, multithread = TRUE)
+dada_Fs <- dada(fastqs_derep_F, err = err_F, pool = FALSE, multithread = TRUE)
+dada_Rs <- dada(fastqs_derep_R, err = err_R, pool = FALSE, multithread = TRUE)
+#saveRDS(dada_Fs, file = file.path(outdir, "dada_Fs.rds"))
+#saveRDS(dada_Fs, file = file.path(outdir, "dada_Fs.rds"))
 
 print('...Done.')
 Sys.time()
@@ -349,7 +358,7 @@ Sys.time()
 Let's inspect one of the resulting objects:
 
 ````{r}
-dadaFs[[1]]
+dada_Fs[[1]]
 ```
 
 -----
@@ -361,8 +370,8 @@ the fragment that we amplified with our primers was short enough
 to generate lots of overlap among the sequences from the two directions.
 
 ```{r}
-mergers <- mergePairs(dadaFs, fastqs_derep_F,
-                      dadaRs, fastqs_derep_R,
+mergers <- mergePairs(dada_Fs, fastqs_derep_F,
+                      dada_Rs, fastqs_derep_R,
                       verbose = TRUE)
 ```
 
@@ -385,7 +394,7 @@ Next, we construct an amplicon sequence variant table (ASV) table:
 ```{r}
 seqtab_all <- makeSequenceTable(mergers)
 
-# The dimensions of the object are the number of samples and number of ASVs:
+# The dimensions of the object are the nr of samples (rows) and the nr of ASVs (columns):
 dim(seqtab_all)
 ```
 
@@ -442,21 +451,30 @@ quality of the run, sample-to-sample variation,
 and resulting sequencing depth for each sample. 
 
 ```{r}
+# We define a function `getN`, which will get the nr of unique reads for a sample: 
 getN <- function(x) sum(getUniques(x))
 
-nreads_summary <- cbind(filter_results,
-                        sapply(dadaFs, getN),
-                        sapply(dadaRs, getN),
-                        sapply(mergers, getN),
-                        rowSums(seqtab))
+# We apply the getN function to each element of the dada_Fs, dada_Rs, and mergers objects:
+# This gives us a vector with the number of unique reads for each samples,
+# for each of these steps:
+denoised_F <- sapply(dada_Fs, getN)
+denoised_R <- sapply(dada_Rs, getN)
+merged <- sapply(mergers, getN)
 
-colnames(nreads_summary) <- c('input', 'filtered', 'denoisedF',
-                              'denoisedR', 'merged', 'nonchim')
-rownames(nreads_summary) <- sample_IDs
+# We join these vectors together with the "filter_results" dataframe,
+# and the number of nonchimeric reads:
+nreads_summary <- data.frame(filter_results,
+                             denoised_F,
+                             denoised_R,
+                             nonchim = rowSums(seqtab),
+                             row.names = sample_IDs)
+colnames(nreads_summary)[1:2] <- c('input', 'filtered')
+
+# Have a look at the first few rows:
 head(nreads_summary)
 
-outfile_nreads <- file.path(outdir, 'nreads_summary.txt')
-write.table(nreads_summary, file = outfile_nreads,
+# We'll write this table to file:
+write.table(nreads_summary, file = file.path(outdir, 'nreads_summary.txt'),
             sep = "\t", quote = FALSE, row.names = TRUE)
 ```
 
