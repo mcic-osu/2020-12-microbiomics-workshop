@@ -111,7 +111,7 @@ dir.create(outdir, recursive = TRUE)
 
 # Fasta file with training data:
 # (Check for an up-to-date version at <https://benjjneb.github.io/dada2/training.html>)
-tax_key <- "ref_data/silva_nr99_v138_train_set.fa" 
+tax_key <- "data/ref/silva_nr99_v138_train_set.fa" 
 
 # File with sample metadata:
 sample_names_file <- "metadata/sample_meta.txt"
@@ -162,7 +162,19 @@ for (i in ii) { print (plotQualityProfile(fnRs[i]) + ggtitle("Rev")) }
 dev.off()
 ```
 
-
+<details>
+<summary>
+&nbsp;  `r icon::fa("info-circle")` &nbsp; More on QC of fastq files
+</summary>
+It is a good idea to run the
+[`fastqc`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+program on your fastq files for more extensive QC.
+This is a stand-alone program that is easy to run from the command-line.
+When you have many samples, as is often the case,
+`fastqc`'s results can moreover be nicely summarized using
+[`multiqc`](https://multiqc.info/.
+In the interest of time, we skipped these steps during this workshop.
+</details>
 
 
 -----
