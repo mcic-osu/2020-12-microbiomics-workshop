@@ -78,7 +78,7 @@ Furthermore, R:
 
 ## Getting Started
 
-### Start an RStudio Server session at OSC
+### Start an RStudio Server session at OSC {#rstudio-at-OSC}
 
 - Login to OSC at <https://ondemand.osc.edu>.
 
@@ -95,7 +95,6 @@ Furthermore, R:
 <p align="center">
 <img src=img/osc_queued.png width="700">
 </p>
-
 
 - Your job should start running pretty soon, and when it's ready the box should look like this: 
 
