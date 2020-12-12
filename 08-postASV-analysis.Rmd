@@ -88,11 +88,11 @@ pacman::p_load(char = packages)
 ### Set Directories
 
 ```{r}
-# Dir with input fastq files:
-indir <- 'analysis/ASV_inference/master/'
+# Dir with input files:
+indir <- 'analysis/ASV_inference/'
 
 # Dir for output:
-outdir <- 'analysis/postASV_analysis/'
+outdir <- 'analysis/postASV_analysis'
 ```
 
 ### Load the Data
@@ -103,7 +103,7 @@ session](06-reads-to-ASV.Rmd) using *DADA2*.
 Just like tables can be saved in R using `write.table` or `write.csv`, R objects can be saved using `saveRDS`. The resulting *.rds file can then be loaded into an R environment using `readRDS`. This is a convenient way to save R objects that require a lot of computation time or merging of multiple files.
 
 ```{r data}
-ps_raw <- readRDS(file.path(indir, 'ps_16S_V4.rds'))
+ps_raw <- readRDS(file.path(indir, 'ps_V4.rds'))
 ```
 
 Our *phyloseq* object is made up of the following components:
