@@ -3,15 +3,18 @@ title: "<br>Workflow part III:<br>Analyzing ASV Data"
 output:
   html_document:
     theme: cerulean
+    highlight: tango
     code_download: true
     toc: true
     toc_float: true
 ---
 
 ```{r knitr_options, echo=FALSE}
+root_dir <- "/fs/project/PAS0471/workshops/2020-12_micro/$USER"
+# knitr::opts_knit$set(root.dir = root_dir) # UNCOMMENT AT OSC
+
 knitr::opts_chunk$set(results='hide',
-                      eval = FALSE,
-                      #knitr::opts_knit$set(root.dir = "/fs/project/PAS0471/workshops/2020-12_micro/$USER"),
+                      eval = FALSE, # CHANGE TO TRUE IF YOU WANT IT TO RUN UPON COMPILING
                       class.source="r_code",
                       class.output="r_output",
                       class.warning="r_warning",
@@ -250,7 +253,7 @@ We can see that the lowest count sample, `names(sums[order(sums)][1])`, has `min
 ```{r subset_1k}
 ps <- subset_samples(ps, sample_sums(ps) > 1000)
 sample_data(ps)
-ps < subset_samples(ps, SampleID != "501S4")
+ps < subset_samples(ps, sample_ID != "501S4")
 
 ```
 
@@ -478,7 +481,7 @@ plot_ordination(ps.proportions, do,
                 color = "Treatment", 
                 shape = "Timepoint") + 
    geom_point(size = 1) + 
-   geom_text(aes(label=SampleID),size = 3.5, color="black")
+   geom_text(aes(label=sample_ID),size = 3.5, color="black")
 
 plot_ordination(ps.proportions, do, type ="samples", color ="Treatment", 
                 shape ="Timepoint") + 
@@ -568,7 +571,7 @@ And plot counts for the first in the ordered list ASV.
 plotCounts(dds, gene=res.order@rownames[1], intgroup="Group")
 ```
    
-We can also plot counts by SampleID.
+We can also plot counts by sample_ID.
 
 ```{r plot_counts2}
 plotCounts(dds, gene="ASV_48", intgroup="Group")
@@ -577,7 +580,7 @@ plotCounts(dds, gene="ASV_48", intgroup="Group")
 The plot can also be saved and customized with ggplot
 
 ```{r}
-d<- plotCounts(dds, gene="ASV_48", intgroup="Group", returnData=TRUE)
+d <- plotCounts(dds, gene="ASV_48", intgroup="Group", returnData=TRUE)
 ggplot(d, aes(x=Group, y=count)) +
   geom_point(position=position_jitter(w=0.1,h=0), size=2) +
   scale_y_log10() +

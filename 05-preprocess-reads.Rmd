@@ -87,8 +87,8 @@ To work with `conda` at OSC, we first need to load the `conda` module:
 module load python/3.6-conda5.2
 ```
 
-Assuming that you haven't worked with conda before at OSC,
-we also need to a bit of additional setup:
+Assuming that you haven't worked with `conda` at OSC before,
+we also need to a bit of additional one-time setup:
 
 ```{bash}
 # This will add a line to your bash config file, which runs every time you start
@@ -412,17 +412,17 @@ sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir_base
 We can check what's going on with our job using `squeue`:
 
 ```{bash}
-# Initially the job may be queued (`PD` in the `ST` column):
+# Initially the job may be queued ("PD" in the "ST" (status) column):
 squeue -u $USER
 # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
 # 2451088 serial-40 01-cutad   jelmer PD       0:00      1 (None) 
 
-# Then the job should be running:
+# Then the job should be running ("R" in the "ST" column):
 squeue -u $USER
 # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
 # 2451088 serial-40 01-cutad   jelmer R       0:43      1 (None) 
 
-# When the job has finished, squeue will return nothing:
+# When the job has finished, squeue will return nothing (!):
 squeue -u $USER
 # JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
 
@@ -441,7 +441,7 @@ scontrol show job 2451088   # Replace the number with your JOBID
 Let's see if we have a log file:
 
 ```{bash}
-ls slurm*$USER*
+ls slurm*
 # slurm-cutadapt-jelmer-2451088.out
 ```
 

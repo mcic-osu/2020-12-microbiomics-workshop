@@ -26,8 +26,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
 <script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
@@ -41,22 +40,98 @@
   ul.task-list{list-style: none;}
     </style>
 
+
 <style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
   }
 </style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
-
 
 
 <style type="text/css">
@@ -468,11 +543,12 @@ div.tocify {
 <h2>Goals</h2>
 <p>Process metabarcoding reads, post-adapter removal, including:</p>
 <ul>
-<li>Evaluation of quality</li>
+<li>Evaluation of read quality</li>
 <li>Quality trimming and filtering</li>
-<li>Error correction and denoising</li>
+<li>Error correction, denoising</li>
+<li>ASV inference</li>
 <li>Read merging</li>
-<li>Assigning taxonomy</li>
+<li>Taxonomy assignment</li>
 </ul>
 <hr />
 </div>
@@ -493,9 +569,15 @@ div.tocify {
 <li><p>Click on <code>Interactive Apps</code> (top bar) &gt; <code>RStudio Server (Owens and Pitzer)</code>.</p></li>
 <li><p>Fill out the form as shown <a href="slides/03-OSC-slides.html#rstudio_server_job">here</a>.</p></li>
 <li><p>Once your job has started, click <code>Connect to RStudio Server</code>.</p></li>
-<li><p>You should automatically be in your personal dir inside the dir <code>/fs/project/PAS0471/workshops/2020-12_micro</code>.</p>
-<p>(In the <em>Files</em> pane in RStudio, you should see your <code>.Rproj</code> file. If not, type <code>setwd('/fs/project/PAS0471/workshops/2020-12_micro')</code> and then click on the dir with your name in the <em>Files</em> pane).</p></li>
-<li><p>Now, click on the <code>markdown</code> directory in the <em>Files</em> pane, and open the file <code>06-reads-to-ASV.Rmd</code>. That’s this file!</p></li>
+<li><p>You should automatically be in your personal dir inside the dir <code>/fs/project/PAS0471/workshops/2020-12_micro</code>, with your RStudio Project open. You can see whether a Project is open and which one in the top-right of your screen:</p>
+<p align="center">
+<p><img src=img/rproj-open.png width="130"> Here, the project <code>jelmer</code> is open. Your project name is also your username.</p>
+</p>
+<p>If your Project isn’t open, click on the icon to open it:</p>
+<p align="center">
+<p><img src=img/rproj-dropdown.png width="250"></p>
+</p></li>
+<li><p>Now, click on the <code>markdown</code> directory in the <em>Files</em> pane, and open the file <code>07-ASV-inference.Rmd</code>. That’s this file!</p></li>
 </ul>
 <hr />
 </div>
@@ -505,43 +587,65 @@ div.tocify {
 <div id="install-and-load-packages" class="section level3">
 <h3>Install and load packages</h3>
 <p>To save time, we have already installed all the necessary R packages at OSC into a custom library. To add this library for the current R session:</p>
-<pre class="r r_code"><code>.libPaths(new = &#39;/fs/project/PAS0471/.R/4.0/&#39;)</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">.libPaths</span>(<span class="dt">new =</span> <span class="st">&#39;/fs/project/PAS0471/.R/4.0/&#39;</span>)</span></code></pre></div>
 <p>Then, load the packages:</p>
-<pre class="r r_code"><code>packages &lt;- c(&quot;ggplot2&quot;, &quot;gridExtra&quot;,
-              &quot;dada2&quot;, &quot;phyloseq&quot;, &quot;DECIPHER&quot;, &quot;phangorn&quot;)
-pacman::p_load(char = packages)
-
-# If you wanted to install and load these packages yourself,
-# just make sure you have the pacman package installed:
-## install.packages(&#39;pacman&#39;)
-# Then, the code above would work, as it will install pacakes as needed.</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>packages &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;dada2&quot;</span>,</span>
+<span id="cb2-2"><a href="#cb2-2"></a>              <span class="st">&quot;phyloseq&quot;</span>, <span class="st">&quot;DECIPHER&quot;</span>, <span class="st">&quot;phangorn&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>pacman<span class="op">::</span><span class="kw">p_load</span>(<span class="dt">char =</span> packages)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># If you wanted to install and load these packages yourself,</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># just make sure you have the pacman package installed:</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">## install.packages(&#39;pacman&#39;)</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># Then, the code above would work, as it will install pacakes as needed.</span></span></code></pre></div>
 </div>
 <div id="set-the-file-paths" class="section level3">
 <h3>Set the file paths</h3>
-<pre class="r r_code"><code># Dir with input fastq files:
-indir &lt;- &quot;data/processed/fastq_trimmed/second_trim/&quot;
-
-# Dir for output:
-outdir &lt;- &#39;analysis/ASV_inference/&#39;
-
-# Fasta file with training data:
-# (Check for an up-to-date version at &lt;https://benjjneb.github.io/dada2/training.html&gt;)
-tax_key &lt;- &quot;data/ref/silva_nr99_v138_train_set.fa&quot; 
-
-# File with sample metadata:
-sample_names_file &lt;- &quot;metadata/sample_meta.txt&quot;</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Dir with input fastq files:</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>indir &lt;-<span class="st"> &#39;data/processed/fastq_trimmed/second_trim&#39;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># Dirs for output:</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>qc_dir &lt;-<span class="st"> &#39;analysis/QC&#39;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>filter_dir &lt;-<span class="st"> &#39;data/processed/fastq_filtered&#39;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>outdir &lt;-<span class="st"> &#39;analysis/ASV_inference&#39;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co"># Fasta file with training data:</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co"># (Check for an up-to-date version at &lt;https://benjjneb.github.io/dada2/training.html&gt;)</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>tax_key &lt;-<span class="st"> &#39;data/ref/silva_nr99_v138_train_set.fa&#39;</span> </span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co"># File with sample metadata:</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>metadata_file &lt;-<span class="st"> &#39;metadata/sample_meta.txt&#39;</span></span></code></pre></div>
 </div>
-<div id="assign-files-to-forward-and-reverse-reads" class="section level3">
-<h3>Assign files to forward and reverse reads</h3>
-<p>For forward and reverse fastq filenames which have the following name format: <code>&lt;SAMPLENAME&gt;_R1_001.fastq</code> and <code>&lt;SAMPLENAME&gt;_R2_001.fastq</code>.</p>
-<pre class="r r_code"><code>fnFs &lt;- sort(list.files(indir, pattern=&quot;_R1_001.fastq.gz&quot;, full.names = TRUE))
-fnRs &lt;- sort(list.files(indir, pattern=&quot;_R2_001.fastq.gz&quot;, full.names = TRUE))</code></pre>
+<div id="assign-fastq-files-to-forward-and-reverse-reads" class="section level3">
+<h3>Assign fastq files to forward and reverse reads</h3>
+<p>We will assign the fastq files that we processed with <code>cutadapt</code> to two vectors: one with files with forward reads, and one with files with reverse reads. These files can be distinguished by having “R1” (forward) and “R2” (reverse) in their names.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>fastqs_raw_F &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">list.files</span>(indir, <span class="dt">pattern =</span> <span class="st">&#39;_R1_001.fastq.gz&#39;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb4-2"><a href="#cb4-2"></a>fastqs_raw_R &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">list.files</span>(indir, <span class="dt">pattern =</span> <span class="st">&#39;_R2_001.fastq.gz&#39;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">head</span>(fastqs_raw_F)</span></code></pre></div>
 </div>
-<div id="extract-sample-names" class="section level3">
-<h3>Extract sample names</h3>
-<p>Extract the sample names from the <code>.fastq</code> file names, assuming file names have format: <code>&lt;SAMPLENAME&gt;_XXX.fastq</code>.</p>
-<p>The resulting <code>sample.names</code> should match the SampleID column in the <code>sample_data_example</code> file.</p>
-<pre class="r r_code"><code>sample.names &lt;- sapply(strsplit(basename(fnFs), &quot;-V4-V5_&quot;), `[`, 1)</code></pre>
+<div id="get-sample-ids" class="section level3">
+<h3>Get sample IDs</h3>
+<p>We’ll get the sample IDs from the fastq file names and from a file with metadata, and will check if they are the same.</p>
+<p>First we get the metadata into a dataframe:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Load and prepare sample metadata:</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>metadata_df &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> metadata_file, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">colnames</span>(metadata_df)[<span class="dv">1</span>] &lt;-<span class="st"> &#39;sample_ID&#39;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="kw">rownames</span>(metadata_df) &lt;-<span class="st"> </span>metadata_df<span class="op">$</span>sample_ID</span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">head</span>(metadata_df)</span></code></pre></div>
+<p>Let’s compare the sample IDs from the metadata with the fastq filenames:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>metadata_df<span class="op">$</span>sample_ID</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">head</span>(<span class="kw">basename</span>(fastqs_raw_F))    <span class="co"># basename() strips the dir name from the filename</span></span></code></pre></div>
+<p>To extract the sample IDs from the fastq file names, we remove everything after “-V4-V5” from the file names using the <code>sub()</code> function:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># sub() arguments: sub(pattern, replacement, vector)</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># replace with &quot;&quot; -&gt; replace with nothing</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>sample_IDs &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;-V4-V5_.*&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">basename</span>(fastqs_raw_F))</span></code></pre></div>
+<p>We can check whether the IDs from the fastq files and the metadata dataframe are the same:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">identical</span>(<span class="kw">sort</span>(metadata_df<span class="op">$</span>sample_ID), sample_IDs)</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">setdiff</span>(<span class="kw">sort</span>(metadata_df<span class="op">$</span>sample_ID), sample_IDs) <span class="co"># REMOVE MISSING SAMPLES?</span></span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -550,236 +654,200 @@ fnRs &lt;- sort(list.files(indir, pattern=&quot;_R2_001.fastq.gz&quot;, full.nam
 <div id="plot-sequence-quality-data" class="section level3">
 <h3>Plot sequence quality data</h3>
 <p>You can generate and evaluate plots individually:</p>
-<pre class="r r_code"><code>plotQualityProfile(fnFs[1:2])</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">plotQualityProfile</span>(<span class="kw">c</span>(fastqs_raw_F[<span class="dv">1</span>], fastqs_raw_R[<span class="dv">1</span>]))</span></code></pre></div>
 <p><br></p>
 <p>Or generate pdf files to inspect multiple plots at once:</p>
-<pre class="r r_code"><code>ii &lt;- sample(length(fnFs), 3)
-pdf(&quot;Error_profiles.pdf&quot;)
-par(mfrow=c(2,3))
-for (i in ii) { print (plotQualityProfile(fnFs[i]) + ggtitle(&quot;Fwd&quot;)) }
-ii &lt;- sample(length(fnRs), 3)
-for (i in ii) { print (plotQualityProfile(fnRs[i]) + ggtitle(&quot;Rev&quot;)) }
-dev.off()</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">pdf</span>(<span class="kw">file.path</span>(qc_dir, <span class="st">&quot;error_profiles.pdf&quot;</span>))  <span class="co"># Open a pdf file</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="cf">for</span> (sample_index <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {                   <span class="co"># Loop through first three file pairs</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="kw">print</span>(<span class="kw">plotQualityProfile</span>(                   <span class="co"># Print plots into pdf</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="kw">c</span>(fastqs_raw_F[sample_index], fastqs_raw_R[sample_index])) <span class="co"># F and R together</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>    )</span>
+<span id="cb10-6"><a href="#cb10-6"></a>}</span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="kw">dev.off</span>()                                    <span class="co"># Close the pdf file</span></span></code></pre></div>
 <details>
 <summary>   <i class="fas  fa-info-circle "></i>   More on QC of fastq files </summary> It is a good idea to run the <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/"><code>fastqc</code></a> program on your fastq files for more extensive QC. This is a stand-alone program that is easy to run from the command-line. When you have many samples, as is often the case, <code>fastqc</code>’s results can moreover be nicely summarized using [<code>multiqc</code>](<a href="https://multiqc.info/" class="uri">https://multiqc.info/</a>. In the interest of time, we skipped these steps during this workshop.
 </details>
 <hr />
 </div>
 </div>
-<div id="step-3-trimming" class="section level2">
-<h2>Step 3: Trimming</h2>
-<p>The <code>truncLen</code> parameters should be based on sequence quality visualized above. It is suggested to trim first 10 nucleotides of each read, empirical observations across Illumina datasets show these positions are likely to contain pathological errors. Trimming length could be different for R1 and R2, but ideally not too drastically so, in order to maximize merging pairs in subsequent steps.</p>
-<p>First, define paths for trimming:</p>
-<pre class="r r_code"><code>filtFs &lt;- file.path(output, &quot;filtered&quot;, paste0(sample.names, &quot;_F_filt.fastq&quot;))
-filtRs &lt;- file.path(output, &quot;filtered&quot;, paste0(sample.names, &quot;_R_filt.fastq&quot;))</code></pre>
+<div id="step-3-filtering-and-quality-trimming" class="section level2">
+<h2>Step 3: Filtering and Quality Trimming</h2>
+<p>We will now perform quality filtering (removing poor-quality reads) and trimming (removing poor-quality bases) on the fastq files.</p>
+<p>The <code>truncLen</code> argument defines the read lengths (for <em>forward</em> and <em>reverse</em> reads) beyond which additional bases should be removed, and these values should be based on the sequence quality visualized above.</p>
+<p>The trimming length can thus be different for <em>forward</em> and <em>reverse</em> reads, but ideally not too drastically so, in order to maximize the number of paris that will merge in a subsequent step.</p>
+<p>It is also suggested to trim first 10 nucleotides of each read, since these positions are likely to contain errors.</p>
+<p>The <code>filterAndTrim()</code> function will write the filtered and trimmed reads to new fastq files. Therefore, we first define the filenames for the new files:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>fastqs_filt_F &lt;-<span class="st"> </span><span class="kw">file.path</span>(filter_dir, <span class="kw">paste0</span>(sample_IDs, <span class="st">&#39;_F_filt.fastq&#39;</span>))</span>
+<span id="cb11-2"><a href="#cb11-2"></a>fastqs_filt_R &lt;-<span class="st"> </span><span class="kw">file.path</span>(filter_dir, <span class="kw">paste0</span>(sample_IDs, <span class="st">&#39;_R_filt.fastq&#39;</span>))</span></code></pre></div>
 <p><br></p>
 <p>Then, perform the trimming:</p>
-<pre class="r r_code"><code>print(&quot;filter and Trimming&quot;)
-Sys.time()
-out &lt;- filterAndTrim(fnFs, filtFs, fnRs, filtRs, trimLeft=10, truncLen=c(250,210), maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=F, compress=FALSE, multithread=TRUE, verbose=TRUE) 
-print(&quot;done&quot;)
-Sys.time()</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">filter_dir</span>(<span class="st">&#39;Filtering and Trimming...&#39;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb12-3"><a href="#cb12-3"></a>filter_results &lt;-</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">  </span><span class="kw">filterAndTrim</span>(fastqs_raw_F, fastqs_filt_F,</span>
+<span id="cb12-5"><a href="#cb12-5"></a>                fastqs_raw_R, fastqs_filt_R,</span>
+<span id="cb12-6"><a href="#cb12-6"></a>                <span class="dt">truncLen =</span> <span class="kw">c</span>(<span class="dv">250</span>,<span class="dv">210</span>),</span>
+<span id="cb12-7"><a href="#cb12-7"></a>                <span class="dt">trimLeft =</span> <span class="dv">10</span>,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>                <span class="dt">maxN =</span> <span class="dv">0</span>,</span>
+<span id="cb12-9"><a href="#cb12-9"></a>                <span class="dt">maxEE =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb12-10"><a href="#cb12-10"></a>                <span class="dt">truncQ =</span> <span class="dv">2</span>,</span>
+<span id="cb12-11"><a href="#cb12-11"></a>                <span class="dt">rm.phix =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb12-12"><a href="#cb12-12"></a>                <span class="dt">compress =</span> <span class="ot">FALSE</span>, <span class="dt">multithread =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) </span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="kw">filter_dir</span>(<span class="st">&#39;...Done!&#39;</span>)</span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb12-15"><a href="#cb12-15"></a></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="kw">head</span>(filter_results)</span></code></pre></div>
 <hr />
 </div>
 <div id="step-4-dereplication-error-training" class="section level2">
 <h2>Step 4: Dereplication &amp; Error Training</h2>
-<pre class="r r_code"><code>derepFs &lt;- derepFastq(filtFs, verbose = FALSE)
-derepRs &lt;- derepFastq(filtRs, verbose = FALSE)
-
-print(&quot;Learning errors:&quot;)
-Sys.time()
-errF &lt;- learnErrors(derepFs, multithread = TRUE, verbose = TRUE)
-errR &lt;- learnErrors(derepRs, multithread = TRUE, verbose = TRUE)
-print(&quot;Done.&quot;)
-Sys.time()
-
-names(derepFs) &lt;- sample.names
-names(derepRs) &lt;- sample.names</code></pre>
+<p>The next thing we want to do is “dereplicate” the filtered fastq files. During dereplication, we condense the data by collapsing together all reads that encode the same sequence, which significantly reduces later computation times.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>fastqs_derep_F &lt;-<span class="st"> </span><span class="kw">derepFastq</span>(fastqs_filt_F, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>fastqs_derep_R &lt;-<span class="st"> </span><span class="kw">derepFastq</span>(fastqs_filt_R, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="kw">names</span>(fastqs_derep_F) &lt;-<span class="st"> </span>sample_IDs</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="kw">names</span>(fastqs_derep_R) &lt;-<span class="st"> </span>sample_IDs</span></code></pre></div>
+<p>The DADA2 algorithm makes use of a parametric error model (<code>err</code>) and every amplicon dataset has a different set of error rates. The <code>learnErrors</code> method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">print</span>(<span class="st">&#39;Learning errors...&#39;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a>errF &lt;-<span class="st"> </span><span class="kw">learnErrors</span>(fastqs_derep_F, <span class="dt">multithread =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a>errR &lt;-<span class="st"> </span><span class="kw">learnErrors</span>(fastqs_derep_R, <span class="dt">multithread =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb14-6"><a href="#cb14-6"></a></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="kw">print</span>(<span class="st">&#39;...Done!&#39;</span>)</span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="kw">Sys.time</span>()</span></code></pre></div>
 <p><br></p>
 <p>Plot errors to verify that error rates have been reasonable well-estimated. Observe the fit between observed error rates (points) and fitted error rates (lines):</p>
-<pre class="r r_code"><code>plotErrors(errF, nominalQ = TRUE)
-plotErrors(errR, nominalQ = TRUE)</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">plotErrors</span>(errF, <span class="dt">nominalQ =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">plotErrors</span>(errR, <span class="dt">nominalQ =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <hr />
 </div>
 <div id="step-5-infer-asvs" class="section level2">
 <h2>Step 5: Infer ASVs</h2>
-<p>We will run the dada algorithm to infer ASVs.</p>
-<p>This step is more computationally intensity. Indepedant inference by sample (pool=F) will keep memory requirements linear to sample number. Pooling will increase computation time but improve detection of rare variants seen once or twice in an individual sample but many times across all samples.</p>
-<pre class="r r_code"><code>print(&quot;inferring ASVs (running dada algorithm)&quot;)
-Sys.time()
-dadaFs &lt;- dada(derepFs, err = errF, multithread = T, pool = FALSE)
-dadaRs &lt;- dada(derepRs, err = errR, multithread = T, pool = FALSE)
-print(&quot;done&quot;)
-Sys.time()
-
-#inspect object
-dadaFs[[1]]</code></pre>
+<p>We will run the dada algorithm to infer Amplicon Sequence Variants (ASVs).</p>
+<p>This step is quite computationally intensive, and we will therefore perform independent inference for each sample (<code>pool = FALSE</code>), which will keep memory usage linear to the sample number. Pooling will increase memory rquirements and computation time, but improve detection of rare variants seen once or twice in an individual sample, but many times across all samples.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">print</span>(<span class="st">&#39;Inferring ASVs (running the dada algorithm)...&#39;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a>dadaFs &lt;-<span class="st"> </span><span class="kw">dada</span>(fastqs_derep_F, <span class="dt">err =</span> errF, <span class="dt">pool =</span> <span class="ot">FALSE</span>, <span class="dt">multithread =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>dadaRs &lt;-<span class="st"> </span><span class="kw">dada</span>(fastqs_derep_R, <span class="dt">err =</span> errR, <span class="dt">pool =</span> <span class="ot">FALSE</span>, <span class="dt">multithread =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="kw">print</span>(<span class="st">&#39;...Done.&#39;</span>)</span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="kw">Sys.time</span>()</span></code></pre></div>
+<p>Let’s inspect one of the resulting objects:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>dadaFs[[<span class="dv">1</span>]]</span></code></pre></div>
 <hr />
 </div>
 <div id="step-6-merge-read-pairs" class="section level2">
 <h2>Step 6: Merge Read Pairs</h2>
-<p>In this step, we will merge read pairs and generate sequence table of paired ASVs.</p>
-<pre class="r r_code"><code>mergers &lt;- mergePairs(dadaFs, derepFs, dadaRs, derepRs,
-                      verbose=TRUE)
-
-seqtab.all &lt;- makeSequenceTable(mergers)
-dim(seqtab.all)</code></pre>
+<p>In this step, we will first merge the forward and reverse read pairs: the fragment that we amplified with our primers was short enough to generate lots of overlap among the sequences from the two directions.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>mergers &lt;-<span class="st"> </span><span class="kw">mergePairs</span>(dadaFs, fastqs_derep_F,</span>
+<span id="cb18-2"><a href="#cb18-2"></a>                      dadaRs, fastqs_derep_R,</span>
+<span id="cb18-3"><a href="#cb18-3"></a>                      <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p>We will now save the dereplicated sequence objects to RDS files, so we can remove these objects from our environment:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">saveRDS</span>(fastqs_derep_F, <span class="dt">file =</span> <span class="kw">file.path</span>(outdir, <span class="st">&quot;fastqs_derep_F.rds&quot;</span>))</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">saveRDS</span>(fastqs_derep_R, <span class="dt">file =</span> <span class="kw">file.path</span>(outdir, <span class="st">&quot;fastqs_derep_R.rds&quot;</span>))</span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="kw">rm</span>(fastqs_derep_F, fastqs_derep_R)</span></code></pre></div>
 <hr />
 </div>
-<div id="step-7-summarize-sequences-and-remove-chimeras" class="section level2">
-<h2>Step 7: Summarize Sequences and Remove Chimeras</h2>
-<pre class="r r_code"><code># Inspect distribution of sequence lengths
-table(nchar(getSequences(seqtab.all)))
-
-#If you need to remove sequences of a particular length (e.g. too long):
-#seqtab2 &lt;- seqtab[,nchar(colnames(seqtab.all)) %in% seq(250,256)]
-
-# Remove chimeras:
-seqtab &lt;- removeBimeraDenovo(seqtab.all,
-                             method = &quot;consensus&quot;,
-                             multithread = TRUE,
-                             verbose = TRUE)
-dim(seqtab)
-
-# Proportion of removed sequences
-sum(seqtab) / sum(seqtab.all)
-
-# Save seqtab file as an RDS object
-saveRDS(seqtab, file = file.path(outdir, &quot;seqtab_V4.rds&quot;))</code></pre>
+<div id="step-7-construct-a-sequence-table" class="section level2">
+<h2>Step 7: Construct a Sequence Table</h2>
+<p>Next, we construct an amplicon sequence variant table (ASV) table:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>seqtab_all &lt;-<span class="st"> </span><span class="kw">makeSequenceTable</span>(mergers)</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="co"># The dimensions of the object are the number of samples and number of ASVs:</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="kw">dim</span>(seqtab_all)</span></code></pre></div>
+<p>Let’s inspect the distribution of sequence lengths:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">table</span>(<span class="kw">nchar</span>(<span class="kw">getSequences</span>(seqtab_all)))</span>
+<span id="cb21-2"><a href="#cb21-2"></a></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="co"># If you need to remove sequences of a particular length (e.g. too long):</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="co"># seqtab2 &lt;- seqtab[, nchar(colnames(seqtab_all)) %in% seq(250,256)]</span></span></code></pre></div>
 <hr />
 </div>
-<div id="step-8-generate-a-summary-table" class="section level2">
-<h2>Step 8: Generate a Summary Table</h2>
+<div id="step-8-remove-chimeras" class="section level2">
+<h2>Step 8: Remove Chimeras</h2>
+<p>Now, we will remove chimeras. The <code>dada</code> algorithm models and removes substitution errors, but chimeras are another importance source of spurious sequences in amplicon sequencing. Chimeras are formed during PCR amplification. When one sequence is incompletely amplified, the incomplete amplicon primes the next amplification step, yielding a spurious amplicon. The result is a sequence read which is half of one sample sequence and half another.</p>
+<p>Fortunately, the accuracy of the sequence variants after denoising makes identifying chimeras simpler than it is when dealing with fuzzy OTUs. Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>seqtab &lt;-<span class="st"> </span><span class="kw">removeBimeraDenovo</span>(seqtab_all,</span>
+<span id="cb22-2"><a href="#cb22-2"></a>                             <span class="dt">method =</span> <span class="st">&quot;consensus&quot;</span>,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>                             <span class="dt">multithread =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>                             <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="kw">ncol</span>(seqtab)</span>
+<span id="cb22-6"><a href="#cb22-6"></a></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="co"># Proportion of retained sequences:</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="kw">sum</span>(seqtab) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(seqtab_all)</span></code></pre></div>
+<p>We will save the <code>seqtab</code> object as an RDS file:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">saveRDS</span>(seqtab, <span class="dt">file =</span> <span class="kw">file.path</span>(outdir, <span class="st">&quot;seqtab_V4.rds&quot;</span>))</span></code></pre></div>
+<hr />
+</div>
+<div id="step-9-generate-a-summary-table" class="section level2">
+<h2>Step 9: Generate a Summary Table</h2>
 <p>In this step, we will generate a summary table of the number of sequences processed and outputs of different steps of the pipeline.</p>
 <p>This information is generally used to further evaluate characteristics and quality of the run, sample-to-sample variation, and resulting sequencing depth for each sample.</p>
-<pre class="r r_code"><code>getN &lt;- function(x) sum(getUniques(x))
-
-track &lt;- cbind(out,
-               sapply(dadaFs, getN),
-               sapply(dadaRs, getN),
-               sapply(mergers, getN),
-               rowSums(seqtab))
-
-# If processing a single sample, remove the sapply calls:
-# e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
-
-colnames(track) &lt;- c(&quot;input&quot;, &quot;filtered&quot;, &quot;denoisedF&quot;,
-                     &quot;denoisedR&quot;, &quot;merged&quot;, &quot;nonchim&quot;)
-rownames(track) &lt;- sample.names
-head(track)
-
-outfile_track &lt;- file.path(outdir, &#39;track.txt&#39;)
-write.table(track, file = outfile_track)</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>getN &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">sum</span>(<span class="kw">getUniques</span>(x))</span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a>nreads_summary &lt;-<span class="st"> </span><span class="kw">cbind</span>(filter_results,</span>
+<span id="cb24-4"><a href="#cb24-4"></a>                        <span class="kw">sapply</span>(dadaFs, getN),</span>
+<span id="cb24-5"><a href="#cb24-5"></a>                        <span class="kw">sapply</span>(dadaRs, getN),</span>
+<span id="cb24-6"><a href="#cb24-6"></a>                        <span class="kw">sapply</span>(mergers, getN),</span>
+<span id="cb24-7"><a href="#cb24-7"></a>                        <span class="kw">rowSums</span>(seqtab))</span>
+<span id="cb24-8"><a href="#cb24-8"></a></span>
+<span id="cb24-9"><a href="#cb24-9"></a><span class="kw">colnames</span>(nreads_summary) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;input&#39;</span>, <span class="st">&#39;filtered&#39;</span>, <span class="st">&#39;denoisedF&#39;</span>,</span>
+<span id="cb24-10"><a href="#cb24-10"></a>                              <span class="st">&#39;denoisedR&#39;</span>, <span class="st">&#39;merged&#39;</span>, <span class="st">&#39;nonchim&#39;</span>)</span>
+<span id="cb24-11"><a href="#cb24-11"></a><span class="kw">rownames</span>(nreads_summary) &lt;-<span class="st"> </span>sample_IDs</span>
+<span id="cb24-12"><a href="#cb24-12"></a><span class="kw">head</span>(nreads_summary)</span>
+<span id="cb24-13"><a href="#cb24-13"></a></span>
+<span id="cb24-14"><a href="#cb24-14"></a>outfile_nreads &lt;-<span class="st"> </span><span class="kw">file.path</span>(outdir, <span class="st">&#39;nreads_summary.txt&#39;</span>)</span>
+<span id="cb24-15"><a href="#cb24-15"></a><span class="kw">write.table</span>(nreads_summary, <span class="dt">file =</span> outfile_nreads,</span>
+<span id="cb24-16"><a href="#cb24-16"></a>            <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">row.names =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <hr />
 </div>
-<div id="step-9-assign-taxonomy-to-asvs" class="section level2">
-<h2>Step 9: Assign Taxonomy to ASVs</h2>
-<p>Depending on the marker gene and the data, you will choose the appropriate file for this step. Several files have been formatted for taxony assignments in DADA2 pipeline and are available in the following website: <a href="https://benjjneb.github.io/dada2/index.html" class="uri">https://benjjneb.github.io/dada2/index.html</a></p>
-<pre class="r r_code"><code>print(&quot;Assigning taxa to ASVs&quot;)
-Sys.time()
-taxa &lt;- assignTaxonomy(seqtab, tax_key, multithread = TRUE)
-colnames(taxa) &lt;- c(&quot;Kingdom&quot;, &quot;Phylum&quot;, &quot;Class&quot;, &quot;Order&quot;, &quot;Family&quot;, &quot;Genus&quot;)
-print(&quot;done&quot;)
-Sys.time()</code></pre>
-<hr />
-</div>
-<div id="step-10-phylogenetic-tree-estimation" class="section level2">
-<h2>Step 10: Phylogenetic Tree Estimation</h2>
-<p>A phylogenetic tree can be estimated for the sequence data you generated. Depending on the number of ASVs recovered and the phylogenetic tree algorithm of choice, this step could take several days. Simpler trees will be less computationally intensive. Depending on the marker gene you are working on, you might choose or not to use this option.</p>
-<pre class="r r_code"><code>#seqtab&lt;- readRDS(&quot;seqtab_V4.rds&quot;)
-seqs &lt;- getSequences(seqtab)
-names(seqs) &lt;- seqs # This propagates to the tip labels of the tree. At this stage ASV labels are full ASV sequence
-alignment &lt;- AlignSeqs(DNAStringSet(seqs), anchor=NA, iterations = 5, refinements = 5)
-
-print(&quot;Computing pairwise distances from ASVs&quot;)
-Sys.time()
-phang.align &lt;- phyDat(as(alignment, &quot;matrix&quot;), type=&quot;DNA&quot;)
-dm &lt;- dist.ml(phang.align)
-treeNJ &lt;- NJ(dm) # Note, tip order != sequence order
-fit = pml(treeNJ, data=phang.align)
-print(&quot;done&quot;)
-Sys.time()
-
-fitGTR &lt;- update(fit, k=4, inv=0.2)
-print(&quot;done&quot;)
-Sys.time()
-
-print(&quot;Computing likelihood of tree&quot;)
-Sys.time()
-fitGTR &lt;- optim.pml(fitGTR, model=&quot;GTR&quot;, optInv=TRUE, optGamma=TRUE,
-                      rearrangement = &quot;stochastic&quot;, control = pml.control(trace = 0))
-print(&quot;done&quot;)
-Sys.time()</code></pre>
+<div id="step-10-assign-taxonomy-to-asvs" class="section level2">
+<h2>Step 10: Assign Taxonomy to ASVs</h2>
+<p>Now, we will assign taxonomy to our ASVs.</p>
+<p>Depending on the marker gene and the data, you will have to choose the appropriate reference file for this step.</p>
+<p>Several files have been formatted for taxonomy assignments in DADA2 pipeline and are available at the <a href="https://benjjneb.github.io/dada2/index.html">DADA2 website</a>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">print</span>(<span class="st">&#39;Assigning taxa to ASVs...&#39;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb25-3"><a href="#cb25-3"></a></span>
+<span id="cb25-4"><a href="#cb25-4"></a>taxa &lt;-<span class="st"> </span><span class="kw">assignTaxonomy</span>(seqtab, tax_key, <span class="dt">multithread =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="kw">colnames</span>(taxa) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Kingdom&#39;</span>, <span class="st">&#39;Phylum&#39;</span>, <span class="st">&#39;Class&#39;</span>, <span class="st">&#39;Order&#39;</span>, <span class="st">&#39;Family&#39;</span>, <span class="st">&#39;Genus&#39;</span>)</span>
+<span id="cb25-6"><a href="#cb25-6"></a></span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="kw">print</span>(<span class="st">&#39;...Done.&#39;</span>)</span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="kw">Sys.time</span>()</span></code></pre></div>
 <hr />
 </div>
 <div id="step-11-generate-output-files" class="section level2">
 <h2>Step 11: Generate Output Files</h2>
-<p>In this step, we will generate output files formatted for downstream analysis in phyloseq</p>
-<p>Data will be extracted from the DADA2 outputs and formatted for downstream analysis and data inspection. The last step of this pipeline saves a phyloseq object as an .RDS file and can be imported directly in phyloseq.</p>
-<pre class="r r_code"><code># Rename ASV names: 
-asv_seqs&lt;- colnames(seqtab)
-asv_headers&lt;- vector(dim(seqtab)[2], mode = &quot;character&quot;)
-
-for (i in 1:dim(seqtab)[2]) {
-    asv_headers[i] &lt;- paste(&quot;&gt;ASV&quot;, i, sep = &quot;_&quot;)
-}
-
-
-# Write ASV fasta for final ASV seqs.
-#This fasta file can also be used for phylogenetic tree inference in different platforms
-asv_fasta&lt;- c(rbind(asv_headers, asv_seqs))
-
-outfile_fasta &lt;- file.path(outdir, &#39;ASVs.fa&#39;)
-write(asv_fasta, outfile_fasta)
-
-
-# Count table:
-asv_tab &lt;- t(seqtab)
-row.names(asv_tab) &lt;- sub(&quot;&gt;&quot;, &quot;&quot;, asv_headers)
-
-outfile_tab &lt;- file.path(outdir, &#39;ASVs_counts.tsv&#39;)
-write.table(asv_tab, outfile_tab, 
-            sep = &quot;\t&quot;, quote = FALSE, col.names = NA)
-
-
-# Tax table:
-asv_tax &lt;- taxa
-row.names(asv_tax) &lt;- sub(&quot;&gt;&quot;, &quot;&quot;, asv_headers)
-
-outfile_tax &lt;- file.path(outdir, &#39;ASVs_taxonomy.tsv&#39;)
-write.table(asv_tax, outfile_tax,
-            sep = &quot;\t&quot;, quote = FALSE, col.names = NA)
-
-
-# Read files back in:
-count_tab &lt;- read.table(outfile_tab,
-                        header = TRUE, row.names = 1,
-                        check.names = FALSE, sep = &quot;\t&quot;)
-
-tax_tab &lt;- as.matrix(
-  read.table(outfile_tax,
-             header = TRUE, row.names = 1,
-             check.names = FALSE, sep = &quot;\t&quot;)
-  )
-
-
-# Load and prepare sample metadata:
-sample_df &lt;- read.table(file = sample_names_file,
-                        sep = &quot;\t&quot;, header = TRUE)
-colnames(samdf)[1]&lt;- &quot;SampleID&quot;
-rownames(samdf)&lt;- samdf$SampleID
-
-
-# Build the final phyloseq object:
-# We will not do this now, but a phylogenetic tree can also be added to the phyloseq object.
-ps &lt;- phyloseq(otu_table(count_tab, taxa_are_rows = TRUE),
-               sample_data(sample_df),
-               tax_table(tax_tab))
-
-outfile_ps &lt;- file.path(outdir, &#39;ps_V4.rds&#39;)
-saveRDS(ps, file = outfile_ps)
-
-print(&quot;done&quot;)</code></pre>
+<p>In this step, we will generate output files formatted for downstream analysis in <em>phyloseq</em>. Data will be extracted from the DADA2 outputs and formatted for downstream analysis and data inspection. The last step of this pipeline saves a <em>phyloseq</em> object as an .RDS file, which can be imported directly by <em>phyloseq</em>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Rename ASVs: </span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>asv_seqs &lt;-<span class="st"> </span><span class="kw">colnames</span>(seqtab)</span>
+<span id="cb26-3"><a href="#cb26-3"></a>asv_headers &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&#39;&gt;ASV&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(seqtab), <span class="dt">sep =</span> <span class="st">&#39;_&#39;</span>)</span></code></pre></div>
+<p>Next, we will write a fasta file with the final ASV sequences. This fasta file can also be used for phylogenetic tree inference in different platforms.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>asv_fasta &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rbind</span>(asv_headers, asv_seqs))</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="kw">write</span>(asv_fasta, <span class="dt">file =</span> <span class="kw">file.path</span>(outdir, <span class="st">&#39;ASVs.fa&#39;</span>))</span></code></pre></div>
+<p>We will create count (OTU) and taxon tables:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Create a count (OTU) table:</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>otu_df &lt;-<span class="st"> </span><span class="kw">t</span>(seqtab)</span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="kw">row.names</span>(otu_df) &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&#39;&gt;&#39;</span>, <span class="st">&#39;&#39;</span>, asv_headers)</span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="co"># Create a taxon table:</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>tax_df &lt;-<span class="st"> </span>taxa</span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="kw">row.names</span>(tax_df) &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;&gt;&quot;</span>, <span class="st">&quot;&quot;</span>, asv_headers)</span></code></pre></div>
+<p>Build the final phyloseq object (we will not do this now, but a phylogenetic tree can also be added to the phyloseq object):</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>ps &lt;-<span class="st"> </span><span class="kw">phyloseq</span>(<span class="kw">otu_table</span>(otu_df, <span class="dt">taxa_are_rows =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb29-2"><a href="#cb29-2"></a>               <span class="kw">sample_data</span>(metadata_df),</span>
+<span id="cb29-3"><a href="#cb29-3"></a>               <span class="kw">tax_table</span>(tax_df))</span>
+<span id="cb29-4"><a href="#cb29-4"></a></span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="co"># Write tables and phyloseq object to file:</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a><span class="kw">write.table</span>(otu_df, <span class="kw">file.path</span>(outdir, <span class="st">&#39;ASVs_counts.tsv&#39;</span>),</span>
+<span id="cb29-7"><a href="#cb29-7"></a>            <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">NA</span>)</span>
+<span id="cb29-8"><a href="#cb29-8"></a><span class="kw">write.table</span>(tax_df, <span class="kw">file.path</span>(outdir, <span class="st">&#39;ASVs_taxonomy.tsv&#39;</span>),</span>
+<span id="cb29-9"><a href="#cb29-9"></a>            <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">NA</span>)</span>
+<span id="cb29-10"><a href="#cb29-10"></a><span class="kw">saveRDS</span>(ps, <span class="dt">file =</span> <span class="kw">file.path</span>(outdir, <span class="st">&#39;ps_V4.rds&#39;</span>))</span></code></pre></div>
+<p>Report that we are done!</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">print</span>(<span class="st">&#39;Done with ASV inference.&#39;</span>)</span></code></pre></div>
 <hr />
 </div>
 <div id="resources" class="section level2">
@@ -792,23 +860,68 @@ print(&quot;done&quot;)</code></pre>
 </ul>
 <hr />
 </div>
+<div id="bonus-phylogenetic-tree-estimation" class="section level2">
+<h2>Bonus: Phylogenetic Tree Estimation</h2>
+<p>A phylogenetic tree can be estimated for the sequence data you generated. Depending on the number of ASVs recovered and the phylogenetic tree algorithm of choice, this step could take several days. Simpler trees will be less computationally intensive. Depending on the marker gene you are working on, you might choose or not to use this option.</p>
+<p>This step can be conducted after Step 10, and then the phylogeny can be included in the <em>phyloseq</em> object in Step 11.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">#seqtab&lt;- readRDS(&#39;seqtab_V4.rds&#39;)</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a></span>
+<span id="cb31-3"><a href="#cb31-3"></a>seqs &lt;-<span class="st"> </span><span class="kw">getSequences</span>(seqtab)</span>
+<span id="cb31-4"><a href="#cb31-4"></a></span>
+<span id="cb31-5"><a href="#cb31-5"></a><span class="co"># This propagates to the tip labels of the tree.</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a><span class="co"># At this stage ASV labels are full ASV sequence</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a><span class="kw">names</span>(seqs) &lt;-<span class="st"> </span>seqs </span>
+<span id="cb31-8"><a href="#cb31-8"></a>alignment &lt;-<span class="st"> </span><span class="kw">AlignSeqs</span>(<span class="kw">DNAStringSet</span>(seqs),</span>
+<span id="cb31-9"><a href="#cb31-9"></a>                       <span class="dt">anchor =</span> <span class="ot">NA</span>,</span>
+<span id="cb31-10"><a href="#cb31-10"></a>                       <span class="dt">iterations =</span> <span class="dv">5</span>,</span>
+<span id="cb31-11"><a href="#cb31-11"></a>                       <span class="dt">refinements =</span> <span class="dv">5</span>)</span>
+<span id="cb31-12"><a href="#cb31-12"></a></span>
+<span id="cb31-13"><a href="#cb31-13"></a><span class="kw">print</span>(<span class="st">&#39;Computing pairwise distances from ASVs...&#39;</span>)</span>
+<span id="cb31-14"><a href="#cb31-14"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb31-15"><a href="#cb31-15"></a>phang.align &lt;-<span class="st"> </span><span class="kw">phyDat</span>(<span class="kw">as</span>(alignment, <span class="st">&#39;matrix&#39;</span>), <span class="dt">type =</span> <span class="st">&#39;DNA&#39;</span>)</span>
+<span id="cb31-16"><a href="#cb31-16"></a>dm &lt;-<span class="st"> </span><span class="kw">dist.ml</span>(phang.align)</span>
+<span id="cb31-17"><a href="#cb31-17"></a>treeNJ &lt;-<span class="st"> </span><span class="kw">NJ</span>(dm) <span class="co"># Note, tip order is not sequence order</span></span>
+<span id="cb31-18"><a href="#cb31-18"></a>fit =<span class="st"> </span><span class="kw">pml</span>(treeNJ, <span class="dt">data =</span> phang.align)</span>
+<span id="cb31-19"><a href="#cb31-19"></a><span class="kw">print</span>(<span class="st">&#39;...Done.&#39;</span>)</span>
+<span id="cb31-20"><a href="#cb31-20"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb31-21"><a href="#cb31-21"></a></span>
+<span id="cb31-22"><a href="#cb31-22"></a><span class="kw">print</span>(<span class="st">&#39;....&#39;</span>)</span>
+<span id="cb31-23"><a href="#cb31-23"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb31-24"><a href="#cb31-24"></a>fitGTR &lt;-<span class="st"> </span><span class="kw">update</span>(fit, <span class="dt">k=</span><span class="dv">4</span>, <span class="dt">inv=</span><span class="fl">0.2</span>)</span>
+<span id="cb31-25"><a href="#cb31-25"></a><span class="kw">print</span>(<span class="st">&#39;...Done.&#39;</span>)</span>
+<span id="cb31-26"><a href="#cb31-26"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb31-27"><a href="#cb31-27"></a></span>
+<span id="cb31-28"><a href="#cb31-28"></a><span class="kw">print</span>(<span class="st">&#39;Computing likelihood of tree...&#39;</span>)</span>
+<span id="cb31-29"><a href="#cb31-29"></a><span class="kw">Sys.time</span>()</span>
+<span id="cb31-30"><a href="#cb31-30"></a>fitGTR &lt;-<span class="st"> </span><span class="kw">optim.pml</span>(fitGTR, <span class="dt">model=</span><span class="st">&#39;GTR&#39;</span>, <span class="dt">optInv=</span><span class="ot">TRUE</span>, <span class="dt">optGamma=</span><span class="ot">TRUE</span>,</span>
+<span id="cb31-31"><a href="#cb31-31"></a>                      <span class="dt">rearrangement =</span> <span class="st">&#39;stochastic&#39;</span>, <span class="dt">control =</span> <span class="kw">pml.control</span>(<span class="dt">trace =</span> <span class="dv">0</span>))</span>
+<span id="cb31-32"><a href="#cb31-32"></a><span class="kw">print</span>(<span class="st">&#39;...Done&#39;</span>.)</span>
+<span id="cb31-33"><a href="#cb31-33"></a><span class="kw">Sys.time</span>()</span></code></pre></div>
+<hr />
+</div>
 <div id="bonus-submit-script-as-an-osc-job" class="section level2">
 <h2>Bonus: Submit script as an OSC job</h2>
-<ul>
-<li>Script <code>dada2.sh</code>:</li>
-</ul>
-<pre class="sh"><code>#PBS -l walltime=100:00:00
-#PBS -l nodes=1:ppn=28
-#PBS -A PAS1548
-
-module load gnu/9.1.0
-module load mkl/2019.0.3
-module load R/3.6.1
-cd /fs/scratch/PAS1548/BaseSpace_out/11-21-19/V4_V5/scripts
-Rscript dada2_V4.R</code></pre>
+<p>Extract R code from this document:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r r_code"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>knitr<span class="op">::</span><span class="kw">purl</span>(<span class="dt">input =</span> <span class="st">&#39;markdown/07-ASV-inference.Rmd&#39;</span>,</span>
+<span id="cb32-2"><a href="#cb32-2"></a>            <span class="dt">output =</span> <span class="st">&#39;scripts/02-dada2_V4.R&#39;</span>)</span></code></pre></div>
+<p>Our script <code>02-dada2.sh</code> with <em>SLURM</em> directives that will submit the R script from the shell using <code>Rscript</code>:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash r_code"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a><span class="co">#SBATCH --ntasks-per-node=28</span></span>
+<span id="cb33-4"><a href="#cb33-4"></a><span class="co">#SBATCH --time=100:00:00</span></span>
+<span id="cb33-5"><a href="#cb33-5"></a><span class="co">#SBATCH --account=PAS0471</span></span>
+<span id="cb33-6"><a href="#cb33-6"></a></span>
+<span id="cb33-7"><a href="#cb33-7"></a><span class="ex">module</span> load gnu/9.1.0</span>
+<span id="cb33-8"><a href="#cb33-8"></a><span class="ex">module</span> load mkl/2019.0.3</span>
+<span id="cb33-9"><a href="#cb33-9"></a><span class="ex">module</span> load R/4.02</span>
+<span id="cb33-10"><a href="#cb33-10"></a></span>
+<span id="cb33-11"><a href="#cb33-11"></a><span class="ex">Rscript</span> scripts/02-dada2_V4.R</span></code></pre></div>
+<p>Submit the script:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash r_code"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1"></a><span class="ex">sbatch</span> scripts/02-dada2.sh</span></code></pre></div>
+<p><br><br></p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPldvcmtmbG93IHBhcnQgSUk6PGJyPkFTViBJbmZlcmVuY2UgYW5kIFRheG9uIEFzc2lnbm1lbnQiCm91dHB1dDoKICBybWFya2Rvd246Omh0bWxfZG9jdW1lbnQ6CiAgICB0aGVtZTogY2VydWxlYW4KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCi0tLQoKYGBge3Iga25pdHJfb3B0aW9ucywgZWNobz1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KHJlc3VsdHM9J2hpZGUnLAogICAgICAgICAgICAgICAgICAgICAgZXZhbCA9IEZBTFNFLAogICAgICAgICAgICAgICAgICAgICAgI2tuaXRyOjpvcHRzX2tuaXQkc2V0KHJvb3QuZGlyID0gIi9mcy9wcm9qZWN0L1BBUzA0NzEvd29ya3Nob3BzLzIwMjAtMTJfbWljcm8vJFVTRVIiKSwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLnNvdXJjZT0icl9jb2RlIiwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLm91dHB1dD0icl9vdXRwdXQiLAogICAgICAgICAgICAgICAgICAgICAgY2xhc3Mud2FybmluZz0icl93YXJuaW5nIiwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLm1lc3NhZ2U9InJfd2FybmluZyIsCiAgICAgICAgICAgICAgICAgICAgICBjbGFzcy5lcnJvcj0icl9lcnJvciIpCmBgYAoKPGJyPgoKLS0tLS0KCiMjIEdvYWxzCgpQcm9jZXNzIG1ldGFiYXJjb2RpbmcgcmVhZHMsIHBvc3QtYWRhcHRlciByZW1vdmFsLCBpbmNsdWRpbmc6CgotIEV2YWx1YXRpb24gb2YgcXVhbGl0eQotIFF1YWxpdHkgdHJpbW1pbmcgYW5kIGZpbHRlcmluZwotIEVycm9yIGNvcnJlY3Rpb24gYW5kIGRlbm9pc2luZwotIFJlYWQgbWVyZ2luZwotIEFzc2lnbmluZyB0YXhvbm9teQoKLS0tLS0KCiMjIEJlZm9yZSBXZSBHZXQgU3RhcnRlZAoKIyMjIE5vdGVzCgotIFRoaXMgZG9jdW1lbnRlZCB3YXMgYWRhcHRlZCBmcm9tIFtDYWxsYWhhbiBldCBhbC4gMjAwNl0oaHR0cHM6Ly9mMTAwMHJlc2VhcmNoLmNvbS9hcnRpY2xlcy81LTE0OTIvdjIpCiAgYnkgTWF0dGhldyBXaWxsbWFuLCB3aXRoIGZ1cnRoZXIgZWRpdHMgYnkgU29sZWRhZCBCZW5pdGV6IFBvbmNlIGFuZCBKZWxtZXIgUG9lbHN0cmEuCiAgCi0gVG8gY29udmVydCBhbiBgUm1kYCAoUiBNYXJrZG93bikgZmlsZSB0byBhbiBSIHNjcmlwdCwKICB0eXBlIHRoZSBmb2xsb3dpbmcgaW4gYW4gUiBjb25zb2xlOgogIGBrbml0cjo6cHVybChpbnB1dD0iPGZpbGVuYW1lPi5SbWQiKWAuCiAgKFlvdSBjYW4gZG93bmxvYWQgdGhpcyBgUm1kYCBmaWxlIGJ5IGNsaWNraW5nIHRoZSBgQ29kZWAgYnV0dG9uCiAgaW4gdGhlIHRvcC1yaWdodCBvZiB0aGlzIHBhZ2UgLS0gYnV0IHdlIHdpbGwgb3BlbiBpdCBhdCBPU0MuKQoKIyMjIFN0YXJ0IGFuIFJTdHVkaW8gU2VydmVyIGpvYiBhdCBPU0MKCkZvciBtb3JlIGRldGFpbGVkIGluc3RydWN0aW9ucyBvZiB0aGUgZmlyc3Qgc3RlcHMsCnNlZSBbdGhpcyBzZWN0aW9uXSgwNi1SLmh0bWwjcnN0dWRpby1hdC1PU0MpIGZyb20gb3VyIGludHJvIHRvIFIgc2Vzc2lvbi4KCi0gTG9naW4gdG8gT1NDIGF0IDxodHRwczovL29uZGVtYW5kLm9zYy5lZHU+LgoKLSBDbGljayBvbiBgSW50ZXJhY3RpdmUgQXBwc2AgKHRvcCBiYXIpID4gYFJTdHVkaW8gU2VydmVyIChPd2VucyBhbmQgUGl0emVyKWAuCgotIEZpbGwgb3V0IHRoZSBmb3JtIGFzIHNob3duIFtoZXJlXShzbGlkZXMvMDMtT1NDLXNsaWRlcy5odG1sI3JzdHVkaW9fc2VydmVyX2pvYikuCgotIE9uY2UgeW91ciBqb2IgaGFzIHN0YXJ0ZWQsIGNsaWNrIGBDb25uZWN0IHRvIFJTdHVkaW8gU2VydmVyYC4KCi0gWW91IHNob3VsZCBhdXRvbWF0aWNhbGx5IGJlIGluIHlvdXIgcGVyc29uYWwgZGlyIGluc2lkZSB0aGUgZGlyCiAgYC9mcy9wcm9qZWN0L1BBUzA0NzEvd29ya3Nob3BzLzIwMjAtMTJfbWljcm9gLiAgIAogIAogIChJbiB0aGUgKkZpbGVzKiBwYW5lIGluIFJTdHVkaW8sIHlvdSBzaG91bGQgc2VlIHlvdXIgYC5ScHJvamAgZmlsZS4gCiAgSWYgbm90LCB0eXBlIGBzZXR3ZCgnL2ZzL3Byb2plY3QvUEFTMDQ3MS93b3Jrc2hvcHMvMjAyMC0xMl9taWNybycpYAogIGFuZCB0aGVuIGNsaWNrIG9uIHRoZSBkaXIgd2l0aCB5b3VyIG5hbWUgaW4gdGhlICpGaWxlcyogcGFuZSkuCgotIE5vdywgY2xpY2sgb24gdGhlIGBtYXJrZG93bmAgZGlyZWN0b3J5IGluIHRoZSAqRmlsZXMqIHBhbmUsCiAgYW5kIG9wZW4gdGhlIGZpbGUgYDA2LXJlYWRzLXRvLUFTVi5SbWRgLiBUaGF0J3MgdGhpcyBmaWxlIQoKLS0tLS0KCiMjIFN0ZXAgMTogR2V0dGluZyBTdGFydGVkCgojIyMgSW5zdGFsbCBhbmQgbG9hZCBwYWNrYWdlcwoKVG8gc2F2ZSB0aW1lLCB3ZSBoYXZlIGFscmVhZHkgaW5zdGFsbGVkIGFsbCB0aGUgbmVjZXNzYXJ5IFIgcGFja2FnZXMgYXQgT1NDCmludG8gYSBjdXN0b20gbGlicmFyeS4KVG8gYWRkIHRoaXMgbGlicmFyeSBmb3IgdGhlIGN1cnJlbnQgUiBzZXNzaW9uOgoKYGBge3IgbGlibG9hZH0KLmxpYlBhdGhzKG5ldyA9ICcvZnMvcHJvamVjdC9QQVMwNDcxLy5SLzQuMC8nKQpgYGAKClRoZW4sIGxvYWQgdGhlIHBhY2thZ2VzOgoKYGBge3J9CnBhY2thZ2VzIDwtIGMoImdncGxvdDIiLCAiZ3JpZEV4dHJhIiwKICAgICAgICAgICAgICAiZGFkYTIiLCAicGh5bG9zZXEiLCAiREVDSVBIRVIiLCAicGhhbmdvcm4iKQpwYWNtYW46OnBfbG9hZChjaGFyID0gcGFja2FnZXMpCgojIElmIHlvdSB3YW50ZWQgdG8gaW5zdGFsbCBhbmQgbG9hZCB0aGVzZSBwYWNrYWdlcyB5b3Vyc2VsZiwKIyBqdXN0IG1ha2Ugc3VyZSB5b3UgaGF2ZSB0aGUgcGFjbWFuIHBhY2thZ2UgaW5zdGFsbGVkOgojIyBpbnN0YWxsLnBhY2thZ2VzKCdwYWNtYW4nKQojIFRoZW4sIHRoZSBjb2RlIGFib3ZlIHdvdWxkIHdvcmssIGFzIGl0IHdpbGwgaW5zdGFsbCBwYWNha2VzIGFzIG5lZWRlZC4KYGBgCgojIyMgU2V0IHRoZSBmaWxlIHBhdGhzCgpgYGB7cn0KIyBEaXIgd2l0aCBpbnB1dCBmYXN0cSBmaWxlczoKaW5kaXIgPC0gImRhdGEvcHJvY2Vzc2VkL2Zhc3RxX3RyaW1tZWQvc2Vjb25kX3RyaW0vIgoKIyBEaXIgZm9yIG91dHB1dDoKb3V0ZGlyIDwtICdhbmFseXNpcy9BU1ZfaW5mZXJlbmNlLycKCiMgRmFzdGEgZmlsZSB3aXRoIHRyYWluaW5nIGRhdGE6CiMgKENoZWNrIGZvciBhbiB1cC10by1kYXRlIHZlcnNpb24gYXQgPGh0dHBzOi8vYmVuampuZWIuZ2l0aHViLmlvL2RhZGEyL3RyYWluaW5nLmh0bWw+KQp0YXhfa2V5IDwtICJkYXRhL3JlZi9zaWx2YV9ucjk5X3YxMzhfdHJhaW5fc2V0LmZhIiAKCiMgRmlsZSB3aXRoIHNhbXBsZSBtZXRhZGF0YToKc2FtcGxlX25hbWVzX2ZpbGUgPC0gIm1ldGFkYXRhL3NhbXBsZV9tZXRhLnR4dCIKYGBgCgojIyMgQXNzaWduIGZpbGVzIHRvIGZvcndhcmQgYW5kIHJldmVyc2UgcmVhZHMgCgpGb3IgZm9yd2FyZCBhbmQgcmV2ZXJzZSBmYXN0cSBmaWxlbmFtZXMgd2hpY2ggaGF2ZSB0aGUgZm9sbG93aW5nIG5hbWUgZm9ybWF0OiBgPFNBTVBMRU5BTUU+X1IxXzAwMS5mYXN0cWAgYW5kIGA8U0FNUExFTkFNRT5fUjJfMDAxLmZhc3RxYC4KCmBgYHtyfQpmbkZzIDwtIHNvcnQobGlzdC5maWxlcyhpbmRpciwgcGF0dGVybj0iX1IxXzAwMS5mYXN0cS5neiIsIGZ1bGwubmFtZXMgPSBUUlVFKSkKZm5ScyA8LSBzb3J0KGxpc3QuZmlsZXMoaW5kaXIsIHBhdHRlcm49Il9SMl8wMDEuZmFzdHEuZ3oiLCBmdWxsLm5hbWVzID0gVFJVRSkpCmBgYAoKIyMjIEV4dHJhY3Qgc2FtcGxlIG5hbWVzCgpFeHRyYWN0IHRoZSBzYW1wbGUgbmFtZXMgZnJvbSB0aGUgYC5mYXN0cWAgZmlsZSBuYW1lcywgYXNzdW1pbmcgZmlsZSBuYW1lcyBoYXZlIGZvcm1hdDogYDxTQU1QTEVOQU1FPl9YWFguZmFzdHFgLgoKVGhlIHJlc3VsdGluZyBgc2FtcGxlLm5hbWVzYCBzaG91bGQgbWF0Y2ggdGhlIFNhbXBsZUlEIGNvbHVtbiBpbiB0aGUgYHNhbXBsZV9kYXRhX2V4YW1wbGVgIGZpbGUuCgpgYGB7cn0Kc2FtcGxlLm5hbWVzIDwtIHNhcHBseShzdHJzcGxpdChiYXNlbmFtZShmbkZzKSwgIi1WNC1WNV8iKSwgYFtgLCAxKQpgYGAKCi0tLS0tCgojIyBTdGVwIDI6IFFDCgojIyMgUGxvdCBzZXF1ZW5jZSBxdWFsaXR5IGRhdGEKCllvdSBjYW4gZ2VuZXJhdGUgYW5kIGV2YWx1YXRlIHBsb3RzIGluZGl2aWR1YWxseToKCmBgYHtyfQpwbG90UXVhbGl0eVByb2ZpbGUoZm5Gc1sxOjJdKQpgYGAKCjxicj4KCk9yIGdlbmVyYXRlIHBkZiBmaWxlcyB0byBpbnNwZWN0IG11bHRpcGxlIHBsb3RzIGF0IG9uY2U6CgpgYGB7cn0KaWkgPC0gc2FtcGxlKGxlbmd0aChmbkZzKSwgMykKcGRmKCJFcnJvcl9wcm9maWxlcy5wZGYiKQpwYXIobWZyb3c9YygyLDMpKQpmb3IgKGkgaW4gaWkpIHsgcHJpbnQgKHBsb3RRdWFsaXR5UHJvZmlsZShmbkZzW2ldKSArIGdndGl0bGUoIkZ3ZCIpKSB9CmlpIDwtIHNhbXBsZShsZW5ndGgoZm5ScyksIDMpCmZvciAoaSBpbiBpaSkgeyBwcmludCAocGxvdFF1YWxpdHlQcm9maWxlKGZuUnNbaV0pICsgZ2d0aXRsZSgiUmV2IikpIH0KZGV2Lm9mZigpCmBgYAoKPGRldGFpbHM+CjxzdW1tYXJ5PgombmJzcDsgIGByIGljb246OmZhKCJpbmZvLWNpcmNsZSIpYCAmbmJzcDsgTW9yZSBvbiBRQyBvZiBmYXN0cSBmaWxlcwo8L3N1bW1hcnk+Ckl0IGlzIGEgZ29vZCBpZGVhIHRvIHJ1biB0aGUKW2BmYXN0cWNgXShodHRwczovL3d3dy5iaW9pbmZvcm1hdGljcy5iYWJyYWhhbS5hYy51ay9wcm9qZWN0cy9mYXN0cWMvKQpwcm9ncmFtIG9uIHlvdXIgZmFzdHEgZmlsZXMgZm9yIG1vcmUgZXh0ZW5zaXZlIFFDLgpUaGlzIGlzIGEgc3RhbmQtYWxvbmUgcHJvZ3JhbSB0aGF0IGlzIGVhc3kgdG8gcnVuIGZyb20gdGhlIGNvbW1hbmQtbGluZS4KV2hlbiB5b3UgaGF2ZSBtYW55IHNhbXBsZXMsIGFzIGlzIG9mdGVuIHRoZSBjYXNlLApgZmFzdHFjYCdzIHJlc3VsdHMgY2FuIG1vcmVvdmVyIGJlIG5pY2VseSBzdW1tYXJpemVkIHVzaW5nCltgbXVsdGlxY2BdKGh0dHBzOi8vbXVsdGlxYy5pbmZvLy4KSW4gdGhlIGludGVyZXN0IG9mIHRpbWUsIHdlIHNraXBwZWQgdGhlc2Ugc3RlcHMgZHVyaW5nIHRoaXMgd29ya3Nob3AuCjwvZGV0YWlscz4KCgotLS0tLQoKIyMgU3RlcCAzOiBUcmltbWluZwoKVGhlIGB0cnVuY0xlbmAgcGFyYW1ldGVycyBzaG91bGQgYmUgYmFzZWQgb24gc2VxdWVuY2UgcXVhbGl0eSB2aXN1YWxpemVkIGFib3ZlLgpJdCBpcyBzdWdnZXN0ZWQgdG8gdHJpbSBmaXJzdCAxMCBudWNsZW90aWRlcyBvZiBlYWNoIHJlYWQsCmVtcGlyaWNhbCBvYnNlcnZhdGlvbnMgYWNyb3NzIElsbHVtaW5hIGRhdGFzZXRzIHNob3cgdGhlc2UgcG9zaXRpb25zIGFyZSBsaWtlbHkgdG8gY29udGFpbiBwYXRob2xvZ2ljYWwgZXJyb3JzLiBUcmltbWluZyBsZW5ndGggY291bGQgYmUgZGlmZmVyZW50IGZvciBSMSBhbmQgUjIsCmJ1dCBpZGVhbGx5IG5vdCB0b28gZHJhc3RpY2FsbHkgc28sIGluIG9yZGVyIHRvIG1heGltaXplIG1lcmdpbmcgcGFpcnMgaW4gc3Vic2VxdWVudCBzdGVwcy4KCkZpcnN0LCBkZWZpbmUgcGF0aHMgZm9yIHRyaW1taW5nOgoKYGBge3J9CmZpbHRGcyA8LSBmaWxlLnBhdGgob3V0cHV0LCAiZmlsdGVyZWQiLCBwYXN0ZTAoc2FtcGxlLm5hbWVzLCAiX0ZfZmlsdC5mYXN0cSIpKQpmaWx0UnMgPC0gZmlsZS5wYXRoKG91dHB1dCwgImZpbHRlcmVkIiwgcGFzdGUwKHNhbXBsZS5uYW1lcywgIl9SX2ZpbHQuZmFzdHEiKSkKYGBgCgo8YnI+CgpUaGVuLCBwZXJmb3JtIHRoZSB0cmltbWluZzoKCmBgYHtyfQpwcmludCgiZmlsdGVyIGFuZCBUcmltbWluZyIpClN5cy50aW1lKCkKb3V0IDwtIGZpbHRlckFuZFRyaW0oZm5GcywgZmlsdEZzLCBmblJzLCBmaWx0UnMsIHRyaW1MZWZ0PTEwLCB0cnVuY0xlbj1jKDI1MCwyMTApLCBtYXhOPTAsIG1heEVFPWMoMiwyKSwgdHJ1bmNRPTIsIHJtLnBoaXg9RiwgY29tcHJlc3M9RkFMU0UsIG11bHRpdGhyZWFkPVRSVUUsIHZlcmJvc2U9VFJVRSkgCnByaW50KCJkb25lIikKU3lzLnRpbWUoKQpgYGAKCgotLS0tLQoKIyMgU3RlcCA0OiBEZXJlcGxpY2F0aW9uICYgRXJyb3IgVHJhaW5pbmcKCmBgYHtyfQpkZXJlcEZzIDwtIGRlcmVwRmFzdHEoZmlsdEZzLCB2ZXJib3NlID0gRkFMU0UpCmRlcmVwUnMgPC0gZGVyZXBGYXN0cShmaWx0UnMsIHZlcmJvc2UgPSBGQUxTRSkKCnByaW50KCJMZWFybmluZyBlcnJvcnM6IikKU3lzLnRpbWUoKQplcnJGIDwtIGxlYXJuRXJyb3JzKGRlcmVwRnMsIG11bHRpdGhyZWFkID0gVFJVRSwgdmVyYm9zZSA9IFRSVUUpCmVyclIgPC0gbGVhcm5FcnJvcnMoZGVyZXBScywgbXVsdGl0aHJlYWQgPSBUUlVFLCB2ZXJib3NlID0gVFJVRSkKcHJpbnQoIkRvbmUuIikKU3lzLnRpbWUoKQoKbmFtZXMoZGVyZXBGcykgPC0gc2FtcGxlLm5hbWVzCm5hbWVzKGRlcmVwUnMpIDwtIHNhbXBsZS5uYW1lcwpgYGAKCjxicj4KClBsb3QgZXJyb3JzIHRvIHZlcmlmeSB0aGF0IGVycm9yIHJhdGVzIGhhdmUgYmVlbiByZWFzb25hYmxlIHdlbGwtZXN0aW1hdGVkLgpPYnNlcnZlIHRoZSBmaXQgYmV0d2VlbiBvYnNlcnZlZCBlcnJvciByYXRlcyAocG9pbnRzKSBhbmQgZml0dGVkIGVycm9yIHJhdGVzIChsaW5lcyk6CgpgYGB7cn0KcGxvdEVycm9ycyhlcnJGLCBub21pbmFsUSA9IFRSVUUpCnBsb3RFcnJvcnMoZXJyUiwgbm9taW5hbFEgPSBUUlVFKQpgYGAKCi0tLS0tCgojIyBTdGVwIDU6IEluZmVyIEFTVnMKCldlIHdpbGwgcnVuIHRoZSBkYWRhIGFsZ29yaXRobSB0byBpbmZlciBBU1ZzLgoKVGhpcyBzdGVwIGlzIG1vcmUgY29tcHV0YXRpb25hbGx5IGludGVuc2l0eS4gSW5kZXBlZGFudCBpbmZlcmVuY2UgYnkgc2FtcGxlIChwb29sPUYpIHdpbGwga2VlcCBtZW1vcnkgcmVxdWlyZW1lbnRzIGxpbmVhciB0byBzYW1wbGUgbnVtYmVyLiBQb29saW5nIHdpbGwgaW5jcmVhc2UgY29tcHV0YXRpb24gdGltZSBidXQgaW1wcm92ZSBkZXRlY3Rpb24gb2YgcmFyZSB2YXJpYW50cyBzZWVuIG9uY2Ugb3IgdHdpY2UgaW4gYW4gaW5kaXZpZHVhbCBzYW1wbGUgYnV0IG1hbnkgdGltZXMgYWNyb3NzIGFsbCBzYW1wbGVzLgoKYGBge3J9CnByaW50KCJpbmZlcnJpbmcgQVNWcyAocnVubmluZyBkYWRhIGFsZ29yaXRobSkiKQpTeXMudGltZSgpCmRhZGFGcyA8LSBkYWRhKGRlcmVwRnMsIGVyciA9IGVyckYsIG11bHRpdGhyZWFkID0gVCwgcG9vbCA9IEZBTFNFKQpkYWRhUnMgPC0gZGFkYShkZXJlcFJzLCBlcnIgPSBlcnJSLCBtdWx0aXRocmVhZCA9IFQsIHBvb2wgPSBGQUxTRSkKcHJpbnQoImRvbmUiKQpTeXMudGltZSgpCgojaW5zcGVjdCBvYmplY3QKZGFkYUZzW1sxXV0KYGBgCgotLS0tLQoKIyMgU3RlcCA2OiBNZXJnZSBSZWFkIFBhaXJzCgpJbiB0aGlzIHN0ZXAsIHdlIHdpbGwgbWVyZ2UgcmVhZCBwYWlycyBhbmQgZ2VuZXJhdGUgc2VxdWVuY2UgdGFibGUgb2YgcGFpcmVkIEFTVnMuCgpgYGB7cn0KbWVyZ2VycyA8LSBtZXJnZVBhaXJzKGRhZGFGcywgZGVyZXBGcywgZGFkYVJzLCBkZXJlcFJzLAogICAgICAgICAgICAgICAgICAgICAgdmVyYm9zZT1UUlVFKQoKc2VxdGFiLmFsbCA8LSBtYWtlU2VxdWVuY2VUYWJsZShtZXJnZXJzKQpkaW0oc2VxdGFiLmFsbCkKYGBgCgotLS0tLQoKIyMgU3RlcCA3OiBTdW1tYXJpemUgU2VxdWVuY2VzIGFuZCBSZW1vdmUgQ2hpbWVyYXMKCmBgYHtyfQojIEluc3BlY3QgZGlzdHJpYnV0aW9uIG9mIHNlcXVlbmNlIGxlbmd0aHMKdGFibGUobmNoYXIoZ2V0U2VxdWVuY2VzKHNlcXRhYi5hbGwpKSkKCiNJZiB5b3UgbmVlZCB0byByZW1vdmUgc2VxdWVuY2VzIG9mIGEgcGFydGljdWxhciBsZW5ndGggKGUuZy4gdG9vIGxvbmcpOgojc2VxdGFiMiA8LSBzZXF0YWJbLG5jaGFyKGNvbG5hbWVzKHNlcXRhYi5hbGwpKSAlaW4lIHNlcSgyNTAsMjU2KV0KCiMgUmVtb3ZlIGNoaW1lcmFzOgpzZXF0YWIgPC0gcmVtb3ZlQmltZXJhRGVub3ZvKHNlcXRhYi5hbGwsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWV0aG9kID0gImNvbnNlbnN1cyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXVsdGl0aHJlYWQgPSBUUlVFLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZlcmJvc2UgPSBUUlVFKQpkaW0oc2VxdGFiKQoKIyBQcm9wb3J0aW9uIG9mIHJlbW92ZWQgc2VxdWVuY2VzCnN1bShzZXF0YWIpIC8gc3VtKHNlcXRhYi5hbGwpCgojIFNhdmUgc2VxdGFiIGZpbGUgYXMgYW4gUkRTIG9iamVjdApzYXZlUkRTKHNlcXRhYiwgZmlsZSA9IGZpbGUucGF0aChvdXRkaXIsICJzZXF0YWJfVjQucmRzIikpCmBgYAoKCi0tLS0tCgoKIyMgU3RlcCA4OiBHZW5lcmF0ZSBhIFN1bW1hcnkgVGFibGUKCkluIHRoaXMgc3RlcCwgd2Ugd2lsbCBnZW5lcmF0ZSBhIHN1bW1hcnkgdGFibGUgb2YgdGhlIG51bWJlciBvZiBzZXF1ZW5jZXMKcHJvY2Vzc2VkIGFuZCBvdXRwdXRzIG9mIGRpZmZlcmVudCBzdGVwcyBvZiB0aGUgcGlwZWxpbmUuCgpUaGlzIGluZm9ybWF0aW9uIGlzIGdlbmVyYWxseSB1c2VkIHRvIGZ1cnRoZXIgZXZhbHVhdGUgY2hhcmFjdGVyaXN0aWNzIGFuZApxdWFsaXR5IG9mIHRoZSBydW4sIHNhbXBsZS10by1zYW1wbGUgdmFyaWF0aW9uLAphbmQgcmVzdWx0aW5nIHNlcXVlbmNpbmcgZGVwdGggZm9yIGVhY2ggc2FtcGxlLiAKCmBgYHtyfQpnZXROIDwtIGZ1bmN0aW9uKHgpIHN1bShnZXRVbmlxdWVzKHgpKQoKdHJhY2sgPC0gY2JpbmQob3V0LAogICAgICAgICAgICAgICBzYXBwbHkoZGFkYUZzLCBnZXROKSwKICAgICAgICAgICAgICAgc2FwcGx5KGRhZGFScywgZ2V0TiksCiAgICAgICAgICAgICAgIHNhcHBseShtZXJnZXJzLCBnZXROKSwKICAgICAgICAgICAgICAgcm93U3VtcyhzZXF0YWIpKQoKIyBJZiBwcm9jZXNzaW5nIGEgc2luZ2xlIHNhbXBsZSwgcmVtb3ZlIHRoZSBzYXBwbHkgY2FsbHM6CiMgZS5nLiByZXBsYWNlIHNhcHBseShkYWRhRnMsIGdldE4pIHdpdGggZ2V0TihkYWRhRnMpCgpjb2xuYW1lcyh0cmFjaykgPC0gYygiaW5wdXQiLCAiZmlsdGVyZWQiLCAiZGVub2lzZWRGIiwKICAgICAgICAgICAgICAgICAgICAgImRlbm9pc2VkUiIsICJtZXJnZWQiLCAibm9uY2hpbSIpCnJvd25hbWVzKHRyYWNrKSA8LSBzYW1wbGUubmFtZXMKaGVhZCh0cmFjaykKCm91dGZpbGVfdHJhY2sgPC0gZmlsZS5wYXRoKG91dGRpciwgJ3RyYWNrLnR4dCcpCndyaXRlLnRhYmxlKHRyYWNrLCBmaWxlID0gb3V0ZmlsZV90cmFjaykKYGBgCgotLS0tLQoKIyMgU3RlcCA5OiBBc3NpZ24gVGF4b25vbXkgdG8gQVNWcwoKRGVwZW5kaW5nIG9uIHRoZSBtYXJrZXIgZ2VuZSBhbmQgdGhlIGRhdGEsIHlvdSB3aWxsIGNob29zZSB0aGUgYXBwcm9wcmlhdGUgZmlsZSBmb3IgdGhpcyBzdGVwLiBTZXZlcmFsIGZpbGVzIGhhdmUgYmVlbiBmb3JtYXR0ZWQgZm9yIHRheG9ueSBhc3NpZ25tZW50cyBpbiBEQURBMiBwaXBlbGluZSBhbmQgYXJlIGF2YWlsYWJsZSBpbiB0aGUgZm9sbG93aW5nIHdlYnNpdGU6IGh0dHBzOi8vYmVuampuZWIuZ2l0aHViLmlvL2RhZGEyL2luZGV4Lmh0bWwgCgpgYGB7cn0KcHJpbnQoIkFzc2lnbmluZyB0YXhhIHRvIEFTVnMiKQpTeXMudGltZSgpCnRheGEgPC0gYXNzaWduVGF4b25vbXkoc2VxdGFiLCB0YXhfa2V5LCBtdWx0aXRocmVhZCA9IFRSVUUpCmNvbG5hbWVzKHRheGEpIDwtIGMoIktpbmdkb20iLCAiUGh5bHVtIiwgIkNsYXNzIiwgIk9yZGVyIiwgIkZhbWlseSIsICJHZW51cyIpCnByaW50KCJkb25lIikKU3lzLnRpbWUoKQpgYGAKCi0tLS0tCgojIyBTdGVwIDEwOiBQaHlsb2dlbmV0aWMgVHJlZSBFc3RpbWF0aW9uCgpBIHBoeWxvZ2VuZXRpYyB0cmVlIGNhbiBiZSBlc3RpbWF0ZWQgZm9yIHRoZSBzZXF1ZW5jZSBkYXRhIHlvdSBnZW5lcmF0ZWQuIERlcGVuZGluZyBvbiB0aGUgbnVtYmVyIG9mIEFTVnMgcmVjb3ZlcmVkIGFuZCB0aGUgcGh5bG9nZW5ldGljIHRyZWUgYWxnb3JpdGhtIG9mIGNob2ljZSwgdGhpcyBzdGVwIGNvdWxkIHRha2Ugc2V2ZXJhbCBkYXlzLiBTaW1wbGVyIHRyZWVzIHdpbGwgYmUgbGVzcyBjb21wdXRhdGlvbmFsbHkgaW50ZW5zaXZlLiBEZXBlbmRpbmcgb24gdGhlIG1hcmtlciBnZW5lIHlvdSBhcmUgd29ya2luZyBvbiwgeW91IG1pZ2h0IGNob29zZSBvciBub3QgdG8gdXNlIHRoaXMgb3B0aW9uLiAKCmBgYHtyLCBldmFsPUZBTFNFfQojc2VxdGFiPC0gcmVhZFJEUygic2VxdGFiX1Y0LnJkcyIpCnNlcXMgPC0gZ2V0U2VxdWVuY2VzKHNlcXRhYikKbmFtZXMoc2VxcykgPC0gc2VxcyAjIFRoaXMgcHJvcGFnYXRlcyB0byB0aGUgdGlwIGxhYmVscyBvZiB0aGUgdHJlZS4gQXQgdGhpcyBzdGFnZSBBU1YgbGFiZWxzIGFyZSBmdWxsIEFTViBzZXF1ZW5jZQphbGlnbm1lbnQgPC0gQWxpZ25TZXFzKEROQVN0cmluZ1NldChzZXFzKSwgYW5jaG9yPU5BLCBpdGVyYXRpb25zID0gNSwgcmVmaW5lbWVudHMgPSA1KQoKcHJpbnQoIkNvbXB1dGluZyBwYWlyd2lzZSBkaXN0YW5jZXMgZnJvbSBBU1ZzIikKU3lzLnRpbWUoKQpwaGFuZy5hbGlnbiA8LSBwaHlEYXQoYXMoYWxpZ25tZW50LCAibWF0cml4IiksIHR5cGU9IkROQSIpCmRtIDwtIGRpc3QubWwocGhhbmcuYWxpZ24pCnRyZWVOSiA8LSBOSihkbSkgIyBOb3RlLCB0aXAgb3JkZXIgIT0gc2VxdWVuY2Ugb3JkZXIKZml0ID0gcG1sKHRyZWVOSiwgZGF0YT1waGFuZy5hbGlnbikKcHJpbnQoImRvbmUiKQpTeXMudGltZSgpCgpmaXRHVFIgPC0gdXBkYXRlKGZpdCwgaz00LCBpbnY9MC4yKQpwcmludCgiZG9uZSIpClN5cy50aW1lKCkKCnByaW50KCJDb21wdXRpbmcgbGlrZWxpaG9vZCBvZiB0cmVlIikKU3lzLnRpbWUoKQpmaXRHVFIgPC0gb3B0aW0ucG1sKGZpdEdUUiwgbW9kZWw9IkdUUiIsIG9wdEludj1UUlVFLCBvcHRHYW1tYT1UUlVFLAogICAgICAgICAgICAgICAgICAgICAgcmVhcnJhbmdlbWVudCA9ICJzdG9jaGFzdGljIiwgY29udHJvbCA9IHBtbC5jb250cm9sKHRyYWNlID0gMCkpCnByaW50KCJkb25lIikKU3lzLnRpbWUoKQpgYGAKCgoKLS0tLS0KCiMjIFN0ZXAgMTE6IEdlbmVyYXRlIE91dHB1dCBGaWxlcwoKSW4gdGhpcyBzdGVwLCB3ZSB3aWxsIGdlbmVyYXRlIG91dHB1dCBmaWxlcyBmb3JtYXR0ZWQgZm9yIGRvd25zdHJlYW0gYW5hbHlzaXMgaW4gcGh5bG9zZXEKCkRhdGEgd2lsbCBiZSBleHRyYWN0ZWQgZnJvbSB0aGUgREFEQTIgb3V0cHV0cyBhbmQgZm9ybWF0dGVkIGZvciBkb3duc3RyZWFtIGFuYWx5c2lzIGFuZCBkYXRhIGluc3BlY3Rpb24uIFRoZSBsYXN0IHN0ZXAgb2YgdGhpcyBwaXBlbGluZSBzYXZlcyBhIHBoeWxvc2VxIG9iamVjdCBhcyBhbiAuUkRTIGZpbGUgYW5kIGNhbiBiZSBpbXBvcnRlZCBkaXJlY3RseSBpbiBwaHlsb3NlcS4gCgpgYGB7cn0KIyBSZW5hbWUgQVNWIG5hbWVzOiAKYXN2X3NlcXM8LSBjb2xuYW1lcyhzZXF0YWIpCmFzdl9oZWFkZXJzPC0gdmVjdG9yKGRpbShzZXF0YWIpWzJdLCBtb2RlID0gImNoYXJhY3RlciIpCgpmb3IgKGkgaW4gMTpkaW0oc2VxdGFiKVsyXSkgewoJYXN2X2hlYWRlcnNbaV0gPC0gcGFzdGUoIj5BU1YiLCBpLCBzZXAgPSAiXyIpCn0KCgojIFdyaXRlIEFTViBmYXN0YSBmb3IgZmluYWwgQVNWIHNlcXMuCiNUaGlzIGZhc3RhIGZpbGUgY2FuIGFsc28gYmUgdXNlZCBmb3IgcGh5bG9nZW5ldGljIHRyZWUgaW5mZXJlbmNlIGluIGRpZmZlcmVudCBwbGF0Zm9ybXMKYXN2X2Zhc3RhPC0gYyhyYmluZChhc3ZfaGVhZGVycywgYXN2X3NlcXMpKQoKb3V0ZmlsZV9mYXN0YSA8LSBmaWxlLnBhdGgob3V0ZGlyLCAnQVNWcy5mYScpCndyaXRlKGFzdl9mYXN0YSwgb3V0ZmlsZV9mYXN0YSkKCgojIENvdW50IHRhYmxlOgphc3ZfdGFiIDwtIHQoc2VxdGFiKQpyb3cubmFtZXMoYXN2X3RhYikgPC0gc3ViKCI+IiwgIiIsIGFzdl9oZWFkZXJzKQoKb3V0ZmlsZV90YWIgPC0gZmlsZS5wYXRoKG91dGRpciwgJ0FTVnNfY291bnRzLnRzdicpCndyaXRlLnRhYmxlKGFzdl90YWIsIG91dGZpbGVfdGFiLCAKICAgICAgICAgICAgc2VwID0gIlx0IiwgcXVvdGUgPSBGQUxTRSwgY29sLm5hbWVzID0gTkEpCgoKIyBUYXggdGFibGU6CmFzdl90YXggPC0gdGF4YQpyb3cubmFtZXMoYXN2X3RheCkgPC0gc3ViKCI+IiwgIiIsIGFzdl9oZWFkZXJzKQoKb3V0ZmlsZV90YXggPC0gZmlsZS5wYXRoKG91dGRpciwgJ0FTVnNfdGF4b25vbXkudHN2JykKd3JpdGUudGFibGUoYXN2X3RheCwgb3V0ZmlsZV90YXgsCiAgICAgICAgICAgIHNlcCA9ICJcdCIsIHF1b3RlID0gRkFMU0UsIGNvbC5uYW1lcyA9IE5BKQoKCiMgUmVhZCBmaWxlcyBiYWNrIGluOgpjb3VudF90YWIgPC0gcmVhZC50YWJsZShvdXRmaWxlX3RhYiwKICAgICAgICAgICAgICAgICAgICAgICAgaGVhZGVyID0gVFJVRSwgcm93Lm5hbWVzID0gMSwKICAgICAgICAgICAgICAgICAgICAgICAgY2hlY2submFtZXMgPSBGQUxTRSwgc2VwID0gIlx0IikKCnRheF90YWIgPC0gYXMubWF0cml4KAogIHJlYWQudGFibGUob3V0ZmlsZV90YXgsCiAgICAgICAgICAgICBoZWFkZXIgPSBUUlVFLCByb3cubmFtZXMgPSAxLAogICAgICAgICAgICAgY2hlY2submFtZXMgPSBGQUxTRSwgc2VwID0gIlx0IikKICApCgoKIyBMb2FkIGFuZCBwcmVwYXJlIHNhbXBsZSBtZXRhZGF0YToKc2FtcGxlX2RmIDwtIHJlYWQudGFibGUoZmlsZSA9IHNhbXBsZV9uYW1lc19maWxlLAogICAgICAgICAgICAgICAgICAgICAgICBzZXAgPSAiXHQiLCBoZWFkZXIgPSBUUlVFKQpjb2xuYW1lcyhzYW1kZilbMV08LSAiU2FtcGxlSUQiCnJvd25hbWVzKHNhbWRmKTwtIHNhbWRmJFNhbXBsZUlECgoKIyBCdWlsZCB0aGUgZmluYWwgcGh5bG9zZXEgb2JqZWN0OgojIFdlIHdpbGwgbm90IGRvIHRoaXMgbm93LCBidXQgYSBwaHlsb2dlbmV0aWMgdHJlZSBjYW4gYWxzbyBiZSBhZGRlZCB0byB0aGUgcGh5bG9zZXEgb2JqZWN0LgpwcyA8LSBwaHlsb3NlcShvdHVfdGFibGUoY291bnRfdGFiLCB0YXhhX2FyZV9yb3dzID0gVFJVRSksCiAgICAgICAgICAgICAgIHNhbXBsZV9kYXRhKHNhbXBsZV9kZiksCiAgICAgICAgICAgICAgIHRheF90YWJsZSh0YXhfdGFiKSkKCm91dGZpbGVfcHMgPC0gZmlsZS5wYXRoKG91dGRpciwgJ3BzX1Y0LnJkcycpCnNhdmVSRFMocHMsIGZpbGUgPSBvdXRmaWxlX3BzKQoKcHJpbnQoImRvbmUiKQpgYGAKCi0tLS0tCgojIyBSZXNvdXJjZXMKCi0gW0NhbGxhaGFuIGV0IGFsLiAyMDA2OiAiQmlvY29uZHVjdG9yIFdvcmtmbG93IGZvciBNaWNyb2Jpb21lIERhdGEgQW5hbHlzaXM6IGZyb20gcmF3IHJlYWRzIHRvIGNvbW11bml0eSBhbmFseXNlcyJdKGh0dHBzOi8vZjEwMDByZXNlYXJjaC5jb20vYXJ0aWNsZXMvNS0xNDkyL3YyKQotIFtgZGFkYTJgIGRvY3VtZW50YXRpb24gYW5kIHR1dG9yaWFsc10oaHR0cHM6Ly9iZW5qam5lYi5naXRodWIuaW8vZGFkYTIvaW5kZXguaHRtbCApCi0gW1RheG9ub21pYyByZWZlcmVuY2VzIGZvciBgZGFkYTJgXShodHRwczovL2JlbmpqbmViLmdpdGh1Yi5pby9kYWRhMi90cmFpbmluZy5odG1sKQotIFtgY3V0YWRhcHRgIGRvY3VtZW50YXRpb24gYW5kIHR1dG9yaWFsc10oaHR0cHM6Ly9jdXRhZGFwdC5yZWFkdGhlZG9jcy5pby9lbi9zdGFibGUvaW5kZXguaHRtbCkKCgotLS0tLQoKIyMgQm9udXM6IFN1Ym1pdCBzY3JpcHQgYXMgYW4gT1NDIGpvYgoKLSBTY3JpcHQgYGRhZGEyLnNoYDoKCmBgYHNoCiNQQlMgLWwgd2FsbHRpbWU9MTAwOjAwOjAwCiNQQlMgLWwgbm9kZXM9MTpwcG49MjgKI1BCUyAtQSBQQVMxNTQ4Cgptb2R1bGUgbG9hZCBnbnUvOS4xLjAKbW9kdWxlIGxvYWQgbWtsLzIwMTkuMC4zCm1vZHVsZSBsb2FkIFIvMy42LjEKY2QgL2ZzL3NjcmF0Y2gvUEFTMTU0OC9CYXNlU3BhY2Vfb3V0LzExLTIxLTE5L1Y0X1Y1L3NjcmlwdHMKUnNjcmlwdCBkYWRhMl9WNC5SCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPldvcmtmbG93IHBhcnQgSUk6PGJyPkFTViBJbmZlcmVuY2UgYW5kIFRheG9uIEFzc2lnbm1lbnQiCm91dHB1dDoKICBybWFya2Rvd246Omh0bWxfZG9jdW1lbnQ6CiAgICB0aGVtZTogY2VydWxlYW4KICAgIGhpZ2hsaWdodDogdGFuZ28KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KCmBgYHtyIGtuaXRyX29wdGlvbnMsIGVjaG89RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChyZXN1bHRzID0gJ2hpZGUnLAogICAgICAgICAgICAgICAgICAgICAgZXZhbCA9IEZBTFNFLAogICAgICAgICAgICAgICAgICAgICAgI2tuaXRyOjpvcHRzX2tuaXQkc2V0KHJvb3QuZGlyID0gIi9mcy9wcm9qZWN0L1BBUzA0NzEvd29ya3Nob3BzLzIwMjAtMTJfbWljcm8vJFVTRVIiKSwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLnNvdXJjZSA9ICJyX2NvZGUiLAogICAgICAgICAgICAgICAgICAgICAgY2xhc3Mub3V0cHV0ID0gInJfb3V0cHV0IiwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLndhcm5pbmcgPSAicl93YXJuaW5nIiwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLm1lc3NhZ2UgPSAicl93YXJuaW5nIiwKICAgICAgICAgICAgICAgICAgICAgIGNsYXNzLmVycm9yID0gInJfZXJyb3IiKQpgYGAKCjxicj4KCi0tLS0tCgojIyBHb2FscwoKUHJvY2VzcyBtZXRhYmFyY29kaW5nIHJlYWRzLCBwb3N0LWFkYXB0ZXIgcmVtb3ZhbCwgaW5jbHVkaW5nOgoKLSBFdmFsdWF0aW9uIG9mIHJlYWQgcXVhbGl0eQotIFF1YWxpdHkgdHJpbW1pbmcgYW5kIGZpbHRlcmluZwotIEVycm9yIGNvcnJlY3Rpb24sIGRlbm9pc2luZwotIEFTViBpbmZlcmVuY2UKLSBSZWFkIG1lcmdpbmcKLSBUYXhvbm9teSBhc3NpZ25tZW50CgotLS0tLQoKIyMgQmVmb3JlIFdlIEdldCBTdGFydGVkCgojIyMgTm90ZXMKCi0gVGhpcyBkb2N1bWVudGVkIHdhcyBhZGFwdGVkIGZyb20gW0NhbGxhaGFuIGV0IGFsLiAyMDA2XShodHRwczovL2YxMDAwcmVzZWFyY2guY29tL2FydGljbGVzLzUtMTQ5Mi92MikKICBieSBNYXR0aGV3IFdpbGxtYW4sIHdpdGggZnVydGhlciBlZGl0cyBieSBTb2xlZGFkIEJlbml0ZXogUG9uY2UgYW5kIEplbG1lciBQb2Vsc3RyYS4KICAKLSBUbyBjb252ZXJ0IGFuIGBSbWRgIChSIE1hcmtkb3duKSBmaWxlIHRvIGFuIFIgc2NyaXB0LAogIHR5cGUgdGhlIGZvbGxvd2luZyBpbiBhbiBSIGNvbnNvbGU6CiAgYGtuaXRyOjpwdXJsKGlucHV0PSI8ZmlsZW5hbWU+LlJtZCIpYC4KICAoWW91IGNhbiBkb3dubG9hZCB0aGlzIGBSbWRgIGZpbGUgYnkgY2xpY2tpbmcgdGhlIGBDb2RlYCBidXR0b24KICBpbiB0aGUgdG9wLXJpZ2h0IG9mIHRoaXMgcGFnZSAtLSBidXQgd2Ugd2lsbCBvcGVuIGl0IGF0IE9TQy4pCgojIyMgU3RhcnQgYW4gUlN0dWRpbyBTZXJ2ZXIgam9iIGF0IE9TQwoKRm9yIG1vcmUgZGV0YWlsZWQgaW5zdHJ1Y3Rpb25zIG9mIHRoZSBmaXJzdCBzdGVwcywKc2VlIFt0aGlzIHNlY3Rpb25dKDA2LVIuaHRtbCNyc3R1ZGlvLWF0LU9TQykgZnJvbSBvdXIgaW50cm8gdG8gUiBzZXNzaW9uLgoKLSBMb2dpbiB0byBPU0MgYXQgPGh0dHBzOi8vb25kZW1hbmQub3NjLmVkdT4uCgotIENsaWNrIG9uIGBJbnRlcmFjdGl2ZSBBcHBzYCAodG9wIGJhcikgPiBgUlN0dWRpbyBTZXJ2ZXIgKE93ZW5zIGFuZCBQaXR6ZXIpYC4KCi0gRmlsbCBvdXQgdGhlIGZvcm0gYXMgc2hvd24gW2hlcmVdKHNsaWRlcy8wMy1PU0Mtc2xpZGVzLmh0bWwjcnN0dWRpb19zZXJ2ZXJfam9iKS4KCi0gT25jZSB5b3VyIGpvYiBoYXMgc3RhcnRlZCwgY2xpY2sgYENvbm5lY3QgdG8gUlN0dWRpbyBTZXJ2ZXJgLgoKLSBZb3Ugc2hvdWxkIGF1dG9tYXRpY2FsbHkgYmUgaW4geW91ciBwZXJzb25hbCBkaXIgaW5zaWRlIHRoZSBkaXIKICBgL2ZzL3Byb2plY3QvUEFTMDQ3MS93b3Jrc2hvcHMvMjAyMC0xMl9taWNyb2AsCiAgd2l0aCB5b3VyIFJTdHVkaW8gUHJvamVjdCBvcGVuLgogIFlvdSBjYW4gc2VlIHdoZXRoZXIgYSBQcm9qZWN0IGlzIG9wZW4gYW5kIHdoaWNoIG9uZQogIGluIHRoZSB0b3AtcmlnaHQgb2YgeW91ciBzY3JlZW46CiAgCiAgPHAgYWxpZ249ImNlbnRlciI+CiAgPGltZyBzcmM9aW1nL3Jwcm9qLW9wZW4ucG5nIHdpZHRoPSIxMzAiPgogIEhlcmUsIHRoZSBwcm9qZWN0IGBqZWxtZXJgIGlzIG9wZW4uIFlvdXIgcHJvamVjdCBuYW1lIGlzIGFsc28geW91ciB1c2VybmFtZS4KICA8L3A+CgogIElmIHlvdXIgUHJvamVjdCBpc24ndCBvcGVuLCBjbGljayBvbiB0aGUgaWNvbiB0byBvcGVuIGl0OgogIAogIDxwIGFsaWduPSJjZW50ZXIiPgogIDxpbWcgc3JjPWltZy9ycHJvai1kcm9wZG93bi5wbmcgd2lkdGg9IjI1MCI+CiAgPC9wPgoKICAKLSBOb3csIGNsaWNrIG9uIHRoZSBgbWFya2Rvd25gIGRpcmVjdG9yeSBpbiB0aGUgKkZpbGVzKiBwYW5lLAogIGFuZCBvcGVuIHRoZSBmaWxlIGAwNy1BU1YtaW5mZXJlbmNlLlJtZGAuIFRoYXQncyB0aGlzIGZpbGUhCgotLS0tLQoKIyMgU3RlcCAxOiBHZXR0aW5nIFN0YXJ0ZWQKCiMjIyBJbnN0YWxsIGFuZCBsb2FkIHBhY2thZ2VzCgpUbyBzYXZlIHRpbWUsIHdlIGhhdmUgYWxyZWFkeSBpbnN0YWxsZWQgYWxsIHRoZSBuZWNlc3NhcnkgUiBwYWNrYWdlcyBhdCBPU0MKaW50byBhIGN1c3RvbSBsaWJyYXJ5LgpUbyBhZGQgdGhpcyBsaWJyYXJ5IGZvciB0aGUgY3VycmVudCBSIHNlc3Npb246CgpgYGB7ciBsaWJsb2FkfQoubGliUGF0aHMobmV3ID0gJy9mcy9wcm9qZWN0L1BBUzA0NzEvLlIvNC4wLycpCmBgYAoKVGhlbiwgbG9hZCB0aGUgcGFja2FnZXM6CgpgYGB7cn0KcGFja2FnZXMgPC0gYygidGlkeXZlcnNlIiwgImdyaWRFeHRyYSIsICJkYWRhMiIsCiAgICAgICAgICAgICAgInBoeWxvc2VxIiwgIkRFQ0lQSEVSIiwgInBoYW5nb3JuIikKcGFjbWFuOjpwX2xvYWQoY2hhciA9IHBhY2thZ2VzKQoKIyBJZiB5b3Ugd2FudGVkIHRvIGluc3RhbGwgYW5kIGxvYWQgdGhlc2UgcGFja2FnZXMgeW91cnNlbGYsCiMganVzdCBtYWtlIHN1cmUgeW91IGhhdmUgdGhlIHBhY21hbiBwYWNrYWdlIGluc3RhbGxlZDoKIyMgaW5zdGFsbC5wYWNrYWdlcygncGFjbWFuJykKIyBUaGVuLCB0aGUgY29kZSBhYm92ZSB3b3VsZCB3b3JrLCBhcyBpdCB3aWxsIGluc3RhbGwgcGFjYWtlcyBhcyBuZWVkZWQuCmBgYAoKIyMjIFNldCB0aGUgZmlsZSBwYXRocwoKYGBge3J9CiMgRGlyIHdpdGggaW5wdXQgZmFzdHEgZmlsZXM6CmluZGlyIDwtICdkYXRhL3Byb2Nlc3NlZC9mYXN0cV90cmltbWVkL3NlY29uZF90cmltJwoKIyBEaXJzIGZvciBvdXRwdXQ6CnFjX2RpciA8LSAnYW5hbHlzaXMvUUMnCmZpbHRlcl9kaXIgPC0gJ2RhdGEvcHJvY2Vzc2VkL2Zhc3RxX2ZpbHRlcmVkJwpvdXRkaXIgPC0gJ2FuYWx5c2lzL0FTVl9pbmZlcmVuY2UnCgojIEZhc3RhIGZpbGUgd2l0aCB0cmFpbmluZyBkYXRhOgojIChDaGVjayBmb3IgYW4gdXAtdG8tZGF0ZSB2ZXJzaW9uIGF0IDxodHRwczovL2JlbmpqbmViLmdpdGh1Yi5pby9kYWRhMi90cmFpbmluZy5odG1sPikKdGF4X2tleSA8LSAnZGF0YS9yZWYvc2lsdmFfbnI5OV92MTM4X3RyYWluX3NldC5mYScgCgojIEZpbGUgd2l0aCBzYW1wbGUgbWV0YWRhdGE6Cm1ldGFkYXRhX2ZpbGUgPC0gJ21ldGFkYXRhL3NhbXBsZV9tZXRhLnR4dCcKYGBgCgojIyMgQXNzaWduIGZhc3RxIGZpbGVzIHRvIGZvcndhcmQgYW5kIHJldmVyc2UgcmVhZHMgCgpXZSB3aWxsIGFzc2lnbiB0aGUgZmFzdHEgZmlsZXMgdGhhdCB3ZSBwcm9jZXNzZWQgd2l0aCBgY3V0YWRhcHRgIHRvIHR3byB2ZWN0b3JzOgpvbmUgd2l0aCBmaWxlcyB3aXRoIGZvcndhcmQgcmVhZHMsIGFuZCBvbmUgd2l0aCBmaWxlcyB3aXRoIHJldmVyc2UgcmVhZHMuClRoZXNlIGZpbGVzIGNhbiBiZSBkaXN0aW5ndWlzaGVkIGJ5IGhhdmluZyAiUjEiIChmb3J3YXJkKSBhbmQgIlIyIiAocmV2ZXJzZSkKaW4gdGhlaXIgbmFtZXMuCgpgYGB7cn0KZmFzdHFzX3Jhd19GIDwtIHNvcnQobGlzdC5maWxlcyhpbmRpciwgcGF0dGVybiA9ICdfUjFfMDAxLmZhc3RxLmd6JywgZnVsbC5uYW1lcyA9IFRSVUUpKQpmYXN0cXNfcmF3X1IgPC0gc29ydChsaXN0LmZpbGVzKGluZGlyLCBwYXR0ZXJuID0gJ19SMl8wMDEuZmFzdHEuZ3onLCBmdWxsLm5hbWVzID0gVFJVRSkpCgpoZWFkKGZhc3Rxc19yYXdfRikKYGBgCgojIyMgR2V0IHNhbXBsZSBJRHMKCldlJ2xsIGdldCB0aGUgc2FtcGxlIElEcyBmcm9tIHRoZSBmYXN0cSBmaWxlIG5hbWVzIGFuZCBmcm9tIGEgZmlsZSB3aXRoIG1ldGFkYXRhLAphbmQgd2lsbCBjaGVjayBpZiB0aGV5IGFyZSB0aGUgc2FtZS4KCkZpcnN0IHdlIGdldCB0aGUgbWV0YWRhdGEgaW50byBhIGRhdGFmcmFtZToKYGBge3J9CiMgTG9hZCBhbmQgcHJlcGFyZSBzYW1wbGUgbWV0YWRhdGE6Cm1ldGFkYXRhX2RmIDwtIHJlYWQudGFibGUoZmlsZSA9IG1ldGFkYXRhX2ZpbGUsIHNlcCA9ICJcdCIsIGhlYWRlciA9IFRSVUUpCgpjb2xuYW1lcyhtZXRhZGF0YV9kZilbMV0gPC0gJ3NhbXBsZV9JRCcKcm93bmFtZXMobWV0YWRhdGFfZGYpIDwtIG1ldGFkYXRhX2RmJHNhbXBsZV9JRAoKaGVhZChtZXRhZGF0YV9kZikKYGBgCgpMZXQncyBjb21wYXJlIHRoZSBzYW1wbGUgSURzIGZyb20gdGhlIG1ldGFkYXRhIHdpdGggdGhlIGZhc3RxIGZpbGVuYW1lczoKCmBgYHtyfQptZXRhZGF0YV9kZiRzYW1wbGVfSUQKCmhlYWQoYmFzZW5hbWUoZmFzdHFzX3Jhd19GKSkgICAgIyBiYXNlbmFtZSgpIHN0cmlwcyB0aGUgZGlyIG5hbWUgZnJvbSB0aGUgZmlsZW5hbWUKYGBgCgpUbyBleHRyYWN0IHRoZSBzYW1wbGUgSURzIGZyb20gdGhlIGZhc3RxIGZpbGUgbmFtZXMsIHdlIHJlbW92ZSBldmVyeXRoaW5nIGFmdGVyCiItVjQtVjUiIGZyb20gdGhlIGZpbGUgbmFtZXMgdXNpbmcgdGhlIGBzdWIoKWAgZnVuY3Rpb246CgpgYGB7cn0KIyBzdWIoKSBhcmd1bWVudHM6IHN1YihwYXR0ZXJuLCByZXBsYWNlbWVudCwgdmVjdG9yKQojIHJlcGxhY2Ugd2l0aCAiIiAtPiByZXBsYWNlIHdpdGggbm90aGluZwpzYW1wbGVfSURzIDwtIHN1YigiLVY0LVY1Xy4qIiwgIiIsIGJhc2VuYW1lKGZhc3Rxc19yYXdfRikpCmBgYAoKV2UgY2FuIGNoZWNrIHdoZXRoZXIgdGhlIElEcyBmcm9tIHRoZSBmYXN0cSBmaWxlcyBhbmQgdGhlIG1ldGFkYXRhIGRhdGFmcmFtZQphcmUgdGhlIHNhbWU6CgpgYGB7cn0KaWRlbnRpY2FsKHNvcnQobWV0YWRhdGFfZGYkc2FtcGxlX0lEKSwgc2FtcGxlX0lEcykKCnNldGRpZmYoc29ydChtZXRhZGF0YV9kZiRzYW1wbGVfSUQpLCBzYW1wbGVfSURzKSAjIFJFTU9WRSBNSVNTSU5HIFNBTVBMRVM/CmBgYAoKLS0tLS0KCiMjIFN0ZXAgMjogUUMKCiMjIyBQbG90IHNlcXVlbmNlIHF1YWxpdHkgZGF0YQoKWW91IGNhbiBnZW5lcmF0ZSBhbmQgZXZhbHVhdGUgcGxvdHMgaW5kaXZpZHVhbGx5OgoKYGBge3J9CnBsb3RRdWFsaXR5UHJvZmlsZShjKGZhc3Rxc19yYXdfRlsxXSwgZmFzdHFzX3Jhd19SWzFdKSkKYGBgCgo8YnI+CgpPciBnZW5lcmF0ZSBwZGYgZmlsZXMgdG8gaW5zcGVjdCBtdWx0aXBsZSBwbG90cyBhdCBvbmNlOgoKYGBge3J9CnBkZihmaWxlLnBhdGgocWNfZGlyLCAiZXJyb3JfcHJvZmlsZXMucGRmIikpICAjIE9wZW4gYSBwZGYgZmlsZQpmb3IgKHNhbXBsZV9pbmRleCBpbiAxOjMpIHsgICAgICAgICAgICAgICAgICAgIyBMb29wIHRocm91Z2ggZmlyc3QgdGhyZWUgZmlsZSBwYWlycwogIHByaW50KHBsb3RRdWFsaXR5UHJvZmlsZSggICAgICAgICAgICAgICAgICAgIyBQcmludCBwbG90cyBpbnRvIHBkZgogICAgYyhmYXN0cXNfcmF3X0Zbc2FtcGxlX2luZGV4XSwgZmFzdHFzX3Jhd19SW3NhbXBsZV9pbmRleF0pKSAjIEYgYW5kIFIgdG9nZXRoZXIKICAgICkKfQpkZXYub2ZmKCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIENsb3NlIHRoZSBwZGYgZmlsZQpgYGAKCjxkZXRhaWxzPgo8c3VtbWFyeT4KJm5ic3A7ICBgciBpY29uOjpmYSgiaW5mby1jaXJjbGUiKWAgJm5ic3A7IE1vcmUgb24gUUMgb2YgZmFzdHEgZmlsZXMKPC9zdW1tYXJ5PgpJdCBpcyBhIGdvb2QgaWRlYSB0byBydW4gdGhlCltgZmFzdHFjYF0oaHR0cHM6Ly93d3cuYmlvaW5mb3JtYXRpY3MuYmFicmFoYW0uYWMudWsvcHJvamVjdHMvZmFzdHFjLykKcHJvZ3JhbSBvbiB5b3VyIGZhc3RxIGZpbGVzIGZvciBtb3JlIGV4dGVuc2l2ZSBRQy4KVGhpcyBpcyBhIHN0YW5kLWFsb25lIHByb2dyYW0gdGhhdCBpcyBlYXN5IHRvIHJ1biBmcm9tIHRoZSBjb21tYW5kLWxpbmUuCldoZW4geW91IGhhdmUgbWFueSBzYW1wbGVzLCBhcyBpcyBvZnRlbiB0aGUgY2FzZSwKYGZhc3RxY2AncyByZXN1bHRzIGNhbiBtb3Jlb3ZlciBiZSBuaWNlbHkgc3VtbWFyaXplZCB1c2luZwpbYG11bHRpcWNgXShodHRwczovL211bHRpcWMuaW5mby8uCkluIHRoZSBpbnRlcmVzdCBvZiB0aW1lLCB3ZSBza2lwcGVkIHRoZXNlIHN0ZXBzIGR1cmluZyB0aGlzIHdvcmtzaG9wLgo8L2RldGFpbHM+CgotLS0tLQoKIyMgU3RlcCAzOiBGaWx0ZXJpbmcgYW5kIFF1YWxpdHkgVHJpbW1pbmcKCldlIHdpbGwgbm93IHBlcmZvcm0gcXVhbGl0eSBmaWx0ZXJpbmcgKHJlbW92aW5nIHBvb3ItcXVhbGl0eSByZWFkcykKYW5kIHRyaW1taW5nIChyZW1vdmluZyBwb29yLXF1YWxpdHkgYmFzZXMpIG9uIHRoZSBmYXN0cSBmaWxlcy4KClRoZSBgdHJ1bmNMZW5gIGFyZ3VtZW50IGRlZmluZXMgdGhlIHJlYWQgbGVuZ3RocyAoZm9yICpmb3J3YXJkKiBhbmQgKnJldmVyc2UqIHJlYWRzKQpiZXlvbmQgd2hpY2ggYWRkaXRpb25hbCBiYXNlcyBzaG91bGQgYmUgcmVtb3ZlZCwKYW5kIHRoZXNlIHZhbHVlcyBzaG91bGQgYmUgYmFzZWQgb24gdGhlIHNlcXVlbmNlIHF1YWxpdHkgdmlzdWFsaXplZCBhYm92ZS4KClRoZSB0cmltbWluZyBsZW5ndGggY2FuIHRodXMgYmUgZGlmZmVyZW50IGZvciAqZm9yd2FyZCogYW5kICpyZXZlcnNlKiByZWFkcywKYnV0IGlkZWFsbHkgbm90IHRvbyBkcmFzdGljYWxseSBzbywKaW4gb3JkZXIgdG8gbWF4aW1pemUgdGhlIG51bWJlciBvZiBwYXJpcyB0aGF0IHdpbGwgbWVyZ2UgaW4gYSBzdWJzZXF1ZW50IHN0ZXAuCgpJdCBpcyBhbHNvIHN1Z2dlc3RlZCB0byB0cmltIGZpcnN0IDEwIG51Y2xlb3RpZGVzIG9mIGVhY2ggcmVhZCwKc2luY2UgdGhlc2UgcG9zaXRpb25zIGFyZSBsaWtlbHkgdG8gY29udGFpbiBlcnJvcnMuCgpUaGUgYGZpbHRlckFuZFRyaW0oKWAgZnVuY3Rpb24gd2lsbCB3cml0ZSB0aGUgZmlsdGVyZWQgYW5kIHRyaW1tZWQgcmVhZHMKdG8gbmV3IGZhc3RxIGZpbGVzLgpUaGVyZWZvcmUsIHdlIGZpcnN0IGRlZmluZSB0aGUgZmlsZW5hbWVzIGZvciB0aGUgbmV3IGZpbGVzOgoKYGBge3J9CmZhc3Rxc19maWx0X0YgPC0gZmlsZS5wYXRoKGZpbHRlcl9kaXIsIHBhc3RlMChzYW1wbGVfSURzLCAnX0ZfZmlsdC5mYXN0cScpKQpmYXN0cXNfZmlsdF9SIDwtIGZpbGUucGF0aChmaWx0ZXJfZGlyLCBwYXN0ZTAoc2FtcGxlX0lEcywgJ19SX2ZpbHQuZmFzdHEnKSkKYGBgCgo8YnI+CgpUaGVuLCBwZXJmb3JtIHRoZSB0cmltbWluZzoKCmBgYHtyfQpmaWx0ZXJfZGlyKCdGaWx0ZXJpbmcgYW5kIFRyaW1taW5nLi4uJykKU3lzLnRpbWUoKQpmaWx0ZXJfcmVzdWx0cyA8LQogIGZpbHRlckFuZFRyaW0oZmFzdHFzX3Jhd19GLCBmYXN0cXNfZmlsdF9GLAogICAgICAgICAgICAgICAgZmFzdHFzX3Jhd19SLCBmYXN0cXNfZmlsdF9SLAogICAgICAgICAgICAgICAgdHJ1bmNMZW4gPSBjKDI1MCwyMTApLAogICAgICAgICAgICAgICAgdHJpbUxlZnQgPSAxMCwKICAgICAgICAgICAgICAgIG1heE4gPSAwLAogICAgICAgICAgICAgICAgbWF4RUUgPSBjKDIsMiksCiAgICAgICAgICAgICAgICB0cnVuY1EgPSAyLAogICAgICAgICAgICAgICAgcm0ucGhpeCA9IEZBTFNFLAogICAgICAgICAgICAgICAgY29tcHJlc3MgPSBGQUxTRSwgbXVsdGl0aHJlYWQgPSBUUlVFLCB2ZXJib3NlID0gVFJVRSkgCmZpbHRlcl9kaXIoJy4uLkRvbmUhJykKU3lzLnRpbWUoKQoKaGVhZChmaWx0ZXJfcmVzdWx0cykKYGBgCgotLS0tLQoKIyMgU3RlcCA0OiBEZXJlcGxpY2F0aW9uICYgRXJyb3IgVHJhaW5pbmcKClRoZSBuZXh0IHRoaW5nIHdlIHdhbnQgdG8gZG8gaXMg4oCcZGVyZXBsaWNhdGXigJ0gdGhlIGZpbHRlcmVkIGZhc3RxIGZpbGVzLgpEdXJpbmcgZGVyZXBsaWNhdGlvbiwgd2UgY29uZGVuc2UgdGhlIGRhdGEgYnkgY29sbGFwc2luZyB0b2dldGhlciBhbGwgcmVhZHMgdGhhdAplbmNvZGUgdGhlIHNhbWUgc2VxdWVuY2UsIHdoaWNoIHNpZ25pZmljYW50bHkgcmVkdWNlcyBsYXRlciBjb21wdXRhdGlvbiB0aW1lcy4KCmBgYHtyfQpmYXN0cXNfZGVyZXBfRiA8LSBkZXJlcEZhc3RxKGZhc3Rxc19maWx0X0YsIHZlcmJvc2UgPSBGQUxTRSkKZmFzdHFzX2RlcmVwX1IgPC0gZGVyZXBGYXN0cShmYXN0cXNfZmlsdF9SLCB2ZXJib3NlID0gRkFMU0UpCgpuYW1lcyhmYXN0cXNfZGVyZXBfRikgPC0gc2FtcGxlX0lEcwpuYW1lcyhmYXN0cXNfZGVyZXBfUikgPC0gc2FtcGxlX0lEcwpgYGAKClRoZSBEQURBMiBhbGdvcml0aG0gbWFrZXMgdXNlIG9mIGEgcGFyYW1ldHJpYyBlcnJvciBtb2RlbCAoYGVycmApIGFuZCBldmVyeQphbXBsaWNvbiBkYXRhc2V0IGhhcyBhIGRpZmZlcmVudCBzZXQgb2YgZXJyb3IgcmF0ZXMuClRoZSBgbGVhcm5FcnJvcnNgIG1ldGhvZCBsZWFybnMgdGhpcyBlcnJvciBtb2RlbCBmcm9tIHRoZSBkYXRhLApieSBhbHRlcm5hdGluZyBlc3RpbWF0aW9uIG9mIHRoZSBlcnJvciByYXRlcyBhbmQgaW5mZXJlbmNlIG9mIHNhbXBsZSBjb21wb3NpdGlvbgp1bnRpbCB0aGV5IGNvbnZlcmdlIG9uIGEgam9pbnRseSBjb25zaXN0ZW50IHNvbHV0aW9uLgoKYGBge3J9CnByaW50KCdMZWFybmluZyBlcnJvcnMuLi4nKQpTeXMudGltZSgpCgplcnJGIDwtIGxlYXJuRXJyb3JzKGZhc3Rxc19kZXJlcF9GLCBtdWx0aXRocmVhZCA9IFRSVUUsIHZlcmJvc2UgPSBUUlVFKQplcnJSIDwtIGxlYXJuRXJyb3JzKGZhc3Rxc19kZXJlcF9SLCBtdWx0aXRocmVhZCA9IFRSVUUsIHZlcmJvc2UgPSBUUlVFKQoKcHJpbnQoJy4uLkRvbmUhJykKU3lzLnRpbWUoKQpgYGAKCjxicj4KClBsb3QgZXJyb3JzIHRvIHZlcmlmeSB0aGF0IGVycm9yIHJhdGVzIGhhdmUgYmVlbiByZWFzb25hYmxlIHdlbGwtZXN0aW1hdGVkLgpPYnNlcnZlIHRoZSBmaXQgYmV0d2VlbiBvYnNlcnZlZCBlcnJvciByYXRlcyAocG9pbnRzKSBhbmQgZml0dGVkIGVycm9yCnJhdGVzIChsaW5lcyk6CgpgYGB7cn0KcGxvdEVycm9ycyhlcnJGLCBub21pbmFsUSA9IFRSVUUpCnBsb3RFcnJvcnMoZXJyUiwgbm9taW5hbFEgPSBUUlVFKQpgYGAKCi0tLS0tCgojIyBTdGVwIDU6IEluZmVyIEFTVnMKCldlIHdpbGwgcnVuIHRoZSBkYWRhIGFsZ29yaXRobSB0byBpbmZlciBBbXBsaWNvbiBTZXF1ZW5jZSBWYXJpYW50cyAoQVNWcykuCgpUaGlzIHN0ZXAgaXMgcXVpdGUgY29tcHV0YXRpb25hbGx5IGludGVuc2l2ZSwKYW5kIHdlIHdpbGwgdGhlcmVmb3JlIHBlcmZvcm0gaW5kZXBlbmRlbnQgaW5mZXJlbmNlIGZvciBlYWNoIHNhbXBsZSAoYHBvb2wgPSBGQUxTRWApLAp3aGljaCB3aWxsIGtlZXAgbWVtb3J5IHVzYWdlIGxpbmVhciB0byB0aGUgc2FtcGxlIG51bWJlci4KUG9vbGluZyB3aWxsIGluY3JlYXNlIG1lbW9yeSBycXVpcmVtZW50cyBhbmQgY29tcHV0YXRpb24gdGltZSwKYnV0IGltcHJvdmUgZGV0ZWN0aW9uIG9mIHJhcmUgdmFyaWFudHMgc2VlbiBvbmNlIG9yIHR3aWNlIGluIGFuIGluZGl2aWR1YWwgc2FtcGxlLApidXQgbWFueSB0aW1lcyBhY3Jvc3MgYWxsIHNhbXBsZXMuCgpgYGB7cn0KcHJpbnQoJ0luZmVycmluZyBBU1ZzIChydW5uaW5nIHRoZSBkYWRhIGFsZ29yaXRobSkuLi4nKQpTeXMudGltZSgpCgpkYWRhRnMgPC0gZGFkYShmYXN0cXNfZGVyZXBfRiwgZXJyID0gZXJyRiwgcG9vbCA9IEZBTFNFLCBtdWx0aXRocmVhZCA9IFRSVUUpCmRhZGFScyA8LSBkYWRhKGZhc3Rxc19kZXJlcF9SLCBlcnIgPSBlcnJSLCBwb29sID0gRkFMU0UsIG11bHRpdGhyZWFkID0gVFJVRSkKCnByaW50KCcuLi5Eb25lLicpClN5cy50aW1lKCkKYGBgCgpMZXQncyBpbnNwZWN0IG9uZSBvZiB0aGUgcmVzdWx0aW5nIG9iamVjdHM6CgpgYGBge3J9CmRhZGFGc1tbMV1dCmBgYAoKLS0tLS0KCiMjIFN0ZXAgNjogTWVyZ2UgUmVhZCBQYWlycwoKSW4gdGhpcyBzdGVwLCB3ZSB3aWxsIGZpcnN0IG1lcmdlIHRoZSBmb3J3YXJkIGFuZCByZXZlcnNlIHJlYWQgcGFpcnM6CnRoZSBmcmFnbWVudCB0aGF0IHdlIGFtcGxpZmllZCB3aXRoIG91ciBwcmltZXJzIHdhcyBzaG9ydCBlbm91Z2gKdG8gZ2VuZXJhdGUgbG90cyBvZiBvdmVybGFwIGFtb25nIHRoZSBzZXF1ZW5jZXMgZnJvbSB0aGUgdHdvIGRpcmVjdGlvbnMuCgpgYGB7cn0KbWVyZ2VycyA8LSBtZXJnZVBhaXJzKGRhZGFGcywgZmFzdHFzX2RlcmVwX0YsCiAgICAgICAgICAgICAgICAgICAgICBkYWRhUnMsIGZhc3Rxc19kZXJlcF9SLAogICAgICAgICAgICAgICAgICAgICAgdmVyYm9zZSA9IFRSVUUpCmBgYAoKV2Ugd2lsbCBub3cgc2F2ZSB0aGUgZGVyZXBsaWNhdGVkIHNlcXVlbmNlIG9iamVjdHMgdG8gUkRTIGZpbGVzLApzbyB3ZSBjYW4gcmVtb3ZlIHRoZXNlIG9iamVjdHMgZnJvbSBvdXIgZW52aXJvbm1lbnQ6CgpgYGB7cn0Kc2F2ZVJEUyhmYXN0cXNfZGVyZXBfRiwgZmlsZSA9IGZpbGUucGF0aChvdXRkaXIsICJmYXN0cXNfZGVyZXBfRi5yZHMiKSkKc2F2ZVJEUyhmYXN0cXNfZGVyZXBfUiwgZmlsZSA9IGZpbGUucGF0aChvdXRkaXIsICJmYXN0cXNfZGVyZXBfUi5yZHMiKSkKCnJtKGZhc3Rxc19kZXJlcF9GLCBmYXN0cXNfZGVyZXBfUikKYGBgCgotLS0tLQoKIyMgU3RlcCA3OiBDb25zdHJ1Y3QgYSBTZXF1ZW5jZSBUYWJsZQoKTmV4dCwgd2UgY29uc3RydWN0IGFuIGFtcGxpY29uIHNlcXVlbmNlIHZhcmlhbnQgdGFibGUgKEFTVikgdGFibGU6CgpgYGB7cn0Kc2VxdGFiX2FsbCA8LSBtYWtlU2VxdWVuY2VUYWJsZShtZXJnZXJzKQoKIyBUaGUgZGltZW5zaW9ucyBvZiB0aGUgb2JqZWN0IGFyZSB0aGUgbnVtYmVyIG9mIHNhbXBsZXMgYW5kIG51bWJlciBvZiBBU1ZzOgpkaW0oc2VxdGFiX2FsbCkKYGBgCgpMZXQncyBpbnNwZWN0IHRoZSBkaXN0cmlidXRpb24gb2Ygc2VxdWVuY2UgbGVuZ3RoczoKCmBgYHtyfQp0YWJsZShuY2hhcihnZXRTZXF1ZW5jZXMoc2VxdGFiX2FsbCkpKQoKIyBJZiB5b3UgbmVlZCB0byByZW1vdmUgc2VxdWVuY2VzIG9mIGEgcGFydGljdWxhciBsZW5ndGggKGUuZy4gdG9vIGxvbmcpOgojIHNlcXRhYjIgPC0gc2VxdGFiWywgbmNoYXIoY29sbmFtZXMoc2VxdGFiX2FsbCkpICVpbiUgc2VxKDI1MCwyNTYpXQpgYGAKCgotLS0tLQoKIyMgU3RlcCA4OiBSZW1vdmUgQ2hpbWVyYXMKCk5vdywgd2Ugd2lsbCByZW1vdmUgY2hpbWVyYXMuClRoZSBgZGFkYWAgYWxnb3JpdGhtIG1vZGVscyBhbmQgcmVtb3ZlcyBzdWJzdGl0dXRpb24gZXJyb3JzLApidXQgY2hpbWVyYXMgYXJlIGFub3RoZXIgaW1wb3J0YW5jZSBzb3VyY2Ugb2Ygc3B1cmlvdXMgc2VxdWVuY2VzIGluIGFtcGxpY29uIHNlcXVlbmNpbmcuIENoaW1lcmFzIGFyZSBmb3JtZWQgZHVyaW5nIFBDUiBhbXBsaWZpY2F0aW9uLgpXaGVuIG9uZSBzZXF1ZW5jZSBpcyBpbmNvbXBsZXRlbHkgYW1wbGlmaWVkLCB0aGUgaW5jb21wbGV0ZSBhbXBsaWNvbiBwcmltZXMgdGhlCm5leHQgYW1wbGlmaWNhdGlvbiBzdGVwLCB5aWVsZGluZyBhIHNwdXJpb3VzIGFtcGxpY29uLgpUaGUgcmVzdWx0IGlzIGEgc2VxdWVuY2UgcmVhZCB3aGljaCBpcyBoYWxmIG9mIG9uZSBzYW1wbGUgc2VxdWVuY2UgYW5kIGhhbGYgYW5vdGhlci4KCkZvcnR1bmF0ZWx5LCB0aGUgYWNjdXJhY3kgb2YgdGhlIHNlcXVlbmNlIHZhcmlhbnRzIGFmdGVyIGRlbm9pc2luZyBtYWtlcyBpZGVudGlmeWluZyBjaGltZXJhcyBzaW1wbGVyIHRoYW4gaXQgaXMgd2hlbiBkZWFsaW5nIHdpdGggZnV6enkgT1RVcy4KQ2hpbWVyaWMgc2VxdWVuY2VzIGFyZSBpZGVudGlmaWVkIGlmIHRoZXkgY2FuIGJlIGV4YWN0bHkgcmVjb25zdHJ1Y3RlZCBieSBjb21iaW5pbmcgYSBsZWZ0LXNlZ21lbnQgYW5kIGEgcmlnaHQtc2VnbWVudCBmcm9tIHR3byBtb3JlIGFidW5kYW50ICJwYXJlbnQiIHNlcXVlbmNlcy4KCmBgYHtyfQpzZXF0YWIgPC0gcmVtb3ZlQmltZXJhRGVub3ZvKHNlcXRhYl9hbGwsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWV0aG9kID0gImNvbnNlbnN1cyIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXVsdGl0aHJlYWQgPSBUUlVFLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZlcmJvc2UgPSBUUlVFKQpuY29sKHNlcXRhYikKCiMgUHJvcG9ydGlvbiBvZiByZXRhaW5lZCBzZXF1ZW5jZXM6CnN1bShzZXF0YWIpIC8gc3VtKHNlcXRhYl9hbGwpCmBgYAoKV2Ugd2lsbCBzYXZlIHRoZSBgc2VxdGFiYCBvYmplY3QgYXMgYW4gUkRTIGZpbGU6CgpgYGB7cn0Kc2F2ZVJEUyhzZXF0YWIsIGZpbGUgPSBmaWxlLnBhdGgob3V0ZGlyLCAic2VxdGFiX1Y0LnJkcyIpKQpgYGAKCi0tLS0tCgojIyBTdGVwIDk6IEdlbmVyYXRlIGEgU3VtbWFyeSBUYWJsZQoKSW4gdGhpcyBzdGVwLCB3ZSB3aWxsIGdlbmVyYXRlIGEgc3VtbWFyeSB0YWJsZSBvZiB0aGUgbnVtYmVyIG9mIHNlcXVlbmNlcwpwcm9jZXNzZWQgYW5kIG91dHB1dHMgb2YgZGlmZmVyZW50IHN0ZXBzIG9mIHRoZSBwaXBlbGluZS4KClRoaXMgaW5mb3JtYXRpb24gaXMgZ2VuZXJhbGx5IHVzZWQgdG8gZnVydGhlciBldmFsdWF0ZSBjaGFyYWN0ZXJpc3RpY3MgYW5kCnF1YWxpdHkgb2YgdGhlIHJ1biwgc2FtcGxlLXRvLXNhbXBsZSB2YXJpYXRpb24sCmFuZCByZXN1bHRpbmcgc2VxdWVuY2luZyBkZXB0aCBmb3IgZWFjaCBzYW1wbGUuIAoKYGBge3J9CmdldE4gPC0gZnVuY3Rpb24oeCkgc3VtKGdldFVuaXF1ZXMoeCkpCgpucmVhZHNfc3VtbWFyeSA8LSBjYmluZChmaWx0ZXJfcmVzdWx0cywKICAgICAgICAgICAgICAgICAgICAgICAgc2FwcGx5KGRhZGFGcywgZ2V0TiksCiAgICAgICAgICAgICAgICAgICAgICAgIHNhcHBseShkYWRhUnMsIGdldE4pLAogICAgICAgICAgICAgICAgICAgICAgICBzYXBwbHkobWVyZ2VycywgZ2V0TiksCiAgICAgICAgICAgICAgICAgICAgICAgIHJvd1N1bXMoc2VxdGFiKSkKCmNvbG5hbWVzKG5yZWFkc19zdW1tYXJ5KSA8LSBjKCdpbnB1dCcsICdmaWx0ZXJlZCcsICdkZW5vaXNlZEYnLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnZGVub2lzZWRSJywgJ21lcmdlZCcsICdub25jaGltJykKcm93bmFtZXMobnJlYWRzX3N1bW1hcnkpIDwtIHNhbXBsZV9JRHMKaGVhZChucmVhZHNfc3VtbWFyeSkKCm91dGZpbGVfbnJlYWRzIDwtIGZpbGUucGF0aChvdXRkaXIsICducmVhZHNfc3VtbWFyeS50eHQnKQp3cml0ZS50YWJsZShucmVhZHNfc3VtbWFyeSwgZmlsZSA9IG91dGZpbGVfbnJlYWRzLAogICAgICAgICAgICBzZXAgPSAiXHQiLCBxdW90ZSA9IEZBTFNFLCByb3cubmFtZXMgPSBUUlVFKQpgYGAKCi0tLS0tCgojIyBTdGVwIDEwOiBBc3NpZ24gVGF4b25vbXkgdG8gQVNWcwoKTm93LCB3ZSB3aWxsIGFzc2lnbiB0YXhvbm9teSB0byBvdXIgQVNWcy4KCkRlcGVuZGluZyBvbiB0aGUgbWFya2VyIGdlbmUgYW5kIHRoZSBkYXRhLAp5b3Ugd2lsbCBoYXZlIHRvIGNob29zZSB0aGUgYXBwcm9wcmlhdGUgcmVmZXJlbmNlIGZpbGUgZm9yIHRoaXMgc3RlcC4KClNldmVyYWwgZmlsZXMgaGF2ZSBiZWVuIGZvcm1hdHRlZCBmb3IgdGF4b25vbXkgYXNzaWdubWVudHMgaW4gREFEQTIgcGlwZWxpbmUgYW5kIGFyZSBhdmFpbGFibGUgYXQgdGhlIFtEQURBMiB3ZWJzaXRlXShodHRwczovL2JlbmpqbmViLmdpdGh1Yi5pby9kYWRhMi9pbmRleC5odG1sKS4KCmBgYHtyfQpwcmludCgnQXNzaWduaW5nIHRheGEgdG8gQVNWcy4uLicpClN5cy50aW1lKCkKCnRheGEgPC0gYXNzaWduVGF4b25vbXkoc2VxdGFiLCB0YXhfa2V5LCBtdWx0aXRocmVhZCA9IFRSVUUpCmNvbG5hbWVzKHRheGEpIDwtIGMoJ0tpbmdkb20nLCAnUGh5bHVtJywgJ0NsYXNzJywgJ09yZGVyJywgJ0ZhbWlseScsICdHZW51cycpCgpwcmludCgnLi4uRG9uZS4nKQpTeXMudGltZSgpCmBgYAoKLS0tLS0KCiMjIFN0ZXAgMTE6IEdlbmVyYXRlIE91dHB1dCBGaWxlcwoKSW4gdGhpcyBzdGVwLCB3ZSB3aWxsIGdlbmVyYXRlIG91dHB1dCBmaWxlcyBmb3JtYXR0ZWQgZm9yIGRvd25zdHJlYW0gYW5hbHlzaXMgaW4gKnBoeWxvc2VxKi4KRGF0YSB3aWxsIGJlIGV4dHJhY3RlZCBmcm9tIHRoZSBEQURBMiBvdXRwdXRzIGFuZCBmb3JtYXR0ZWQgZm9yIGRvd25zdHJlYW0KYW5hbHlzaXMgYW5kIGRhdGEgaW5zcGVjdGlvbi4KVGhlIGxhc3Qgc3RlcCBvZiB0aGlzIHBpcGVsaW5lIHNhdmVzIGEgKnBoeWxvc2VxKiBvYmplY3QgYXMgYW4gLlJEUyBmaWxlLAp3aGljaCBjYW4gYmUgaW1wb3J0ZWQgZGlyZWN0bHkgYnkgKnBoeWxvc2VxKi4KCmBgYHtyfQojIFJlbmFtZSBBU1ZzOiAKYXN2X3NlcXMgPC0gY29sbmFtZXMoc2VxdGFiKQphc3ZfaGVhZGVycyA8LSBwYXN0ZSgnPkFTVicsIDE6bmNvbChzZXF0YWIpLCBzZXAgPSAnXycpCmBgYAoKTmV4dCwgd2Ugd2lsbCB3cml0ZSBhIGZhc3RhIGZpbGUgd2l0aCB0aGUgZmluYWwgQVNWIHNlcXVlbmNlcy4KVGhpcyBmYXN0YSBmaWxlIGNhbiBhbHNvIGJlIHVzZWQgZm9yIHBoeWxvZ2VuZXRpYyB0cmVlIGluZmVyZW5jZSBpbiBkaWZmZXJlbnQgcGxhdGZvcm1zLgoKYGBge3J9CmFzdl9mYXN0YSA8LSBjKHJiaW5kKGFzdl9oZWFkZXJzLCBhc3Zfc2VxcykpCndyaXRlKGFzdl9mYXN0YSwgZmlsZSA9IGZpbGUucGF0aChvdXRkaXIsICdBU1ZzLmZhJykpCmBgYAoKV2Ugd2lsbCBjcmVhdGUgY291bnQgKE9UVSkgYW5kIHRheG9uIHRhYmxlczoKCmBgYHtyfQojIENyZWF0ZSBhIGNvdW50IChPVFUpIHRhYmxlOgpvdHVfZGYgPC0gdChzZXF0YWIpCnJvdy5uYW1lcyhvdHVfZGYpIDwtIHN1YignPicsICcnLCBhc3ZfaGVhZGVycykKCiMgQ3JlYXRlIGEgdGF4b24gdGFibGU6CnRheF9kZiA8LSB0YXhhCnJvdy5uYW1lcyh0YXhfZGYpIDwtIHN1YigiPiIsICIiLCBhc3ZfaGVhZGVycykKYGBgCgpCdWlsZCB0aGUgZmluYWwgcGh5bG9zZXEgb2JqZWN0ICh3ZSB3aWxsIG5vdCBkbyB0aGlzIG5vdywgYnV0IGEgcGh5bG9nZW5ldGljIHRyZWUgY2FuIGFsc28gYmUgYWRkZWQgdG8gdGhlIHBoeWxvc2VxIG9iamVjdCk6CgpgYGB7cn0KcHMgPC0gcGh5bG9zZXEob3R1X3RhYmxlKG90dV9kZiwgdGF4YV9hcmVfcm93cyA9IFRSVUUpLAogICAgICAgICAgICAgICBzYW1wbGVfZGF0YShtZXRhZGF0YV9kZiksCiAgICAgICAgICAgICAgIHRheF90YWJsZSh0YXhfZGYpKQoKIyBXcml0ZSB0YWJsZXMgYW5kIHBoeWxvc2VxIG9iamVjdCB0byBmaWxlOgp3cml0ZS50YWJsZShvdHVfZGYsIGZpbGUucGF0aChvdXRkaXIsICdBU1ZzX2NvdW50cy50c3YnKSwKICAgICAgICAgICAgc2VwID0gIlx0IiwgcXVvdGUgPSBGQUxTRSwgY29sLm5hbWVzID0gTkEpCndyaXRlLnRhYmxlKHRheF9kZiwgZmlsZS5wYXRoKG91dGRpciwgJ0FTVnNfdGF4b25vbXkudHN2JyksCiAgICAgICAgICAgIHNlcCA9ICJcdCIsIHF1b3RlID0gRkFMU0UsIGNvbC5uYW1lcyA9IE5BKQpzYXZlUkRTKHBzLCBmaWxlID0gZmlsZS5wYXRoKG91dGRpciwgJ3BzX1Y0LnJkcycpKQpgYGAKClJlcG9ydCB0aGF0IHdlIGFyZSBkb25lIQoKYGBge3J9CnByaW50KCdEb25lIHdpdGggQVNWIGluZmVyZW5jZS4nKQpgYGAKCi0tLS0tCgojIyBSZXNvdXJjZXMKCi0gW0NhbGxhaGFuIGV0IGFsLiAyMDA2OiAiQmlvY29uZHVjdG9yIFdvcmtmbG93IGZvciBNaWNyb2Jpb21lIERhdGEgQW5hbHlzaXM6IGZyb20gcmF3IHJlYWRzIHRvIGNvbW11bml0eSBhbmFseXNlcyJdKGh0dHBzOi8vZjEwMDByZXNlYXJjaC5jb20vYXJ0aWNsZXMvNS0xNDkyL3YyKQotIFtgZGFkYTJgIGRvY3VtZW50YXRpb24gYW5kIHR1dG9yaWFsc10oaHR0cHM6Ly9iZW5qam5lYi5naXRodWIuaW8vZGFkYTIvaW5kZXguaHRtbCApCi0gW1RheG9ub21pYyByZWZlcmVuY2VzIGZvciBgZGFkYTJgXShodHRwczovL2JlbmpqbmViLmdpdGh1Yi5pby9kYWRhMi90cmFpbmluZy5odG1sKQotIFtgY3V0YWRhcHRgIGRvY3VtZW50YXRpb24gYW5kIHR1dG9yaWFsc10oaHR0cHM6Ly9jdXRhZGFwdC5yZWFkdGhlZG9jcy5pby9lbi9zdGFibGUvaW5kZXguaHRtbCkKCgotLS0tLQoKIyMgQm9udXM6IFBoeWxvZ2VuZXRpYyBUcmVlIEVzdGltYXRpb24KCkEgcGh5bG9nZW5ldGljIHRyZWUgY2FuIGJlIGVzdGltYXRlZCBmb3IgdGhlIHNlcXVlbmNlIGRhdGEgeW91IGdlbmVyYXRlZC4KRGVwZW5kaW5nIG9uIHRoZSBudW1iZXIgb2YgQVNWcyByZWNvdmVyZWQgYW5kIHRoZSBwaHlsb2dlbmV0aWMgdHJlZSBhbGdvcml0aG0gb2YgY2hvaWNlLCB0aGlzIHN0ZXAgY291bGQgdGFrZSBzZXZlcmFsIGRheXMuClNpbXBsZXIgdHJlZXMgd2lsbCBiZSBsZXNzIGNvbXB1dGF0aW9uYWxseSBpbnRlbnNpdmUuIERlcGVuZGluZyBvbiB0aGUgbWFya2VyIGdlbmUgeW91IGFyZSB3b3JraW5nIG9uLCB5b3UgbWlnaHQgY2hvb3NlIG9yIG5vdCB0byB1c2UgdGhpcyBvcHRpb24uCgpUaGlzIHN0ZXAgY2FuIGJlIGNvbmR1Y3RlZCBhZnRlciBTdGVwIDEwLAphbmQgdGhlbiB0aGUgcGh5bG9nZW55IGNhbiBiZSBpbmNsdWRlZCBpbiB0aGUgKnBoeWxvc2VxKiBvYmplY3QgaW4gU3RlcCAxMS4KCmBgYHtyLCBldmFsID0gRkFMU0V9CiNzZXF0YWI8LSByZWFkUkRTKCdzZXF0YWJfVjQucmRzJykKCnNlcXMgPC0gZ2V0U2VxdWVuY2VzKHNlcXRhYikKCiMgVGhpcyBwcm9wYWdhdGVzIHRvIHRoZSB0aXAgbGFiZWxzIG9mIHRoZSB0cmVlLgojIEF0IHRoaXMgc3RhZ2UgQVNWIGxhYmVscyBhcmUgZnVsbCBBU1Ygc2VxdWVuY2UKbmFtZXMoc2VxcykgPC0gc2VxcyAKYWxpZ25tZW50IDwtIEFsaWduU2VxcyhETkFTdHJpbmdTZXQoc2VxcyksCiAgICAgICAgICAgICAgICAgICAgICAgYW5jaG9yID0gTkEsCiAgICAgICAgICAgICAgICAgICAgICAgaXRlcmF0aW9ucyA9IDUsCiAgICAgICAgICAgICAgICAgICAgICAgcmVmaW5lbWVudHMgPSA1KQoKcHJpbnQoJ0NvbXB1dGluZyBwYWlyd2lzZSBkaXN0YW5jZXMgZnJvbSBBU1ZzLi4uJykKU3lzLnRpbWUoKQpwaGFuZy5hbGlnbiA8LSBwaHlEYXQoYXMoYWxpZ25tZW50LCAnbWF0cml4JyksIHR5cGUgPSAnRE5BJykKZG0gPC0gZGlzdC5tbChwaGFuZy5hbGlnbikKdHJlZU5KIDwtIE5KKGRtKSAjIE5vdGUsIHRpcCBvcmRlciBpcyBub3Qgc2VxdWVuY2Ugb3JkZXIKZml0ID0gcG1sKHRyZWVOSiwgZGF0YSA9IHBoYW5nLmFsaWduKQpwcmludCgnLi4uRG9uZS4nKQpTeXMudGltZSgpCgpwcmludCgnLi4uLicpClN5cy50aW1lKCkKZml0R1RSIDwtIHVwZGF0ZShmaXQsIGs9NCwgaW52PTAuMikKcHJpbnQoJy4uLkRvbmUuJykKU3lzLnRpbWUoKQoKcHJpbnQoJ0NvbXB1dGluZyBsaWtlbGlob29kIG9mIHRyZWUuLi4nKQpTeXMudGltZSgpCmZpdEdUUiA8LSBvcHRpbS5wbWwoZml0R1RSLCBtb2RlbD0nR1RSJywgb3B0SW52PVRSVUUsIG9wdEdhbW1hPVRSVUUsCiAgICAgICAgICAgICAgICAgICAgICByZWFycmFuZ2VtZW50ID0gJ3N0b2NoYXN0aWMnLCBjb250cm9sID0gcG1sLmNvbnRyb2wodHJhY2UgPSAwKSkKcHJpbnQoJy4uLkRvbmUnLikKU3lzLnRpbWUoKQpgYGAKCi0tLS0tCgojIyBCb251czogU3VibWl0IHNjcmlwdCBhcyBhbiBPU0Mgam9iCgpFeHRyYWN0IFIgY29kZSBmcm9tIHRoaXMgZG9jdW1lbnQ6CmBgYHtyLCBldmFsID0gRkFMU0V9CmtuaXRyOjpwdXJsKGlucHV0ID0gJ21hcmtkb3duLzA3LUFTVi1pbmZlcmVuY2UuUm1kJywKICAgICAgICAgICAgb3V0cHV0ID0gJ3NjcmlwdHMvMDItZGFkYTJfVjQuUicpCmBgYAoKT3VyIHNjcmlwdCBgMDItZGFkYTIuc2hgIHdpdGggKlNMVVJNKiBkaXJlY3RpdmVzIHRoYXQgd2lsbCBzdWJtaXQgdGhlIFIKc2NyaXB0IGZyb20gdGhlIHNoZWxsIHVzaW5nIGBSc2NyaXB0YDoKCmBgYHtiYXNoLCBldmFsID0gRkFMU0V9CiMhL2Jpbi9iYXNoCiNTQkFUQ0ggLS1ub2Rlcz0xCiNTQkFUQ0ggLS1udGFza3MtcGVyLW5vZGU9MjgKI1NCQVRDSCAtLXRpbWU9MTAwOjAwOjAwCiNTQkFUQ0ggLS1hY2NvdW50PVBBUzA0NzEKCm1vZHVsZSBsb2FkIGdudS85LjEuMAptb2R1bGUgbG9hZCBta2wvMjAxOS4wLjMKbW9kdWxlIGxvYWQgUi80LjAyCgpSc2NyaXB0IHNjcmlwdHMvMDItZGFkYTJfVjQuUgpgYGAKClN1Ym1pdCB0aGUgc2NyaXB0OgoKYGBge2Jhc2gsIGV2YWwgPSBGQUxTRX0Kc2JhdGNoIHNjcmlwdHMvMDItZGFkYTIuc2gKYGBgCgo8YnI+PGJyPgo=</div>
 
 
 </div>
