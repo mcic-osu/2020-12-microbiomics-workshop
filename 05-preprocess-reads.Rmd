@@ -2,11 +2,11 @@
 title: "<br>Workflow part I:<br>Primer and Adapter Removal"
 output:
   rmarkdown::html_document:
-    code_download: true
     theme: cerulean
+    highlight: kate
+    code_download: true
     toc: true
     toc_float: true
-    css: my.css
 ---
 
 <br>
@@ -46,7 +46,7 @@ knitr::opts_chunk$set(eval = FALSE)
 
 - Go to this your directory for this workshop at OSC:
 
-  ```sh
+  ```{bash}
   cd /fs/project/PAS0471/workshops/2020-12_micro/$USER
   ```
 
@@ -83,7 +83,7 @@ so we just need to load the `conda` environment.
 
 To work with `conda` at OSC, we first need to load the `conda` module:
 
-```sh
+```{bash}
 module load python/3.6-conda5.2
 ```
 
@@ -398,7 +398,7 @@ slurm_file=slurm-cutadapt-$USER-%j.out
 <br>
 
 Finally, we're ready to **submit the script**!
-```sh
+```{bash}
 sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir_base
 ```
 

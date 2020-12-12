@@ -266,7 +266,7 @@ which point to where a file is *on a specific computer*).
 
 <details>
 <summary>
-&nbsp;  `r icon::fa("info-circle")` &nbsp; More on absolute vs relative paths
+&nbsp;  `r icon::fa("info-circle")` &nbsp; More on absolute vs relative paths (click here)
 </summary>
 
 An absolute path always contains the *root element* (`/` on Unix systems such as

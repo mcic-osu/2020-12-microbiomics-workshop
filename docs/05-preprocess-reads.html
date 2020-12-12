@@ -26,8 +26,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
 <script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -42,22 +41,102 @@
   ul.task-list{list-style: none;}
     </style>
 
+
 <style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+div.sourceCode
+  { color: #1f1c1b; background-color: #ffffff; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span. { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
   }
 </style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
-
 
 
 <style type="text/css">
@@ -493,7 +572,7 @@ div.tocify {
 <li><p>Login to OSC at <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>.</p></li>
 <li><p>Enter a terminal in your browser at OSC by clicking <code>Cluster</code> &gt; <code>Pitzer Shell Access</code>. (Or use <a href="https://ondemand.osc.edu/pun/sys/shell/ssh/pitzer.osc.edu">this direct link</a>.)</p></li>
 <li><p>Go to this your directory for this workshop at OSC:</p>
-<pre class="sh"><code>cd /fs/project/PAS0471/workshops/2020-12_micro/$USER</code></pre></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="bu">cd</span> /fs/project/PAS0471/workshops/2020-12_micro/<span class="va">$USER</span></span></code></pre></div></li>
 </ul>
 <hr />
 </div>
@@ -518,21 +597,21 @@ div.tocify {
 <p><code>cutadapt</code> is not available as a module at OSC. However, it can be easily installed there through <code>conda</code>, see this <a href="https://cutadapt.readthedocs.io/en/stable/installation.html#installation-with-conda">webpage</a>.<br />
 We have already done this for you to save some time, so we just need to load the <code>conda</code> environment.</p>
 <p>To work with <code>conda</code> at OSC, we first need to load the <code>conda</code> module:</p>
-<pre class="sh"><code>module load python/3.6-conda5.2</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">module</span> load python/3.6-conda5.2</span></code></pre></div>
 <p>Assuming that you haven’t worked with conda before at OSC, we also need to a bit of additional setup:</p>
-<pre class="bash"><code># This will add a line to your bash config file, which runs every time you start
-# a shell, to run the conda setup script:
-echo &quot;. /apps/python/3.6-conda5.2/etc/profile.d/conda.sh&quot; &gt;&gt; ~/.bashrc
-
-# Next, we source (run) the config file in our current shell to also run the conda
-# setup script right now:
-source ~/.bashrc</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># This will add a line to your bash config file, which runs every time you start</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># a shell, to run the conda setup script:</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="bu">echo</span> <span class="st">&quot;. /apps/python/3.6-conda5.2/etc/profile.d/conda.sh&quot;</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co"># Next, we source (run) the config file in our current shell to also run the conda</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># setup script right now:</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="bu">source</span> ~/.bashrc</span></code></pre></div>
 <p>Then, we activate our <code>conda</code> environment for <code>cutadapt</code>:</p>
-<pre class="bash"><code>conda activate /users/PAS0471/osu5685/.conda/envs/cutadaptenv</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">conda</span> activate /users/PAS0471/osu5685/.conda/envs/cutadaptenv</span></code></pre></div>
 <p><br></p>
 <p>Now, <code>cutadapt</code> should be in <code>$PATH</code>, i.e. we can simply call it by its name to run it. To test this:</p>
-<pre class="bash"><code>cutadapt --version     # Will just print the version number
-cutadapt --help        # Will print a whole lot of documentation</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">cutadapt</span> --version     <span class="co"># Will just print the version number</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="ex">cutadapt</span> --help        <span class="co"># Will print a whole lot of documentation</span></span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -546,18 +625,18 @@ cutadapt --help        # Will print a whole lot of documentation</code></pre>
 <li><p>We’ll set a couple of options with <code>set</code> that make <code>bash</code> run safer, by making it stop the script whenever an error is encountered (by default, the script will keep running.)</p></li>
 <li><p>We’ll use an <code>echo</code> statement to print to screen what script we are running, and the <code>date</code> command to keep track of the script’s runtime. (The <code>-e</code> option to <code>echo</code> allows us to print newlines using <code>\n</code>).</p></li>
 </ol>
-<pre class="bash"><code>#!/bin/bash                   # 1. First line should be the shebang line
-#SBATCH --nodes=1             # 2. Provide sbatch directives
-#SBATCH --ntasks-per-node=1
-#SBATCH --time=60
-#SBATCH --account=PAS0471
-
-# 3. Run bash in &quot;safe mode&quot;, basically
-set -e -u -o pipefail    
-
-# 4. Report:
-echo -e &quot;\n## Starting cutadapt script.&quot;
-date</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#!/bin/bash                   # 1. First line should be the shebang line</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#SBATCH --nodes=1             # 2. Provide sbatch directives</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#SBATCH --ntasks-per-node=1</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#SBATCH --time=60</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#SBATCH --account=PAS0471</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co"># 3. Run bash in &quot;safe mode&quot;, basically</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="kw">set</span> <span class="ex">-e</span> -u -o pipefail    </span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># 4. Report:</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="bu">echo</span> -e <span class="st">&quot;\n## Starting cutadapt script.&quot;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="fu">date</span></span></code></pre></div>
 </div>
 <div id="part-b-parse-arguments-and-set-up-directories" class="section level3">
 <h3>Part B: Parse arguments and set up directories</h3>
@@ -567,23 +646,23 @@ date</code></pre>
 <li><p>We’ll create the output directories if they don’t already exist. Using the <code>-p</code> option, <code>mkdir</code> can create multiple levels at once, and will not complain if the dir(s) already exist.</p></li>
 <li><p>We’ll report the directory variables to screen, which will be helpful e.g. if we’d need to debug our script.</p></li>
 </ol>
-<pre class="bash"><code># SETUP --------------------------------------------------------
-# 1. Command-line arguments:
-indir=$1
-outdir_base=$2
-
-# 2. Define output directories for first and second trim:
-outdir_trim1=$outdir_base/first_trim
-outdir_trim2=$outdir_base/second_trim
-
-# 3. Create output directories if they don&#39;t already exist:
-mkdir -p $outdir_trim1
-mkdir -p $outdir_trim2
-
-# 4. Report:
-echo &quot;## Input dir:                 $indir&quot;
-echo &quot;## Output dir - first trim:   $outdir_trim1&quot;
-echo &quot;## Input dir - second trim:   $outdir_trim1&quot;</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># SETUP --------------------------------------------------------</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># 1. Command-line arguments:</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="va">indir=$1</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="va">outdir_base=$2</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co"># 2. Define output directories for first and second trim:</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="va">outdir_trim1=$outdir_base</span>/first_trim</span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="va">outdir_trim2=$outdir_base</span>/second_trim</span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co"># 3. Create output directories if they don&#39;t already exist:</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="fu">mkdir</span> -p <span class="va">$outdir_trim1</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="fu">mkdir</span> -p <span class="va">$outdir_trim2</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co"># 4. Report:</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="bu">echo</span> <span class="st">&quot;## Input dir:                 </span><span class="va">$indir</span><span class="st">&quot;</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="bu">echo</span> <span class="st">&quot;## Output dir - first trim:   </span><span class="va">$outdir_trim1</span><span class="st">&quot;</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="bu">echo</span> <span class="st">&quot;## Input dir - second trim:   </span><span class="va">$outdir_trim1</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
 <div id="part-c-loop-through-fastq-files-and-run-cutadapt-for-each-pair" class="section level3">
 <h3>Part C: Loop through <code>fastq</code> files and run <code>cutadapt</code> for each pair:</h3>
@@ -597,127 +676,127 @@ echo &quot;## Input dir - second trim:   $outdir_trim1&quot;</code></pre>
 <li><p>We’ll do the second round of trimming using the reverse <em>primer</em> sequences.</p></li>
 <li><p>We tell the loop that is done using <code>done</code>.</p></li>
 </ol>
-<pre class="bash"><code># RUN CUTADAPT --------------------------------------------------------
-# 1. Initialize the loop:
-for R1 in $indir/*_R1_*.fastq.gz
-do
-  # 2. Get the filenames for the fastq files with forward (R1) and reverse (R2) reads:
-  R1=$(basename $R1)   # `basename` will strip the directory from the name
-  
-  # 3. 
-  R2=${R1/_R1_/_R2_}   # This will substitute &quot;_R1_&quot; with &quot;_R2_&quot; in the filename.
-  
-  # 4. Report input files:
-  echo &quot;## R1 input file:&quot;
-  ls -lh $indir/$R1
-  echo &quot;## R2 input file:&quot;
-  ls -lh $indir/$R2
-
-  # 5. First trim:
-  echo -e &quot;\n\n## Running cutadapt for the first trim:&quot;
-    
-    cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \
-    --discard-untrimmed --pair-filter=any \
-    -o $outdir_trim1/$R1 -p $outdir_trim1/$R2 \
-    $indir/$R1 $indir/$R2
-    
-    # 6. Second trim:
-  echo -e &quot;\n\n## Running cutadapt for the second trim:&quot;
-    
-    cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \
-    -o $outdir_trim2/$R1 -p $outdir_trim2/$R2 \
-    $outdir_trim1/$R1 $outdir_trim1/$R2
-  
-  # 7. Exit the loop using the `done` keyword
-done</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># RUN CUTADAPT --------------------------------------------------------</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># 1. Initialize the loop:</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">for</span> <span class="ex">R1</span> in <span class="va">$indir</span>/*_R1_*.fastq.gz</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="kw">do</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="co"># 2. Get the filenames for the fastq files with forward (R1) and reverse (R2) reads:</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="va">R1=$(</span><span class="fu">basename</span> <span class="va">$R1)</span>   <span class="co"># `basename` will strip the directory from the name</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  </span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="co"># 3. </span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="va">R2=${R1/</span>_R1_<span class="va">/</span>_R2_<span class="va">}</span>   <span class="co"># This will substitute &quot;_R1_&quot; with &quot;_R2_&quot; in the filename.</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>  </span>
+<span id="cb8-11"><a href="#cb8-11"></a>  <span class="co"># 4. Report input files:</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>  <span class="bu">echo</span> <span class="st">&quot;## R1 input file:&quot;</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">ls</span> -lh <span class="va">$indir</span>/<span class="va">$R1</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>  <span class="bu">echo</span> <span class="st">&quot;## R2 input file:&quot;</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>  <span class="fu">ls</span> -lh <span class="va">$indir</span>/<span class="va">$R2</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a>  <span class="co"># 5. First trim:</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a>  <span class="bu">echo</span> -e <span class="st">&quot;\n\n## Running cutadapt for the first trim:&quot;</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>    </span>
+<span id="cb8-20"><a href="#cb8-20"></a>    <span class="ex">cutadapt</span> -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \</span>
+<span id="cb8-21"><a href="#cb8-21"></a>    --discard-untrimmed --pair-filter=any \</span>
+<span id="cb8-22"><a href="#cb8-22"></a>    -o <span class="va">$outdir_trim1</span>/<span class="va">$R1</span> -p <span class="va">$outdir_trim1</span>/<span class="va">$R2</span> \</span>
+<span id="cb8-23"><a href="#cb8-23"></a>    <span class="va">$indir</span>/<span class="va">$R1</span> <span class="va">$indir</span>/<span class="va">$R2</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a>    </span>
+<span id="cb8-25"><a href="#cb8-25"></a>    <span class="co"># 6. Second trim:</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a>  <span class="bu">echo</span> -e <span class="st">&quot;\n\n## Running cutadapt for the second trim:&quot;</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a>    </span>
+<span id="cb8-28"><a href="#cb8-28"></a>    <span class="ex">cutadapt</span> -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \</span>
+<span id="cb8-29"><a href="#cb8-29"></a>    -o <span class="va">$outdir_trim2</span>/<span class="va">$R1</span> -p <span class="va">$outdir_trim2</span>/<span class="va">$R2</span> \</span>
+<span id="cb8-30"><a href="#cb8-30"></a>    <span class="va">$outdir_trim1</span>/<span class="va">$R1</span> <span class="va">$outdir_trim1</span>/<span class="va">$R2</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a>  </span>
+<span id="cb8-32"><a href="#cb8-32"></a>  <span class="co"># 7. Exit the loop using the `done` keyword</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="kw">done</span></span></code></pre></div>
 </div>
 <div id="part-d-list-output-files-as-a-check" class="section level3">
 <h3>Part D: List output files as a check:</h3>
 <p>Finally, we’ll list our output files, as another way to check whether the script has run as it was supposed, and we’ll also print the <code>date</code> again to check the (date and) time that our script finished running.</p>
-<pre class="bash"><code># REPORT AND FINALIZE --------------------------------------------------------
-echo -e &quot;\n\n## Listing output files - first trim:&quot;
-ls -lh $outdir_trim1
-
-echo -e &quot;\n\n## Listing output files - second trim:&quot;
-ls -lh $outdir_trim1
-
-echo -e &quot;\n\n## Done with cutadapt script.&quot;
-date</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># REPORT AND FINALIZE --------------------------------------------------------</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="bu">echo</span> -e <span class="st">&quot;\n\n## Listing output files - first trim:&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">ls</span> -lh <span class="va">$outdir_trim1</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="bu">echo</span> -e <span class="st">&quot;\n\n## Listing output files - second trim:&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">ls</span> -lh <span class="va">$outdir_trim1</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="bu">echo</span> -e <span class="st">&quot;\n\n## Done with cutadapt script.&quot;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="fu">date</span></span></code></pre></div>
 </div>
 <div id="the-entire-script" class="section level3">
 <h3>The entire script</h3>
 <details>
 <p><summary> Click here to see the entire script. </summary></p>
-<pre class="sh"><code>#!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --time=60
-#SBATCH --account=PAS0471
-
-set -e -u -o pipefail    # Run bash in &quot;safe mode&quot;, basically
-
-# Report:
-echo -e &quot;\n## Starting cutadapt script.&quot;
-date
-
-# SETUP --------------------------------------------------------
-# Command-line arguments:
-indir=$1
-outdir_base=$2
-
-# Define output directories for first and second trim:
-outdir_trim1=$outdir_base/first_trim
-outdir_trim2=$outdir_base/second_trim
-
-# Create output directories if they don&#39;t already exist:
-mkdir -p $outdir_trim1
-mkdir -p $outdir_trim2
-
-# Report:
-echo &quot;## Input dir:                 $indir&quot;
-echo &quot;## Otput dir - first trim:    $outdir_trim1&quot;
-echo &quot;## Input dir - second trim:   $outdir_trim1&quot;
-
-# RUN CUTADAPT --------------------------------------------------------
-echo -e &quot;\n## Looping through input files...\n&quot;
-
-for R1 in $indir/*_R1_*.fastq.gz
-do
-  R1=$(basename $R1)
-  R2=${R1/_R1_/_R2_}
-  
-  # Report input files:
-  echo &quot;## R1 input file:&quot;
-  ls -lh $indir/$R1
-  echo &quot;## R2 input file:&quot;
-  ls -lh $indir/$R2
-
-  # First trim:
-  echo -e &quot;\n\n## Running cutadapt for the first trim:&quot;
-    
-    cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \
-      --discard-untrimmed --pair-filter=any \
-      -o $outdir_trim1/$R1 -p $outdir_trim1/$R2 \
-      $indir/$R1 $indir/$R2
-    
-    # Second trim:
-  echo -e &quot;\n\n## Running cutadapt for the second trim:&quot;
-    
-    cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \
-      -o $outdir_trim2/$R1 -p $outdir_trim2/$R2 \
-      $outdir_trim1/$R1 $outdir_trim1/$R2
-
-done
-
-# REPORT AND FINALIZE --------------------------------------------------------
-echo -e &quot;\n\n## Listing output files - first trim:&quot;
-ls -lh $outdir_trim1
-
-echo -e &quot;\n\n## Listing output files - second trim:&quot;
-ls -lh $outdir_trim1
-
-echo -e &quot;\n\n## Done with cutadapt script.&quot;
-date</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#SBATCH --ntasks-per-node=1</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#SBATCH --time=60</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#SBATCH --account=PAS0471</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="kw">set</span> <span class="ex">-e</span> -u -o pipefail    <span class="co"># Run bash in &quot;safe mode&quot;, basically</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co"># Report:</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="bu">echo</span> -e <span class="st">&quot;\n## Starting cutadapt script.&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="fu">date</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co"># SETUP --------------------------------------------------------</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co"># Command-line arguments:</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="va">indir=$1</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="va">outdir_base=$2</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co"># Define output directories for first and second trim:</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="va">outdir_trim1=$outdir_base</span>/first_trim</span>
+<span id="cb10-20"><a href="#cb10-20"></a><span class="va">outdir_trim2=$outdir_base</span>/second_trim</span>
+<span id="cb10-21"><a href="#cb10-21"></a></span>
+<span id="cb10-22"><a href="#cb10-22"></a><span class="co"># Create output directories if they don&#39;t already exist:</span></span>
+<span id="cb10-23"><a href="#cb10-23"></a><span class="fu">mkdir</span> -p <span class="va">$outdir_trim1</span></span>
+<span id="cb10-24"><a href="#cb10-24"></a><span class="fu">mkdir</span> -p <span class="va">$outdir_trim2</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a></span>
+<span id="cb10-26"><a href="#cb10-26"></a><span class="co"># Report:</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a><span class="bu">echo</span> <span class="st">&quot;## Input dir:                 </span><span class="va">$indir</span><span class="st">&quot;</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a><span class="bu">echo</span> <span class="st">&quot;## Otput dir - first trim:    </span><span class="va">$outdir_trim1</span><span class="st">&quot;</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a><span class="bu">echo</span> <span class="st">&quot;## Input dir - second trim:   </span><span class="va">$outdir_trim1</span><span class="st">&quot;</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a></span>
+<span id="cb10-31"><a href="#cb10-31"></a><span class="co"># RUN CUTADAPT --------------------------------------------------------</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a><span class="bu">echo</span> -e <span class="st">&quot;\n## Looping through input files...\n&quot;</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a></span>
+<span id="cb10-34"><a href="#cb10-34"></a><span class="kw">for</span> <span class="ex">R1</span> in <span class="va">$indir</span>/*_R1_*.fastq.gz</span>
+<span id="cb10-35"><a href="#cb10-35"></a><span class="kw">do</span></span>
+<span id="cb10-36"><a href="#cb10-36"></a>  <span class="va">R1=$(</span><span class="fu">basename</span> <span class="va">$R1)</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a>  <span class="va">R2=${R1/</span>_R1_<span class="va">/</span>_R2_<span class="va">}</span></span>
+<span id="cb10-38"><a href="#cb10-38"></a>  </span>
+<span id="cb10-39"><a href="#cb10-39"></a>  <span class="co"># Report input files:</span></span>
+<span id="cb10-40"><a href="#cb10-40"></a>  <span class="bu">echo</span> <span class="st">&quot;## R1 input file:&quot;</span></span>
+<span id="cb10-41"><a href="#cb10-41"></a>  <span class="fu">ls</span> -lh <span class="va">$indir</span>/<span class="va">$R1</span></span>
+<span id="cb10-42"><a href="#cb10-42"></a>  <span class="bu">echo</span> <span class="st">&quot;## R2 input file:&quot;</span></span>
+<span id="cb10-43"><a href="#cb10-43"></a>  <span class="fu">ls</span> -lh <span class="va">$indir</span>/<span class="va">$R2</span></span>
+<span id="cb10-44"><a href="#cb10-44"></a></span>
+<span id="cb10-45"><a href="#cb10-45"></a>  <span class="co"># First trim:</span></span>
+<span id="cb10-46"><a href="#cb10-46"></a>  <span class="bu">echo</span> -e <span class="st">&quot;\n\n## Running cutadapt for the first trim:&quot;</span></span>
+<span id="cb10-47"><a href="#cb10-47"></a>    </span>
+<span id="cb10-48"><a href="#cb10-48"></a>    <span class="ex">cutadapt</span> -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \</span>
+<span id="cb10-49"><a href="#cb10-49"></a>      --discard-untrimmed --pair-filter=any \</span>
+<span id="cb10-50"><a href="#cb10-50"></a>      -o <span class="va">$outdir_trim1</span>/<span class="va">$R1</span> -p <span class="va">$outdir_trim1</span>/<span class="va">$R2</span> \</span>
+<span id="cb10-51"><a href="#cb10-51"></a>      <span class="va">$indir</span>/<span class="va">$R1</span> <span class="va">$indir</span>/<span class="va">$R2</span></span>
+<span id="cb10-52"><a href="#cb10-52"></a>    </span>
+<span id="cb10-53"><a href="#cb10-53"></a>    <span class="co"># Second trim:</span></span>
+<span id="cb10-54"><a href="#cb10-54"></a>  <span class="bu">echo</span> -e <span class="st">&quot;\n\n## Running cutadapt for the second trim:&quot;</span></span>
+<span id="cb10-55"><a href="#cb10-55"></a>    </span>
+<span id="cb10-56"><a href="#cb10-56"></a>    <span class="ex">cutadapt</span> -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \</span>
+<span id="cb10-57"><a href="#cb10-57"></a>      -o <span class="va">$outdir_trim2</span>/<span class="va">$R1</span> -p <span class="va">$outdir_trim2</span>/<span class="va">$R2</span> \</span>
+<span id="cb10-58"><a href="#cb10-58"></a>      <span class="va">$outdir_trim1</span>/<span class="va">$R1</span> <span class="va">$outdir_trim1</span>/<span class="va">$R2</span></span>
+<span id="cb10-59"><a href="#cb10-59"></a></span>
+<span id="cb10-60"><a href="#cb10-60"></a><span class="kw">done</span></span>
+<span id="cb10-61"><a href="#cb10-61"></a></span>
+<span id="cb10-62"><a href="#cb10-62"></a><span class="co"># REPORT AND FINALIZE --------------------------------------------------------</span></span>
+<span id="cb10-63"><a href="#cb10-63"></a><span class="bu">echo</span> -e <span class="st">&quot;\n\n## Listing output files - first trim:&quot;</span></span>
+<span id="cb10-64"><a href="#cb10-64"></a><span class="fu">ls</span> -lh <span class="va">$outdir_trim1</span></span>
+<span id="cb10-65"><a href="#cb10-65"></a></span>
+<span id="cb10-66"><a href="#cb10-66"></a><span class="bu">echo</span> -e <span class="st">&quot;\n\n## Listing output files - second trim:&quot;</span></span>
+<span id="cb10-67"><a href="#cb10-67"></a><span class="fu">ls</span> -lh <span class="va">$outdir_trim1</span></span>
+<span id="cb10-68"><a href="#cb10-68"></a></span>
+<span id="cb10-69"><a href="#cb10-69"></a><span class="bu">echo</span> -e <span class="st">&quot;\n\n## Done with cutadapt script.&quot;</span></span>
+<span id="cb10-70"><a href="#cb10-70"></a><span class="fu">date</span></span></code></pre></div>
 </details>
 <hr />
 </div>
@@ -725,22 +804,22 @@ date</code></pre>
 <div id="submit-the-script" class="section level2">
 <h2>Submit the Script</h2>
 <p>We’ll first check whether we are in the correct directory, so that our relative paths will work:</p>
-<pre class="bash"><code># Let&#39;s check we are in the correct directory:
-pwd
-# Should return: /fs/project/PAS0471/workshops/2020-12_micro/&lt;your-username&gt;
-# If not, run: &quot;cd /fs/project/PAS0471/workshops/2020-12_micro/$USER&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Let&#39;s check we are in the correct directory:</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="bu">pwd</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co"># Should return: /fs/project/PAS0471/workshops/2020-12_micro/&lt;your-username&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># If not, run: &quot;cd /fs/project/PAS0471/workshops/2020-12_micro/$USER&quot;</span></span></code></pre></div>
 <p><br></p>
 <p>Then we assign our input directory and base output directory to the variables <code>indir</code> and <code>outdir_base</code>, respectively.</p>
 <p>We’ll also assign the name we want to give to the <em>SLURM</em> log file to a variable. Here, we’ll also use the <code>%j</code> <em>SLURM</em> keyword to include the <em>SLURM</em> job number.</p>
-<pre class="bash"><code>indir=data/raw/fastq_subsample
-outdir_base=data/processed/fastq_trimmed
-
-# Give a name to the SLURM output file:
-# (The -o flag sets the SLURM log file name, and `%j` represents the job ID)
-slurm_file=slurm-cutadapt-$USER-%j.out</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="va">indir=</span>data/raw/fastq_subsample</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="va">outdir_base=</span>data/processed/fastq_trimmed</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co"># Give a name to the SLURM output file:</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="co"># (The -o flag sets the SLURM log file name, and `%j` represents the job ID)</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="va">slurm_file=</span>slurm-cutadapt-<span class="va">$USER</span>-<span class="ex">%j.out</span></span></code></pre></div>
 <p><br></p>
 <p>Finally, we’re ready to <strong>submit the script</strong>!</p>
-<pre class="sh"><code>sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir_base</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="ex">sbatch</span> -o <span class="va">$slurm_file</span> scripts/01-cutadapt.sh <span class="va">$indir</span> <span class="va">$outdir_base</span></span></code></pre></div>
 <hr />
 </div>
 <div id="monitor-the-job-and-its-output" class="section level2">
@@ -748,85 +827,83 @@ slurm_file=slurm-cutadapt-$USER-%j.out</code></pre>
 <div id="monitor-the-job" class="section level3">
 <h3>Monitor the job</h3>
 <p>We can check what’s going on with our job using <code>squeue</code>:</p>
-<pre class="bash"><code># Initially the job may be queued (`PD` in the `ST` column):
-squeue -u $USER
-# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
-# 2451088 serial-40 01-cutad   jelmer PD       0:00      1 (None) 
-
-# Then the job should be running:
-squeue -u $USER
-# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
-# 2451088 serial-40 01-cutad   jelmer R       0:43      1 (None) 
-
-# When the job has finished, squeue will return nothing:
-squeue -u $USER
-# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
-</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Initially the job may be queued (`PD` in the `ST` column):</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="ex">squeue</span> -u <span class="va">$USER</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co"># JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co"># 2451088 serial-40 01-cutad   jelmer PD       0:00      1 (None) </span></span>
+<span id="cb14-5"><a href="#cb14-5"></a></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="co"># Then the job should be running:</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="ex">squeue</span> -u <span class="va">$USER</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co"># JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) </span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co"># 2451088 serial-40 01-cutad   jelmer R       0:43      1 (None) </span></span>
+<span id="cb14-10"><a href="#cb14-10"></a></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co"># When the job has finished, squeue will return nothing:</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="ex">squeue</span> -u <span class="va">$USER</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co"># JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) </span></span></code></pre></div>
 <p><br></p>
 <p>We could also get more statistics about our job using <code>scontrol</code>:</p>
-<pre class="bash"><code>scontrol show job 2451088   # Replace the number with your JOBID</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="ex">scontrol</span> show job 2451088   <span class="co"># Replace the number with your JOBID</span></span></code></pre></div>
 </div>
 <div id="check-the-output" class="section level3">
 <h3>Check the output</h3>
 <p>Let’s see if we have a log file:</p>
-<pre class="bash"><code>ls slurm*$USER*
-# slurm-cutadapt-jelmer-2451088.out</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">ls</span> slurm*<span class="va">$USER</span>*</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="co"># slurm-cutadapt-jelmer-2451088.out</span></span></code></pre></div>
 <p>Let’s look at the start of the <em>SLURM</em> log file:</p>
-<pre class="bash"><code>head -n 20 slurm-cutadapt-jelmer-2451088.out
-
-# ## Starting cutadapt script.
-# Fri Dec 11 10:03:00 EST 2020
-# ## Input dir:                 data/raw/fastq/
-# ## Output dir - first trim:   data/processed/fastq_trimmed/first_trim
-# ## Input dir - second trim:   data/processed/fastq_trimmed/first_trim
-# 
-# ## Looping through input files...
-# 
-# ## R1 input file:
-# -r--r--r-- 1 jelmer PAS0471 7.4M Dec  11 08:27 data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R1_001.fastq.gz
-# ## R2 input file:
-# -r--r--r-- 1 jelmer PAS0471 8.8M Dec  11 08:27 data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
-# 
-# 
-# ## Running cutadapt for the first trim:
-# This is cutadapt 3.1 with Python 3.8.6
-# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o data/processed/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p data/processed/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R1_001.fastq.gz data/raw/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
-# Processing reads on 1 core in paired-end mode ...</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">head</span> -n 20 slurm-cutadapt-jelmer-2451088.out</span>
+<span id="cb17-2"><a href="#cb17-2"></a></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co"># ## Starting cutadapt script.</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co"># Fri Dec 11 10:03:00 EST 2020</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co"># ## Input dir:                 data/raw/fastq/</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="co"># ## Output dir - first trim:   data/processed/fastq_trimmed/first_trim</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="co"># ## Input dir - second trim:   data/processed/fastq_trimmed/first_trim</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="co"># </span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="co"># ## Looping through input files...</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="co"># </span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co"># ## R1 input file:</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="co"># -r--r--r-- 1 jelmer PAS0471 7.4M Dec  11 08:27 data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R1_001.fastq.gz</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="co"># ## R2 input file:</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="co"># -r--r--r-- 1 jelmer PAS0471 8.8M Dec  11 08:27 data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R2_001.fastq.gz</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="co"># </span></span>
+<span id="cb17-16"><a href="#cb17-16"></a><span class="co"># </span></span>
+<span id="cb17-17"><a href="#cb17-17"></a><span class="co"># ## Running cutadapt for the first trim:</span></span>
+<span id="cb17-18"><a href="#cb17-18"></a><span class="co"># This is cutadapt 3.1 with Python 3.8.6</span></span>
+<span id="cb17-19"><a href="#cb17-19"></a><span class="co"># Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o data/processed/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p data/processed/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R1_001.fastq.gz data/raw/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz</span></span>
+<span id="cb17-20"><a href="#cb17-20"></a><span class="co"># Processing reads on 1 core in paired-end mode ...</span></span></code></pre></div>
 <p>Let’s also look at the end of the file:</p>
-<pre class="bash"><code>tail slurm-cutadapt-jelmer-2451088.out
-
-# -rw-rw-r-- 1 jelmer PAS0471 1.1M Dec  11 10:05 blankM-V4-V5_S73_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 1.4M Dec  11 10:05 blankM-V4-V5_S73_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  56K Dec  11 10:05 H20-V4-V5_S88_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  66K Dec  11 10:05 H20-V4-V5_S88_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 3.8M Dec  11 10:05 Zymo-V4-V5_S82_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 4.4M Dec  11 10:05 Zymo-V4-V5_S82_L001_R2_001.fastq.gz
-# 
-# 
-# ## Done with cutadapt script.
-# Fri Dec  11 10:05:33 EST 2020</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">tail</span> slurm-cutadapt-jelmer-2451088.out</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 1.1M Dec  11 10:05 blankM-V4-V5_S73_L001_R1_001.fastq.gz</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 1.4M Dec  11 10:05 blankM-V4-V5_S73_L001_R2_001.fastq.gz</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471  56K Dec  11 10:05 H20-V4-V5_S88_L001_R1_001.fastq.gz</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471  66K Dec  11 10:05 H20-V4-V5_S88_L001_R2_001.fastq.gz</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 3.8M Dec  11 10:05 Zymo-V4-V5_S82_L001_R1_001.fastq.gz</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 4.4M Dec  11 10:05 Zymo-V4-V5_S82_L001_R2_001.fastq.gz</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="co"># </span></span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="co"># </span></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="co"># ## Done with cutadapt script.</span></span>
+<span id="cb18-12"><a href="#cb18-12"></a><span class="co"># Fri Dec  11 10:05:33 EST 2020</span></span></code></pre></div>
 <p><br></p>
 <p>Finally, we can directly check one of the output dirs:</p>
-<pre class="bash"><code>ls -lh data/processed/fastq_trimmed/second_trim/
-
-# total 474M
-# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 9.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 9.6M Dec  11 10:05 101-S4-V4-V5_S49_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  13M Dec  11 10:05 101-S4-V4-V5_S49_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 6.8M Dec  11 10:05 102-S4-V4-V5_S50_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 8.3M Dec  11 10:05 102-S4-V4-V5_S50_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 6.2M Dec  11 10:05 103-S4-V4-V5_S51_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 103-S4-V4-V5_S51_L001_R2_001.fastq.gz
-# ....[other files not shown]
-</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">ls</span> -lh data/processed/fastq_trimmed/second_trim/</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="co"># total 474M</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R1_001.fastq.gz</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 9.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R2_001.fastq.gz</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 9.6M Dec  11 10:05 101-S4-V4-V5_S49_L001_R1_001.fastq.gz</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471  13M Dec  11 10:05 101-S4-V4-V5_S49_L001_R2_001.fastq.gz</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 6.8M Dec  11 10:05 102-S4-V4-V5_S50_L001_R1_001.fastq.gz</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 8.3M Dec  11 10:05 102-S4-V4-V5_S50_L001_R2_001.fastq.gz</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 6.2M Dec  11 10:05 103-S4-V4-V5_S51_L001_R1_001.fastq.gz</span></span>
+<span id="cb19-11"><a href="#cb19-11"></a><span class="co"># -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 103-S4-V4-V5_S51_L001_R2_001.fastq.gz</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a><span class="co"># ....[other files not shown]</span></span></code></pre></div>
 <p><br></p>
 <p>All done! Our <a href="07-ASV-inference.html">next step</a> will be to further process the <code>fastq</code> files with <code>cutadapt</code>.</p>
 <p><br> <br> <br></p>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPldvcmtmbG93IHBhcnQgSTo8YnI+UHJpbWVyIGFuZCBBZGFwdGVyIFJlbW92YWwiCm91dHB1dDoKICBybWFya2Rvd246Omh0bWxfZG9jdW1lbnQ6CiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogY2VydWxlYW4KICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjc3M6IG15LmNzcwotLS0KCjxicj4KCmBgYHtyIGtuaXRyX29wdGlvbnMsIGVjaG89RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChldmFsID0gRkFMU0UpCmBgYAogCi0tLS0tCgojIyBHb2FscwoKLSBSZW1vdmUgcHJpbWVycyBhbmQgYWRhcHRlcnMgZnJvbSBvdXIgc2VxdWVuY2VzLgotIFdoaWxlIGRvaW5nIHNvLCB3ZSdsbCBsZWFybjoKICAtIEhvdyB0byBsb2FkIGEgYGNvbmRhYCBlbnZpcm9ubWVudC4KICAtIFNvbWUgYmFzaWNzIG9mIHdyaXRpbmcgYSBzaGVsbCBzY3JpcHQuCiAgLSBIb3cgdG8gcnVuIGBjdXRhZGFwdGAuCiAgLSBIb3cgdG8gc3VibWl0IGFuZCBtb25pdG9yIGEgam9iIHdpdGggdGhlICpTTFVSTSogc2NoZWR1bGVyLiAKCi0tLS0tCgojIyBCZWZvcmUgV2UgR2V0IFN0YXJ0ZWQKCiMjIyBOb3RlcwoKLSBZb3UgY2FuIGRvd25sb2FkIHRoaXMgYFJtZGAgKFIgTWFya2Rvd24pIGZpbGUgYnkgY2xpY2tpbmcgdGhlIGBDb2RlYCBidXR0b24gaW4KICB0aGUgdG9wLXJpZ2h0IG9mIHRoaXMgcGFnZS4KICBUbyBjb252ZXJ0IGFuIGBSbWRgIGZpbGUgdG8gYW4gUiBzY3JpcHQsCiAgdHlwZSB0aGUgZm9sbG93aW5nIGluIGFuIFIgY29uc29sZTogYGtuaXRyOjpwdXJsKGlucHV0PSI8ZmlsZW5hbWU+LlJtZCIpYC4KCiMjIyBTZXR1cAoKLSBMb2dpbiB0byBPU0MgYXQgPGh0dHBzOi8vb25kZW1hbmQub3NjLmVkdT4uCgotIEVudGVyIGEgdGVybWluYWwgaW4geW91ciBicm93c2VyIGF0IE9TQyBieSBjbGlja2luZyBgQ2x1c3RlcmAgPiBgUGl0emVyIFNoZWxsIEFjY2Vzc2AuCiAgKE9yIHVzZSBbdGhpcyBkaXJlY3QgbGlua10oaHR0cHM6Ly9vbmRlbWFuZC5vc2MuZWR1L3B1bi9zeXMvc2hlbGwvc3NoL3BpdHplci5vc2MuZWR1KS4pCgotIEdvIHRvIHRoaXMgeW91ciBkaXJlY3RvcnkgZm9yIHRoaXMgd29ya3Nob3AgYXQgT1NDOgoKICBgYGBzaAogIGNkIC9mcy9wcm9qZWN0L1BBUzA0NzEvd29ya3Nob3BzLzIwMjAtMTJfbWljcm8vJFVTRVIKICBgYGAKCi0tLS0tCgojIyBHZXR0aW5nIFN0YXJ0ZWQKCltgY3V0YWRhcHRgXShodHRwczovL2N1dGFkYXB0LnJlYWR0aGVkb2NzLmlvL2VuL3N0YWJsZS9pbmRleC5odG1sKSBpcyBhIHNvZnR3YXJlCnBhY2thZ2UgdG8gcmVtb3ZlIGFueSBhZGFwdGVycyBhbmQgcHJpbWVycyB0aGF0IG1heSBiZSBwcmVzZW50IGluIHJhdyBzZXF1ZW5jZSBkYXRhLgoKV2Ugd2lsbCB1c2UgdGhlIG91dHB1dCBmcm9tIGBjdXRhZGFwdGAgYXMgaW5wdXQgZm9yIHRoZSBuZXh0IHN0ZXAgaW4gb3VyIHdvcmtmbG93LApbQVNWIEluZmVyZXJlbmNlIGFuZCBUYXhvbiBBc3NpZ25tZW50XSgwNy1BU1YtaW5mZXJlbmNlLmh0bWwpLgoKCiMjIyBQcmltZXJzCgpUaGVzZSBhcmUgdGhlIHByaW1lcnMgdGhhdCB3ZXJlIHVzZWQgaW4gdGhpcyBhbXBsaWNvbiBzZXF1ZW5jaW5nLgp3ZSB3YW50IHRvIHJlbW92ZToKCi0gNTE1RjogKkdBR1RHWUNBR0NNR0NDR0NHR1RBQSoKLSA4MDZSOiAqQUNHR0FDVEFDTlZHR0dUV1RDVEFBVCoKLSA1MTVGIHJldmVyc2UgY29tcGxlbWVudDogKlRUQUNDR0NHR0NLR0NUR1JDQUNUQyoKLSA4MDZSIHJldmVyc2UgY29tcGxlbWVudDogKkFUVEFHQVdBQ0NDQk5HVEFHVENDR1QqCgpXZSB3aWxsIHNwZWNpZnkgdGhlc2UgcHJpbWVycyB3aGVuIHJ1bm5pbmcgYGN1dGFkYXB0YC4KCiMjIyBMb2FkIHRoZSBgY29uZGFgIGVudmlyb25tZW50IHdpdGggYGN1dGFkYXB0YCAKCmBjdXRhZGFwdGAgaXMgbm90IGF2YWlsYWJsZSBhcyBhIG1vZHVsZSBhdCBPU0MuCkhvd2V2ZXIsIGl0IGNhbiBiZSBlYXNpbHkgaW5zdGFsbGVkIHRoZXJlIHRocm91Z2ggYGNvbmRhYCwKc2VlIHRoaXMgW3dlYnBhZ2VdKGh0dHBzOi8vY3V0YWRhcHQucmVhZHRoZWRvY3MuaW8vZW4vc3RhYmxlL2luc3RhbGxhdGlvbi5odG1sI2luc3RhbGxhdGlvbi13aXRoLWNvbmRhKS4gICAKV2UgaGF2ZSBhbHJlYWR5IGRvbmUgdGhpcyBmb3IgeW91IHRvIHNhdmUgc29tZSB0aW1lLApzbyB3ZSBqdXN0IG5lZWQgdG8gbG9hZCB0aGUgYGNvbmRhYCBlbnZpcm9ubWVudC4KClRvIHdvcmsgd2l0aCBgY29uZGFgIGF0IE9TQywgd2UgZmlyc3QgbmVlZCB0byBsb2FkIHRoZSBgY29uZGFgIG1vZHVsZToKCmBgYHNoCm1vZHVsZSBsb2FkIHB5dGhvbi8zLjYtY29uZGE1LjIKYGBgCgpBc3N1bWluZyB0aGF0IHlvdSBoYXZlbid0IHdvcmtlZCB3aXRoIGNvbmRhIGJlZm9yZSBhdCBPU0MsCndlIGFsc28gbmVlZCB0byBhIGJpdCBvZiBhZGRpdGlvbmFsIHNldHVwOgoKYGBge2Jhc2h9CiMgVGhpcyB3aWxsIGFkZCBhIGxpbmUgdG8geW91ciBiYXNoIGNvbmZpZyBmaWxlLCB3aGljaCBydW5zIGV2ZXJ5IHRpbWUgeW91IHN0YXJ0CiMgYSBzaGVsbCwgdG8gcnVuIHRoZSBjb25kYSBzZXR1cCBzY3JpcHQ6CmVjaG8gIi4gL2FwcHMvcHl0aG9uLzMuNi1jb25kYTUuMi9ldGMvcHJvZmlsZS5kL2NvbmRhLnNoIiA+PiB+Ly5iYXNocmMKCiMgTmV4dCwgd2Ugc291cmNlIChydW4pIHRoZSBjb25maWcgZmlsZSBpbiBvdXIgY3VycmVudCBzaGVsbCB0byBhbHNvIHJ1biB0aGUgY29uZGEKIyBzZXR1cCBzY3JpcHQgcmlnaHQgbm93Ogpzb3VyY2Ugfi8uYmFzaHJjCmBgYAoKVGhlbiwgd2UgYWN0aXZhdGUgb3VyIGBjb25kYWAgZW52aXJvbm1lbnQgZm9yIGBjdXRhZGFwdGA6CgpgYGB7YmFzaH0KY29uZGEgYWN0aXZhdGUgL3VzZXJzL1BBUzA0NzEvb3N1NTY4NS8uY29uZGEvZW52cy9jdXRhZGFwdGVudgpgYGAKCjxicj4KCk5vdywgYGN1dGFkYXB0YCBzaG91bGQgYmUgaW4gYCRQQVRIYCwgaS5lLiB3ZSBjYW4gc2ltcGx5IGNhbGwgaXQgYnkgaXRzIG5hbWUgdG8gcnVuIGl0LgpUbyB0ZXN0IHRoaXM6CgpgYGB7YmFzaH0KY3V0YWRhcHQgLS12ZXJzaW9uICAgICAjIFdpbGwganVzdCBwcmludCB0aGUgdmVyc2lvbiBudW1iZXIKY3V0YWRhcHQgLS1oZWxwICAgICAgICAjIFdpbGwgcHJpbnQgYSB3aG9sZSBsb3Qgb2YgZG9jdW1lbnRhdGlvbgpgYGAKCgotLS0tLQoKIyMgQSBTY3JpcHQgdG8gUnVuIGBjdXRhZGFwdGAKCiMjIyBQYXJ0IEE6IEJvaWxlcnBsYXRlIGFuZCAqU0xVUk0qIGRpcmVjdGl2ZXMKCjEuIE91ciBmaXJzdCBsaW5lLCBgIyEvYmluL2Jhc2hgLCBpcyB0aGUgKiJzaGViYW5nIiogbGluZSB0aGF0IHRlbGxzIHVzIHdoYXQKICBwcm9ncmFtIChsYW5ndWFnZSkgb3VyIHNjcmlwdCB1c2VzLCB3aGljaCBpcyBgYmFzaGAgaW4gdGhpcyBjYXNlLgoKMi4gV2UnbGwgcHJvdmlkZSB0aGUgYFNMVVJNYCBkaXJlY3RpdmVzIG9uZSBsaW5lIGF0IGEgdGltZSwKICB1c2luZyB0aGUgYCNTQkFUQ0hgIGtleXdvcmQgZm9sbG93ZWQgYnkgYW4gb3B0aW9uOiBgbm9kZXNgIGZvciB0aGUgbnVtYmVyIG9mCiAgbm9kZXMsIGBudGFza3MtcGVyLW5vZGVgIGZvciB0aGUgbnVtYmVyIG9mIGNvcmVzLCBgdGltZWAgZm9yIHRoZSBtYXhpbXVtCiAgd2FsbHRpbWUgb2YgdGhlIGpvYiAoaGVyZSBzcGVjaWZpY2VkIHVzaW5nIGp1c3QgbWludXRlcyksIGFuZCBgYWNjb3VudGAgZm9yCiAgdGhlIE9TQyBwcm9qZWN0IHRoYXQgc2hvdWxkIGJlIGJpbGxlZC4KCjMuIFdlJ2xsIHNldCBhIGNvdXBsZSBvZiBvcHRpb25zIHdpdGggYHNldGAgdGhhdCBtYWtlIGBiYXNoYCBydW4gc2FmZXIsCiAgYnkgbWFraW5nIGl0IHN0b3AgdGhlIHNjcmlwdCB3aGVuZXZlciBhbiBlcnJvciBpcyBlbmNvdW50ZXJlZCAoYnkgZGVmYXVsdCwKICB0aGUgc2NyaXB0IHdpbGwga2VlcCBydW5uaW5nLikKCjQuIFdlJ2xsIHVzZSBhbiBgZWNob2Agc3RhdGVtZW50IHRvIHByaW50IHRvIHNjcmVlbiB3aGF0IHNjcmlwdCB3ZSBhcmUKICBydW5uaW5nLCBhbmQgdGhlIGBkYXRlYCBjb21tYW5kIHRvIGtlZXAgdHJhY2sgb2YgdGhlIHNjcmlwdCdzIHJ1bnRpbWUuCiAgKFRoZSBgLWVgIG9wdGlvbiB0byBgZWNob2AgYWxsb3dzIHVzIHRvIHByaW50IG5ld2xpbmVzIHVzaW5nIGBcbmApLgoKYGBge2Jhc2h9CiMhL2Jpbi9iYXNoICAgICAgICAgICAgICAgICAgICMgMS4gRmlyc3QgbGluZSBzaG91bGQgYmUgdGhlIHNoZWJhbmcgbGluZQojU0JBVENIIC0tbm9kZXM9MSAgICAgICAgICAgICAjIDIuIFByb3ZpZGUgc2JhdGNoIGRpcmVjdGl2ZXMKI1NCQVRDSCAtLW50YXNrcy1wZXItbm9kZT0xCiNTQkFUQ0ggLS10aW1lPTYwCiNTQkFUQ0ggLS1hY2NvdW50PVBBUzA0NzEKCiMgMy4gUnVuIGJhc2ggaW4gInNhZmUgbW9kZSIsIGJhc2ljYWxseQpzZXQgLWUgLXUgLW8gcGlwZWZhaWwgICAgCgojIDQuIFJlcG9ydDoKZWNobyAtZSAiXG4jIyBTdGFydGluZyBjdXRhZGFwdCBzY3JpcHQuIgpkYXRlCmBgYAoKIyMjIFBhcnQgQjogUGFyc2UgYXJndW1lbnRzIGFuZCBzZXQgdXAgZGlyZWN0b3JpZXMKCjEuIFNvLWNhbGxlZCAicG9zaXRpb25hbCIgYXJndW1lbnRzIHRoYXQgYXJlIHBhc3NlZCBvbnRvIGEgc2NyaXB0IHVzaW5nIHRoZQogICBzeW50YXggYC4vc2NyaXB0LnNoIGFyZzEgYXJnMmAgYXJlIHJlcHJlc2VudGVkIGluc2lkZSBhIHNjcmlwdCBhcyB0aGUKICAgdmFyaWFibGVzIGAkMWAsIGAkMmAsIGV0Yy4gRmlyc3QsIHdlIHdpbGwgZ2l2ZSB0aGVzZSB2YXJpYWJsZXMgYSBtb3JlCiAgIGluZm9ybWF0aXZlIG5hbWUuCgoyLiBXZSdsbCBkZWZpbmUgdGhlIHR3byBzZXBhcmF0ZSBkaXJzIHdlJ2xsIGhhdmUgZm9yIHRoZSBmaXJzdCBhbmQKICAgc2Vjb25kIHJvdW5kIG9mIHRyaW1taW5nIHRoYXQgd2UnbGwgZG8gYnkgZXh0ZW5kaW5nIHRoZSAiYmFzZSIgb3V0cHV0IGRpci4KCjMuIFdlJ2xsIGNyZWF0ZSB0aGUgb3V0cHV0IGRpcmVjdG9yaWVzIGlmIHRoZXkgZG9uJ3QgYWxyZWFkeSBleGlzdC4KICAgVXNpbmcgdGhlIGAtcGAgb3B0aW9uLCBgbWtkaXJgIGNhbiBjcmVhdGUgbXVsdGlwbGUgbGV2ZWxzIGF0IG9uY2UsCiAgIGFuZCB3aWxsIG5vdCBjb21wbGFpbiBpZiB0aGUgZGlyKHMpIGFscmVhZHkgZXhpc3QuCgo0LiBXZSdsbCByZXBvcnQgdGhlIGRpcmVjdG9yeSB2YXJpYWJsZXMgdG8gc2NyZWVuLAogICB3aGljaCB3aWxsIGJlIGhlbHBmdWwgZS5nLiBpZiB3ZSdkIG5lZWQgdG8gZGVidWcgb3VyIHNjcmlwdC4KCgpgYGB7YmFzaH0KIyBTRVRVUCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQojIDEuIENvbW1hbmQtbGluZSBhcmd1bWVudHM6CmluZGlyPSQxCm91dGRpcl9iYXNlPSQyCgojIDIuIERlZmluZSBvdXRwdXQgZGlyZWN0b3JpZXMgZm9yIGZpcnN0IGFuZCBzZWNvbmQgdHJpbToKb3V0ZGlyX3RyaW0xPSRvdXRkaXJfYmFzZS9maXJzdF90cmltCm91dGRpcl90cmltMj0kb3V0ZGlyX2Jhc2Uvc2Vjb25kX3RyaW0KCiMgMy4gQ3JlYXRlIG91dHB1dCBkaXJlY3RvcmllcyBpZiB0aGV5IGRvbid0IGFscmVhZHkgZXhpc3Q6Cm1rZGlyIC1wICRvdXRkaXJfdHJpbTEKbWtkaXIgLXAgJG91dGRpcl90cmltMgoKIyA0LiBSZXBvcnQ6CmVjaG8gIiMjIElucHV0IGRpcjogICAgICAgICAgICAgICAgICRpbmRpciIKZWNobyAiIyMgT3V0cHV0IGRpciAtIGZpcnN0IHRyaW06ICAgJG91dGRpcl90cmltMSIKZWNobyAiIyMgSW5wdXQgZGlyIC0gc2Vjb25kIHRyaW06ICAgJG91dGRpcl90cmltMSIKYGBgCgojIyMgUGFydCBDOiBMb29wIHRocm91Z2ggYGZhc3RxYCBmaWxlcyBhbmQgcnVuIGBjdXRhZGFwdGAgZm9yIGVhY2ggcGFpcjoKCldlIHdpbGwgcnVuIGBjdXRhZGFwdGAgc2VwYXJhdGVseSBmb3IgZWFjaCBzYW1wbGUsIHVzaW5nIGEgYGZvcmAgbG9vcCB0byBjeWNsZQp0aHJvdWdoIGFsbCB0aGUgZmlsZXMuClRoaXMgaXMgbWFkZSBhIGxpdHRsZSBtb3JlIGNvbXBsaWNhdGVkIGJlY2F1c2Ugd2UgaGF2ZSAqKnR3byBmaWxlcyoqIGZvciBlYWNoIHNhbXBsZToKb25lIHdpdGggZm9yd2FyZHMgcmVhZHMgKHdoaWNoIGhhcyAiUjEiIGluIGl0cyBmaWxlbmFtZSkKYW5kIG9uZSB3aXRoIHJldmVyc2UgcmVhZHMgKCJSMiIpLgoKMS4gV2UnbGwgaW5pdGlhbGl6ZSB0aGUgYGZvcmAgbG9vcCwgd2hpY2ggaXMgZG9uZSB1c2luZyBgZm9yIFggaW4gWFlaYCBzeW50YXguCiAgIFdoYXQgd2UnbGwgbG9vcCBvdmVyIChYWVogYWJvdmUpIGFyZSBhbGwgdGhlICJSMSIgZmFzdHEgZmlsZXMsCiAgIGkuZS4gdGhlIG9uZXMgd2l0aCB0aGUgZm9yd2FyZCByZWFkcy4KICAgV2UgbGlzdCBhbGwgb2YgdGhvc2UgYnkgdGFraW5nIGFkdmFudGFnZSBvZiB0aGUgYCpgIHdpbGRjYXJkLgoKMi4gTm93LCBgJFIxYCAoZGVmaW5lZCB1c2luZyBgUjFgIGluIHRoZSBsb29wIGluaXRpYXRpb24gbGluZSkgY29udGFpbnMsCiAgIGluIGVhY2ggcmVuZGl0aW9uIG9mIHRoZSBsb29wLCBhIHNpbmdsZSBmaWxlIG5hbWUuCiAgIEJlY2F1c2UgaXQgYWxzbyBjb250YWlucyB0aGUgZGlyIG5hbWUsIHdlIHdpbGwgZXh0cmFjdCB0aGUgZmlsZSBuYW1lIG9ubHkKICAgdXNpbmcgdGhlIGBiYXNlbmFtZSBjb21tYW5kYC4KICAgVGhlIGAkKClgIG5vdGF0aW9uIGlzIGNhbGxlZCBjb21tYW5kIHN1YnN0aXR1dGlvbiwKICAgYW5kIHNpbXBseSBhbGxvd3MgdXMgdG8gYXNzaWduIHRoZSBvdXRwdXQgb2YgYSBjb21tYW5kIHRvIGEgdmFyaWFibGUuCiAgIAozLiBUbyBnZXQgdGhlIGNvcnJlc3BvbmRpbmcgZmlsZSB3aXRoIHJldmVyc2UgcmVhZHMsIHdoaWNoIHNob3VsZCBhbHdheXMKICAgaGF2ZSB0aGUgZXhhY3Qgc2FtZSBuYW1lIGV4Y2VwdCB0aGF0IGl0IGNvbnRhaW5zICJSMiIgcmF0aGVyIHRoYW4gIlIxIiwKICAgd2Ugc2ltcGx5IHN1YnN0aXR1dGUgIlIxIiBieSAiUjIiIGluIHRoZSBmaWxlIG5hbWUgdXNpbmcgYSBsaXR0bGUgdHJpY2sKICAgd2l0aCB0aGUgc3ludGF4IGAke3ZhcmlhYmxlX25hbWUvcGF0dGVybi9yZXBsYWNlbWVudH1gLgoKNC4gVG8gbWFrZSBzdXJlIGFsbCBpcyB3ZWxsLCB3ZSBsaXN0IHRoZSBSMSBhbmQgUjIgaW5wdXQgZmlsZXMuCgo1LiBOb3csIHdlJ2xsIGRvIHRoZSBmaXJzdCByb3VuZCBvZiB0cmltbWluZyB1c2luZyB0aGUgZm9yd2FyZCAqcHJpbWVyKiBzZXF1ZW5jZXMuCiAgIFdlIHVzZSBgXGAganVzdCB0byBhbGxvdyB0aGUgY29tbWFuZCB0byBjb250aW51ZSBhY3Jvc3MgbXVsdGlwbGUgbGluZXMgZm9yCiAgIGVhc3kgb2YgcmVhZGluZyAodGhlIGBcYCAiZXNjYXBlcyIgdGhlIHJldHVybi9uZXdsaW5lKS4KCjYuIFdlJ2xsIGRvIHRoZSBzZWNvbmQgcm91bmQgb2YgdHJpbW1pbmcgdXNpbmcgdGhlIHJldmVyc2UgKnByaW1lciogc2VxdWVuY2VzLgoKNy4gV2UgdGVsbCB0aGUgbG9vcCB0aGF0IGlzIGRvbmUgdXNpbmcgYGRvbmVgLgoKYGBge2Jhc2h9CiMgUlVOIENVVEFEQVBUIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiMgMS4gSW5pdGlhbGl6ZSB0aGUgbG9vcDoKZm9yIFIxIGluICRpbmRpci8qX1IxXyouZmFzdHEuZ3oKZG8KICAjIDIuIEdldCB0aGUgZmlsZW5hbWVzIGZvciB0aGUgZmFzdHEgZmlsZXMgd2l0aCBmb3J3YXJkIChSMSkgYW5kIHJldmVyc2UgKFIyKSByZWFkczoKICBSMT0kKGJhc2VuYW1lICRSMSkgICAjIGBiYXNlbmFtZWAgd2lsbCBzdHJpcCB0aGUgZGlyZWN0b3J5IGZyb20gdGhlIG5hbWUKICAKICAjIDMuIAogIFIyPSR7UjEvX1IxXy9fUjJffSAgICMgVGhpcyB3aWxsIHN1YnN0aXR1dGUgIl9SMV8iIHdpdGggIl9SMl8iIGluIHRoZSBmaWxlbmFtZS4KICAKICAjIDQuIFJlcG9ydCBpbnB1dCBmaWxlczoKICBlY2hvICIjIyBSMSBpbnB1dCBmaWxlOiIKICBscyAtbGggJGluZGlyLyRSMQogIGVjaG8gIiMjIFIyIGlucHV0IGZpbGU6IgogIGxzIC1saCAkaW5kaXIvJFIyCgogICMgNS4gRmlyc3QgdHJpbToKICBlY2hvIC1lICJcblxuIyMgUnVubmluZyBjdXRhZGFwdCBmb3IgdGhlIGZpcnN0IHRyaW06IgoJCgljdXRhZGFwdCAtZyBHQUdUR1lDQUdDTUdDQ0dDR0dUQUEgLUcgQUNHR0FDVEFDTlZHR0dUV1RDVEFBVCBcCgktLWRpc2NhcmQtdW50cmltbWVkIC0tcGFpci1maWx0ZXI9YW55IFwKCS1vICRvdXRkaXJfdHJpbTEvJFIxIC1wICRvdXRkaXJfdHJpbTEvJFIyIFwKCSRpbmRpci8kUjEgJGluZGlyLyRSMgoJCgkjIDYuIFNlY29uZCB0cmltOgogIGVjaG8gLWUgIlxuXG4jIyBSdW5uaW5nIGN1dGFkYXB0IGZvciB0aGUgc2Vjb25kIHRyaW06IgoJCgljdXRhZGFwdCAtYSBBVFRBR0FXQUNDQ0JOR1RBR1RDQ0dUIC1BIFRUQUNDR0NHR0NLR0NUR1JDQUNUQyBcCgktbyAkb3V0ZGlyX3RyaW0yLyRSMSAtcCAkb3V0ZGlyX3RyaW0yLyRSMiBcCgkkb3V0ZGlyX3RyaW0xLyRSMSAkb3V0ZGlyX3RyaW0xLyRSMgogIAogICMgNy4gRXhpdCB0aGUgbG9vcCB1c2luZyB0aGUgYGRvbmVgIGtleXdvcmQKZG9uZQpgYGAKCiMjIyBQYXJ0IEQ6IExpc3Qgb3V0cHV0IGZpbGVzIGFzIGEgY2hlY2s6CgpGaW5hbGx5LCB3ZSdsbCBsaXN0IG91ciBvdXRwdXQgZmlsZXMsIGFzIGFub3RoZXIgd2F5IHRvIGNoZWNrIHdoZXRoZXIgdGhlIHNjcmlwdApoYXMgcnVuIGFzIGl0IHdhcyBzdXBwb3NlZCwgYW5kIHdlJ2xsIGFsc28gcHJpbnQgdGhlIGBkYXRlYCBhZ2FpbiB0byBjaGVjawp0aGUgKGRhdGUgYW5kKSB0aW1lIHRoYXQgb3VyIHNjcmlwdCBmaW5pc2hlZCBydW5uaW5nLgoKYGBge2Jhc2h9CiMgUkVQT1JUIEFORCBGSU5BTElaRSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplY2hvIC1lICJcblxuIyMgTGlzdGluZyBvdXRwdXQgZmlsZXMgLSBmaXJzdCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBMaXN0aW5nIG91dHB1dCBmaWxlcyAtIHNlY29uZCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBEb25lIHdpdGggY3V0YWRhcHQgc2NyaXB0LiIKZGF0ZQpgYGAKCiMjIyBUaGUgZW50aXJlIHNjcmlwdAoKPGRldGFpbHM+CjxzdW1tYXJ5PgpDbGljayBoZXJlIHRvIHNlZSB0aGUgZW50aXJlIHNjcmlwdC4KPC9zdW1tYXJ5PgoKYGBgc2gKIyEvYmluL2Jhc2gKI1NCQVRDSCAtLW5vZGVzPTEKI1NCQVRDSCAtLW50YXNrcy1wZXItbm9kZT0xCiNTQkFUQ0ggLS10aW1lPTYwCiNTQkFUQ0ggLS1hY2NvdW50PVBBUzA0NzEKCnNldCAtZSAtdSAtbyBwaXBlZmFpbCAgICAjIFJ1biBiYXNoIGluICJzYWZlIG1vZGUiLCBiYXNpY2FsbHkKCiMgUmVwb3J0OgplY2hvIC1lICJcbiMjIFN0YXJ0aW5nIGN1dGFkYXB0IHNjcmlwdC4iCmRhdGUKCiMgU0VUVVAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIyBDb21tYW5kLWxpbmUgYXJndW1lbnRzOgppbmRpcj0kMQpvdXRkaXJfYmFzZT0kMgoKIyBEZWZpbmUgb3V0cHV0IGRpcmVjdG9yaWVzIGZvciBmaXJzdCBhbmQgc2Vjb25kIHRyaW06Cm91dGRpcl90cmltMT0kb3V0ZGlyX2Jhc2UvZmlyc3RfdHJpbQpvdXRkaXJfdHJpbTI9JG91dGRpcl9iYXNlL3NlY29uZF90cmltCgojIENyZWF0ZSBvdXRwdXQgZGlyZWN0b3JpZXMgaWYgdGhleSBkb24ndCBhbHJlYWR5IGV4aXN0Ogpta2RpciAtcCAkb3V0ZGlyX3RyaW0xCm1rZGlyIC1wICRvdXRkaXJfdHJpbTIKCiMgUmVwb3J0OgplY2hvICIjIyBJbnB1dCBkaXI6ICAgICAgICAgICAgICAgICAkaW5kaXIiCmVjaG8gIiMjIE90cHV0IGRpciAtIGZpcnN0IHRyaW06ICAgICRvdXRkaXJfdHJpbTEiCmVjaG8gIiMjIElucHV0IGRpciAtIHNlY29uZCB0cmltOiAgICRvdXRkaXJfdHJpbTEiCgojIFJVTiBDVVRBREFQVCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplY2hvIC1lICJcbiMjIExvb3BpbmcgdGhyb3VnaCBpbnB1dCBmaWxlcy4uLlxuIgoKZm9yIFIxIGluICRpbmRpci8qX1IxXyouZmFzdHEuZ3oKZG8KICBSMT0kKGJhc2VuYW1lICRSMSkKICBSMj0ke1IxL19SMV8vX1IyX30KICAKICAjIFJlcG9ydCBpbnB1dCBmaWxlczoKICBlY2hvICIjIyBSMSBpbnB1dCBmaWxlOiIKICBscyAtbGggJGluZGlyLyRSMQogIGVjaG8gIiMjIFIyIGlucHV0IGZpbGU6IgogIGxzIC1saCAkaW5kaXIvJFIyCgogICMgRmlyc3QgdHJpbToKICBlY2hvIC1lICJcblxuIyMgUnVubmluZyBjdXRhZGFwdCBmb3IgdGhlIGZpcnN0IHRyaW06IgoJCgljdXRhZGFwdCAtZyBHQUdUR1lDQUdDTUdDQ0dDR0dUQUEgLUcgQUNHR0FDVEFDTlZHR0dUV1RDVEFBVCBcCgkgIC0tZGlzY2FyZC11bnRyaW1tZWQgLS1wYWlyLWZpbHRlcj1hbnkgXAoJICAtbyAkb3V0ZGlyX3RyaW0xLyRSMSAtcCAkb3V0ZGlyX3RyaW0xLyRSMiBcCgkgICRpbmRpci8kUjEgJGluZGlyLyRSMgoJCgkjIFNlY29uZCB0cmltOgogIGVjaG8gLWUgIlxuXG4jIyBSdW5uaW5nIGN1dGFkYXB0IGZvciB0aGUgc2Vjb25kIHRyaW06IgoJCgljdXRhZGFwdCAtYSBBVFRBR0FXQUNDQ0JOR1RBR1RDQ0dUIC1BIFRUQUNDR0NHR0NLR0NUR1JDQUNUQyBcCgkgIC1vICRvdXRkaXJfdHJpbTIvJFIxIC1wICRvdXRkaXJfdHJpbTIvJFIyIFwKCSAgJG91dGRpcl90cmltMS8kUjEgJG91dGRpcl90cmltMS8kUjIKCmRvbmUKCiMgUkVQT1JUIEFORCBGSU5BTElaRSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplY2hvIC1lICJcblxuIyMgTGlzdGluZyBvdXRwdXQgZmlsZXMgLSBmaXJzdCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBMaXN0aW5nIG91dHB1dCBmaWxlcyAtIHNlY29uZCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBEb25lIHdpdGggY3V0YWRhcHQgc2NyaXB0LiIKZGF0ZQpgYGAKCjwvZGV0YWlscz4KCi0tLS0tCgojIyBTdWJtaXQgdGhlIFNjcmlwdAoKV2UnbGwgZmlyc3QgY2hlY2sgd2hldGhlciB3ZSBhcmUgaW4gdGhlIGNvcnJlY3QgZGlyZWN0b3J5LApzbyB0aGF0IG91ciByZWxhdGl2ZSBwYXRocyB3aWxsIHdvcms6CgpgYGB7YmFzaH0KIyBMZXQncyBjaGVjayB3ZSBhcmUgaW4gdGhlIGNvcnJlY3QgZGlyZWN0b3J5Ogpwd2QKIyBTaG91bGQgcmV0dXJuOiAvZnMvcHJvamVjdC9QQVMwNDcxL3dvcmtzaG9wcy8yMDIwLTEyX21pY3JvLzx5b3VyLXVzZXJuYW1lPgojIElmIG5vdCwgcnVuOiAiY2QgL2ZzL3Byb2plY3QvUEFTMDQ3MS93b3Jrc2hvcHMvMjAyMC0xMl9taWNyby8kVVNFUiIKYGBgCgo8YnI+CgpUaGVuIHdlIGFzc2lnbiBvdXIgaW5wdXQgZGlyZWN0b3J5IGFuZCBiYXNlIG91dHB1dCBkaXJlY3RvcnkgdG8gdGhlIHZhcmlhYmxlcwpgaW5kaXJgIGFuZCBgb3V0ZGlyX2Jhc2VgLCByZXNwZWN0aXZlbHkuCgpXZSdsbCBhbHNvIGFzc2lnbiB0aGUgbmFtZSB3ZSB3YW50IHRvIGdpdmUgdG8gdGhlICpTTFVSTSogbG9nIGZpbGUgdG8gYSB2YXJpYWJsZS4KSGVyZSwgd2UnbGwgYWxzbyB1c2UgdGhlIGAlamAgKlNMVVJNKiBrZXl3b3JkIHRvIGluY2x1ZGUgdGhlICpTTFVSTSogam9iIG51bWJlci4KCmBgYHtiYXNofQppbmRpcj1kYXRhL3Jhdy9mYXN0cV9zdWJzYW1wbGUKb3V0ZGlyX2Jhc2U9ZGF0YS9wcm9jZXNzZWQvZmFzdHFfdHJpbW1lZAoKIyBHaXZlIGEgbmFtZSB0byB0aGUgU0xVUk0gb3V0cHV0IGZpbGU6CiMgKFRoZSAtbyBmbGFnIHNldHMgdGhlIFNMVVJNIGxvZyBmaWxlIG5hbWUsIGFuZCBgJWpgIHJlcHJlc2VudHMgdGhlIGpvYiBJRCkKc2x1cm1fZmlsZT1zbHVybS1jdXRhZGFwdC0kVVNFUi0lai5vdXQKYGBgCgo8YnI+CgpGaW5hbGx5LCB3ZSdyZSByZWFkeSB0byAqKnN1Ym1pdCB0aGUgc2NyaXB0KiohCmBgYHNoCnNiYXRjaCAtbyAkc2x1cm1fZmlsZSBzY3JpcHRzLzAxLWN1dGFkYXB0LnNoICRpbmRpciAkb3V0ZGlyX2Jhc2UKYGBgCgotLS0tLQoKIyMgTW9uaXRvciB0aGUgSm9iIGFuZCBJdHMgT3V0cHV0CgoKIyMjIE1vbml0b3IgdGhlIGpvYgoKV2UgY2FuIGNoZWNrIHdoYXQncyBnb2luZyBvbiB3aXRoIG91ciBqb2IgdXNpbmcgYHNxdWV1ZWA6CgpgYGB7YmFzaH0KIyBJbml0aWFsbHkgdGhlIGpvYiBtYXkgYmUgcXVldWVkIChgUERgIGluIHRoZSBgU1RgIGNvbHVtbik6CnNxdWV1ZSAtdSAkVVNFUgojIEpPQklEIFBBUlRJVElPTiAgICAgTkFNRSAgICAgVVNFUiBTVCAgICAgICBUSU1FICBOT0RFUyBOT0RFTElTVChSRUFTT04pIAojIDI0NTEwODggc2VyaWFsLTQwIDAxLWN1dGFkICAgamVsbWVyIFBEICAgICAgIDA6MDAgICAgICAxIChOb25lKSAKCiMgVGhlbiB0aGUgam9iIHNob3VsZCBiZSBydW5uaW5nOgpzcXVldWUgLXUgJFVTRVIKIyBKT0JJRCBQQVJUSVRJT04gICAgIE5BTUUgICAgIFVTRVIgU1QgICAgICAgVElNRSAgTk9ERVMgTk9ERUxJU1QoUkVBU09OKSAKIyAyNDUxMDg4IHNlcmlhbC00MCAwMS1jdXRhZCAgIGplbG1lciBSICAgICAgIDA6NDMgICAgICAxIChOb25lKSAKCiMgV2hlbiB0aGUgam9iIGhhcyBmaW5pc2hlZCwgc3F1ZXVlIHdpbGwgcmV0dXJuIG5vdGhpbmc6CnNxdWV1ZSAtdSAkVVNFUgojIEpPQklEIFBBUlRJVElPTiAgICAgTkFNRSAgICAgVVNFUiBTVCAgICAgICBUSU1FICBOT0RFUyBOT0RFTElTVChSRUFTT04pIAoKYGBgCgo8YnI+CgpXZSBjb3VsZCBhbHNvIGdldCBtb3JlIHN0YXRpc3RpY3MgYWJvdXQgb3VyIGpvYiB1c2luZyBgc2NvbnRyb2xgOgoKYGBge2Jhc2h9CnNjb250cm9sIHNob3cgam9iIDI0NTEwODggICAjIFJlcGxhY2UgdGhlIG51bWJlciB3aXRoIHlvdXIgSk9CSUQKYGBgCgojIyMgQ2hlY2sgdGhlIG91dHB1dAoKTGV0J3Mgc2VlIGlmIHdlIGhhdmUgYSBsb2cgZmlsZToKCmBgYHtiYXNofQpscyBzbHVybSokVVNFUioKIyBzbHVybS1jdXRhZGFwdC1qZWxtZXItMjQ1MTA4OC5vdXQKYGBgCgpMZXQncyBsb29rIGF0IHRoZSBzdGFydCBvZiB0aGUgKlNMVVJNKiBsb2cgZmlsZToKCmBgYHtiYXNofQpoZWFkIC1uIDIwIHNsdXJtLWN1dGFkYXB0LWplbG1lci0yNDUxMDg4Lm91dAoKIyAjIyBTdGFydGluZyBjdXRhZGFwdCBzY3JpcHQuCiMgRnJpIERlYyAxMSAxMDowMzowMCBFU1QgMjAyMAojICMjIElucHV0IGRpcjogICAgICAgICAgICAgICAgIGRhdGEvcmF3L2Zhc3RxLwojICMjIE91dHB1dCBkaXIgLSBmaXJzdCB0cmltOiAgIGRhdGEvcHJvY2Vzc2VkL2Zhc3RxX3RyaW1tZWQvZmlyc3RfdHJpbQojICMjIElucHV0IGRpciAtIHNlY29uZCB0cmltOiAgIGRhdGEvcHJvY2Vzc2VkL2Zhc3RxX3RyaW1tZWQvZmlyc3RfdHJpbQojIAojICMjIExvb3BpbmcgdGhyb3VnaCBpbnB1dCBmaWxlcy4uLgojIAojICMjIFIxIGlucHV0IGZpbGU6CiMgLXItLXItLXItLSAxIGplbG1lciBQQVMwNDcxIDcuNE0gRGVjICAxMSAwODoyNyBkYXRhL3Jhdy9mYXN0cV9zdWJzYW1wbGUvMjAxLVM0LVY0LVY1X1M1M19MMDAxX1IxXzAwMS5mYXN0cS5negojICMjIFIyIGlucHV0IGZpbGU6CiMgLXItLXItLXItLSAxIGplbG1lciBQQVMwNDcxIDguOE0gRGVjICAxMSAwODoyNyBkYXRhL3Jhdy9mYXN0cV9zdWJzYW1wbGUvMjAxLVM0LVY0LVY1X1M1M19MMDAxX1IyXzAwMS5mYXN0cS5negojIAojIAojICMjIFJ1bm5pbmcgY3V0YWRhcHQgZm9yIHRoZSBmaXJzdCB0cmltOgojIFRoaXMgaXMgY3V0YWRhcHQgMy4xIHdpdGggUHl0aG9uIDMuOC42CiMgQ29tbWFuZCBsaW5lIHBhcmFtZXRlcnM6IC1nIEdBR1RHWUNBR0NNR0NDR0NHR1RBQSAtRyBBQ0dHQUNUQUNOVkdHR1RXVENUQUFUIC0tZGlzY2FyZC11bnRyaW1tZWQgLS1wYWlyLWZpbHRlcj1hbnkgLW8gZGF0YS9wcm9jZXNzZWQvZmFzdHFfdHJpbW1lZC9maXJzdF90cmltLzIwMS1TNC1WNC1WNV9TNTNfTDAwMV9SMV8wMDEuZmFzdHEuZ3ogLXAgZGF0YS9wcm9jZXNzZWQvZmFzdHFfdHJpbW1lZC9maXJzdF90cmltLzIwMS1TNC1WNC1WNV9TNTNfTDAwMV9SMl8wMDEuZmFzdHEuZ3ogZGF0YS9yYXcvZmFzdHFfc3Vic2FtcGxlLzIwMS1TNC1WNC1WNV9TNTNfTDAwMV9SMV8wMDEuZmFzdHEuZ3ogZGF0YS9yYXcvZmFzdHEvMjAxLVM0LVY0LVY1X1M1M19MMDAxX1IyXzAwMS5mYXN0cS5negojIFByb2Nlc3NpbmcgcmVhZHMgb24gMSBjb3JlIGluIHBhaXJlZC1lbmQgbW9kZSAuLi4KYGBgCgpMZXQncyBhbHNvIGxvb2sgYXQgdGhlIGVuZCBvZiB0aGUgZmlsZToKCmBgYHtiYXNofQp0YWlsIHNsdXJtLWN1dGFkYXB0LWplbG1lci0yNDUxMDg4Lm91dAoKIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgMS4xTSBEZWMgIDExIDEwOjA1IGJsYW5rTS1WNC1WNV9TNzNfTDAwMV9SMV8wMDEuZmFzdHEuZ3oKIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgMS40TSBEZWMgIDExIDEwOjA1IGJsYW5rTS1WNC1WNV9TNzNfTDAwMV9SMl8wMDEuZmFzdHEuZ3oKIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgIDU2SyBEZWMgIDExIDEwOjA1IEgyMC1WNC1WNV9TODhfTDAwMV9SMV8wMDEuZmFzdHEuZ3oKIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgIDY2SyBEZWMgIDExIDEwOjA1IEgyMC1WNC1WNV9TODhfTDAwMV9SMl8wMDEuZmFzdHEuZ3oKIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgMy44TSBEZWMgIDExIDEwOjA1IFp5bW8tVjQtVjVfUzgyX0wwMDFfUjFfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDQuNE0gRGVjICAxMSAxMDowNSBaeW1vLVY0LVY1X1M4Ml9MMDAxX1IyXzAwMS5mYXN0cS5negojIAojIAojICMjIERvbmUgd2l0aCBjdXRhZGFwdCBzY3JpcHQuCiMgRnJpIERlYyAgMTEgMTA6MDU6MzMgRVNUIDIwMjAKYGBgCgoKPGJyPgoKRmluYWxseSwgd2UgY2FuIGRpcmVjdGx5IGNoZWNrIG9uZSBvZiB0aGUgb3V0cHV0IGRpcnM6CgpgYGB7YmFzaH0KbHMgLWxoIGRhdGEvcHJvY2Vzc2VkL2Zhc3RxX3RyaW1tZWQvc2Vjb25kX3RyaW0vCgojIHRvdGFsIDQ3NE0KIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgNy44TSBEZWMgIDExIDEwOjA1IDEwMS1TMS1WNC1WNV9TMV9MMDAxX1IxXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA5LjhNIERlYyAgMTEgMTA6MDUgMTAxLVMxLVY0LVY1X1MxX0wwMDFfUjJfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDkuNk0gRGVjICAxMSAxMDowNSAxMDEtUzQtVjQtVjVfUzQ5X0wwMDFfUjFfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxICAxM00gRGVjICAxMSAxMDowNSAxMDEtUzQtVjQtVjVfUzQ5X0wwMDFfUjJfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDYuOE0gRGVjICAxMSAxMDowNSAxMDItUzQtVjQtVjVfUzUwX0wwMDFfUjFfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDguM00gRGVjICAxMSAxMDowNSAxMDItUzQtVjQtVjVfUzUwX0wwMDFfUjJfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDYuMk0gRGVjICAxMSAxMDowNSAxMDMtUzQtVjQtVjVfUzUxX0wwMDFfUjFfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDcuOE0gRGVjICAxMSAxMDowNSAxMDMtUzQtVjQtVjVfUzUxX0wwMDFfUjJfMDAxLmZhc3RxLmd6CiMgLi4uLltvdGhlciBmaWxlcyBub3Qgc2hvd25dCgoKYGBgCgo8YnI+CgpBbGwgZG9uZSEgT3VyIFtuZXh0IHN0ZXBdKDA3LUFTVi1pbmZlcmVuY2UuaHRtbCkgd2lsbCBiZSB0byBmdXJ0aGVyIHByb2Nlc3MgdGhlIGBmYXN0cWAgZmlsZXMgd2l0aCBgY3V0YWRhcHRgLgoKPGJyPiA8YnI+IDxicj4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiPGJyPldvcmtmbG93IHBhcnQgSTo8YnI+UHJpbWVyIGFuZCBBZGFwdGVyIFJlbW92YWwiCm91dHB1dDoKICBybWFya2Rvd246Omh0bWxfZG9jdW1lbnQ6CiAgICB0aGVtZTogY2VydWxlYW4KICAgIGhpZ2hsaWdodDoga2F0ZQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKLS0tCgo8YnI+CgpgYGB7ciBrbml0cl9vcHRpb25zLCBlY2hvPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZXZhbCA9IEZBTFNFKQpgYGAKIAotLS0tLQoKIyMgR29hbHMKCi0gUmVtb3ZlIHByaW1lcnMgYW5kIGFkYXB0ZXJzIGZyb20gb3VyIHNlcXVlbmNlcy4KLSBXaGlsZSBkb2luZyBzbywgd2UnbGwgbGVhcm46CiAgLSBIb3cgdG8gbG9hZCBhIGBjb25kYWAgZW52aXJvbm1lbnQuCiAgLSBTb21lIGJhc2ljcyBvZiB3cml0aW5nIGEgc2hlbGwgc2NyaXB0LgogIC0gSG93IHRvIHJ1biBgY3V0YWRhcHRgLgogIC0gSG93IHRvIHN1Ym1pdCBhbmQgbW9uaXRvciBhIGpvYiB3aXRoIHRoZSAqU0xVUk0qIHNjaGVkdWxlci4gCgotLS0tLQoKIyMgQmVmb3JlIFdlIEdldCBTdGFydGVkCgojIyMgTm90ZXMKCi0gWW91IGNhbiBkb3dubG9hZCB0aGlzIGBSbWRgIChSIE1hcmtkb3duKSBmaWxlIGJ5IGNsaWNraW5nIHRoZSBgQ29kZWAgYnV0dG9uIGluCiAgdGhlIHRvcC1yaWdodCBvZiB0aGlzIHBhZ2UuCiAgVG8gY29udmVydCBhbiBgUm1kYCBmaWxlIHRvIGFuIFIgc2NyaXB0LAogIHR5cGUgdGhlIGZvbGxvd2luZyBpbiBhbiBSIGNvbnNvbGU6IGBrbml0cjo6cHVybChpbnB1dD0iPGZpbGVuYW1lPi5SbWQiKWAuCgojIyMgU2V0dXAKCi0gTG9naW4gdG8gT1NDIGF0IDxodHRwczovL29uZGVtYW5kLm9zYy5lZHU+LgoKLSBFbnRlciBhIHRlcm1pbmFsIGluIHlvdXIgYnJvd3NlciBhdCBPU0MgYnkgY2xpY2tpbmcgYENsdXN0ZXJgID4gYFBpdHplciBTaGVsbCBBY2Nlc3NgLgogIChPciB1c2UgW3RoaXMgZGlyZWN0IGxpbmtdKGh0dHBzOi8vb25kZW1hbmQub3NjLmVkdS9wdW4vc3lzL3NoZWxsL3NzaC9waXR6ZXIub3NjLmVkdSkuKQoKLSBHbyB0byB0aGlzIHlvdXIgZGlyZWN0b3J5IGZvciB0aGlzIHdvcmtzaG9wIGF0IE9TQzoKCiAgYGBge2Jhc2h9CiAgY2QgL2ZzL3Byb2plY3QvUEFTMDQ3MS93b3Jrc2hvcHMvMjAyMC0xMl9taWNyby8kVVNFUgogIGBgYAoKLS0tLS0KCiMjIEdldHRpbmcgU3RhcnRlZAoKW2BjdXRhZGFwdGBdKGh0dHBzOi8vY3V0YWRhcHQucmVhZHRoZWRvY3MuaW8vZW4vc3RhYmxlL2luZGV4Lmh0bWwpIGlzIGEgc29mdHdhcmUKcGFja2FnZSB0byByZW1vdmUgYW55IGFkYXB0ZXJzIGFuZCBwcmltZXJzIHRoYXQgbWF5IGJlIHByZXNlbnQgaW4gcmF3IHNlcXVlbmNlIGRhdGEuCgpXZSB3aWxsIHVzZSB0aGUgb3V0cHV0IGZyb20gYGN1dGFkYXB0YCBhcyBpbnB1dCBmb3IgdGhlIG5leHQgc3RlcCBpbiBvdXIgd29ya2Zsb3csCltBU1YgSW5mZXJlcmVuY2UgYW5kIFRheG9uIEFzc2lnbm1lbnRdKDA3LUFTVi1pbmZlcmVuY2UuaHRtbCkuCgoKIyMjIFByaW1lcnMKClRoZXNlIGFyZSB0aGUgcHJpbWVycyB0aGF0IHdlcmUgdXNlZCBpbiB0aGlzIGFtcGxpY29uIHNlcXVlbmNpbmcuCndlIHdhbnQgdG8gcmVtb3ZlOgoKLSA1MTVGOiAqR0FHVEdZQ0FHQ01HQ0NHQ0dHVEFBKgotIDgwNlI6ICpBQ0dHQUNUQUNOVkdHR1RXVENUQUFUKgotIDUxNUYgcmV2ZXJzZSBjb21wbGVtZW50OiAqVFRBQ0NHQ0dHQ0tHQ1RHUkNBQ1RDKgotIDgwNlIgcmV2ZXJzZSBjb21wbGVtZW50OiAqQVRUQUdBV0FDQ0NCTkdUQUdUQ0NHVCoKCldlIHdpbGwgc3BlY2lmeSB0aGVzZSBwcmltZXJzIHdoZW4gcnVubmluZyBgY3V0YWRhcHRgLgoKIyMjIExvYWQgdGhlIGBjb25kYWAgZW52aXJvbm1lbnQgd2l0aCBgY3V0YWRhcHRgIAoKYGN1dGFkYXB0YCBpcyBub3QgYXZhaWxhYmxlIGFzIGEgbW9kdWxlIGF0IE9TQy4KSG93ZXZlciwgaXQgY2FuIGJlIGVhc2lseSBpbnN0YWxsZWQgdGhlcmUgdGhyb3VnaCBgY29uZGFgLApzZWUgdGhpcyBbd2VicGFnZV0oaHR0cHM6Ly9jdXRhZGFwdC5yZWFkdGhlZG9jcy5pby9lbi9zdGFibGUvaW5zdGFsbGF0aW9uLmh0bWwjaW5zdGFsbGF0aW9uLXdpdGgtY29uZGEpLiAgIApXZSBoYXZlIGFscmVhZHkgZG9uZSB0aGlzIGZvciB5b3UgdG8gc2F2ZSBzb21lIHRpbWUsCnNvIHdlIGp1c3QgbmVlZCB0byBsb2FkIHRoZSBgY29uZGFgIGVudmlyb25tZW50LgoKVG8gd29yayB3aXRoIGBjb25kYWAgYXQgT1NDLCB3ZSBmaXJzdCBuZWVkIHRvIGxvYWQgdGhlIGBjb25kYWAgbW9kdWxlOgoKYGBge2Jhc2h9Cm1vZHVsZSBsb2FkIHB5dGhvbi8zLjYtY29uZGE1LjIKYGBgCgpBc3N1bWluZyB0aGF0IHlvdSBoYXZlbid0IHdvcmtlZCB3aXRoIGNvbmRhIGJlZm9yZSBhdCBPU0MsCndlIGFsc28gbmVlZCB0byBhIGJpdCBvZiBhZGRpdGlvbmFsIHNldHVwOgoKYGBge2Jhc2h9CiMgVGhpcyB3aWxsIGFkZCBhIGxpbmUgdG8geW91ciBiYXNoIGNvbmZpZyBmaWxlLCB3aGljaCBydW5zIGV2ZXJ5IHRpbWUgeW91IHN0YXJ0CiMgYSBzaGVsbCwgdG8gcnVuIHRoZSBjb25kYSBzZXR1cCBzY3JpcHQ6CmVjaG8gIi4gL2FwcHMvcHl0aG9uLzMuNi1jb25kYTUuMi9ldGMvcHJvZmlsZS5kL2NvbmRhLnNoIiA+PiB+Ly5iYXNocmMKCiMgTmV4dCwgd2Ugc291cmNlIChydW4pIHRoZSBjb25maWcgZmlsZSBpbiBvdXIgY3VycmVudCBzaGVsbCB0byBhbHNvIHJ1biB0aGUgY29uZGEKIyBzZXR1cCBzY3JpcHQgcmlnaHQgbm93Ogpzb3VyY2Ugfi8uYmFzaHJjCmBgYAoKVGhlbiwgd2UgYWN0aXZhdGUgb3VyIGBjb25kYWAgZW52aXJvbm1lbnQgZm9yIGBjdXRhZGFwdGA6CgpgYGB7YmFzaH0KY29uZGEgYWN0aXZhdGUgL3VzZXJzL1BBUzA0NzEvb3N1NTY4NS8uY29uZGEvZW52cy9jdXRhZGFwdGVudgpgYGAKCjxicj4KCk5vdywgYGN1dGFkYXB0YCBzaG91bGQgYmUgaW4gYCRQQVRIYCwgaS5lLiB3ZSBjYW4gc2ltcGx5IGNhbGwgaXQgYnkgaXRzIG5hbWUgdG8gcnVuIGl0LgpUbyB0ZXN0IHRoaXM6CgpgYGB7YmFzaH0KY3V0YWRhcHQgLS12ZXJzaW9uICAgICAjIFdpbGwganVzdCBwcmludCB0aGUgdmVyc2lvbiBudW1iZXIKY3V0YWRhcHQgLS1oZWxwICAgICAgICAjIFdpbGwgcHJpbnQgYSB3aG9sZSBsb3Qgb2YgZG9jdW1lbnRhdGlvbgpgYGAKCgotLS0tLQoKIyMgQSBTY3JpcHQgdG8gUnVuIGBjdXRhZGFwdGAKCiMjIyBQYXJ0IEE6IEJvaWxlcnBsYXRlIGFuZCAqU0xVUk0qIGRpcmVjdGl2ZXMKCjEuIE91ciBmaXJzdCBsaW5lLCBgIyEvYmluL2Jhc2hgLCBpcyB0aGUgKiJzaGViYW5nIiogbGluZSB0aGF0IHRlbGxzIHVzIHdoYXQKICBwcm9ncmFtIChsYW5ndWFnZSkgb3VyIHNjcmlwdCB1c2VzLCB3aGljaCBpcyBgYmFzaGAgaW4gdGhpcyBjYXNlLgoKMi4gV2UnbGwgcHJvdmlkZSB0aGUgYFNMVVJNYCBkaXJlY3RpdmVzIG9uZSBsaW5lIGF0IGEgdGltZSwKICB1c2luZyB0aGUgYCNTQkFUQ0hgIGtleXdvcmQgZm9sbG93ZWQgYnkgYW4gb3B0aW9uOiBgbm9kZXNgIGZvciB0aGUgbnVtYmVyIG9mCiAgbm9kZXMsIGBudGFza3MtcGVyLW5vZGVgIGZvciB0aGUgbnVtYmVyIG9mIGNvcmVzLCBgdGltZWAgZm9yIHRoZSBtYXhpbXVtCiAgd2FsbHRpbWUgb2YgdGhlIGpvYiAoaGVyZSBzcGVjaWZpY2VkIHVzaW5nIGp1c3QgbWludXRlcyksIGFuZCBgYWNjb3VudGAgZm9yCiAgdGhlIE9TQyBwcm9qZWN0IHRoYXQgc2hvdWxkIGJlIGJpbGxlZC4KCjMuIFdlJ2xsIHNldCBhIGNvdXBsZSBvZiBvcHRpb25zIHdpdGggYHNldGAgdGhhdCBtYWtlIGBiYXNoYCBydW4gc2FmZXIsCiAgYnkgbWFraW5nIGl0IHN0b3AgdGhlIHNjcmlwdCB3aGVuZXZlciBhbiBlcnJvciBpcyBlbmNvdW50ZXJlZCAoYnkgZGVmYXVsdCwKICB0aGUgc2NyaXB0IHdpbGwga2VlcCBydW5uaW5nLikKCjQuIFdlJ2xsIHVzZSBhbiBgZWNob2Agc3RhdGVtZW50IHRvIHByaW50IHRvIHNjcmVlbiB3aGF0IHNjcmlwdCB3ZSBhcmUKICBydW5uaW5nLCBhbmQgdGhlIGBkYXRlYCBjb21tYW5kIHRvIGtlZXAgdHJhY2sgb2YgdGhlIHNjcmlwdCdzIHJ1bnRpbWUuCiAgKFRoZSBgLWVgIG9wdGlvbiB0byBgZWNob2AgYWxsb3dzIHVzIHRvIHByaW50IG5ld2xpbmVzIHVzaW5nIGBcbmApLgoKYGBge2Jhc2h9CiMhL2Jpbi9iYXNoICAgICAgICAgICAgICAgICAgICMgMS4gRmlyc3QgbGluZSBzaG91bGQgYmUgdGhlIHNoZWJhbmcgbGluZQojU0JBVENIIC0tbm9kZXM9MSAgICAgICAgICAgICAjIDIuIFByb3ZpZGUgc2JhdGNoIGRpcmVjdGl2ZXMKI1NCQVRDSCAtLW50YXNrcy1wZXItbm9kZT0xCiNTQkFUQ0ggLS10aW1lPTYwCiNTQkFUQ0ggLS1hY2NvdW50PVBBUzA0NzEKCiMgMy4gUnVuIGJhc2ggaW4gInNhZmUgbW9kZSIsIGJhc2ljYWxseQpzZXQgLWUgLXUgLW8gcGlwZWZhaWwgICAgCgojIDQuIFJlcG9ydDoKZWNobyAtZSAiXG4jIyBTdGFydGluZyBjdXRhZGFwdCBzY3JpcHQuIgpkYXRlCmBgYAoKIyMjIFBhcnQgQjogUGFyc2UgYXJndW1lbnRzIGFuZCBzZXQgdXAgZGlyZWN0b3JpZXMKCjEuIFNvLWNhbGxlZCAicG9zaXRpb25hbCIgYXJndW1lbnRzIHRoYXQgYXJlIHBhc3NlZCBvbnRvIGEgc2NyaXB0IHVzaW5nIHRoZQogICBzeW50YXggYC4vc2NyaXB0LnNoIGFyZzEgYXJnMmAgYXJlIHJlcHJlc2VudGVkIGluc2lkZSBhIHNjcmlwdCBhcyB0aGUKICAgdmFyaWFibGVzIGAkMWAsIGAkMmAsIGV0Yy4gRmlyc3QsIHdlIHdpbGwgZ2l2ZSB0aGVzZSB2YXJpYWJsZXMgYSBtb3JlCiAgIGluZm9ybWF0aXZlIG5hbWUuCgoyLiBXZSdsbCBkZWZpbmUgdGhlIHR3byBzZXBhcmF0ZSBkaXJzIHdlJ2xsIGhhdmUgZm9yIHRoZSBmaXJzdCBhbmQKICAgc2Vjb25kIHJvdW5kIG9mIHRyaW1taW5nIHRoYXQgd2UnbGwgZG8gYnkgZXh0ZW5kaW5nIHRoZSAiYmFzZSIgb3V0cHV0IGRpci4KCjMuIFdlJ2xsIGNyZWF0ZSB0aGUgb3V0cHV0IGRpcmVjdG9yaWVzIGlmIHRoZXkgZG9uJ3QgYWxyZWFkeSBleGlzdC4KICAgVXNpbmcgdGhlIGAtcGAgb3B0aW9uLCBgbWtkaXJgIGNhbiBjcmVhdGUgbXVsdGlwbGUgbGV2ZWxzIGF0IG9uY2UsCiAgIGFuZCB3aWxsIG5vdCBjb21wbGFpbiBpZiB0aGUgZGlyKHMpIGFscmVhZHkgZXhpc3QuCgo0LiBXZSdsbCByZXBvcnQgdGhlIGRpcmVjdG9yeSB2YXJpYWJsZXMgdG8gc2NyZWVuLAogICB3aGljaCB3aWxsIGJlIGhlbHBmdWwgZS5nLiBpZiB3ZSdkIG5lZWQgdG8gZGVidWcgb3VyIHNjcmlwdC4KCgpgYGB7YmFzaH0KIyBTRVRVUCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQojIDEuIENvbW1hbmQtbGluZSBhcmd1bWVudHM6CmluZGlyPSQxCm91dGRpcl9iYXNlPSQyCgojIDIuIERlZmluZSBvdXRwdXQgZGlyZWN0b3JpZXMgZm9yIGZpcnN0IGFuZCBzZWNvbmQgdHJpbToKb3V0ZGlyX3RyaW0xPSRvdXRkaXJfYmFzZS9maXJzdF90cmltCm91dGRpcl90cmltMj0kb3V0ZGlyX2Jhc2Uvc2Vjb25kX3RyaW0KCiMgMy4gQ3JlYXRlIG91dHB1dCBkaXJlY3RvcmllcyBpZiB0aGV5IGRvbid0IGFscmVhZHkgZXhpc3Q6Cm1rZGlyIC1wICRvdXRkaXJfdHJpbTEKbWtkaXIgLXAgJG91dGRpcl90cmltMgoKIyA0LiBSZXBvcnQ6CmVjaG8gIiMjIElucHV0IGRpcjogICAgICAgICAgICAgICAgICRpbmRpciIKZWNobyAiIyMgT3V0cHV0IGRpciAtIGZpcnN0IHRyaW06ICAgJG91dGRpcl90cmltMSIKZWNobyAiIyMgSW5wdXQgZGlyIC0gc2Vjb25kIHRyaW06ICAgJG91dGRpcl90cmltMSIKYGBgCgojIyMgUGFydCBDOiBMb29wIHRocm91Z2ggYGZhc3RxYCBmaWxlcyBhbmQgcnVuIGBjdXRhZGFwdGAgZm9yIGVhY2ggcGFpcjoKCldlIHdpbGwgcnVuIGBjdXRhZGFwdGAgc2VwYXJhdGVseSBmb3IgZWFjaCBzYW1wbGUsIHVzaW5nIGEgYGZvcmAgbG9vcCB0byBjeWNsZQp0aHJvdWdoIGFsbCB0aGUgZmlsZXMuClRoaXMgaXMgbWFkZSBhIGxpdHRsZSBtb3JlIGNvbXBsaWNhdGVkIGJlY2F1c2Ugd2UgaGF2ZSAqKnR3byBmaWxlcyoqIGZvciBlYWNoIHNhbXBsZToKb25lIHdpdGggZm9yd2FyZHMgcmVhZHMgKHdoaWNoIGhhcyAiUjEiIGluIGl0cyBmaWxlbmFtZSkKYW5kIG9uZSB3aXRoIHJldmVyc2UgcmVhZHMgKCJSMiIpLgoKMS4gV2UnbGwgaW5pdGlhbGl6ZSB0aGUgYGZvcmAgbG9vcCwgd2hpY2ggaXMgZG9uZSB1c2luZyBgZm9yIFggaW4gWFlaYCBzeW50YXguCiAgIFdoYXQgd2UnbGwgbG9vcCBvdmVyIChYWVogYWJvdmUpIGFyZSBhbGwgdGhlICJSMSIgZmFzdHEgZmlsZXMsCiAgIGkuZS4gdGhlIG9uZXMgd2l0aCB0aGUgZm9yd2FyZCByZWFkcy4KICAgV2UgbGlzdCBhbGwgb2YgdGhvc2UgYnkgdGFraW5nIGFkdmFudGFnZSBvZiB0aGUgYCpgIHdpbGRjYXJkLgoKMi4gTm93LCBgJFIxYCAoZGVmaW5lZCB1c2luZyBgUjFgIGluIHRoZSBsb29wIGluaXRpYXRpb24gbGluZSkgY29udGFpbnMsCiAgIGluIGVhY2ggcmVuZGl0aW9uIG9mIHRoZSBsb29wLCBhIHNpbmdsZSBmaWxlIG5hbWUuCiAgIEJlY2F1c2UgaXQgYWxzbyBjb250YWlucyB0aGUgZGlyIG5hbWUsIHdlIHdpbGwgZXh0cmFjdCB0aGUgZmlsZSBuYW1lIG9ubHkKICAgdXNpbmcgdGhlIGBiYXNlbmFtZSBjb21tYW5kYC4KICAgVGhlIGAkKClgIG5vdGF0aW9uIGlzIGNhbGxlZCBjb21tYW5kIHN1YnN0aXR1dGlvbiwKICAgYW5kIHNpbXBseSBhbGxvd3MgdXMgdG8gYXNzaWduIHRoZSBvdXRwdXQgb2YgYSBjb21tYW5kIHRvIGEgdmFyaWFibGUuCiAgIAozLiBUbyBnZXQgdGhlIGNvcnJlc3BvbmRpbmcgZmlsZSB3aXRoIHJldmVyc2UgcmVhZHMsIHdoaWNoIHNob3VsZCBhbHdheXMKICAgaGF2ZSB0aGUgZXhhY3Qgc2FtZSBuYW1lIGV4Y2VwdCB0aGF0IGl0IGNvbnRhaW5zICJSMiIgcmF0aGVyIHRoYW4gIlIxIiwKICAgd2Ugc2ltcGx5IHN1YnN0aXR1dGUgIlIxIiBieSAiUjIiIGluIHRoZSBmaWxlIG5hbWUgdXNpbmcgYSBsaXR0bGUgdHJpY2sKICAgd2l0aCB0aGUgc3ludGF4IGAke3ZhcmlhYmxlX25hbWUvcGF0dGVybi9yZXBsYWNlbWVudH1gLgoKNC4gVG8gbWFrZSBzdXJlIGFsbCBpcyB3ZWxsLCB3ZSBsaXN0IHRoZSBSMSBhbmQgUjIgaW5wdXQgZmlsZXMuCgo1LiBOb3csIHdlJ2xsIGRvIHRoZSBmaXJzdCByb3VuZCBvZiB0cmltbWluZyB1c2luZyB0aGUgZm9yd2FyZCAqcHJpbWVyKiBzZXF1ZW5jZXMuCiAgIFdlIHVzZSBgXGAganVzdCB0byBhbGxvdyB0aGUgY29tbWFuZCB0byBjb250aW51ZSBhY3Jvc3MgbXVsdGlwbGUgbGluZXMgZm9yCiAgIGVhc3kgb2YgcmVhZGluZyAodGhlIGBcYCAiZXNjYXBlcyIgdGhlIHJldHVybi9uZXdsaW5lKS4KCjYuIFdlJ2xsIGRvIHRoZSBzZWNvbmQgcm91bmQgb2YgdHJpbW1pbmcgdXNpbmcgdGhlIHJldmVyc2UgKnByaW1lciogc2VxdWVuY2VzLgoKNy4gV2UgdGVsbCB0aGUgbG9vcCB0aGF0IGlzIGRvbmUgdXNpbmcgYGRvbmVgLgoKYGBge2Jhc2h9CiMgUlVOIENVVEFEQVBUIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiMgMS4gSW5pdGlhbGl6ZSB0aGUgbG9vcDoKZm9yIFIxIGluICRpbmRpci8qX1IxXyouZmFzdHEuZ3oKZG8KICAjIDIuIEdldCB0aGUgZmlsZW5hbWVzIGZvciB0aGUgZmFzdHEgZmlsZXMgd2l0aCBmb3J3YXJkIChSMSkgYW5kIHJldmVyc2UgKFIyKSByZWFkczoKICBSMT0kKGJhc2VuYW1lICRSMSkgICAjIGBiYXNlbmFtZWAgd2lsbCBzdHJpcCB0aGUgZGlyZWN0b3J5IGZyb20gdGhlIG5hbWUKICAKICAjIDMuIAogIFIyPSR7UjEvX1IxXy9fUjJffSAgICMgVGhpcyB3aWxsIHN1YnN0aXR1dGUgIl9SMV8iIHdpdGggIl9SMl8iIGluIHRoZSBmaWxlbmFtZS4KICAKICAjIDQuIFJlcG9ydCBpbnB1dCBmaWxlczoKICBlY2hvICIjIyBSMSBpbnB1dCBmaWxlOiIKICBscyAtbGggJGluZGlyLyRSMQogIGVjaG8gIiMjIFIyIGlucHV0IGZpbGU6IgogIGxzIC1saCAkaW5kaXIvJFIyCgogICMgNS4gRmlyc3QgdHJpbToKICBlY2hvIC1lICJcblxuIyMgUnVubmluZyBjdXRhZGFwdCBmb3IgdGhlIGZpcnN0IHRyaW06IgoJCgljdXRhZGFwdCAtZyBHQUdUR1lDQUdDTUdDQ0dDR0dUQUEgLUcgQUNHR0FDVEFDTlZHR0dUV1RDVEFBVCBcCgktLWRpc2NhcmQtdW50cmltbWVkIC0tcGFpci1maWx0ZXI9YW55IFwKCS1vICRvdXRkaXJfdHJpbTEvJFIxIC1wICRvdXRkaXJfdHJpbTEvJFIyIFwKCSRpbmRpci8kUjEgJGluZGlyLyRSMgoJCgkjIDYuIFNlY29uZCB0cmltOgogIGVjaG8gLWUgIlxuXG4jIyBSdW5uaW5nIGN1dGFkYXB0IGZvciB0aGUgc2Vjb25kIHRyaW06IgoJCgljdXRhZGFwdCAtYSBBVFRBR0FXQUNDQ0JOR1RBR1RDQ0dUIC1BIFRUQUNDR0NHR0NLR0NUR1JDQUNUQyBcCgktbyAkb3V0ZGlyX3RyaW0yLyRSMSAtcCAkb3V0ZGlyX3RyaW0yLyRSMiBcCgkkb3V0ZGlyX3RyaW0xLyRSMSAkb3V0ZGlyX3RyaW0xLyRSMgogIAogICMgNy4gRXhpdCB0aGUgbG9vcCB1c2luZyB0aGUgYGRvbmVgIGtleXdvcmQKZG9uZQpgYGAKCiMjIyBQYXJ0IEQ6IExpc3Qgb3V0cHV0IGZpbGVzIGFzIGEgY2hlY2s6CgpGaW5hbGx5LCB3ZSdsbCBsaXN0IG91ciBvdXRwdXQgZmlsZXMsIGFzIGFub3RoZXIgd2F5IHRvIGNoZWNrIHdoZXRoZXIgdGhlIHNjcmlwdApoYXMgcnVuIGFzIGl0IHdhcyBzdXBwb3NlZCwgYW5kIHdlJ2xsIGFsc28gcHJpbnQgdGhlIGBkYXRlYCBhZ2FpbiB0byBjaGVjawp0aGUgKGRhdGUgYW5kKSB0aW1lIHRoYXQgb3VyIHNjcmlwdCBmaW5pc2hlZCBydW5uaW5nLgoKYGBge2Jhc2h9CiMgUkVQT1JUIEFORCBGSU5BTElaRSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplY2hvIC1lICJcblxuIyMgTGlzdGluZyBvdXRwdXQgZmlsZXMgLSBmaXJzdCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBMaXN0aW5nIG91dHB1dCBmaWxlcyAtIHNlY29uZCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBEb25lIHdpdGggY3V0YWRhcHQgc2NyaXB0LiIKZGF0ZQpgYGAKCiMjIyBUaGUgZW50aXJlIHNjcmlwdAoKPGRldGFpbHM+CjxzdW1tYXJ5PgpDbGljayBoZXJlIHRvIHNlZSB0aGUgZW50aXJlIHNjcmlwdC4KPC9zdW1tYXJ5PgoKYGBgc2gKIyEvYmluL2Jhc2gKI1NCQVRDSCAtLW5vZGVzPTEKI1NCQVRDSCAtLW50YXNrcy1wZXItbm9kZT0xCiNTQkFUQ0ggLS10aW1lPTYwCiNTQkFUQ0ggLS1hY2NvdW50PVBBUzA0NzEKCnNldCAtZSAtdSAtbyBwaXBlZmFpbCAgICAjIFJ1biBiYXNoIGluICJzYWZlIG1vZGUiLCBiYXNpY2FsbHkKCiMgUmVwb3J0OgplY2hvIC1lICJcbiMjIFN0YXJ0aW5nIGN1dGFkYXB0IHNjcmlwdC4iCmRhdGUKCiMgU0VUVVAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIyBDb21tYW5kLWxpbmUgYXJndW1lbnRzOgppbmRpcj0kMQpvdXRkaXJfYmFzZT0kMgoKIyBEZWZpbmUgb3V0cHV0IGRpcmVjdG9yaWVzIGZvciBmaXJzdCBhbmQgc2Vjb25kIHRyaW06Cm91dGRpcl90cmltMT0kb3V0ZGlyX2Jhc2UvZmlyc3RfdHJpbQpvdXRkaXJfdHJpbTI9JG91dGRpcl9iYXNlL3NlY29uZF90cmltCgojIENyZWF0ZSBvdXRwdXQgZGlyZWN0b3JpZXMgaWYgdGhleSBkb24ndCBhbHJlYWR5IGV4aXN0Ogpta2RpciAtcCAkb3V0ZGlyX3RyaW0xCm1rZGlyIC1wICRvdXRkaXJfdHJpbTIKCiMgUmVwb3J0OgplY2hvICIjIyBJbnB1dCBkaXI6ICAgICAgICAgICAgICAgICAkaW5kaXIiCmVjaG8gIiMjIE90cHV0IGRpciAtIGZpcnN0IHRyaW06ICAgICRvdXRkaXJfdHJpbTEiCmVjaG8gIiMjIElucHV0IGRpciAtIHNlY29uZCB0cmltOiAgICRvdXRkaXJfdHJpbTEiCgojIFJVTiBDVVRBREFQVCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplY2hvIC1lICJcbiMjIExvb3BpbmcgdGhyb3VnaCBpbnB1dCBmaWxlcy4uLlxuIgoKZm9yIFIxIGluICRpbmRpci8qX1IxXyouZmFzdHEuZ3oKZG8KICBSMT0kKGJhc2VuYW1lICRSMSkKICBSMj0ke1IxL19SMV8vX1IyX30KICAKICAjIFJlcG9ydCBpbnB1dCBmaWxlczoKICBlY2hvICIjIyBSMSBpbnB1dCBmaWxlOiIKICBscyAtbGggJGluZGlyLyRSMQogIGVjaG8gIiMjIFIyIGlucHV0IGZpbGU6IgogIGxzIC1saCAkaW5kaXIvJFIyCgogICMgRmlyc3QgdHJpbToKICBlY2hvIC1lICJcblxuIyMgUnVubmluZyBjdXRhZGFwdCBmb3IgdGhlIGZpcnN0IHRyaW06IgoJCgljdXRhZGFwdCAtZyBHQUdUR1lDQUdDTUdDQ0dDR0dUQUEgLUcgQUNHR0FDVEFDTlZHR0dUV1RDVEFBVCBcCgkgIC0tZGlzY2FyZC11bnRyaW1tZWQgLS1wYWlyLWZpbHRlcj1hbnkgXAoJICAtbyAkb3V0ZGlyX3RyaW0xLyRSMSAtcCAkb3V0ZGlyX3RyaW0xLyRSMiBcCgkgICRpbmRpci8kUjEgJGluZGlyLyRSMgoJCgkjIFNlY29uZCB0cmltOgogIGVjaG8gLWUgIlxuXG4jIyBSdW5uaW5nIGN1dGFkYXB0IGZvciB0aGUgc2Vjb25kIHRyaW06IgoJCgljdXRhZGFwdCAtYSBBVFRBR0FXQUNDQ0JOR1RBR1RDQ0dUIC1BIFRUQUNDR0NHR0NLR0NUR1JDQUNUQyBcCgkgIC1vICRvdXRkaXJfdHJpbTIvJFIxIC1wICRvdXRkaXJfdHJpbTIvJFIyIFwKCSAgJG91dGRpcl90cmltMS8kUjEgJG91dGRpcl90cmltMS8kUjIKCmRvbmUKCiMgUkVQT1JUIEFORCBGSU5BTElaRSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplY2hvIC1lICJcblxuIyMgTGlzdGluZyBvdXRwdXQgZmlsZXMgLSBmaXJzdCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBMaXN0aW5nIG91dHB1dCBmaWxlcyAtIHNlY29uZCB0cmltOiIKbHMgLWxoICRvdXRkaXJfdHJpbTEKCmVjaG8gLWUgIlxuXG4jIyBEb25lIHdpdGggY3V0YWRhcHQgc2NyaXB0LiIKZGF0ZQpgYGAKCjwvZGV0YWlscz4KCi0tLS0tCgojIyBTdWJtaXQgdGhlIFNjcmlwdAoKV2UnbGwgZmlyc3QgY2hlY2sgd2hldGhlciB3ZSBhcmUgaW4gdGhlIGNvcnJlY3QgZGlyZWN0b3J5LApzbyB0aGF0IG91ciByZWxhdGl2ZSBwYXRocyB3aWxsIHdvcms6CgpgYGB7YmFzaH0KIyBMZXQncyBjaGVjayB3ZSBhcmUgaW4gdGhlIGNvcnJlY3QgZGlyZWN0b3J5Ogpwd2QKIyBTaG91bGQgcmV0dXJuOiAvZnMvcHJvamVjdC9QQVMwNDcxL3dvcmtzaG9wcy8yMDIwLTEyX21pY3JvLzx5b3VyLXVzZXJuYW1lPgojIElmIG5vdCwgcnVuOiAiY2QgL2ZzL3Byb2plY3QvUEFTMDQ3MS93b3Jrc2hvcHMvMjAyMC0xMl9taWNyby8kVVNFUiIKYGBgCgo8YnI+CgpUaGVuIHdlIGFzc2lnbiBvdXIgaW5wdXQgZGlyZWN0b3J5IGFuZCBiYXNlIG91dHB1dCBkaXJlY3RvcnkgdG8gdGhlIHZhcmlhYmxlcwpgaW5kaXJgIGFuZCBgb3V0ZGlyX2Jhc2VgLCByZXNwZWN0aXZlbHkuCgpXZSdsbCBhbHNvIGFzc2lnbiB0aGUgbmFtZSB3ZSB3YW50IHRvIGdpdmUgdG8gdGhlICpTTFVSTSogbG9nIGZpbGUgdG8gYSB2YXJpYWJsZS4KSGVyZSwgd2UnbGwgYWxzbyB1c2UgdGhlIGAlamAgKlNMVVJNKiBrZXl3b3JkIHRvIGluY2x1ZGUgdGhlICpTTFVSTSogam9iIG51bWJlci4KCmBgYHtiYXNofQppbmRpcj1kYXRhL3Jhdy9mYXN0cV9zdWJzYW1wbGUKb3V0ZGlyX2Jhc2U9ZGF0YS9wcm9jZXNzZWQvZmFzdHFfdHJpbW1lZAoKIyBHaXZlIGEgbmFtZSB0byB0aGUgU0xVUk0gb3V0cHV0IGZpbGU6CiMgKFRoZSAtbyBmbGFnIHNldHMgdGhlIFNMVVJNIGxvZyBmaWxlIG5hbWUsIGFuZCBgJWpgIHJlcHJlc2VudHMgdGhlIGpvYiBJRCkKc2x1cm1fZmlsZT1zbHVybS1jdXRhZGFwdC0kVVNFUi0lai5vdXQKYGBgCgo8YnI+CgpGaW5hbGx5LCB3ZSdyZSByZWFkeSB0byAqKnN1Ym1pdCB0aGUgc2NyaXB0KiohCmBgYHtiYXNofQpzYmF0Y2ggLW8gJHNsdXJtX2ZpbGUgc2NyaXB0cy8wMS1jdXRhZGFwdC5zaCAkaW5kaXIgJG91dGRpcl9iYXNlCmBgYAoKLS0tLS0KCiMjIE1vbml0b3IgdGhlIEpvYiBhbmQgSXRzIE91dHB1dAoKCiMjIyBNb25pdG9yIHRoZSBqb2IKCldlIGNhbiBjaGVjayB3aGF0J3MgZ29pbmcgb24gd2l0aCBvdXIgam9iIHVzaW5nIGBzcXVldWVgOgoKYGBge2Jhc2h9CiMgSW5pdGlhbGx5IHRoZSBqb2IgbWF5IGJlIHF1ZXVlZCAoYFBEYCBpbiB0aGUgYFNUYCBjb2x1bW4pOgpzcXVldWUgLXUgJFVTRVIKIyBKT0JJRCBQQVJUSVRJT04gICAgIE5BTUUgICAgIFVTRVIgU1QgICAgICAgVElNRSAgTk9ERVMgTk9ERUxJU1QoUkVBU09OKSAKIyAyNDUxMDg4IHNlcmlhbC00MCAwMS1jdXRhZCAgIGplbG1lciBQRCAgICAgICAwOjAwICAgICAgMSAoTm9uZSkgCgojIFRoZW4gdGhlIGpvYiBzaG91bGQgYmUgcnVubmluZzoKc3F1ZXVlIC11ICRVU0VSCiMgSk9CSUQgUEFSVElUSU9OICAgICBOQU1FICAgICBVU0VSIFNUICAgICAgIFRJTUUgIE5PREVTIE5PREVMSVNUKFJFQVNPTikgCiMgMjQ1MTA4OCBzZXJpYWwtNDAgMDEtY3V0YWQgICBqZWxtZXIgUiAgICAgICAwOjQzICAgICAgMSAoTm9uZSkgCgojIFdoZW4gdGhlIGpvYiBoYXMgZmluaXNoZWQsIHNxdWV1ZSB3aWxsIHJldHVybiBub3RoaW5nOgpzcXVldWUgLXUgJFVTRVIKIyBKT0JJRCBQQVJUSVRJT04gICAgIE5BTUUgICAgIFVTRVIgU1QgICAgICAgVElNRSAgTk9ERVMgTk9ERUxJU1QoUkVBU09OKSAKCmBgYAoKPGJyPgoKV2UgY291bGQgYWxzbyBnZXQgbW9yZSBzdGF0aXN0aWNzIGFib3V0IG91ciBqb2IgdXNpbmcgYHNjb250cm9sYDoKCmBgYHtiYXNofQpzY29udHJvbCBzaG93IGpvYiAyNDUxMDg4ICAgIyBSZXBsYWNlIHRoZSBudW1iZXIgd2l0aCB5b3VyIEpPQklECmBgYAoKIyMjIENoZWNrIHRoZSBvdXRwdXQKCkxldCdzIHNlZSBpZiB3ZSBoYXZlIGEgbG9nIGZpbGU6CgpgYGB7YmFzaH0KbHMgc2x1cm0qJFVTRVIqCiMgc2x1cm0tY3V0YWRhcHQtamVsbWVyLTI0NTEwODgub3V0CmBgYAoKTGV0J3MgbG9vayBhdCB0aGUgc3RhcnQgb2YgdGhlICpTTFVSTSogbG9nIGZpbGU6CgpgYGB7YmFzaH0KaGVhZCAtbiAyMCBzbHVybS1jdXRhZGFwdC1qZWxtZXItMjQ1MTA4OC5vdXQKCiMgIyMgU3RhcnRpbmcgY3V0YWRhcHQgc2NyaXB0LgojIEZyaSBEZWMgMTEgMTA6MDM6MDAgRVNUIDIwMjAKIyAjIyBJbnB1dCBkaXI6ICAgICAgICAgICAgICAgICBkYXRhL3Jhdy9mYXN0cS8KIyAjIyBPdXRwdXQgZGlyIC0gZmlyc3QgdHJpbTogICBkYXRhL3Byb2Nlc3NlZC9mYXN0cV90cmltbWVkL2ZpcnN0X3RyaW0KIyAjIyBJbnB1dCBkaXIgLSBzZWNvbmQgdHJpbTogICBkYXRhL3Byb2Nlc3NlZC9mYXN0cV90cmltbWVkL2ZpcnN0X3RyaW0KIyAKIyAjIyBMb29waW5nIHRocm91Z2ggaW5wdXQgZmlsZXMuLi4KIyAKIyAjIyBSMSBpbnB1dCBmaWxlOgojIC1yLS1yLS1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA3LjRNIERlYyAgMTEgMDg6MjcgZGF0YS9yYXcvZmFzdHFfc3Vic2FtcGxlLzIwMS1TNC1WNC1WNV9TNTNfTDAwMV9SMV8wMDEuZmFzdHEuZ3oKIyAjIyBSMiBpbnB1dCBmaWxlOgojIC1yLS1yLS1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA4LjhNIERlYyAgMTEgMDg6MjcgZGF0YS9yYXcvZmFzdHFfc3Vic2FtcGxlLzIwMS1TNC1WNC1WNV9TNTNfTDAwMV9SMl8wMDEuZmFzdHEuZ3oKIyAKIyAKIyAjIyBSdW5uaW5nIGN1dGFkYXB0IGZvciB0aGUgZmlyc3QgdHJpbToKIyBUaGlzIGlzIGN1dGFkYXB0IDMuMSB3aXRoIFB5dGhvbiAzLjguNgojIENvbW1hbmQgbGluZSBwYXJhbWV0ZXJzOiAtZyBHQUdUR1lDQUdDTUdDQ0dDR0dUQUEgLUcgQUNHR0FDVEFDTlZHR0dUV1RDVEFBVCAtLWRpc2NhcmQtdW50cmltbWVkIC0tcGFpci1maWx0ZXI9YW55IC1vIGRhdGEvcHJvY2Vzc2VkL2Zhc3RxX3RyaW1tZWQvZmlyc3RfdHJpbS8yMDEtUzQtVjQtVjVfUzUzX0wwMDFfUjFfMDAxLmZhc3RxLmd6IC1wIGRhdGEvcHJvY2Vzc2VkL2Zhc3RxX3RyaW1tZWQvZmlyc3RfdHJpbS8yMDEtUzQtVjQtVjVfUzUzX0wwMDFfUjJfMDAxLmZhc3RxLmd6IGRhdGEvcmF3L2Zhc3RxX3N1YnNhbXBsZS8yMDEtUzQtVjQtVjVfUzUzX0wwMDFfUjFfMDAxLmZhc3RxLmd6IGRhdGEvcmF3L2Zhc3RxLzIwMS1TNC1WNC1WNV9TNTNfTDAwMV9SMl8wMDEuZmFzdHEuZ3oKIyBQcm9jZXNzaW5nIHJlYWRzIG9uIDEgY29yZSBpbiBwYWlyZWQtZW5kIG1vZGUgLi4uCmBgYAoKTGV0J3MgYWxzbyBsb29rIGF0IHRoZSBlbmQgb2YgdGhlIGZpbGU6CgpgYGB7YmFzaH0KdGFpbCBzbHVybS1jdXRhZGFwdC1qZWxtZXItMjQ1MTA4OC5vdXQKCiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDEuMU0gRGVjICAxMSAxMDowNSBibGFua00tVjQtVjVfUzczX0wwMDFfUjFfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDEuNE0gRGVjICAxMSAxMDowNSBibGFua00tVjQtVjVfUzczX0wwMDFfUjJfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxICA1NksgRGVjICAxMSAxMDowNSBIMjAtVjQtVjVfUzg4X0wwMDFfUjFfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxICA2NksgRGVjICAxMSAxMDowNSBIMjAtVjQtVjVfUzg4X0wwMDFfUjJfMDAxLmZhc3RxLmd6CiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDMuOE0gRGVjICAxMSAxMDowNSBaeW1vLVY0LVY1X1M4Ml9MMDAxX1IxXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA0LjRNIERlYyAgMTEgMTA6MDUgWnltby1WNC1WNV9TODJfTDAwMV9SMl8wMDEuZmFzdHEuZ3oKIyAKIyAKIyAjIyBEb25lIHdpdGggY3V0YWRhcHQgc2NyaXB0LgojIEZyaSBEZWMgIDExIDEwOjA1OjMzIEVTVCAyMDIwCmBgYAoKCjxicj4KCkZpbmFsbHksIHdlIGNhbiBkaXJlY3RseSBjaGVjayBvbmUgb2YgdGhlIG91dHB1dCBkaXJzOgoKYGBge2Jhc2h9CmxzIC1saCBkYXRhL3Byb2Nlc3NlZC9mYXN0cV90cmltbWVkL3NlY29uZF90cmltLwoKIyB0b3RhbCA0NzRNCiMgLXJ3LXJ3LXItLSAxIGplbG1lciBQQVMwNDcxIDcuOE0gRGVjICAxMSAxMDowNSAxMDEtUzEtVjQtVjVfUzFfTDAwMV9SMV8wMDEuZmFzdHEuZ3oKIyAtcnctcnctci0tIDEgamVsbWVyIFBBUzA0NzEgOS44TSBEZWMgIDExIDEwOjA1IDEwMS1TMS1WNC1WNV9TMV9MMDAxX1IyXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA5LjZNIERlYyAgMTEgMTA6MDUgMTAxLVM0LVY0LVY1X1M0OV9MMDAxX1IxXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSAgMTNNIERlYyAgMTEgMTA6MDUgMTAxLVM0LVY0LVY1X1M0OV9MMDAxX1IyXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA2LjhNIERlYyAgMTEgMTA6MDUgMTAyLVM0LVY0LVY1X1M1MF9MMDAxX1IxXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA4LjNNIERlYyAgMTEgMTA6MDUgMTAyLVM0LVY0LVY1X1M1MF9MMDAxX1IyXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA2LjJNIERlYyAgMTEgMTA6MDUgMTAzLVM0LVY0LVY1X1M1MV9MMDAxX1IxXzAwMS5mYXN0cS5negojIC1ydy1ydy1yLS0gMSBqZWxtZXIgUEFTMDQ3MSA3LjhNIERlYyAgMTEgMTA6MDUgMTAzLVM0LVY0LVY1X1M1MV9MMDAxX1IyXzAwMS5mYXN0cS5negojIC4uLi5bb3RoZXIgZmlsZXMgbm90IHNob3duXQoKCmBgYAoKPGJyPgoKQWxsIGRvbmUhIE91ciBbbmV4dCBzdGVwXSgwNy1BU1YtaW5mZXJlbmNlLmh0bWwpIHdpbGwgYmUgdG8gZnVydGhlciBwcm9jZXNzIHRoZSBgZmFzdHFgIGZpbGVzIHdpdGggYGN1dGFkYXB0YC4KCjxicj4gPGJyPiA8YnI+Cg==</div>
 
 
 </div>

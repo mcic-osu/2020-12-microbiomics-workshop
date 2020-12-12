@@ -2,11 +2,10 @@
 title: "<br>Workflow part II:<br>ASV Inference and Taxon Assignment"
 output:
   rmarkdown::html_document:
-    code_download: true
     theme: cerulean
+    code_download: true
     toc: true
     toc_float: true
-    css: my.css
 ---
 
 ```{r knitr_options, echo=FALSE}

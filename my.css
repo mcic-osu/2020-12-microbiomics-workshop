@@ -51,6 +51,7 @@ details > p {
 
 
 /* CODE BOXES */
+/* pre.sourceCode.bash */
 pre{
   background-color: #f7f3f3;
   padding: 10px 15px; 
@@ -64,6 +65,10 @@ pre{
   border-left-color: #337eac;
   margin: 0px;
   font-style: italic;
+}
+
+pre.sourceCode.bash{
+  background-color: #f7f3f3;
 }
 
 pre.r {

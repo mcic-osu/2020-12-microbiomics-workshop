@@ -3,9 +3,9 @@ title: "<br>Workflow part III:<br>Analyzing ASV Data"
 output:
   html_document:
     theme: cerulean
+    code_download: true
     toc: true
     toc_float: true
-    css: my.css
 ---
 
 ```{r knitr_options, echo=FALSE}
