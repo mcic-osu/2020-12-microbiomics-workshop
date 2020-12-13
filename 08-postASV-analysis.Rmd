@@ -12,7 +12,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r knitr_options, echo=FALSE}
+```{r knitr_options, echo=FALSE, purl=FALSE}
 root_dir <- "/fs/project/PAS0471/workshops/2020-12_micro/$USER"
 #knitr::opts_knit$set(root.dir = root_dir) # UNCOMMENT AT OSC
 

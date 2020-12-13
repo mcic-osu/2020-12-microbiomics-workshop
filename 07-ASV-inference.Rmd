@@ -12,7 +12,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r knitr_options, echo=FALSE}
+```{r knitr_options, echo=FALSE, purl=FALSE}
 root_dir <- "/fs/project/PAS0471/workshops/2020-12_micro/$USER"
 #knitr::opts_knit$set(root.dir = root_dir) # UNCOMMENT AT OSC
 
@@ -93,19 +93,23 @@ see [this section](06-R.html#rstudio-at-OSC) from our intro to R session.
 
 ## Step 1: Getting Started
 
+```{r hello}
+print("Starting ASV inference script...")
+```
+
 ### Install and load packages
 
 To save time, we have already installed all the necessary R packages at OSC
 into a custom library.
 To add this library for the current R session:
 
-```{r libload}
+```{r lib_load}
 .libPaths(new = '/fs/project/PAS0471/.R/4.0/')
 ```
 
 Then, load the packages:
 
-```{r}
+```{r package_load}
 packages <- c("tidyverse", "gridExtra", "dada2",
               "phyloseq", "DECIPHER", "phangorn")
 pacman::p_load(char = packages)
@@ -118,7 +122,7 @@ pacman::p_load(char = packages)
 
 ### Set the file paths
 
-```{r}
+```{r set_dirs}
 # Dir with input fastq files:
 indir <- 'data/processed/fastq_trimmed/second_trim'
 
@@ -649,30 +653,30 @@ Sys.time()
 Extract R code from this document:
 ```{r, eval = FALSE}
 knitr::purl(input = 'markdown/07-ASV-inference.Rmd',
-            output = 'scripts/02-dada2_V4.R')
+            output = 'scripts/02-ASV-inference.R')
 ```
 
-Our script `02-dada2.sh` with *SLURM* directives that will submit the R
+Our script `02-ASV-inference.sh` with *SLURM* directives that will submit the R
 script from the shell using `Rscript`:
 
 ```{bash, eval = FALSE}
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=28
-#SBATCH --time=100:00:00
+#SBATCH --ntasks-per-node=8
+#SBATCH --time=2:00:00
 #SBATCH --account=PAS0471
 
 module load gnu/9.1.0
-module load mkl/2019.0.3
-module load R/4.02
+module load mkl/2019.0.5
+module load R/4.0.2
 
-Rscript scripts/02-dada2_V4.R
+Rscript scripts/02-ASV-inference.R
 ```
 
 Submit the script:
 
 ```{bash, eval = FALSE}
-sbatch scripts/02-dada2.sh
+sbatch scripts/02-ASV-inference.sh
 ```
 
 <br><br>
