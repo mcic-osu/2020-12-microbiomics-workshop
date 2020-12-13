@@ -13,16 +13,16 @@ editor_options:
 ---
 
 ```{r knitr_options, echo=FALSE, purl=FALSE}
-root_dir <- "/fs/project/PAS0471/workshops/2020-12_micro/$USER"
+root_dir <- '/fs/project/PAS0471/workshops/2020-12_micro/$USER'
 #knitr::opts_knit$set(root.dir = root_dir) # UNCOMMENT AT OSC
 
 knitr::opts_chunk$set(results='hide',
                       eval = FALSE, # CHANGE TO TRUE TO RUN UPON COMPILING
-                      class.source="r_code",
-                      class.output="r_output",
-                      class.warning="r_warning",
-                      class.message="r_warning",
-                      class.error="r_error")
+                      class.source='r_code',
+                      class.output='r_output',
+                      class.warning='r_warning',
+                      class.message='r_warning',
+                      class.error='r_error')
 ```
 
 <br>
@@ -51,7 +51,7 @@ Process metabarcoding reads, post-adapter removal, including:
   
 - To convert an `Rmd` (R Markdown) file to an R script,
   type the following in an R console:
-  `knitr::purl(input="<filename>.Rmd")`.
+  `knitr::purl(input='<filename>.Rmd')`.
   (You can download this `Rmd` file by clicking the `Code` button
   in the top-right of this page -- but we will open it at OSC.)
 
@@ -93,8 +93,13 @@ see [this section](06-R.html#rstudio-at-OSC) from our intro to R session.
 
 ## Step 1: Getting Started
 
+Print some information to screen for when running this script as a job:
+
 ```{r hello}
-print("Starting ASV inference script...")
+print('Starting ASV inference script...')
+Sys.time()
+
+cat('Working directory:', getwd(), '\n')
 ```
 
 ### Install and load packages
@@ -110,8 +115,10 @@ To add this library for the current R session:
 Then, load the packages:
 
 ```{r package_load}
-packages <- c("tidyverse", "gridExtra", "dada2",
-              "phyloseq", "DECIPHER", "phangorn")
+print('Loading packages...')
+
+packages <- c('tidyverse', 'gridExtra', 'dada2',
+              'phyloseq', 'DECIPHER', 'phangorn')
 pacman::p_load(char = packages)
 
 # If you wanted to install and load these packages yourself,
@@ -146,54 +153,66 @@ one with files with forward reads, and one with files with reverse reads.
 These files can be distinguished by having "R1" (forward) and "R2" (reverse)
 in their names.
 
-```{r}
+```{r fastq_paths}
 fastqs_raw_F <- sort(list.files(indir, pattern = '_R1_001.fastq.gz', full.names = TRUE))
 fastqs_raw_R <- sort(list.files(indir, pattern = '_R2_001.fastq.gz', full.names = TRUE))
 
+print('First fastq files:')
 head(fastqs_raw_F)
 ```
 
-### Get sample IDs
+### Check sample IDs
 
 We'll get the sample IDs from the fastq file names and from a file with metadata,
 and will check if they are the same.
 
 First we get the metadata into a dataframe:
-```{r}
-# Load and prepare sample metadata:
+
+```{r metadata}
+print('Load and prepare sample metadata...')
+
 metadata_df <- read.table(file = metadata_file, sep = "\t", header = TRUE)
 
 colnames(metadata_df)[1] <- 'SampleID'
 rownames(metadata_df) <- metadata_df$SampleID
 
+print('First fastq files:')
 head(metadata_df)
 ```
 
 Let's compare the sample IDs from the metadata with the fastq filenames:
 
-```{r}
+```{r check_metadata}
+print('IDs from metadata:')
 metadata_df$SampleID
 
+print('Fastq file names:')
 head(basename(fastqs_raw_F))    # basename() strips the dir name from the filename
 ```
 
 To extract the sample IDs from the fastq file names, we remove everything after
 "-V4-V5" from the file names using the `sub()` function:
 
-```{r}
+```{r sampleIDs}
 # sub() arguments: sub(pattern, replacement, vector)
-# replace with "" -> replace with nothing
 sampleIDs <- sub("-V4-V5_.*", "", basename(fastqs_raw_F))
 ```
 
 We can check whether the IDs from the fastq files and the metadata dataframe
 are the same:
 
-```{r}
+```{r check_sampleIDs}
+print('Are the sample IDs from the metadata and the fastq files the same:')
 identical(sort(metadata_df$SampleID), sampleIDs)
 
-setdiff(sort(metadata_df$SampleID), sampleIDs) # REMOVE MISSING SAMPLES?
+print('Are any samples missing from the fastq files?')
+setdiff(sort(metadata_df$SampleID), sampleIDs)
+
+print('Are any samples missing from the metadata?')
+setdiff(sampleIDs, sort(metadata_df$SampleID))
 ```
+
+As it turns out, we don't have sequences for three samples in the metadata.
 
 -----
 
@@ -203,7 +222,7 @@ setdiff(sort(metadata_df$SampleID), sampleIDs) # REMOVE MISSING SAMPLES?
 
 You can generate and evaluate plots individually (forward and reverse side-by-side):
 
-```{r}
+```{r plot_qual_1}
 plotQualityProfile(c(fastqs_raw_F[1], fastqs_raw_R[1]))
 ```
 
@@ -211,8 +230,8 @@ plotQualityProfile(c(fastqs_raw_F[1], fastqs_raw_R[1]))
 
 Or generate pdf files to inspect multiple plots at once:
 
-```{r}
-pdf(file.path(qc_dir, "error_profiles.pdf"))  # Open a pdf file
+```{r plot_qual_2}
+pdf(file.path(qc_dir, 'error_profiles.pdf'))  # Open a pdf file
 for (sample_index in 1:3) {                   # Loop through first three file pairs
   print(plotQualityProfile(                   # Print plots into pdf
     c(fastqs_raw_F[sample_index], fastqs_raw_R[sample_index])) # F and R together
@@ -257,9 +276,9 @@ since these positions are likely to contain errors.
 
 The `filterAndTrim()` function will write the filtered and trimmed reads
 to new fastq files.
-Therefore, we first define the filenames for the new files:
+Therefore, we first define the file names for the new files:
 
-```{r}
+```{r fastq_filt_paths}
 fastqs_filt_F <- file.path(filter_dir, paste0(sampleIDs, '_F_filt.fastq'))
 fastqs_filt_R <- file.path(filter_dir, paste0(sampleIDs, '_R_filt.fastq'))
 ```
@@ -268,7 +287,7 @@ fastqs_filt_R <- file.path(filter_dir, paste0(sampleIDs, '_R_filt.fastq'))
 
 Then, perform the trimming:
 
-```{r}
+```{r fastq_filtering}
 print('Filtering and Trimming...')
 Sys.time()  # Print the time to keep track of running time for individual steps 
 filter_results <-
@@ -295,7 +314,7 @@ The next thing we want to do is "dereplicate" the filtered fastq files.
 During dereplication, we condense the data by collapsing together all reads that
 encode the same sequence, which significantly reduces later computation times.
 
-```{r}
+```{r fastq_derep}
 fastqs_derep_F <- derepFastq(fastqs_filt_F, verbose = FALSE)
 fastqs_derep_R <- derepFastq(fastqs_filt_R, verbose = FALSE)
 
@@ -303,11 +322,12 @@ names(fastqs_derep_F) <- sampleIDs
 names(fastqs_derep_R) <- sampleIDs
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-# saveRDS(fastqs_derep_F, file = file.path(outdir, "fastqs_derep_F.rds"))
-# saveRDS(fastqs_derep_R, file = file.path(outdir, "fastqs_derep_R.rds"))
-# fastqs_derep_F <- readRDS(file.path(outdir, "fastqs_derep_F.rds"))
-# fastqs_derep_R <- readRDS(file.path(outdir, "fastqs_derep_R.rds"))
+```{r, echo=FALSE}
+saveRDS(fastqs_derep_F, file = file.path(outdir, 'fastqs_derep_F.rds'))
+saveRDS(fastqs_derep_R, file = file.path(outdir, 'fastqs_derep_R.rds'))
+
+# fastqs_derep_F <- readRDS(file.path(outdir, 'fastqs_derep_F.rds'))
+# fastqs_derep_R <- readRDS(file.path(outdir, 'fastqs_derep_R.rds'))
 ```
 
 The DADA2 algorithm makes use of a parametric error model (`err`) and every
@@ -316,7 +336,7 @@ The `learnErrors` method learns this error model from the data,
 by alternating estimation of the error rates and inference of sample composition
 until they converge on a jointly consistent solution.
 
-```{r}
+```{r learn_errors}
 print('Learning errors...')
 Sys.time()
 
@@ -327,11 +347,11 @@ print('...Done!')
 Sys.time()
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-# saveRDS(err_F, file = file.path(outdir, "err_F.rds"))
-# saveRDS(err_R, file = file.path(outdir, "err_R.rds"))
-# err_F <- readRDS(file.path(outdir, "err_F.rds"))
-# err_R <- readRDS(file.path(outdir, "err_R.rds"))
+```{r, echo=FALSE}
+saveRDS(err_F, file = file.path(outdir, 'err_F.rds'))
+saveRDS(err_R, file = file.path(outdir, 'err_R.rds'))
+# err_F <- readRDS(file.path(outdir, 'err_F.rds'))
+# err_R <- readRDS(file.path(outdir, 'err_R.rds'))
 ```
 
 <br>
@@ -340,7 +360,7 @@ Plot errors to verify that error rates have been reasonable well-estimated.
 Observe the fit between observed error rates (points) and fitted error
 rates (lines):
 
-```{r}
+```{r, plot_errors}
 plotErrors(err_F, nominalQ = TRUE)
 plotErrors(err_R, nominalQ = TRUE)
 ```
@@ -358,7 +378,7 @@ Pooling will increase memory rquirements and computation time,
 but improve detection of rare variants seen once or twice in an individual sample,
 but many times across all samples.
 
-```{r}
+```{r run_dada}
 print('Inferring ASVs (running the dada algorithm)...')
 Sys.time()
 
@@ -369,16 +389,16 @@ print('...Done.')
 Sys.time()
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-# saveRDS(dada_Fs, file = file.path(outdir, "dada_Fs.rds"))
-# saveRDS(dada_Rs, file = file.path(outdir, "dada_Rs.rds"))
-# dada_Fs <- readRDS(file.path(outdir, "dada_Fs.rds"))
-# dada_Rs <- readRDS(file = file.path(outdir, "dada_Rs.rds"))
+```{r, echo=FALSE}
+saveRDS(dada_Fs, file = file.path(outdir, 'dada_Fs.rds'))
+saveRDS(dada_Rs, file = file.path(outdir, 'dada_Rs.rds'))
+# dada_Fs <- readRDS(file.path(outdir, 'dada_Fs.rds'))
+# dada_Rs <- readRDS(file = file.path(outdir, 'dada_Rs.rds'))
 ```
 
 Let's inspect one of the resulting objects:
 
-````{r}
+````{r, check_dada}
 dada_Fs[[1]]
 ```
 
@@ -390,15 +410,15 @@ In this step, we will first merge the forward and reverse read pairs:
 the fragment that we amplified with our primers was short enough
 to generate lots of overlap among the sequences from the two directions.
 
-```{r}
+```{r merge_pairs}
 mergers <- mergePairs(dada_Fs, fastqs_derep_F,
                       dada_Rs, fastqs_derep_R,
                       verbose = TRUE)
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-# saveRDS(mergers, file = file.path(outdir, "mergers.rds"))
-# mergers <- readRDS(file.path(outdir, "mergers.rds"))
+```{r, echo=FALSE}
+saveRDS(mergers, file = file.path(outdir, 'mergers.rds'))
+# mergers <- readRDS(file.path(outdir, 'mergers.rds'))
 ```
 
 
@@ -414,9 +434,9 @@ but to be able to quickly restart our analysis from a new R session
 if necessary, we now save these objects to RDS files.
 And after that, we can safely remove these objects from our environment.
 
-```{r}
-saveRDS(fastqs_derep_F, file = file.path(outdir, "fastqs_derep_F.rds"))
-saveRDS(fastqs_derep_R, file = file.path(outdir, "fastqs_derep_R.rds"))
+```{r, save_RDS}
+saveRDS(fastqs_derep_F, file = file.path(outdir, 'fastqs_derep_F.rds'))
+saveRDS(fastqs_derep_R, file = file.path(outdir, 'fastqs_derep_R.rds'))
 
 rm(fastqs_derep_F, fastqs_derep_R) # Remove objects from environment
 ```
@@ -427,7 +447,7 @@ rm(fastqs_derep_F, fastqs_derep_R) # Remove objects from environment
 
 Next, we construct an amplicon sequence variant table (ASV) table:
 
-```{r}
+```{r make_seqtab}
 seqtab_all <- makeSequenceTable(mergers)
 
 # The dimensions of the object are the nr of samples (rows) and the nr of ASVs (columns):
@@ -436,7 +456,7 @@ dim(seqtab_all)
 
 Let's inspect the distribution of sequence lengths:
 
-```{r}
+```{r check_seqtab}
 table(nchar(getSequences(seqtab_all)))
 
 # If you need to remove sequences of a particular length (e.g. too long):
@@ -458,9 +478,9 @@ The result is a sequence read which is half of one sample sequence and half anot
 Fortunately, the accuracy of the sequence variants after denoising makes identifying chimeras simpler than it is when dealing with fuzzy OTUs.
 Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant "parent" sequences.
 
-```{r}
+```{r rm_chim}
 seqtab <- removeBimeraDenovo(seqtab_all,
-                             method = "consensus",
+                             method = 'consensus',
                              multithread = TRUE,
                              verbose = TRUE)
 ncol(seqtab)
@@ -471,12 +491,12 @@ sum(seqtab) / sum(seqtab_all)
 
 We will save the `seqtab` object as an RDS file:
 
-```{r}
-saveRDS(seqtab, file = file.path(outdir, "seqtab_V4.rds"))
+```{r, save_RDS_2}
+saveRDS(seqtab, file = file.path(outdir, 'seqtab_V4.rds'))
 ```
 
-```{r, echo=FALSE,eval=FALSE}
-# seqtab <- readRDS(file.path(outdir, "seqtab_V4.rds"))
+```{r, echo=FALSE, eval=FALSE, purl=FALSE}
+# seqtab <- readRDS(file.path(outdir, 'seqtab_V4.rds'))
 ```
 
 -----
@@ -490,7 +510,7 @@ This information is generally used to further evaluate characteristics and
 quality of the run, sample-to-sample variation,
 and resulting sequencing depth for each sample. 
 
-```{r}
+```{r sum_table}
 # We define a function `getN`, which will get the nr of unique reads for a sample: 
 getN <- function(x) sum(getUniques(x))
 
@@ -529,7 +549,7 @@ you will have to choose the appropriate reference file for this step.
 
 Several files have been formatted for taxonomy assignments in DADA2 pipeline and are available at the [DADA2 website](https://benjjneb.github.io/dada2/index.html).
 
-```{r}
+```{r assign_tax}
 print('Assigning taxa to ASVs...')
 Sys.time()
 
@@ -540,9 +560,9 @@ print('...Done.')
 Sys.time()
 ```
 
-```{r, echo=FALSE,eval=FALSE}
-# saveRDS(taxa, file = file.path(outdir, "taxa.rds"))
-# taxa <- readRDS(file.path(outdir, "taxa.rds"))
+```{r, echo=FALSE}
+saveRDS(taxa, file = file.path(outdir, 'taxa.rds'))
+# taxa <- readRDS(file.path(outdir, 'taxa.rds'))
 ```
 
 -----
@@ -559,7 +579,7 @@ which can be imported directly by *phyloseq*.
 First, we will write a fasta file with the final ASV sequences.
 This fasta file can also be used for phylogenetic tree inference in different platforms.
 
-```{r}
+```{r write_fasta}
 # Prepare sequences and headers:
 asv_seqs <- colnames(seqtab)
 asv_headers <- paste('>ASV', 1:ncol(seqtab), sep = '_')
@@ -571,11 +591,17 @@ asv_fasta <- c(rbind(asv_headers, asv_seqs))
 write(asv_fasta, file = file.path(outdir, 'ASVs.fa'))
 ```
 
-Build the final *phyloseq* object:
-(Note: while we will not add phylogenetic tree now,
-this can also be added to a phyloseq object.)
+Build the final *phyloseq* object. Notes:
 
-```{r}
+  - While we will not add phylogenetic tree now,
+    this can also be added to a *phyloseq* object.
+
+  - Our metadata dataframe contains three samples that we don't have sequences for.
+    However, this is not a problem: *phyloseq* will match the sample IDs in the
+    metadata with those in the OTU table, and disregard IDs not present in the
+    OTU table.
+
+```{r mk_phyloseq}
 ps <- phyloseq(otu_table(seqtab, taxa_are_rows = FALSE),
                sample_data(metadata_df),
                tax_table(taxa))
@@ -585,7 +611,7 @@ saveRDS(ps, file = file.path(outdir, 'ps_V4.rds'))
 
 Report that we are done!
 
-```{r}
+```{r report_done}
 print('Done with ASV inference.')
 ```
 
@@ -634,14 +660,18 @@ Sys.time()
 
 print('....')
 Sys.time()
-fitGTR <- update(fit, k=4, inv=0.2)
+fitGTR <- update(fit, k = 4, inv = 0.2)
 print('...Done.')
 Sys.time()
 
 print('Computing likelihood of tree...')
 Sys.time()
-fitGTR <- optim.pml(fitGTR, model='GTR', optInv=TRUE, optGamma=TRUE,
-                      rearrangement = 'stochastic', control = pml.control(trace = 0))
+fitGTR <- optim.pml(fitGTR,
+                    model = 'GTR',
+                    optInv = TRUE,
+                    optGamma = TRUE,
+                    rearrangement = 'stochastic',
+                    control = pml.control(trace = 0))
 print('...Done'.)
 Sys.time()
 ```
