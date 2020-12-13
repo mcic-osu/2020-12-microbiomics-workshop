@@ -287,7 +287,7 @@ head(filter_results)
 
 ## Step 4: Dereplication & Error Training
 
-The next thing we want to do is “dereplicate” the filtered fastq files.
+The next thing we want to do is "dereplicate" the filtered fastq files.
 During dereplication, we condense the data by collapsing together all reads that
 encode the same sequence, which significantly reduces later computation times.
 
@@ -297,6 +297,13 @@ fastqs_derep_R <- derepFastq(fastqs_filt_R, verbose = FALSE)
 
 names(fastqs_derep_F) <- sampleIDs
 names(fastqs_derep_R) <- sampleIDs
+```
+
+```{r, echo=FALSE, eval=FALSE}
+# saveRDS(fastqs_derep_F, file = file.path(outdir, "fastqs_derep_F.rds"))
+# saveRDS(fastqs_derep_R, file = file.path(outdir, "fastqs_derep_R.rds"))
+# fastqs_derep_F <- readRDS(file.path(outdir, "fastqs_derep_F.rds"))
+# fastqs_derep_R <- readRDS(file.path(outdir, "fastqs_derep_R.rds"))
 ```
 
 The DADA2 algorithm makes use of a parametric error model (`err`) and every
@@ -311,11 +318,16 @@ Sys.time()
 
 err_F <- learnErrors(fastqs_derep_F, multithread = TRUE, verbose = TRUE)
 err_R <- learnErrors(fastqs_derep_R, multithread = TRUE, verbose = TRUE)
-#saveRDS(err_F, file = file.path(outdir, "err_F.rds"))
-#saveRDS(err_R, file = file.path(outdir, "err_R.rds"))
 
 print('...Done!')
 Sys.time()
+```
+
+```{r, echo=FALSE, eval=FALSE}
+# saveRDS(err_F, file = file.path(outdir, "err_F.rds"))
+# saveRDS(err_R, file = file.path(outdir, "err_R.rds"))
+# err_F <- readRDS(file.path(outdir, "err_F.rds"))
+# err_R <- readRDS(file.path(outdir, "err_R.rds"))
 ```
 
 <br>
@@ -348,11 +360,16 @@ Sys.time()
 
 dada_Fs <- dada(fastqs_derep_F, err = err_F, pool = FALSE, multithread = TRUE)
 dada_Rs <- dada(fastqs_derep_R, err = err_R, pool = FALSE, multithread = TRUE)
-#saveRDS(dada_Fs, file = file.path(outdir, "dada_Fs.rds"))
-#saveRDS(dada_Fs, file = file.path(outdir, "dada_Fs.rds"))
 
 print('...Done.')
 Sys.time()
+```
+
+```{r, echo=FALSE, eval=FALSE}
+# saveRDS(dada_Fs, file = file.path(outdir, "dada_Fs.rds"))
+# saveRDS(dada_Rs, file = file.path(outdir, "dada_Rs.rds"))
+# dada_Fs <- readRDS(file.path(outdir, "dada_Fs.rds"))
+# dada_Rs <- readRDS(file = file.path(outdir, "dada_Rs.rds"))
 ```
 
 Let's inspect one of the resulting objects:
@@ -374,6 +391,12 @@ mergers <- mergePairs(dada_Fs, fastqs_derep_F,
                       dada_Rs, fastqs_derep_R,
                       verbose = TRUE)
 ```
+
+```{r, echo=FALSE, eval=FALSE}
+# saveRDS(mergers, file = file.path(outdir, "mergers.rds"))
+# mergers <- readRDS(file.path(outdir, "mergers.rds"))
+```
+
 
 <br>
 
@@ -448,6 +471,10 @@ We will save the `seqtab` object as an RDS file:
 saveRDS(seqtab, file = file.path(outdir, "seqtab_V4.rds"))
 ```
 
+```{r, echo=FALSE,eval=FALSE}
+# seqtab <- readRDS(file.path(outdir, "seqtab_V4.rds"))
+```
+
 -----
 
 ## Step 9: Generate a Summary Table
@@ -509,56 +536,45 @@ print('...Done.')
 Sys.time()
 ```
 
+```{r, echo=FALSE,eval=FALSE}
+# saveRDS(taxa, file = file.path(outdir, "taxa.rds"))
+# taxa <- readRDS(file.path(outdir, "taxa.rds"))
+```
+
 -----
 
 ## Step 11: Generate Output Files
 
-In this step, we will generate output files formatted for downstream analysis in *phyloseq*.
+In this step, we will generate output files formatted for downstream analysis
+in *phyloseq*.
 Data will be extracted from the DADA2 outputs and formatted for downstream
 analysis and data inspection.
 The last step of this pipeline saves a *phyloseq* object as an .RDS file,
 which can be imported directly by *phyloseq*.
 
-```{r}
-# Rename ASVs: 
-asv_seqs <- colnames(seqtab)
-asv_headers <- paste('>ASV', 1:ncol(seqtab), sep = '_')
-```
-
-Next, we will write a fasta file with the final ASV sequences.
+First, we will write a fasta file with the final ASV sequences.
 This fasta file can also be used for phylogenetic tree inference in different platforms.
 
 ```{r}
+# Prepare sequences and headers:
+asv_seqs <- colnames(seqtab)
+asv_headers <- paste('>ASV', 1:ncol(seqtab), sep = '_')
+
+# Interleave headers and sequences:
 asv_fasta <- c(rbind(asv_headers, asv_seqs))
+
+# Write fasta file:
 write(asv_fasta, file = file.path(outdir, 'ASVs.fa'))
 ```
 
-We will create count (OTU) and taxon tables:
+Build the final *phyloseq* object:
+(Note: while we will not add phylogenetic tree now,
+this can also be added to a phyloseq object.)
 
 ```{r}
-# Create a count (OTU) table:
-otu_df <- t(seqtab)
-row.names(otu_df) <- sub('>', '', asv_headers)
-
-# Create a taxon table:
-tax_df <- taxa
-row.names(tax_df) <- sub(">", "", asv_headers)
-```
-
-Build the final *phyloseq* object (we will not do this now,
-but a phylogenetic tree can also be added to the phyloseq object):
-
-```{r}
-ps <- phyloseq(otu_table(otu_df, taxa_are_rows = TRUE),
+ps <- phyloseq(otu_table(seqtab, taxa_are_rows = FALSE),
                sample_data(metadata_df),
-               tax_table(tax_df))
-
-# Write tables and phyloseq object to file:
-write.table(otu_df, file.path(outdir, 'ASVs_counts.tsv'),
-            sep = "\t", quote = FALSE, col.names = NA)
-
-write.table(tax_df, file.path(outdir, 'ASVs_taxonomy.tsv'),
-            sep = "\t", quote = FALSE, col.names = NA)
+               tax_table(taxa))
 
 saveRDS(ps, file = file.path(outdir, 'ps_V4.rds'))
 ```
