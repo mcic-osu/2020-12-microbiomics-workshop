@@ -8,7 +8,7 @@ output:
     toc: true
     toc_float: true
     css: my.css
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 

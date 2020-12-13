@@ -116,9 +116,6 @@ Our *phyloseq* object is made up of the following components (slots):
 - `tax_table`
 - `phy_tree`
 
-A *phyloseq* object can also contain a phylogenetic tree,
-but we don't have one here.
-
 Let's have a look at the object:
 
 ```{r ps}
@@ -567,7 +564,7 @@ ggplot(data = dp_by_asv) +
 We can test whether this correlation is significant:
 
 ```{r}
-cor <- cor.test(dp_by_asv$ct_sums, dp_by_asv$unique_asvs, method = "spearman")
+cor <- cor.test(dp_by_asv$ct_sums, dp_by_asv$asvs, method = "spearman")
 cor
 ```
 
