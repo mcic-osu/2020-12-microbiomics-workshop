@@ -159,8 +159,8 @@ First we get the metadata into a dataframe:
 # Load and prepare sample metadata:
 metadata_df <- read.table(file = metadata_file, sep = "\t", header = TRUE)
 
-colnames(metadata_df)[1] <- 'sample_ID'
-rownames(metadata_df) <- metadata_df$sample_ID
+colnames(metadata_df)[1] <- 'SampleID'
+rownames(metadata_df) <- metadata_df$SampleID
 
 head(metadata_df)
 ```
@@ -168,7 +168,7 @@ head(metadata_df)
 Let's compare the sample IDs from the metadata with the fastq filenames:
 
 ```{r}
-metadata_df$sample_ID
+metadata_df$SampleID
 
 head(basename(fastqs_raw_F))    # basename() strips the dir name from the filename
 ```
@@ -179,16 +179,16 @@ To extract the sample IDs from the fastq file names, we remove everything after
 ```{r}
 # sub() arguments: sub(pattern, replacement, vector)
 # replace with "" -> replace with nothing
-sample_IDs <- sub("-V4-V5_.*", "", basename(fastqs_raw_F))
+sampleIDs <- sub("-V4-V5_.*", "", basename(fastqs_raw_F))
 ```
 
 We can check whether the IDs from the fastq files and the metadata dataframe
 are the same:
 
 ```{r}
-identical(sort(metadata_df$sample_ID), sample_IDs)
+identical(sort(metadata_df$SampleID), sampleIDs)
 
-setdiff(sort(metadata_df$sample_ID), sample_IDs) # REMOVE MISSING SAMPLES?
+setdiff(sort(metadata_df$SampleID), sampleIDs) # REMOVE MISSING SAMPLES?
 ```
 
 -----
@@ -256,8 +256,8 @@ to new fastq files.
 Therefore, we first define the filenames for the new files:
 
 ```{r}
-fastqs_filt_F <- file.path(filter_dir, paste0(sample_IDs, '_F_filt.fastq'))
-fastqs_filt_R <- file.path(filter_dir, paste0(sample_IDs, '_R_filt.fastq'))
+fastqs_filt_F <- file.path(filter_dir, paste0(sampleIDs, '_F_filt.fastq'))
+fastqs_filt_R <- file.path(filter_dir, paste0(sampleIDs, '_R_filt.fastq'))
 ```
 
 <br>
@@ -295,8 +295,8 @@ encode the same sequence, which significantly reduces later computation times.
 fastqs_derep_F <- derepFastq(fastqs_filt_F, verbose = FALSE)
 fastqs_derep_R <- derepFastq(fastqs_filt_R, verbose = FALSE)
 
-names(fastqs_derep_F) <- sample_IDs
-names(fastqs_derep_R) <- sample_IDs
+names(fastqs_derep_F) <- sampleIDs
+names(fastqs_derep_R) <- sampleIDs
 ```
 
 The DADA2 algorithm makes use of a parametric error model (`err`) and every
@@ -375,14 +375,23 @@ mergers <- mergePairs(dada_Fs, fastqs_derep_F,
                       verbose = TRUE)
 ```
 
-We will now save the dereplicated sequence objects to RDS files,
-so we can remove these objects from our environment:
+<br>
+
+Just like tables can be saved in R using `write.table` or `write.csv`,
+R *objects* can be saved using `saveRDS`.
+The resulting .rds file can then be loaded into an R environment using `readRDS`.
+This is a convenient way to save R objects that require a lot of computation time.
+
+We should not be needing the very large dereplicated sequence objects anymore,
+but to be able to quickly restart our analysis from a new R session
+if necessary, we now save these objects to RDS files.
+And after that, we can safely remove these objects from our environment.
 
 ```{r}
 saveRDS(fastqs_derep_F, file = file.path(outdir, "fastqs_derep_F.rds"))
 saveRDS(fastqs_derep_R, file = file.path(outdir, "fastqs_derep_R.rds"))
 
-rm(fastqs_derep_F, fastqs_derep_R)
+rm(fastqs_derep_F, fastqs_derep_R) # Remove objects from environment
 ```
 
 -----
@@ -467,7 +476,7 @@ nreads_summary <- data.frame(filter_results,
                              denoised_F,
                              denoised_R,
                              nonchim = rowSums(seqtab),
-                             row.names = sample_IDs)
+                             row.names = sampleIDs)
 colnames(nreads_summary)[1:2] <- c('input', 'filtered')
 
 # Have a look at the first few rows:
@@ -536,7 +545,8 @@ tax_df <- taxa
 row.names(tax_df) <- sub(">", "", asv_headers)
 ```
 
-Build the final phyloseq object (we will not do this now, but a phylogenetic tree can also be added to the phyloseq object):
+Build the final *phyloseq* object (we will not do this now,
+but a phylogenetic tree can also be added to the phyloseq object):
 
 ```{r}
 ps <- phyloseq(otu_table(otu_df, taxa_are_rows = TRUE),
@@ -546,8 +556,10 @@ ps <- phyloseq(otu_table(otu_df, taxa_are_rows = TRUE),
 # Write tables and phyloseq object to file:
 write.table(otu_df, file.path(outdir, 'ASVs_counts.tsv'),
             sep = "\t", quote = FALSE, col.names = NA)
+
 write.table(tax_df, file.path(outdir, 'ASVs_taxonomy.tsv'),
             sep = "\t", quote = FALSE, col.names = NA)
+
 saveRDS(ps, file = file.path(outdir, 'ps_V4.rds'))
 ```
 
