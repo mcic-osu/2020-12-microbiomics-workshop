@@ -162,35 +162,34 @@ date
    variables `$1`, `$2`, etc. First, we will give these variables a more
    informative name.
 
-2. We'll define the two separate dirs we'll have for the first and
-   second round of trimming that we'll do by extending the "base" output dir.
-
-3. We'll create the output directories if they don't already exist.
+2. We'll create the output directory if it doesn't already exist.
    Using the `-p` option, `mkdir` can create multiple levels at once,
    and will not complain if the dir(s) already exist.
 
-4. We'll report the directory variables to screen,
+3. We'll report the directory variables to screen,
    which will be helpful e.g. if we'd need to debug our script.
 
+4. We'll define the primer sequences.
 
 ```{bash}
 # SETUP --------------------------------------------------------
 # 1. Command-line arguments:
 indir=$1
-outdir_base=$2
+outdir=$2
 
-# 2. Define output directories for first and second trim:
-outdir_trim1=$outdir_base/first_trim
-outdir_trim2=$outdir_base/second_trim
+# 2. Create output directory if it doesn't already exist:
+mkdir -p $outdir
 
-# 3. Create output directories if they don't already exist:
-mkdir -p $outdir_trim1
-mkdir -p $outdir_trim2
+# 3. Report:
+echo "## Input dir:       $indir"
+echo "## Output dir:      $outdir"
 
-# 4. Report:
-echo "## Input dir:                 $indir"
-echo "## Output dir - first trim:   $outdir_trim1"
-echo "## Input dir - second trim:   $outdir_trim1"
+# 4. Define primers:
+primer_f=GAGTGYCAGCMGCCGCGGTAA
+primer_r=ACGGACTACNVGGGTWTCTAAT
+
+primer_f_rc=TTACCGCGGCKGCTGRCACTC
+primer_r_rc=ATTAGAWACCCBNGTAGTCCGT
 ```
 
 ### Part C: Loop through `fastq` files and run `cutadapt` for each pair:
@@ -220,13 +219,11 @@ and one with reverse reads ("R2").
 
 4. To make sure all is well, we list the R1 and R2 input files.
 
-5. Now, we'll do the first round of trimming using the forward *primer* sequences.
+5. Now, we'll do the primer removal using `cutadapt`.
    We use `\` just to allow the command to continue across multiple lines for
    easy of reading (the `\` "escapes" the return/newline).
 
-6. We'll do the second round of trimming using the reverse *primer* sequences.
-
-7. We tell the loop that is done using `done`.
+6. We tell the loop that is done using `done`.
 
 ```{bash}
 # RUN CUTADAPT --------------------------------------------------------
@@ -245,22 +242,14 @@ do
   echo "## R2 input file:"
   ls -lh $indir/$R2
 
-  # 5. First trim:
-  echo -e "\n\n## Running cutadapt for the first trim:"
+  # 5. Run cutadapt:
+  echo -e "\n\n## Running cutadapt..."
 	
-	cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \
-	--discard-untrimmed --pair-filter=any \
-	-o $outdir_trim1/$R1 -p $outdir_trim1/$R2 \
-	$indir/$R1 $indir/$R2
+  cutadapt -a $primer_f...$primer_r_rc -A $primer_r...$primer_f_rc \
+	  --discard-untrimmed --pair-filter=any \
+	  -o $outdir/$R1 -p $outdir/$R2 $indir/$R1 $indir/$R2
 	
-	# 6. Second trim:
-  echo -e "\n\n## Running cutadapt for the second trim:"
-	
-	cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \
-	-o $outdir_trim2/$R1 -p $outdir_trim2/$R2 \
-	$outdir_trim1/$R1 $outdir_trim1/$R2
-  
-  # 7. Exit the loop using the `done` keyword
+  # 6. Exit the loop using the `done` keyword
 done
 ```
 
@@ -272,13 +261,10 @@ the (date and) time that our script finished running.
 
 ```{bash}
 # REPORT AND FINALIZE --------------------------------------------------------
-echo -e "\n\n## Listing output files - first trim:"
-ls -lh $outdir_trim1
+echo -e "\n## Listing output files:"
+ls -lh $outdir
 
-echo -e "\n\n## Listing output files - second trim:"
-ls -lh $outdir_trim1
-
-echo -e "\n\n## Done with cutadapt script."
+echo -e "\n## Done with cutadapt script."
 date
 ```
 
@@ -305,20 +291,26 @@ date
 # SETUP --------------------------------------------------------
 # Command-line arguments:
 indir=$1
-outdir_base=$2
+outdir=$2
 
-# Define output directories for first and second trim:
-outdir_trim1=$outdir_base/first_trim
-outdir_trim2=$outdir_base/second_trim
-
-# Create output directories if they don't already exist:
-mkdir -p $outdir_trim1
-mkdir -p $outdir_trim2
+# Create output directory if it doesn't already exist:
+mkdir -p $outdir
 
 # Report:
-echo "## Input dir:                 $indir"
-echo "## Otput dir - first trim:    $outdir_trim1"
-echo "## Input dir - second trim:   $outdir_trim1"
+echo "## Input dir:       $indir"
+echo "## Output dir:      $outdir"
+
+# Primers:
+primer_f=GAGTGYCAGCMGCCGCGGTAA
+primer_r=ACGGACTACNVGGGTWTCTAAT
+
+primer_f_rc=TTACCGCGGCKGCTGRCACTC
+primer_r_rc=ATTAGAWACCCBNGTAGTCCGT
+
+# Software - making doubly sure this is all loaded:
+module load python/3.6-conda5.2                     # Load conda module
+. /apps/python/3.6-conda5.2/etc/profile.d/conda.sh  # Setup conda (should be superfluous)
+conda activate /users/PAS0471/osu5685/.conda/envs/cutadaptenv # Activate cutadapt environment
 
 # RUN CUTADAPT --------------------------------------------------------
 echo -e "\n## Looping through input files...\n"
@@ -334,31 +326,26 @@ do
   echo "## R2 input file:"
   ls -lh $indir/$R2
 
-  # First trim:
-  echo -e "\n\n## Running cutadapt for the first trim:"
+  # Trim:
+  echo -e "\n\n## Running cutadapt..."
 	
-	cutadapt -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT \
+  cutadapt -a $primer_f...$primer_r_rc -A $primer_r...$primer_f_rc \
 	  --discard-untrimmed --pair-filter=any \
-	  -o $outdir_trim1/$R1 -p $outdir_trim1/$R2 \
-	  $indir/$R1 $indir/$R2
+	  -o $outdir/$R1 -p $outdir/$R2 $indir/$R1 $indir/$R2
 	
-	# Second trim:
-  echo -e "\n\n## Running cutadapt for the second trim:"
-	
-	cutadapt -a ATTAGAWACCCBNGTAGTCCGT -A TTACCGCGGCKGCTGRCACTC \
-	  -o $outdir_trim2/$R1 -p $outdir_trim2/$R2 \
-	  $outdir_trim1/$R1 $outdir_trim1/$R2
+  # Options:
+  # "-a"/"-A": Primers for R1/R2
+  # "--discard-untrimmed": Remove pairs with no primer found
+  # "--pair-filter=any": Remove pair if one read is filtered (=Default)
 
+  echo -e "\n\n ------------------------------------------------------------\n"
 done
 
 # REPORT AND FINALIZE --------------------------------------------------------
-echo -e "\n\n## Listing output files - first trim:"
-ls -lh $outdir_trim1
+echo -e "\n## Listing output files:"
+ls -lh $outdir
 
-echo -e "\n\n## Listing output files - second trim:"
-ls -lh $outdir_trim1
-
-echo -e "\n\n## Done with cutadapt script."
+echo -e "\n## Done with cutadapt script."
 date
 ```
 
@@ -380,15 +367,15 @@ pwd
 
 <br>
 
-Then we assign our input directory and base output directory to the variables
-`indir` and `outdir_base`, respectively.
+Then we assign our input and output directories to the variables
+`indir` and `outdir`, respectively.
 
 We'll also assign the name we want to give to the *SLURM* log file to a variable.
 Here, we'll also use the `%j` *SLURM* keyword to include the *SLURM* job number.
 
 ```{bash}
 indir=data/raw/fastq_subsample
-outdir_base=data/processed/fastq_trimmed
+outdir=data/processed/fastq_trimmed
 
 # Give a name to the SLURM output file:
 # (The -o flag sets the SLURM log file name, and `%j` represents the job ID)
@@ -399,7 +386,7 @@ slurm_file=slurm-cutadapt-$USER-%j.out
 
 Finally, we're ready to **submit the script**!
 ```{bash}
-sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir_base
+sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir
 ```
 
 -----
@@ -414,13 +401,13 @@ We can check what's going on with our job using `squeue`:
 ```{bash}
 # Initially the job may be queued ("PD" in the "ST" (status) column):
 squeue -u $USER
-# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
-# 2451088 serial-40 01-cutad   jelmer PD       0:00      1 (None) 
+# JOBID   PARTITION     NAME       USER    ST      TIME  NODES NODELIST(REASON)
+# 2526085 serial-40     01-cutad   jelmer  PD       0:02      1 (None) 
 
 # Then the job should be running ("R" in the "ST" column):
 squeue -u $USER
-# JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
-# 2451088 serial-40 01-cutad   jelmer R       0:43      1 (None) 
+# JOBID   PARTITION     NAME       USER    ST      TIME  NODES NODELIST(REASON) 
+# 2526085 serial-40     01-cutad   jelmer  R       0:02      1 p0002 
 
 # When the job has finished, squeue will return nothing (!):
 squeue -u $USER
@@ -433,7 +420,36 @@ squeue -u $USER
 We could also get more statistics about our job using `scontrol`:
 
 ```{bash}
-scontrol show job 2451088   # Replace the number with your JOBID
+scontrol show job 2526085   # Replace the number with your JOBID
+
+# UserId=jelmer(33227) GroupId=PAS0471(3773) MCS_label=N/A
+# Priority=200005206 Nice=0 Account=pas0471 QOS=pitzer-default
+# JobState=RUNNING Reason=None Dependency=(null)
+# Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+# RunTime=00:02:00 TimeLimit=01:00:00 TimeMin=N/A
+# SubmitTime=2020-12-14T14:32:44 EligibleTime=2020-12-14T14:32:44
+# AccrueTime=2020-12-14T14:32:44
+# StartTime=2020-12-14T14:32:47 EndTime=2020-12-14T15:32:47 Deadline=N/A
+# SuspendTime=None SecsPreSuspend=0 LastSchedEval=2020-12-14T14:32:47
+# Partition=serial-40core AllocNode:Sid=pitzer-login01:57954
+# ReqNodeList=(null) ExcNodeList=(null)
+# NodeList=p0002
+# BatchHost=p0002
+# NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+# TRES=cpu=1,mem=4556M,node=1,billing=1,gres/gpfs:project=0
+# Socks/Node=* NtasksPerN:B:S:C=1:0:*:1 CoreSpec=*
+# MinCPUsNode=1 MinMemoryCPU=4556M MinTmpDiskNode=0
+# Features=(null) DelayBoot=00:00:00
+# OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+# Command=/fs/project/PAS0471/workshops/2020-12_micro/master/scripts/01-cutadapt.sh data/raw/fastq_subsample # da/processed/fastq_trimmed
+# WorkDir=/fs/project/PAS0471/workshops/2020-12_micro/master
+# Comment=stdout=/fs/project/PAS0471/workshops/2020-12_micro/master/slurm-cutadapt-jelmer-2526085.out 
+# StdErr=/fs/project/PAS0471/workshops/2020-12_micro/master/slurm-cutadapt-jelmer-2526085.out
+# StdIn=/dev/null
+# StdOut=/fs/project/PAS0471/workshops/2020-12_micro/master/slurm-cutadapt-jelmer-2526085.out
+# Power=
+# TresPerNode=gpfs:project:1
+# MailUser=jelmer MailType=NONE
 ```
 
 ### Check the output
@@ -448,65 +464,63 @@ ls slurm*
 Let's look at the start of the *SLURM* log file:
 
 ```{bash}
-head -n 20 slurm-cutadapt-jelmer-2451088.out
+head -n 20 slurm-cutadapt-jelmer-2526085.out
 
 # ## Starting cutadapt script.
-# Fri Dec 11 10:03:00 EST 2020
-# ## Input dir:                 data/raw/fastq/
-# ## Output dir - first trim:   data/processed/fastq_trimmed/first_trim
-# ## Input dir - second trim:   data/processed/fastq_trimmed/first_trim
+# Mon Dec 14 14:32:48 EST 2020
+# ## Input dir:       data/raw/fastq_subsample
+# ## Output dir:      data/processed/fastq_trimmed
 # 
 # ## Looping through input files...
 # 
 # ## R1 input file:
-# -r--r--r-- 1 jelmer PAS0471 7.4M Dec  11 08:27 data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 3.1M Dec 13 14:10 data/raw/fastq_subsample/101-S1-V4-V5_S1_L001_R1_001.fastq.gz
 # ## R2 input file:
-# -r--r--r-- 1 jelmer PAS0471 8.8M Dec  11 08:27 data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 3.8M Dec 13 14:10 data/raw/fastq_subsample/101-S1-V4-V5_S1_L001_R2_001.fastq.gz
 # 
 # 
-# ## Running cutadapt for the first trim:
+# ## Running cutadapt...
 # This is cutadapt 3.1 with Python 3.8.6
-# Command line parameters: -g GAGTGYCAGCMGCCGCGGTAA -G ACGGACTACNVGGGTWTCTAAT --discard-untrimmed --pair-filter=any -o data/processed/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R1_001.fastq.gz -p data/processed/fastq_trimmed/first_trim/201-S4-V4-V5_S53_L001_R2_001.fastq.gz data/raw/fastq_subsample/201-S4-V4-V5_S53_L001_R1_001.fastq.gz data/raw/fastq/201-S4-V4-V5_S53_L001_R2_001.fastq.gz
+# Command line parameters: -a GAGTGYCAGCMGCCGCGGTAA...ATTAGAWACCCBNGTAGTCCGT -A # ACGGACTACNVGGGTWTCTAAT...TTACCGCGGCKGCTGRCACTC --discard-untrimmed --pair-filter=any -o # data/processed/fastq_trimmed/101-S1-V4-V5_S1_L001_R1_001.fastq.gz -p # data/processed/fastq_trimmed/101-S1-V4-V5_S1_L001_R2_001.fastq.gz # data/raw/fastq_subsample/101-S1-V4-V5_S1_L001_R1_001.fastq.gz # data/raw/fastq_subsample/101-S1-V4-V5_S1_L001_R2_001.fastq.gz
 # Processing reads on 1 core in paired-end mode ...
+# Finished in 2.60 s (113 µs/read; 0.53 M reads/minute).
+
 ```
 
 Let's also look at the end of the file:
 
 ```{bash}
-tail slurm-cutadapt-jelmer-2451088.out
+tail slurm-cutadapt-jelmer-2526085.out
 
-# -rw-rw-r-- 1 jelmer PAS0471 1.1M Dec  11 10:05 blankM-V4-V5_S73_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 1.4M Dec  11 10:05 blankM-V4-V5_S73_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  56K Dec  11 10:05 H20-V4-V5_S88_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  66K Dec  11 10:05 H20-V4-V5_S88_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 3.8M Dec  11 10:05 Zymo-V4-V5_S82_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 4.4M Dec  11 10:05 Zymo-V4-V5_S82_L001_R2_001.fastq.gz
-# 
+# -rw-r--r-- 1 jelmer PAS0471 2.2M Dec 14 14:35 604-S4-V4-V5_S72_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 398K Dec 14 14:35 blankM-V4-V5_S73_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 486K Dec 14 14:35 blankM-V4-V5_S73_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471  23K Dec 14 14:35 H20-V4-V5_S88_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471  26K Dec 14 14:35 H20-V4-V5_S88_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 1.4M Dec 14 14:35 Zymo-V4-V5_S82_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 1.7M Dec 14 14:35 Zymo-V4-V5_S82_L001_R2_001.fastq.gz
 # 
 # ## Done with cutadapt script.
-# Fri Dec  11 10:05:33 EST 2020
+# Mon Dec 14 14:35:19 EST 2020
 ```
 
 
 <br>
 
-Finally, we can directly check one of the output dirs:
+Finally, we can directly check the output dir:
 
 ```{bash}
-ls -lh data/processed/fastq_trimmed/second_trim/
+ls -lh data/processed/fastq_trimmed/    # Or use $outdir
 
-# total 474M
-# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 9.8M Dec  11 10:05 101-S1-V4-V5_S1_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 9.6M Dec  11 10:05 101-S4-V4-V5_S49_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471  13M Dec  11 10:05 101-S4-V4-V5_S49_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 6.8M Dec  11 10:05 102-S4-V4-V5_S50_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 8.3M Dec  11 10:05 102-S4-V4-V5_S50_L001_R2_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 6.2M Dec  11 10:05 103-S4-V4-V5_S51_L001_R1_001.fastq.gz
-# -rw-rw-r-- 1 jelmer PAS0471 7.8M Dec  11 10:05 103-S4-V4-V5_S51_L001_R2_001.fastq.gz
+# total 178M
+# -rw-r--r-- 1 jelmer PAS0471 3.0M Dec 14 14:32 101-S1-V4-V5_S1_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 3.6M Dec 14 14:32 101-S1-V4-V5_S1_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 3.7M Dec 14 14:33 101-S4-V4-V5_S49_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 4.5M Dec 14 14:33 101-S4-V4-V5_S49_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 2.6M Dec 14 14:33 102-S4-V4-V5_S50_L001_R1_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 3.1M Dec 14 14:33 102-S4-V4-V5_S50_L001_R2_001.fastq.gz
+# -rw-r--r-- 1 jelmer PAS0471 2.4M Dec 14 14:33 103-S4-V4-V5_S51_L001_R1_001.fastq.gz
 # ....[other files not shown]
-
-
 ```
 
 <br>

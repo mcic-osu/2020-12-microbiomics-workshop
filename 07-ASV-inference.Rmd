@@ -102,6 +102,22 @@ Sys.time()
 cat('Working directory:', getwd(), '\n')
 ```
 
+### Set the number of cores
+
+Most dada2 functions can use multiple cores.
+Because we are on a cluster and we have reserved only part of a node,
+auto-detection of the number of cores will not be appropriate
+(the program will detect more cores than we have available).
+Therefore, we should specify the appropriate number of cores in our function
+call below.
+
+We will set the number of cores here,
+assumes you requested 4 cores in your job submission (change if needed):
+
+```{r ncores}
+n_cores <- 4
+```
+
 ### Install and load packages
 
 To save time, we have already installed all the necessary R packages at OSC
@@ -131,7 +147,7 @@ pacman::p_load(char = packages)
 
 ```{r set_dirs}
 # Dir with input fastq files:
-indir <- 'data/processed/fastq_trimmed/second_trim'
+indir <- 'data/processed/fastq_trimmed'
 
 # Dirs for output:
 qc_dir <- 'analysis/QC'
@@ -299,7 +315,8 @@ filter_results <-
                 maxEE = c(2,2),
                 truncQ = 2,
                 rm.phix = FALSE,
-                compress = FALSE, multithread = TRUE, verbose = TRUE) 
+                multithread = n_cores, 
+                compress = FALSE, verbose = TRUE) 
 print('...Done!')
 Sys.time()
 
@@ -340,8 +357,8 @@ until they converge on a jointly consistent solution.
 print('Learning errors...')
 Sys.time()
 
-err_F <- learnErrors(fastqs_derep_F, multithread = TRUE, verbose = TRUE)
-err_R <- learnErrors(fastqs_derep_R, multithread = TRUE, verbose = TRUE)
+err_F <- learnErrors(fastqs_derep_F, multithread = n_cores, verbose = TRUE)
+err_R <- learnErrors(fastqs_derep_R, multithread = n_cores, verbose = TRUE)
 
 print('...Done!')
 Sys.time()
@@ -372,18 +389,21 @@ plotErrors(err_R, nominalQ = TRUE)
 We will run the dada algorithm to infer Amplicon Sequence Variants (ASVs).
 
 This step is quite computationally intensive,
-and we will therefore perform independent inference for each sample (`pool = FALSE`),
-which will keep memory usage linear to the sample number.
-Pooling will increase memory rquirements and computation time,
-but improve detection of rare variants seen once or twice in an individual sample,
+and for this tutorial, we will therefore perform independent inference for each
+sample (`pool = FALSE`), which will keep the computation time down.
+
+Pooling will increase computation time, especially if you have many samples,
+but will improve detection of rare variants seen once or twice in an individual sample,
 but many times across all samples.
+Therefore, for your own analysis, you will likely want to use pooling,
+though ["pseudo-pooling" is also an option](https://benjjneb.github.io/dada2/pseudo.html).
 
 ```{r run_dada}
 print('Inferring ASVs (running the dada algorithm)...')
 Sys.time()
 
-dada_Fs <- dada(fastqs_derep_F, err = err_F, pool = FALSE, multithread = TRUE)
-dada_Rs <- dada(fastqs_derep_R, err = err_R, pool = FALSE, multithread = TRUE)
+dada_Fs <- dada(fastqs_derep_F, err = err_F, pool = FALSE, multithread = n_cores)
+dada_Rs <- dada(fastqs_derep_R, err = err_R, pool = FALSE, multithread = n_cores)
 
 print('...Done.')
 Sys.time()
@@ -469,19 +489,22 @@ table(nchar(getSequences(seqtab_all)))
 ## Step 8: Remove Chimeras
 
 Now, we will remove chimeras.
-The `dada` algorithm models and removes substitution errors,
-but chimeras are another importance source of spurious sequences in amplicon sequencing. Chimeras are formed during PCR amplification.
+The `dada` algorithm models and removes substitution errors, but chimeras
+are another importance source of spurious sequences in amplicon sequencing.
+Chimeras are [formed during PCR amplification](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3044863/).
 When one sequence is incompletely amplified, the incomplete amplicon primes the
 next amplification step, yielding a spurious amplicon.
 The result is a sequence read which is half of one sample sequence and half another.
 
-Fortunately, the accuracy of the sequence variants after denoising makes identifying chimeras simpler than it is when dealing with fuzzy OTUs.
-Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant "parent" sequences.
+Fortunately, the accuracy of the sequence variants after denoising makes
+identifying chimeras simpler than it is when dealing with fuzzy OTUs.
+Chimeric sequences are identified if they can be exactly reconstructed by
+combining a left-segment and a right-segment from two more abundant "parent" sequences.
 
 ```{r rm_chim}
 seqtab <- removeBimeraDenovo(seqtab_all,
                              method = 'consensus',
-                             multithread = TRUE,
+                             multithread = n_cores,
                              verbose = TRUE)
 ncol(seqtab)
 
@@ -547,13 +570,14 @@ Now, we will assign taxonomy to our ASVs.
 Depending on the marker gene and the data,
 you will have to choose the appropriate reference file for this step.
 
-Several files have been formatted for taxonomy assignments in DADA2 pipeline and are available at the [DADA2 website](https://benjjneb.github.io/dada2/index.html).
+Several files have been formatted for taxonomy assignments in DADA2 pipeline and
+are available at the [DADA2 website](https://benjjneb.github.io/dada2/index.html).
 
 ```{r assign_tax}
 print('Assigning taxa to ASVs...')
 Sys.time()
 
-taxa <- assignTaxonomy(seqtab, tax_key, multithread = TRUE)
+taxa <- assignTaxonomy(seqtab, tax_key, multithread = n_cores)
 colnames(taxa) <- c('Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus')
 
 print('...Done.')
