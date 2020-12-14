@@ -50,4 +50,4 @@ output:
     theme: cerulean
     css: my.css
 
-exclude: ["analysis", "metadata", "processed_data", "raw_data", "2020-12-microbiom.code-workspace", "slides/02-shell-slides.Rmd", "slides/03-OSC-slides.Rmd"]
+exclude: ["analysis", "metadata", "data", "2020-12-microbiom.code-workspace", "slides/02-shell-slides.Rmd", "slides/03-OSC-slides.Rmd"]
