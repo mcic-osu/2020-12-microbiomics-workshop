@@ -3,7 +3,7 @@ title: "<br>Workflow part I:<br>Primer and Adapter Removal"
 output:
   rmarkdown::html_document:
     theme: cerulean
-    highlight: kate
+    highlight: zenburn
     code_download: true
     toc: true
     toc_float: true
@@ -32,8 +32,8 @@ knitr::opts_chunk$set(eval = FALSE)
 
 ### Notes
 
-- You can download this `Rmd` (R Markdown) file by clicking the `Code` button in
-  the top-right of this page.
+- FYI: You can download this `Rmd` (R Markdown) file by clicking the `Code`
+  button in the top-right of this page.
   To convert an `Rmd` file to an R script,
   type the following in an R console: `knitr::purl(input="<filename>.Rmd")`.
 
@@ -77,9 +77,8 @@ We will specify these primers when running `cutadapt`.
 
 `cutadapt` is not available as a module at OSC.
 However, it can be easily installed there through `conda`,
-see this [webpage](https://cutadapt.readthedocs.io/en/stable/installation.html#installation-with-conda).   
-We have already done this for you to save some time,
-so we just need to load the `conda` environment.
+see this [webpage](https://cutadapt.readthedocs.io/en/stable/installation.html#installation-with-conda). We have already done this for you to save some time during this
+tutorial, so we just need to load the `conda` environment.
 
 To work with `conda` at OSC, we first need to load the `conda` module:
 
@@ -159,8 +158,8 @@ date
 
 1. So-called "positional" arguments that are passed onto a script using the
    syntax `./script.sh arg1 arg2` are represented inside a script as the
-   variables `$1`, `$2`, etc. First, we will give these variables a more
-   informative name.
+   variables `$1`, `$2`, etc. First, we will give these variables more
+   informative names.
 
 2. We'll create the output directory if it doesn't already exist.
    Using the `-p` option, `mkdir` can create multiple levels at once,
@@ -169,7 +168,7 @@ date
 3. We'll report the directory variables to screen,
    which will be helpful e.g. if we'd need to debug our script.
 
-4. We'll define the primer sequences.
+4. We'll save the primer sequences as variables.
 
 ```{bash}
 # SETUP --------------------------------------------------------
@@ -200,8 +199,9 @@ This is made a little more complicated because we have **two files** for each sa
 one with forwards reads (which has "R1" in its filename)
 and one with reverse reads ("R2").
 
-1. We'll initialize the `for` loop, which is done using `for X in XYZ` syntax.
-   What we'll loop over (XYZ above) are all the "R1" fastq files,
+1. We'll initialize the `for` loop,
+   which is done using `for x in xyz` syntax.
+   We'll loop over all the "R1" fastq files,
    i.e. the ones with the forward reads.
    We list all of those by taking advantage of the `*` wildcard.
 
@@ -209,13 +209,14 @@ and one with reverse reads ("R2").
    in each rendition of the loop, a single file name.
    Because it also contains the dir name, we will extract the file name only
    using the `basename command`.
-   The `$()` notation is called command substitution,
+   The `$()` notation is called *command substitution*,
    and simply allows us to assign the output of a command to a variable.
    
-3. To get the corresponding file with reverse reads, which should always
-   have the exact same name except that it contains "R2" rather than "R1",
-   we simply substitute "R1" by "R2" in the file name using a little trick
-   with the syntax `${variable_name/pattern/replacement}`.
+3. To get the corresponding file with reverse read (which should always
+   have the exact same name except containing "R2" rather than "R1"),
+   we simply substitute "R1" by "R2" in the file name using a little
+   *parameter substitution* trick with the syntax
+   `${variable_name/pattern/replacement}`.
 
 4. To make sure all is well, we list the R1 and R2 input files.
 
@@ -223,7 +224,7 @@ and one with reverse reads ("R2").
    We use `\` just to allow the command to continue across multiple lines for
    easy of reading (the `\` "escapes" the return/newline).
 
-6. We tell the loop that is done using `done`.
+6. We indicate the end of the loop with the keyword `done`.
 
 ```{bash}
 # RUN CUTADAPT --------------------------------------------------------

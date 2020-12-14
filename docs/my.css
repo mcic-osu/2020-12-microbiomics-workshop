@@ -67,9 +67,9 @@ pre{
   font-style: italic;
 }
 
-pre.sourceCode.bash{
+/*pre.sourceCode.bash{
   background-color: #f7f3f3;
-}
+}*/
 
 pre.r {
   font-style: normal;
