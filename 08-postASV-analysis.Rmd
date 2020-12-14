@@ -66,7 +66,6 @@ Analyze microbiome experimental data as a phyloseq object - explore ecological m
 Add our custom library again if you restarted your R session:
 
 ```{r libload}
-# This is only needed if you're not continuing the same Rstudio session
 .libPaths(new = '/fs/project/PAS0471/.R/4.0/')
 ```
 
@@ -125,18 +124,20 @@ ps_raw
 taxa_names(ps_raw)[1:3]
 ```
 
-As we can see, the taxon names are currently the associated sequences.   
+As we can see, the taxon names are currently the associated sequences.
 We can create a new *phyloseq* component to store these sequences,
-then rename the ASVs so something shorter (ASV_1, ASV_2, etc.).
+then rename the ASVs so something shorter ("ASV_1", "ASV_2", etc.).
 
 ```{r}
 dna <- Biostrings::DNAStringSet(taxa_names(ps_raw))
 names(dna) <- taxa_names(ps_raw)
 
+# Merge sequence object into the phyloseq object:
 ps_raw <- merge_phyloseq(ps_raw, dna)
-taxa_names(ps_raw) <- paste("ASV", 1:ntaxa(ps_raw), sep = "_")
-
 ps_raw
+
+# Rename ASVs:
+taxa_names(ps_raw) <- paste("ASV", 1:ntaxa(ps_raw), sep = "_")
 taxa_names(ps_raw)[1:3]
 ```
 
@@ -165,22 +166,23 @@ head(sample_data(ps_raw))
 
 MCIC measured our DNA concentration by comparing band intensities to a single
 reference band. MCIC's DNA concentration measurements range from 0 to 1 (the reference).
-Zero in this case is coded as NA.
-Decontam can't handle NA's or 0's,
+Zero in this case is coded as `NA`.
+The *decontam* package can't handle NA's or 0's,
 so we need to change them to a small value (e.g. 0.01).
 
 ```{r}
-# First we identify the NAs in the DNA measurement column:
+# First, we identify the NAs in the DNA measurement column:
 NAs <- is.na(sample_data(ps_raw)$PCR_prod_V4.V5)
 
-# Then we replace NAs with 0.01:
+# Then, we replace NAs with 0.01:
 sample_data(ps_raw)$PCR_prod_V4.V5[NAs] <- 0.01
 ```
 
 We will use `decontam::isContaminant(method = "frequency")` to test each taxon
 against the null hypothesis: abundance is not associated with DNA concentration.
-MCIC's DNA concentrations are not very accurate,
-so I chose a relaxed p-value (0.2) to reject the null hypothesis.
+Because the DNA concentration measurements are not very accurate,
+and we want to make sure to remove possible contaminants,
+we use a relaxed p-value (0.2) to reject the null hypothesis:
 
 ```{r, cache=TRUE}
 contam_df_freq <- isContaminant(ps_raw,
@@ -191,7 +193,8 @@ head(contam_df_freq)
 ```
 
 As we can see, the top 3 ASVs are identified as probable contaminants.
-How many contaminants were identified (`TRUE` in the `contaminant` column)?
+How many contaminants were identified (`TRUE` in the `contaminant` column)
+in total?
 
 ```{r}
 table(contam_df_freq$contaminant)
@@ -219,11 +222,7 @@ plot_frequency(ps_raw,
    
 As we can see, abundance of ASVs 1, 2, 3, and 11 are particularly high in samples
 with low DNA concentration.
-I expect that if we were to use more accurate measures of DNA concentration
-(e.g. fluorometric or gel electrophoresis with a standard curve),
-we would find a stronger association (lower p-value) between DNA concentration
-and taxon abundance for these ASVs.   
-   
+
 Which samples have highest abundances of the contaminants?
 
 ```{r}
@@ -263,10 +262,10 @@ post <- sum(sample_sums(ps_noncontam))
 
 ### Remove non-bacterial, non-archaeal ASVs
 
-The V4 rDNA region is conserved within certain bacteria, archaea, chloroplasts,
-mitochondria, and eukaryotes.
-Since we are only interested in bacteria and archaea,
-we should remove these other taxa from our object.
+The V4 region of 16S rRNA is conserved within certain bacteria, archaea,
+chloroplasts, mitochondria, and eukaryotes.
+Since we are only interested in bacteria and archaea here,
+we'll need to remove other taxa from our object.
 
 ```{r remove_nonbac}
 # Create ps subsets for chloroplast, mitochondria, and eukaryotes:
@@ -294,8 +293,8 @@ post / pre
 ```
    
 Finally, we'll also remove non-experimental samples (e.g. negative controls).
-However, non-experimental samples are important for evaluating the quality of
-your reagents, consistency across sequencing runs and contaminaiton.
+Note, though, that non-experimental samples are important for evaluating the
+quality of your reagents, consistency across sequencing runs, and contamination.
 
 ```{r subset_HCC}
 ps <- subset_samples(ps_bac_arc, Experiment == "HCC")
@@ -307,7 +306,10 @@ ps
 
 ## Filter samples
 
-Let's begin to investigate our samples.
+After having filtered out unwanted taxa,
+we now need to filter out uninformative samples --
+those with low total taxon counts.
+
 First, how many counts do we have for each sample?
 
 ```{r sums}
@@ -322,18 +324,19 @@ names(sums[order(sums)][1])
 ```
 
 To remove uninformative samples, we will only keep those with over 1,000 counts.
-We will also remove a technical replicate.
-Technical replicates are also important for quality control of runs and
-understanding reproducibility of the methodology. 
+We will also remove a technical replicate,
+though note that technical replicates are important for quality control of runs
+and for understanding the reproducibility of the methodology. 
 
 ```{r subset_1k}
+# Remove samples with low counts:
 ps <- subset_samples(ps, sample_sums(ps) > 1000)
 
-sample_data(ps)
+# Remove the technical replicate:
 ps <- subset_samples(ps, SampleID != "501S4")
 ```
 
-Let's take a look at our `phyloseq` object:
+Let's take a look at our current `phyloseq` object:
 
 ```{r look_ps}
 sample_data(ps)[1:10]
@@ -348,14 +351,22 @@ head(tax_table(ps))
 ## Normalization
 
 Normalization is currently a much-discussed issue of microbiome studies.
-Differences in read depth between samples often need to be corrected before analysis. Several normalization methods have been proposed, and no one method is perfect.
+Differences in read depth between samples often need to be corrected before analysis.
+Several normalization methods have been proposed, and no single method is perfect.
 It may be that the most appropriate method depends on the analysis.
 
-In this tutorial, we will use proportions data to estimate ecological metrics and
-variance stabilizing transformation normalized data (via DESeq2) to identify differentially abundant taxa. For more details, read
+In this tutorial, we will use:
+  
+  - Proportion-normalized data to estimate ecological metrics.
+  
+  - Stabilizing transformation normalized data to identify differentially abundant taxa.
+
+However, for your reference, we will also present code for two other normalization
+methods: rarefaction and cumulative sum scaling.
+
+For more details, read
 [McMurdie and Holmes 2014](https://dx.plos.org/10.1371/journal.pcbi.1003531)
 and [McKnight et al. 2019](http://doi.wiley.com/10.1111/2041-210X.13115).
-However, for your reference, code for other normalization methods is also presented. 
 
 -----
 
@@ -363,10 +374,12 @@ However, for your reference, code for other normalization methods is also presen
 
 Proportion normalization involves dividing each OTU count by the total sum for each sample.
 The resulting count data will add up to 1 (100%) for each sample.
+
 The `microbiome::transform` function can be used to easily normalize count data as
-proportions in a phyloseq object.
+proportions in a *phyloseq* object:
 
 ```{r norm_proportions}
+# Proportion normalization:
 ps_prop <- transform(ps, "compositional")
 
 # Have a look at the resulting OTU table:
@@ -381,8 +394,8 @@ head(sample_sums(ps_prop))
 ### Variance stabilizing transformation
 
 This transformation method, available in [DESeq2](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html),
-normalizes data with respect to library size as well as dispersion.
-Use `?vst` or read [Anders and Huber 2010](http://dx.doi.org/10.1186/gb-2010-11-10-r106)
+normalizes data with respect to library size as well as dispersion.   
+Type `?vst` or read [Anders and Huber 2010](http://dx.doi.org/10.1186/gb-2010-11-10-r106)
 for more information.
 
 ```{r norm_vst, message=FALSE, warning=FALSE}
@@ -408,6 +421,9 @@ Rarefaction can be used to subset data such that the library depth is the same
 for each sample.
 Because sampling of the data is random,
 rarefaction can account for an effect of total read count on taxa richness.
+However, rarefaction is no longer considered to be a good way to normalize
+amplicon sequencing data
+(see [McMurdie & Holmes 2014](https://dx.plos.org/10.1371/journal.pcbi.1003531)).
 
 ```{r, rarefy, message=FALSE, warning=FALSE}
 ps_rarefied <- rarefy_even_depth(ps,
@@ -434,12 +450,16 @@ head(sample_sums(ps))
 The *metagenomeSeq* Cumulative Sum Scaling (CSS) normalization is another option
 developed for microbiome data.
 For more information, read
-[Paulson,Stine, Bravo, & Pop 2013](http://www.nature.com/articles/nmeth.2658).
+[Paulson et al. 2013](http://www.nature.com/articles/nmeth.2658).
 
 ```{r norm_css, message=FALSE}
-mgs <- phyloseq_to_metagenomeSeq(ps)
-mgs_css <- mgs
+# Convert the phyloseq object to a metagenomeseq object:
+mgs_css <- phyloseq_to_metagenomeSeq(ps)
+
+# Perform the Cumulative Sum Scaling:
 mgs_css <- cumNorm(mgs_css)
+
+# Extract the counts and add them to a separate phyloseq object:
 css_counts <- MRcounts(mgs_css, norm = TRUE)
 ps_css <- ps
 otu_table(ps_css) <- otu_table(t(css_counts), taxa_are_rows = FALSE)
@@ -494,7 +514,8 @@ This will allow calling per-sample singletons, but not per-study singletons.
    
 ### Taxonomic richness: Rarefaction plot
 
-Our goal in defining richness is to determine the number of unique taxa within each population (in our case, each plot).
+Our goal in defining richness is to determine the number of unique taxa within
+each population (in our case, each plot).
 This is difficult, as our samples contain only a portion of the total richness
 within our plots.
 As sequence depth increases for each sample, so does the number of taxa.
@@ -575,7 +596,7 @@ Thus, a sample from a population with high actual diversity, but low read depth,
 could have low observed richness.
 Fortunately, there are methods to estimate the number of unobserved taxa.
 For an overview of these methods, read
-[Bunge et al. 2014](http://www.annualreviews.org/doi/10.1146/annurev-statistics-022513-115654)
+[Bunge et al. 2014](http://www.annualreviews.org/doi/10.1146/annurev-statistics-022513-115654).
    
 ### Frequency counts
 
@@ -587,10 +608,12 @@ We'll count the number of singletons, doubletons, etc.,
 then plot frequency as a function of count.
 
 ```{r freq_ct, message=FALSE}
+# Get the frequency count distribution for the 1st sample:
 frequencytablelist <- build_frequency_count_tables(otu_table(ps))
 freq_ct <- frequencytablelist[[1]]
 colnames(freq_ct) <- c("Frequency", "Count")
 
+# Plot:
 ggplot(freq_ct, aes(Frequency, Count)) + 
   geom_point() + 
   scale_x_continuous(breaks = seq(0, 600, by = 50)) + 
@@ -600,7 +623,7 @@ ggplot(freq_ct, aes(Frequency, Count)) +
    
 We can see there are ~3,200 taxa represented as singletons,
 and ~1,600 taxa as doubletons. 
-This is a high proportion of the total number taxa are observed in 101-S1:
+This is a high proportion of the total number taxa are observed in this sample:
 
 ```{r}
 # Total number of taxa:
@@ -611,8 +634,6 @@ freq_ct$Count[1] / sum(freq_ct$Count)
 ```
 
 How many more taxa might we observe if we increased our sampling?   
-
------
 
 ### Diversity Indices
 
@@ -651,8 +672,6 @@ Weighted UniFrac uses presence as well as quantity data (i.e. 1 < 1000).
 
 We are interested to know what changes to taxon abundance may be driven by our treatments, so we will use weighted UniFrac.    
 
------
-
 ### Ordination
 
 First we'll make a weighted UniFrac distance matrix.
@@ -663,14 +682,11 @@ set.seed(100)
 wUF <- phyloseq::distance(ps_prop, method = "wunifrac")
 
 as.matrix(wUF)[1:6, 1:6]
-```
 
-If your *phyloseq* object lacks a phylogenetic tree,
-you could use a dissimilarity index that does not require one, such as Bray-Curtis.
-
-```{r bray}
-bray <- vegan::vegdist(otu_table(ps_prop), method = "bray")
-as.matrix(bray)[1:6,1:6]
+# Note: If your *phyloseq* object lacks a phylogenetic tree,
+# you could use a dissimilarity index that does not require one, such as Bray-Curtis:
+# bray <- vegan::vegdist(otu_table(ps_prop), method = "bray")
+# as.matrix(bray)[1:6,1:6]
 ```
 
 Then perform Principal Coordinate Analysis (PCoA) on your favorite distance matrix.
@@ -679,48 +695,43 @@ In this case, we are using weighted UniFrac.
 ```{r ordinate, warning=FALSE, cache=FALSE}
 do <- ordinate(ps_prop, method = "PCoA", distance = wUF)
 
-plot_ordination(ps_prop, do,
-                type = "samples",
-                color = "Treatment", 
-                shape = "Timepoint") +
-  geom_point(size = 2) +
+baseplot <- plot_ordination(ps_prop, do,
+                            type = "samples",
+                            color = "Treatment",
+                            shape = "Timepoint") +
   ggtitle("HCC ordination, all samples\nmethod=PCoA, distance=weighted UniFrac") +
-  theme_bw()
-  
-plot_ordination(ps_prop, do,
-                type = "samples",
-                color = "Treatment", 
-                shape = "Timepoint") + 
-  geom_point(size = 1) + 
-  geom_label(aes(label = SampleID), size = 3.5, color = "black") +
   theme_bw()
 
-plot_ordination(ps_prop, do,
-                type = "samples",
-                color = "Treatment", 
-                shape ="Timepoint") + 
+# Single plot with all samples:
+baseplot +
+  geom_point(size = 2)
+  
+# Idem, but with sample names on the plot: 
+baseplot +
+  geom_point(size = 1) + 
+  geom_label(aes(label = SampleID), size = 3.5, color = "black")
+
+# Facet by time point:
+baseplot +
   geom_point(size = 2) + 
   ggtitle("HCC ordination, all samples\nmethod=PCoA, distance=weighted UniFrac") +
-  facet_wrap(~Timepoint, 2) +
-  theme_bw()
+  facet_wrap(~Timepoint, 2)
 ```
    
 We can see some grouping by timepoint.
 Depending on your experiment and questions,
 you might want to consider other ordination or clustering approaches.
 
------
-
 ### Permutational analysis of variance (PERMANOVA)
 
 Finally, we'll test whether there is a significant ecological level treatment effect.
-PERMANOVA sounds fancy, but it is essentially ANOVA performed using computation.
+*PERMANOVA* sounds fancy, but it is just an *ANOVA* performed using permutations.
 Permutations are used to determine how data may appear if there is no treatment
 effect and group differences are due to random chance. Observed data are then
 compared to the randomized data to calculate a p-value.   
    
-Treatments are independant within Timepoints, so we will first subset the data
-by Timepoint.
+Treatments are independent within Timepoints,
+so we will first subset the data by Timepoint:
 
 ```{r subset_Timepoints, warning=FALSE}
 ps_S1 <- subset_samples(ps_prop, Timepoint == "S1")
@@ -728,14 +739,14 @@ ps_S3 <- subset_samples(ps_prop, Timepoint == "S3")
 ps_S4 <- subset_samples(ps_prop, Timepoint == "S4")
 ```
 
-Subset metadata and estimate UniFrac for S3:
+Subset the metadata and estimate UniFrac for S3:
 
 ```{r set_perm, warning=FALSE}
 metadata <- as(sample_data(ps_S3), "data.frame")
 unifrac_dist <- UniFrac(ps_S3, weighted = TRUE)
 ```
 
-Then we'll use `vegan::adonis2` to perform PERMANOVA.
+Then we'll use `vegan::adonis2` to perform the *PERMANOVA*.
 
 ```{r PERMANOVA}
 permanova <- adonis2(unifrac_dist ~ Treatment,
@@ -752,14 +763,16 @@ there is a significant treatment effect.
 
 ## Differential taxon abundance (DESeq)
 
-Here we will use
+Here, we will use
 [DESeq2](https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html)
-to identify differentially abundant taxa.
-DESeq2 was designed to analyze RNAseq datasets, which are similar to OTU/ASV datasets
-in that both handle large, sparse contingency tables generated from Illumina sequencing data. For more details, read
+to identify differentially abundant taxa between time points and treatments.
+*DESeq2* was designed to analyze RNAseq datasets, which are similar to OTU/ASV data 
+sets in that both handle large, sparse contingency tables generated from Illumina
+sequencing data.
+For more details, see
 [McMurdie and Holmes 2014](https://dx.plos.org/10.1371/journal.pcbi.1003531).  
   
-First, we'll convert our non-normalized count data to a DESeq object.
+First, we'll convert our non-normalized count data to a *DESeq* object.
 
 ```{r ps2dss, message=FALSE, warning=FALSE}
 dds <- phyloseq_to_deseq2(ps, ~Timepoint + Treatment)
@@ -768,7 +781,7 @@ dds
 colData(dds)
 ```
 
-There are two ways to analyze interaction effects using `DESeq2`.
+There are two ways to analyze interaction effects using *DESeq2*.
 The first is to fit a multivariate model (e.g. ~A+B+A:B) and explore the model
 coefficients.
 The second is to fit a univariate model and explore pairwise contrasts.
@@ -779,8 +792,8 @@ approach.
 # Prepare the data:
 dds$Group <- factor(paste0(dds$Treatment, dds$Timepoint))
 design(dds) <- formula(~Group)
-dds <- dds[, -50] # Remove tech_rep sample
-dds$Group <- droplevels(dds$Group) # Drop tech_rep level from design matrix
+dds <- dds[, -50]                    # Remove tech_rep sample
+dds$Group <- droplevels(dds$Group)   # Drop tech_rep level from design matrix
 
 # Perform the differential abundance analysis:
 dds <- DESeq(dds)
@@ -788,7 +801,7 @@ dds <- DESeq(dds)
 results(dds)
 ```
     
-Let's explore the contrast, T1S4 : T4S4
+Let's explore the contrast, "T1S4 : T4S4"
 (no cc, seedling stage : late termination, seedling stage):
 
 ```{r}
@@ -821,7 +834,7 @@ We can also plot counts by sample_ID:
 plotCounts(dds, gene = "ASV_48", intgroup = "Group")
 ```
 
-The plot can also be saved and customized with ggplot
+The plot can also be saved and customized with ggplot:
 
 ```{r}
 d <- plotCounts(dds, gene = "ASV_48", intgroup = "Group", returnData = TRUE)
@@ -829,7 +842,7 @@ d <- plotCounts(dds, gene = "ASV_48", intgroup = "Group", returnData = TRUE)
 ggplot(d, aes(x = Group, y = count)) +
   geom_point(position = position_jitter(w = 0.1, h = 0), size = 2) +
   scale_y_log10() +
-  ggtitle(expression(paste("ASV 48, log"[10],"-scale"))) +
+  ggtitle(expression(paste("ASV 48, log"[10], "-scale"))) +
   theme_bw()
 ```
    
@@ -850,6 +863,12 @@ head(sig_taxa)
 
 sig_write <- cbind(sig, sig_taxa)
 write.csv(sig_write, file.path(outdir, 'DATaxa_T1S1_T1S4.csv'))
+```
+
+Report that we are done!
+
+```{r report_done}
+print('Done with ASV inference.')
 ```
 
 -----
