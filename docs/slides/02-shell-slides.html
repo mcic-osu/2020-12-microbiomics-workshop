@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # An Introduction to the shell
 ### Jelmer Poelstra
 ### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-13)
+### 2020/12/16 (updated: 2020-12-14)
 
 ---
 
@@ -107,23 +107,19 @@ name:intro
 
 --
 
-**The shell:**
-
-- Provides a powerful way to **manage and manipulate files**.
+- Manage and manipulate files.
 
 --
 
-- Is the most effective (or only) way to **run many programs
-  and submit scripts** -- especially when dealing with bioinformatic data.
+- Run bioinformatics programs and submit scripts
 
 --
 
-- Is the most efficient (or only) way to **interact with remote
-  computers** such as the OSC clusters.
+- Interact with remote computers, such as OSC clusters.
 
 --
 
-- Makes it easy to **keep *exact* track of what you've done**.
+- Keep exact track of what you've done.
 
 ---
 
@@ -178,11 +174,10 @@ class: center middle
 ## A first example: the "`cal`" command
 
 - Just typing `cal` prints a calendar to screen:
-
   
   ```bash
-  $ cal      # I'm using a $ to indicate the prompt.
-               # Everything after a "#" is ignored.
+  $ cal      # - I'm using a $ to indicate the prompt.
+               # - Everything after a "#" is ignored.
   ```
 
 --
@@ -198,8 +193,8 @@ class: center middle
 - Just typing `cal` prints a calendar to screen:
   
   ```bash
-  $ cal      # I'm using a $ to indicate the prompt.
-               # Everything after a "#" is ignored.
+  $ cal      # - I'm using a $ to indicate the prompt.
+               # - Everything after a "#" is ignored.
   ```
 
 - We can use the "-j" or "-m" **options** (flags):
@@ -255,7 +250,7 @@ Many commands have a "**-h**" help option:
 
 
 ```bash
-$ cal --help
+$ cal -h
 # Usage:
 #  cal [options] [[[day] month] year]
 
@@ -278,15 +273,14 @@ $ cal --help
 
 - Using the **`man`** ("manual") command,   
   whose argument is the command or utility we want the manual for:
+  
+  ```bash
+  $ man ls
+  ```
 
-
-```bash
-$ man ls
-```
 &lt;p align="center"&gt;
 &lt;img src=figs_shell/man_ls.png width="600"&gt;
 &lt;/p&gt;
-
 
 ---
 class: center middle
@@ -389,15 +383,14 @@ To change working directory, use **`cd`** (Change Directory)
 
 .content-box-green[
 ### <i class="fas  fa-user-edit "></i> Try this:
-  - You can paste text into your OSC browser shell using **`Ctrl` + `v`**
   - Shells have tab completion!
     - Type `/f` and press `Tab` (will autocomplete to `fs/`)
     - Then add `pr` (`/fs/pr`) and press `Tab`
     - Add `PAS` (`fs/project/PAS`) and press `Tab Tab`
     - Add `04` (`fs/project/PAS04`) and press `Tab Tab`
+    
+  - You can paste text into your OSC browser shell using **`Ctrl` + `v`**
 ]
-
---
 
 ---
 
@@ -412,7 +405,6 @@ To change working directory, use **`cd`** (Change Directory)
   ```
 
 - Using a **relative path** (i.e., not starting from the root dir):
-  
   
   ```bash
   $ cd workshops/2020-12_micro/$USER
@@ -510,7 +502,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 ## Navigation: `ls` (cont.)
 
 - We can also provide a directory or file name as an argument:
-
   
   ```bash
   $ ls -lh metadata/Experiment description
@@ -521,7 +512,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 ## Navigation: `ls` (cont.)
 
 - We can also provide a directory or file name as an argument:
-
   
   ```bash
   $ ls -lh metadata/Experiment description
@@ -536,7 +526,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 --
 
 - **To interpret spaces literally**, quote the full string or "escape" the space:
-
   
   ```bash
   $ ls "Experiment description"
@@ -574,10 +563,9 @@ name:stdin
 
 --
 
-- With **`&gt;`**, we **redirect** output to a file:
+- With "**`&gt;`**", we **redirect** output to a file:
   - If the file doesn't exist, it will be *created*.
   - If the file does exist, any contents will be *overwritten*. 
-
   
   ```bash
   $ ls -lhr data/raw &gt; list_of_files.txt
@@ -585,8 +573,7 @@ name:stdin
 
 --
 
-- With **`&gt;&gt;`**, we **append** the output to a file:
-
+- With "**`&gt;&gt;`**", we **append** the output to a file:
   
   ```bash
   $ ls -lhr metadata &gt;&gt; list_of_files.txt
@@ -612,7 +599,6 @@ about redirecting
   This `grep` command will search for the string "soil_blank"
   inside the contents of our metadata file:
   
-  
   ```bash
   $ grep "soil_blank" metadata/sample_meta.txt
   ```
@@ -622,14 +608,13 @@ about redirecting
 &lt;br&gt;
 
 - Most command *also* accept input from "standard input" (*stdin*),   
-  using the pipe:
-
+  using the **pipe**, "**`|`**":
   
   ```bash
   $ cat metadata/sample_meta.txt | grep "soil_blank"
   ```
   
-  Here, the pipe `|` presents the standard output (*stdout*) of `cat` as   
+  Here, the pipe presents the standard output (*stdout*) of `cat` as   
   input (*stdin*) to `grep`.
   
 
@@ -693,14 +678,14 @@ $ rm &lt;file&gt;       # Remove files (and/or directories)
   
   ```bash
   mkdir figures/
-  mkdir -p manuscript/fig/supp/      # `-p`: multiple levels
+  mkdir -p manuscript/fig/supp/      # "-p": multiple levels
   ```
   
 --
 
   
   ```bash
-  cp metadata/sample_meta.txt .          # `.` for current wd            
+  cp metadata/sample_meta.txt .      # "." for current wd            
   ```
   
   
@@ -728,10 +713,8 @@ $ rm &lt;file&gt;       # Remove files (and/or directories)
 
 &lt;br&gt;
 
-- For `cp` and `rm`, use **"`-r`"** (for "recursive") to act on directories and their contents:
-
---
-
+- For `cp` and `rm`, use **"`-r`"** (for "recursive") to act on directories
+  and their contents:
   
   ```bash
   cp -r data/raw/ backup/
@@ -813,7 +796,6 @@ name:wildcards
   ```
 
 ---
-background-color: #ededed
 
 ## Matching file names with wildcards (cont.)
 
@@ -845,7 +827,8 @@ background-color:#e4ede4
 
 ## <i class="fas  fa-user-edit "></i> Your turn: Navigation, managing files &amp; wildcards
 
-1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/$USER` (if not there already).
+1. Go to "`/fs/project/PAS0471/workshops/2020-12_micro/$USER`"
+  (if not there already).
    **This is your base directory for this workshop.**
 
 2. Rename "`metadata/Experiment description`" to
@@ -853,11 +836,11 @@ background-color:#e4ede4
 
 3. Check whether this worked.
 
-4. Move up on dir level (to `2020-12_micro`) --
+4. Move up one dir (to "`2020-12_micro`") --
    try to avoid using the absolute (full) path notation.
 
-5. As the argument to a `ls` command, match *only your* directory
-   using as few characters as possible and one or more wildcards
+5. Using an **`ls`** command, match *only your* directory
+   using as few characters as possible, and one or more wildcards
    (**`*`** and perhaps **`?`**).
 
 ---
@@ -868,19 +851,19 @@ background-color:#e4ede4
 
 ```bash
 # 1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.
-cd /fs/project/PAS0471/workshops/2020-12_micro/$USER
+$ cd /fs/project/PAS0471/workshops/2020-12_micro/$USER
 
 # 2. Rename "`metadata/Experiment description`".
-mv "metadata/Experiment description" metadata/Experiment_description
+$ mv "metadata/Experiment description" metadata/Experiment_description
 
 # 3. Check whether this worked.
-ls metadata
+$ ls metadata
 
 # 4. Move one level up.
-cd ..
+$ cd ..
 
 # 5. Match your directory.
-ls *lm*
+$ ls *lm*
 ```
 
 
@@ -903,7 +886,7 @@ name:text_files
 
 .pull-left[
 ### `cat`
-Print contents of (a) file(s).   
+Print the contents of (a) file(s).   
 
 &lt;br&gt;
 
@@ -931,8 +914,8 @@ Show the first or last lines of a file.
 
 --
 
-- If you have, say, 10,000 `fasta` files in a directory,
-  each representing a gene, and you want to put them all into
+- If you have 10,000 `fasta` files in a directory
+  (e.g. one per gene), and you want to put them all into
   a single `fasta` file:
   
   ```bash
@@ -944,7 +927,7 @@ Show the first or last lines of a file.
 &lt;br&gt;
 
 .content-box-purple[
-<i class="fas  fa-info-circle "></i> &amp;nbsp; Also try "`column -t`" For better viewing of tabular files
+<i class="fas  fa-info-circle "></i> &amp;nbsp; Try "`column -t`" for better viewing of tabular files.
 ]
 
 ---
@@ -960,14 +943,14 @@ Show the first or last lines of a file.
   ```
 
 - Showing the last line of a 100 GB file outside of the
-  shell would (often) be a big pain -- in the shell it's
-  extremely simple and lightning fast!
+  shell can be a big pain -- in the shell it's
+  very simple and fast!
 
 --
 
 &lt;br&gt;
 
-- Skip the first line of a file (*cut off the header if you only want the data!*):
+- Skip the first line of a file (*cut off the header*, if you only want the data):
   
   ```bash
   $ tail -n +2 file
@@ -1084,7 +1067,7 @@ $ ls README_*
   ```bash
   $ my_name=Jelmer
   $ hello.sh $my_name
-  # Hello Jelmer!
+  # Hello Jelmer
   ```
 ]
 
@@ -1104,8 +1087,8 @@ $ ls README_*
   ```bash
   $ hello.sh Jelmer &gt; hello.txt
   
-  $ cat hello txt
-  # Hello Jelmer!
+  $ cat hello.txt
+  # Hello Jelmer
   ```
   
 ---
