@@ -1,0 +1,148 @@
+---
+title: "References"
+output:
+  rmarkdown::html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+---
+
+-----
+
+### Applications
+
+- Abdelfattah A., Malacrinò A., Wisniewski M., Cacciola S.O., Schena L. 2018.
+  [Metabarcoding: A powerful tool to investigate microbial communities and shape future plant protection strategies.](https://www.sciencedirect.com/science/article/abs/pii/S1049964417301500)
+  *Biological Control*. 120:1–10.
+
+- Hawkes C.V., Connor E.W. 2017.
+  [Translating Phytobiomes from Theory to Practice: Ecological and Evolutionary Considerations.](https://apsjournals.apsnet.org/doi/10.1094/PBIOMES-05-17-0019-RVW)
+  *Phytobiomes Journal*. 1:57–69.
+
+- Tedersoo L., Drenkhan R., Anslan S., Morales-Rodriguez C., Cleary M. 2019.
+  [High-throughput identification and diagnostics of pathogens and pests: Overview and practical recommendations.](https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.12959)
+  *Molecular Ecology Resources*. 19:47–76.
+
+### Introduction the Microbiome
+
+- Claesson M.J., Clooney A.G., O’Toole P.W. 2017.
+  [A clinician’s guide to microbiome analysis.](https://www.nature.com/articles/nrgastro.2017.97)
+  *Nature Reviews Gastroenterology & Hepatology*. 14:585–595.
+
+- Creer S., Deiner K., Frey S., Porazinska D., Taberlet P., Thomas W.K., Potter C., Bik H.M. 2016.
+  [The ecologist’s field guide to sequence-based identification of biodiversity.](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12574)
+  *Methods in Ecology and Evolution*. 7:1008–1018.
+
+- Nilsson R.H., Anslan S., Bahram M., Wurzbacher C., Baldrian P., Tedersoo L. 2019.
+  [Mycobiome diversity: high-throughput sequencing and identification of fungi.](https://www.nature.com/articles/s41579-018-0116-y)
+  *Nature Reviews Microbiology*. 17:95–109.
+
+- Pollock J., Glendinning L., Wisedchanwet T., Watson M. 2018.
+  [The Madness of Microbiome: Attempting To Find Consensus “Best Practice” for 16S Microbiome Studies.](https://aem.asm.org/content/84/7/e02627-17.abstract)
+  *Appl. Environ. Microbiol*. 84.
+
+- Quince C., Walker A.W., Simpson J.T., Loman N.J., Segata N. 2017.
+  [Shotgun metagenomics, from sampling to analysis.](https://www.nature.com/articles/nbt.3935)
+  *Nature Biotechnology*. 35:833–844.
+
+### Pipelines and Algorithms
+
+- Callahan B.J., McMurdie P.J., Rosen M.J., Han A.W., Johnson A.J.A., Holmes S.P. 2016.
+  [DADA2: High-resolution sample inference from Illumina amplicon data.](https://www.nature.com/articles/nmeth.3869)
+  *Nature Methods*. 13:581–583.
+
+- Davis N.M., Proctor D.M., Holmes S.P., Relman D.A., Callahan B.J. 2018.
+  [Simple statistical identification and removal of contaminant sequences in marker-gene and metagenomics data.](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0605-2)
+  *Microbiome*. 6:226.
+
+- McMurdie P.J., Holmes S. 2013.
+  [phyloseq: An R Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0061217)
+  *PLOS ONE*. 8:e61217.
+
+
+### Methods and Bias
+
+- Bender J.M., Li F., Adisetiyo H., Lee D., Zabih S., Hung L., Wilkinson T.A., Pannaraj P.S., She R.C., Bard J.D., Tobin N.H., Aldrovandi G.M. 2018.
+  [Quantification of variation and the impact of biomass in targeted 16S rRNA gene sequencing studies.](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0543-z)
+  *Microbiome*. 6:155.
+
+- Brooks J.P., Edwards D.J., Harwich M.D., Rivera M.C., Fettweis J.M., Serrano M.G., Reris R.A., Sheth N.U., Huang B., Girerd P., Strauss J.F., Jefferson K.K., Buck G.A., Vaginal Microbiome Consortium (additional members). 2015.
+  [The truth about metagenomics: quantifying and counteracting bias in 16S rRNA studies.](https://bmcmicrobiol.biomedcentral.com/articles/10.1186/s12866-015-0351-6)
+  *BMC Microbiology*. 15:66.
+
+- Callahan B.J., McMurdie P.J., Holmes S.P. 2017.
+  [Exact sequence variants should replace operational taxonomic units in marker-gene data analysis.](https://www.nature.com/articles/ismej2017119)
+  *The ISME Journal*. 11:2639–2643.
+
+- Calle M.L. 2019.
+  [Statistical Analysis of Metagenomics Data.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6459172/)
+  *Genomics Inform*. 17.
+
+- Fouhy F., Clooney A.G., Stanton C., Claesson M.J., Cotter P.D. 2016.
+  [16S rRNA gene sequencing of mock microbial populations- impact of DNA extraction method, primer choice and sequencing platform.](https://bmcmicrobiol.biomedcentral.com/articles/10.1186/s12866-016-0738-z)
+  *BMC Microbiology*. 16:123.
+
+- Hallmaier-Wacker L.K., Lueert S., Roos C., Knauf S. 2018.
+  [The impact of storage buffer, DNA extraction method, and polymerase on microbial analysis.](https://www.nature.com/articles/s41598-018-24573-y)
+  *Scientific Reports*. 8:6292.
+
+- Jiang L., Amir A., Morton J.T., Heller R., Arias-Castro E., Knight R. 2017.
+  [Discrete False-Discovery Rate Improves Identification of Differentially Abundant Microbes.](https://msystems.asm.org/content/2/6/e00092-17)
+  *mSystems*. 2.
+
+- Kim D., Hofstaedter C.E., Zhao C., Mattei L., Tanes C., Clarke E., Lauder A., Sherrill-Mix S., Chehoud C., Kelsen J., Conrad M., Collman R.G., Baldassano R., Bushman F.D., Bittinger K. 2017.
+  [Optimizing methods and dodging pitfalls in microbiome research.](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-017-0267-5)
+  *Microbiome*. 5:52.
+
+- McLaren M.R., Willis A.D., Callahan B.J. 2019.
+  [Consistent and correctable bias in metagenomic sequencing experiments.](https://elifesciences.org/articles/46923)
+  *eLife*. 8:e46923.
+
+- McMurdie P.J., Holmes S. 2014.
+  [Waste Not, Want Not: Why Rarefying Microbiome Data Is Inadmissible.](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531)
+  *PLOS Computational Biology*. 10:e1003531.
+  
+- Paulson J.N., Stine O.C., Bravo H.C., Pop M. 2013.
+  [Differential abundance analysis for microbial marker-gene surveys.](https://www.nature.com/articles/nmeth.2658)
+  *Nature Methods*. 10:1200–1202.
+
+- Reinhold-Hurek B., Bünger W., Burbano C.S., Sabale M., Hurek T. 2015.
+  [Roots Shaping Their Microbiome: Global Hotspots for Microbial Activity.](https://www.annualreviews.org/doi/abs/10.1146/annurev-phyto-082712-102342)
+  *Annual Review of Phytopathology*. 53:403–424.
+  
+- Salter S.J., Cox M.J., Turek E.M., Calus S.T., Cookson W.O., Moffatt M.F., Turner P., Parkhill J., Loman N.J., Walker A.W. 2014.
+  [Reagent and laboratory contamination can critically impact sequence-based microbiome analyses.](https://bmcbiol.biomedcentral.com/articles/10.1186/s12915-014-0087-z)
+  *BMC Biology*. 12:87.
+
+- Schloss P.D., Gevers D., Westcott S.L. 2011.
+  [Reducing the Effects of PCR Amplification and Sequencing Artifacts on 16S rRNA-Based Studies.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0027310)
+  *PLOS ONE*. 6:e27310.
+
+- Stämmler F., Gläsner J., Hiergeist A., Holler E., Weber D., Oefner P.J., Gessner A., Spang R. 2016.
+  [Adjusting microbiome profiles for differences in microbial load by spike-in bacteria.](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-016-0175-0)
+  *Microbiome*. 4:28.
+
+- Tedersoo L., Lindahl B. 2016.
+  [Fungal identification biases in microbiome projects.](https://sfamjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1758-2229.12438)
+  *Environmental Microbiology Reports*. 8:774–779.
+
+- Tkacz A., Hortala M., Poole P.S. 2018.
+  [Absolute quantitation of microbiota abundance in environmental samples.](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0491-7)
+  *Microbiome*. 6:110.
+
+- Weiss S., Xu Z.Z., Peddada S., Amir A., Bittinger K., Gonzalez A., Lozupone C., Zaneveld J.R., Vázquez-Baeza Y., Birmingham A., Hyde E.R., Knight R. 2017.
+  [Normalization and microbial differential abundance strategies depend upon data characteristics.](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-017-0237-y)
+  *Microbiome*. 5:27.
+
+- Xia Y., Sun J. 2017.
+  [Hypothesis testing and statistical analysis of microbiome.](https://www.sciencedirect.com/science/article/pii/S2352304217300351)
+  *Genes & Diseases*. 4:138–148.
+
+- Zinger L., Bonin A., Alsos I.G., Bálint M., Bik H., Boyer F., Chariton A.A., Creer S., Coissac E., Deagle B.E., Barba M.D., Dickie I.A., Dumbrell A.J., Ficetola G.F., et al. 2019.
+  [DNA metabarcoding—Need for robust experimental designs to draw sound ecological conclusions.](https://onlinelibrary.wiley.com/doi/full/10.1111/mec.15060)
+  *Molecular Ecology*. 28:1857–1862.
+
+
+<br> <br>
+
+

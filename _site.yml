@@ -8,9 +8,13 @@ navbar:
       icon: fa-home
       href: index.html
 
-    - text: "Setup"
+    - text: " Setup"
       icon: fa-gear
       href: "00-setup.html"
+
+    - text: " References"
+      icon: fa-info-circle
+      href: "09-references.html"
 
     - text: "Day 1"
       menu:

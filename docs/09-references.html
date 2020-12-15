@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>References</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="my.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Microbiomics Workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Overview
+  </a>
+</li>
+<li>
+  <a href="00-setup.html">
+    <span class="fa fa-gear"></span>
+     
+     Setup
+  </a>
+</li>
+<li>
+  <a href="09-references.html">
+    <span class="fa fa-info-circle"></span>
+     
+     References
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lectures:</li>
+    <li>
+      <a href="01-microbiomics.html">Intro to Amplicon Sequencing</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Lecture/Code-along:</li>
+    <li>
+      <a href="02-shell.html">Intro to the Shell</a>
+    </li>
+    <li>
+      <a href="03-OSC.html">Intro to OSC</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Workflow Sessions:</li>
+    <li>
+      <a href="04-data-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="05-preprocess-reads.html">I: Adapter and Primer Removal</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Day 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Lecture/Code-along:</li>
+    <li>
+      <a href="06-R.html">Intro to R</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Workflow Sessions:</li>
+    <li>
+      <a href="07-ASV-inference.html">II: ASV Inference</a>
+    </li>
+    <li>
+      <a href="08-postASV-analysis.html">III: ASV Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mcic-osu/2020-12-microbiomics-workshop.git">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">References</h1>
+
+</div>
+
+
+<hr />
+<div id="applications" class="section level3">
+<h3>Applications</h3>
+<ul>
+<li><p>Abdelfattah A., Malacrinò A., Wisniewski M., Cacciola S.O., Schena L. 2018. <a href="https://www.sciencedirect.com/science/article/abs/pii/S1049964417301500">Metabarcoding: A powerful tool to investigate microbial communities and shape future plant protection strategies.</a> <em>Biological Control</em>. 120:1–10.</p></li>
+<li><p>Hawkes C.V., Connor E.W. 2017. <a href="https://apsjournals.apsnet.org/doi/10.1094/PBIOMES-05-17-0019-RVW">Translating Phytobiomes from Theory to Practice: Ecological and Evolutionary Considerations.</a> <em>Phytobiomes Journal</em>. 1:57–69.</p></li>
+<li><p>Tedersoo L., Drenkhan R., Anslan S., Morales-Rodriguez C., Cleary M. 2019. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.12959">High-throughput identification and diagnostics of pathogens and pests: Overview and practical recommendations.</a> <em>Molecular Ecology Resources</em>. 19:47–76.</p></li>
+</ul>
+</div>
+<div id="introduction-the-microbiome" class="section level3">
+<h3>Introduction the Microbiome</h3>
+<ul>
+<li><p>Claesson M.J., Clooney A.G., O’Toole P.W. 2017. <a href="https://www.nature.com/articles/nrgastro.2017.97">A clinician’s guide to microbiome analysis.</a> <em>Nature Reviews Gastroenterology &amp; Hepatology</em>. 14:585–595.</p></li>
+<li><p>Creer S., Deiner K., Frey S., Porazinska D., Taberlet P., Thomas W.K., Potter C., Bik H.M. 2016. <a href="https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12574">The ecologist’s field guide to sequence-based identification of biodiversity.</a> <em>Methods in Ecology and Evolution</em>. 7:1008–1018.</p></li>
+<li><p>Nilsson R.H., Anslan S., Bahram M., Wurzbacher C., Baldrian P., Tedersoo L. 2019. <a href="https://www.nature.com/articles/s41579-018-0116-y">Mycobiome diversity: high-throughput sequencing and identification of fungi.</a> <em>Nature Reviews Microbiology</em>. 17:95–109.</p></li>
+<li><p>Pollock J., Glendinning L., Wisedchanwet T., Watson M. 2018. <a href="https://aem.asm.org/content/84/7/e02627-17.abstract">The Madness of Microbiome: Attempting To Find Consensus “Best Practice” for 16S Microbiome Studies.</a> <em>Appl. Environ. Microbiol</em>. 84.</p></li>
+<li><p>Quince C., Walker A.W., Simpson J.T., Loman N.J., Segata N. 2017. <a href="https://www.nature.com/articles/nbt.3935">Shotgun metagenomics, from sampling to analysis.</a> <em>Nature Biotechnology</em>. 35:833–844.</p></li>
+</ul>
+</div>
+<div id="pipelines-and-algorithms" class="section level3">
+<h3>Pipelines and Algorithms</h3>
+<ul>
+<li><p>Callahan B.J., McMurdie P.J., Rosen M.J., Han A.W., Johnson A.J.A., Holmes S.P. 2016. <a href="https://www.nature.com/articles/nmeth.3869">DADA2: High-resolution sample inference from Illumina amplicon data.</a> <em>Nature Methods</em>. 13:581–583.</p></li>
+<li><p>Davis N.M., Proctor D.M., Holmes S.P., Relman D.A., Callahan B.J. 2018. <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0605-2">Simple statistical identification and removal of contaminant sequences in marker-gene and metagenomics data.</a> <em>Microbiome</em>. 6:226.</p></li>
+<li><p>McMurdie P.J., Holmes S. 2013. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0061217">phyloseq: An R Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data.</a> <em>PLOS ONE</em>. 8:e61217.</p></li>
+</ul>
+</div>
+<div id="methods-and-bias" class="section level3">
+<h3>Methods and Bias</h3>
+<ul>
+<li><p>Bender J.M., Li F., Adisetiyo H., Lee D., Zabih S., Hung L., Wilkinson T.A., Pannaraj P.S., She R.C., Bard J.D., Tobin N.H., Aldrovandi G.M. 2018. <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0543-z">Quantification of variation and the impact of biomass in targeted 16S rRNA gene sequencing studies.</a> <em>Microbiome</em>. 6:155.</p></li>
+<li><p>Brooks J.P., Edwards D.J., Harwich M.D., Rivera M.C., Fettweis J.M., Serrano M.G., Reris R.A., Sheth N.U., Huang B., Girerd P., Strauss J.F., Jefferson K.K., Buck G.A., Vaginal Microbiome Consortium (additional members). 2015. <a href="https://bmcmicrobiol.biomedcentral.com/articles/10.1186/s12866-015-0351-6">The truth about metagenomics: quantifying and counteracting bias in 16S rRNA studies.</a> <em>BMC Microbiology</em>. 15:66.</p></li>
+<li><p>Callahan B.J., McMurdie P.J., Holmes S.P. 2017. <a href="https://www.nature.com/articles/ismej2017119">Exact sequence variants should replace operational taxonomic units in marker-gene data analysis.</a> <em>The ISME Journal</em>. 11:2639–2643.</p></li>
+<li><p>Calle M.L. 2019. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6459172/">Statistical Analysis of Metagenomics Data.</a> <em>Genomics Inform</em>. 17.</p></li>
+<li><p>Fouhy F., Clooney A.G., Stanton C., Claesson M.J., Cotter P.D. 2016. <a href="https://bmcmicrobiol.biomedcentral.com/articles/10.1186/s12866-016-0738-z">16S rRNA gene sequencing of mock microbial populations- impact of DNA extraction method, primer choice and sequencing platform.</a> <em>BMC Microbiology</em>. 16:123.</p></li>
+<li><p>Hallmaier-Wacker L.K., Lueert S., Roos C., Knauf S. 2018. <a href="https://www.nature.com/articles/s41598-018-24573-y">The impact of storage buffer, DNA extraction method, and polymerase on microbial analysis.</a> <em>Scientific Reports</em>. 8:6292.</p></li>
+<li><p>Jiang L., Amir A., Morton J.T., Heller R., Arias-Castro E., Knight R. 2017. <a href="https://msystems.asm.org/content/2/6/e00092-17">Discrete False-Discovery Rate Improves Identification of Differentially Abundant Microbes.</a> <em>mSystems</em>. 2.</p></li>
+<li><p>Kim D., Hofstaedter C.E., Zhao C., Mattei L., Tanes C., Clarke E., Lauder A., Sherrill-Mix S., Chehoud C., Kelsen J., Conrad M., Collman R.G., Baldassano R., Bushman F.D., Bittinger K. 2017. <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-017-0267-5">Optimizing methods and dodging pitfalls in microbiome research.</a> <em>Microbiome</em>. 5:52.</p></li>
+<li><p>McLaren M.R., Willis A.D., Callahan B.J. 2019. <a href="https://elifesciences.org/articles/46923">Consistent and correctable bias in metagenomic sequencing experiments.</a> <em>eLife</em>. 8:e46923.</p></li>
+<li><p>McMurdie P.J., Holmes S. 2014. <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531">Waste Not, Want Not: Why Rarefying Microbiome Data Is Inadmissible.</a> <em>PLOS Computational Biology</em>. 10:e1003531.</p></li>
+<li><p>Paulson J.N., Stine O.C., Bravo H.C., Pop M. 2013. <a href="https://www.nature.com/articles/nmeth.2658">Differential abundance analysis for microbial marker-gene surveys.</a> <em>Nature Methods</em>. 10:1200–1202.</p></li>
+<li><p>Reinhold-Hurek B., Bünger W., Burbano C.S., Sabale M., Hurek T. 2015. <a href="https://www.annualreviews.org/doi/abs/10.1146/annurev-phyto-082712-102342">Roots Shaping Their Microbiome: Global Hotspots for Microbial Activity.</a> <em>Annual Review of Phytopathology</em>. 53:403–424.</p></li>
+<li><p>Salter S.J., Cox M.J., Turek E.M., Calus S.T., Cookson W.O., Moffatt M.F., Turner P., Parkhill J., Loman N.J., Walker A.W. 2014. <a href="https://bmcbiol.biomedcentral.com/articles/10.1186/s12915-014-0087-z">Reagent and laboratory contamination can critically impact sequence-based microbiome analyses.</a> <em>BMC Biology</em>. 12:87.</p></li>
+<li><p>Schloss P.D., Gevers D., Westcott S.L. 2011. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0027310">Reducing the Effects of PCR Amplification and Sequencing Artifacts on 16S rRNA-Based Studies.</a> <em>PLOS ONE</em>. 6:e27310.</p></li>
+<li><p>Stämmler F., Gläsner J., Hiergeist A., Holler E., Weber D., Oefner P.J., Gessner A., Spang R. 2016. <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-016-0175-0">Adjusting microbiome profiles for differences in microbial load by spike-in bacteria.</a> <em>Microbiome</em>. 4:28.</p></li>
+<li><p>Tedersoo L., Lindahl B. 2016. <a href="https://sfamjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1758-2229.12438">Fungal identification biases in microbiome projects.</a> <em>Environmental Microbiology Reports</em>. 8:774–779.</p></li>
+<li><p>Tkacz A., Hortala M., Poole P.S. 2018. <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0491-7">Absolute quantitation of microbiota abundance in environmental samples.</a> <em>Microbiome</em>. 6:110.</p></li>
+<li><p>Weiss S., Xu Z.Z., Peddada S., Amir A., Bittinger K., Gonzalez A., Lozupone C., Zaneveld J.R., Vázquez-Baeza Y., Birmingham A., Hyde E.R., Knight R. 2017. <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-017-0237-y">Normalization and microbial differential abundance strategies depend upon data characteristics.</a> <em>Microbiome</em>. 5:27.</p></li>
+<li><p>Xia Y., Sun J. 2017. <a href="https://www.sciencedirect.com/science/article/pii/S2352304217300351">Hypothesis testing and statistical analysis of microbiome.</a> <em>Genes &amp; Diseases</em>. 4:138–148.</p></li>
+<li><p>Zinger L., Bonin A., Alsos I.G., Bálint M., Bik H., Boyer F., Chariton A.A., Creer S., Coissac E., Deagle B.E., Barba M.D., Dickie I.A., Dumbrell A.J., Ficetola G.F., et al. 2019. <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/mec.15060">DNA metabarcoding—Need for robust experimental designs to draw sound ecological conclusions.</a> <em>Molecular Ecology</em>. 28:1857–1862.</p></li>
+</ul>
+<p><br> <br></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
