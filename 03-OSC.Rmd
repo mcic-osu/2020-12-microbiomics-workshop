@@ -27,13 +27,13 @@ output:
 
 - [Introduction](slides/03-OSC-slides.html#introduction)
 - [Connecting to OSC](slides/03-OSC-slides.html#connect)
-- [Transferring Files](slides/03-OSC-slides.html#transfer)
+- [Transferring Files with GUIs](slides/03-OSC-slides.html#transfer)
 - [Software at OSC](slides/03-OSC-slides.html#software)
 - [Starting a Compute Job](slides/03-OSC-slides.html#jobs)
 - [Compute Job Options](slides/03-OSC-slides.html#job_options)
 - [Bonus Material](slides/03-OSC-slides.html#bonus)
   - I: [OSC File Systems](slides/03-OSC-slides.html#filesystems)
-  - II: [Accessing OSC In Your Shell (`ssh`)](slides/03-OSC-slides.html#shell)
+  - II: [OSC Access and File Transfer In Your Shell](slides/03-OSC-slides.html#shell)
   - III: [Monitoring *SLURM* Jobs](slides/03-OSC-slides.html#monitor)
   - IV: [More on Software at OSC](slides/03-OSC-slides.html#conda)
 
