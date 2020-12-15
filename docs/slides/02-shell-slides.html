@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # An Introduction to the shell
 ### Jelmer Poelstra
 ### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-14)
+### 2020/12/16 (updated: 2020-12-15)
 
 ---
 
@@ -43,7 +43,7 @@ name: overview
 .pull-left[
 ### [Introduction](#intro)
 ### [Navigation](#navigation)
-### [Standard in/out and Pipes](#stdin)
+### [Standard In/Out and Pipes](#stdin)
 ### [Managing Files](#managing_files)
 ]
 
@@ -111,7 +111,7 @@ name:intro
 
 --
 
-- Run bioinformatics programs and submit scripts
+- Run bioinformatics programs and submit scripts.
 
 --
 
@@ -119,7 +119,7 @@ name:intro
 
 --
 
-- Keep exact track of what you've done.
+- ... While keeping track of what you've done.
 
 ---
 
@@ -174,8 +174,7 @@ class: center middle
 ## A first example: the "`cal`" command
 
 - Just typing `cal` prints a calendar to screen:
-  
-  ```bash
+  ```sh
   $ cal      # - I'm using a $ to indicate the prompt.
                # - Everything after a "#" is ignored.
   ```
@@ -191,15 +190,13 @@ class: center middle
 ## A first example: the "`cal`" command
 
 - Just typing `cal` prints a calendar to screen:
-  
-  ```bash
+  ```sh
   $ cal      # - I'm using a $ to indicate the prompt.
                # - Everything after a "#" is ignored.
   ```
 
 - We can use the "-j" or "-m" **options** (flags):
-  
-  ```bash
+  ```sh
   $ cal -j    # Show a Julian calendar
   $ cal -m    # Have weeks start on Monday
   ```
@@ -207,16 +204,14 @@ class: center middle
 --
 
 - We can use a year as an **argument** (parameter):
-  
-  ```bash
+  ```sh
   $ cal 2020  # Print the calendar for 2020
   ```
 
 --
 
 - We can combine options and arguments, e.g.:
-  
-  ```bash
+  ```sh
   $ cal -j -m 2020
   
   $ cal -jm 2020     # Shorter notation!
@@ -248,8 +243,7 @@ class: center middle
 
 Many commands have a "**-h**" help option:
 
-
-```bash
+```sh
 $ cal -h
 # Usage:
 #  cal [options] [[[day] month] year]
@@ -273,8 +267,7 @@ $ cal -h
 
 - Using the **`man`** ("manual") command,   
   whose argument is the command or utility we want the manual for:
-  
-  ```bash
+  ```sh
   $ man ls
   ```
 
@@ -310,30 +303,29 @@ name:navigation
 
 .pull-left[
 ### `pwd`
-Print the Working Directory
+**P**rint **W**orking **D**irectory
 
 &lt;br&gt;
 
 ### `cd`
-Change (working) Directory
+**C**hange (working) **D**irectory
 ]
 
 .pull-right[
 ### `ls`
-LiSt files and directories
+**L**i**S**t files and directories
 ]
 
 ---
 
 ## Commands for navigation: Overview
 
-
-```bash
+```sh
 $ pwd   # Print Working Directory (where am I?)
 
-$ cd    # Change working directory
+$ cd    # Change (working) Directory
 
-$ ls    # List files and dirs in your current working directory
+$ ls    # LiSt files and dirs in your current working directory
 ```
 
 &lt;br&gt;
@@ -342,19 +334,18 @@ $ ls    # List files and dirs in your current working directory
 
 --
 
-
-```bash
-$ cd &lt;destination-dir&gt;
+```sh
+$ cd destination_dir
 ```
 
 ---
 
 ## Navigation: `pwd`
 
-To let the shell tell you what your working directory is, &lt;br&gt; use **`pwd`** (Print Working Directory):
+To let the shell tell you what your working directory is, &lt;br&gt; use **`pwd`**
+(**P**rint **W**orking **D**irectory):
 
-  
-  ```bash
+  ```sh
   $ pwd
   # /users/PAS0471/jelmer/
   ```
@@ -363,7 +354,8 @@ To let the shell tell you what your working directory is, &lt;br&gt; use **`pwd`
 
 &lt;br&gt;
 
-- Notice that directories are separated by **forward slashes "`/`"** &lt;br&gt; in Unix environments.
+- Notice that directories are separated by **forward slashes "`/`"** &lt;br&gt; in Unix
+  environments.
 
 &lt;br&gt;
 
@@ -371,7 +363,7 @@ To let the shell tell you what your working directory is, &lt;br&gt; use **`pwd`
 
 ## Navigation: `cd`
 
-To change working directory, use **`cd`** (Change Directory)
+To change working directory, use **`cd`** (**C**hange **D**irectory).
 
 - Using an **absolute path** (i.e., starting from the root dir):
   
@@ -396,7 +388,7 @@ To change working directory, use **`cd`** (Change Directory)
 
 ## Navigation: `cd`
 
-To change working directory, use **`cd`** (Change Directory)
+To change working directory, use **`cd`** (**C**hange **D**irectory).
 
 - Using an **absolute path** (i.e., starting from the root dir):
   
@@ -405,8 +397,7 @@ To change working directory, use **`cd`** (Change Directory)
   ```
 
 - Using a **relative path** (i.e., not starting from the root dir):
-  
-  ```bash
+  ```sh
   $ cd workshops/2020-12_micro/$USER
   # Absolute: /fs/project/PAS0471/workshops/2020-12_micro/$USER
   ```
@@ -418,8 +409,7 @@ To change working directory, use **`cd`** (Change Directory)
 - **The shell does not give us any feedback when it succeeds.**
 
   Check whether it worked:
-  
-  ```bash
+  ```sh
   $ pwd
   # /fs/project/PAS0471/workshops/2020-12_micro/jelmer
   ```
@@ -428,7 +418,7 @@ To change working directory, use **`cd`** (Change Directory)
 
 ## Navigation: `cd`
 
-To change working directory, use **`cd`** (Change Directory)
+To change working directory, use **`cd`** (**C**hange **D**irectory).
 
 - Using an **absolute path** (i.e., starting from the root dir):
   
@@ -437,8 +427,7 @@ To change working directory, use **`cd`** (Change Directory)
   ```
   
 - Using a **relative path** (i.e., not starting from the root dir):
-  
-  ```bash
+  ```sh
   $ cd workshops/2020-12_micro/$USER
   # Absolute: /fs/project/PAS0471/workshops/2020-12_micro/$USER
   ```
@@ -448,8 +437,7 @@ To change working directory, use **`cd`** (Change Directory)
 - **The shell does not give us any feedback when it succeeds.**
 
   What happens when I make a mistake?
-  
-  ```bash
+  ```sh
   $ cd sdkjgkhh
   # bash: cd: sdkjgkhh: No such file or directory
   ```
@@ -460,8 +448,7 @@ To change working directory, use **`cd`** (Change Directory)
 
 ### Tricks!
 
-
-```bash
+```sh
 $ cd ~      # Move to your home dir (~ is always /home/&lt;user&gt;/ !)
 
 $ cd ..     # Move one directory up
@@ -477,9 +464,9 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 
 ## Navigation: `ls`
 
-- To list the contents of your current working directory, use **`ls`** (LiSt)
-  
-  ```bash
+- To list the contents of your current working directory, use **`ls`**
+  (**L**i**S**t).
+  ```sh
   $ ls
   ```
   &lt;p align="center"&gt;
@@ -488,9 +475,8 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 
 --
 
-- We can try some options to modify the output:
-  
-  ```bash
+- Useful options to modify the output:
+  ```sh
   $ ls -lh   # -l: long format / -h: human-readable file sizes
   ```
   &lt;p align="center"&gt;
@@ -502,8 +488,7 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 ## Navigation: `ls` (cont.)
 
 - We can also provide a directory or file name as an argument:
-  
-  ```bash
+  ```sh
   $ ls -lh metadata/Experiment description
   ```
   
@@ -512,8 +497,7 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 ## Navigation: `ls` (cont.)
 
 - We can also provide a directory or file name as an argument:
-  
-  ```bash
+  ```sh
   $ ls -lh metadata/Experiment description
   # ls: cannot access Experiment: No such file or directory
   # ls: cannot access description: No such file or directory
@@ -526,11 +510,10 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 --
 
 - **To interpret spaces literally**, quote the full string or "escape" the space:
+  ```sh
+  $ ls "Experiment description"     # Quote the file name
   
-  ```bash
-  $ ls "Experiment description"
-  
-  $ ls Experiment\ description
+  $ ls Experiment\ description      # Escape the space with a "\"
   ```
 
 --
@@ -545,7 +528,7 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 class: center middle inverse
 name:stdin
 
-# Standard input/output and Pipes
+# Standard Input/Output and Pipes
 
 ----
 
@@ -566,16 +549,14 @@ name:stdin
 - With "**`&gt;`**", we **redirect** output to a file:
   - If the file doesn't exist, it will be *created*.
   - If the file does exist, any contents will be *overwritten*. 
-  
-  ```bash
+  ```sh
   $ ls -lhr data/raw &gt; list_of_files.txt
   ```
 
 --
 
 - With "**`&gt;&gt;`**", we **append** the output to a file:
-  
-  ```bash
+  ```sh
   $ ls -lhr metadata &gt;&gt; list_of_files.txt
   ```
 
@@ -584,10 +565,11 @@ name:stdin
 &lt;br&gt;
 
 .content-box-purple[
-<i class="fas  fa-info-circle "></i> Error messages are also printed to screen but are **not** part of   
-&amp;nbsp; &amp;nbsp; &amp;nbsp; standard out. See the [bonus materials](#stderr) to learn
+<i class="fas  fa-info-circle "></i> &amp;nbsp; **Error messages** are also printed to screen but
+are **not** part of   
+&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard out. See the [bonus materials](#stderr) to learn
 about redirecting   
-&amp;nbsp; &amp;nbsp; &amp;nbsp; **error** messages.
+&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; error messages.
 ]
 
 ---
@@ -598,8 +580,7 @@ about redirecting
 
   This `grep` command will search for the string "soil_blank"
   inside the contents of our metadata file:
-  
-  ```bash
+  ```sh
   $ grep "soil_blank" metadata/sample_meta.txt
   ```
 
@@ -609,8 +590,7 @@ about redirecting
 
 - Most command *also* accept input from "standard input" (*stdin*),   
   using the **pipe**, "**`|`**":
-  
-  ```bash
+  ```sh
   $ cat metadata/sample_meta.txt | grep "soil_blank"
   ```
   
@@ -660,8 +640,7 @@ Remove files (and dirs)
 
 ## Commands to manage files
 
-
-```bash
+```sh
 $ mkdir &lt;dirname&gt; # Make a new directory
 $ cp &lt;from&gt; &lt;to&gt;  # Copy files (and/or directories)
 $ mv &lt;from&gt; &lt;to&gt;  # Move or rename files and/or directories
@@ -675,25 +654,21 @@ $ rm &lt;file&gt;       # Remove files (and/or directories)
 
 - Examples:
   
-  
-  ```bash
+  ```sh
   mkdir figures/
   mkdir -p manuscript/fig/supp/      # "-p": multiple levels
   ```
   
 --
 
-  
-  ```bash
+  ```sh
   cp metadata/sample_meta.txt .      # "." for current wd            
   ```
   
-  
-  ```bash
+  ```sh
   mv sample_meta.txt meta.txt
   ```
-  
-  ```bash
+  ```sh
   rm meta.tx
   ```
 
@@ -702,8 +677,7 @@ $ rm &lt;file&gt;       # Remove files (and/or directories)
 
 ## Commands to manage files (cont.)
 
-
-```bash
+```sh
 $ mkdir &lt;dirname&gt; # Make a new directory
 $ cp &lt;from&gt; &lt;to&gt;  # Copy files (and/or directories)
 $ mv &lt;from&gt; &lt;to&gt;  # Move or rename files and/or directories
@@ -715,8 +689,7 @@ $ rm &lt;file&gt;       # Remove files (and/or directories)
 
 - For `cp` and `rm`, use **"`-r`"** (for "recursive") to act on directories
   and their contents:
-  
-  ```bash
+  ```sh
   cp -r data/raw/ backup/
     
   rm -r backup/      # Confirm removal for each file
@@ -753,8 +726,7 @@ name:wildcards
 --
 
 - Say we have the following files in a directory:
-  
-  ```bash
+  ```sh
   # sample1_F.fastq.gz sample1_R.fastq.gz
   # sample2_F.fastq.gz sample2_R.fastq.gz
   # sample3_F.fastq.gz sample3_R.fastq.gz
@@ -763,8 +735,7 @@ name:wildcards
 --
 
 - **To match both "sample1" files:**
-  
-  ```bash
+  ```sh
   ls sample1_?.fastq.gz
   ls sample1*
   ls sample1*fastq.gz
@@ -781,16 +752,14 @@ name:wildcards
 | [] and [^] | One or none (`^`) of the "character set" within the brackets   
 
 - Say we have the following files in a directory:
-  
-  ```bash
+  ```sh
   # sample1_F.fastq.gz sample1_R.fastq.gz
   # sample2_F.fastq.gz sample2_R.fastq.gz
   # sample3_F.fastq.gz sample3_R.fastq.gz
   ```
 
 - **To match only files with forward ("F) reads:**
-  
-  ```bash
+  ```sh
   $ ls *F*
   $ ls *F.fastq.gz
   ```
@@ -806,8 +775,7 @@ name:wildcards
 | [] and [^] | One or none (`^`) of the "character set" within the brackets   
 
 - Say we have the following files in a directory:
-  
-  ```bash
+  ```sh
   # sample1_F.fastq.gz sample1_R.fastq.gz
   # sample2_F.fastq.gz sample2_R.fastq.gz
   # sample3_F.fastq.gz sample3_R.fastq.gz
@@ -815,8 +783,7 @@ name:wildcards
 
 - When using a "character set", the presence of *any* of the characters will
   trigger a match. **To match files for sample1 and sample2 only:**
-  
-  ```bash
+  ```sh
   $ ls sample[12]*   # Use the character class notation
   $ ls sample[1-2]*  # Can use ranges like [0-9], [A-Z], [a-z].
   $ ls sample[^3]*   # Other way around: exclude sample3
@@ -848,8 +815,7 @@ background-color:#e4ede4
 
 ## Solutions: Navigation, managing files &amp; wildcards
 
-
-```bash
+```sh
 # 1. Go to `/fs/project/PAS0471/workshops/2020-12_micro/`.
 $ cd /fs/project/PAS0471/workshops/2020-12_micro/$USER
 
@@ -905,8 +871,7 @@ Show the first or last lines of a file.
 ## Text files: `cat`
 
 - `cat` will print one or more files, by default to screen.   
-  
-  ```bash
+  ```sh
   $ cat metadata/sample_meta.txt
   
   $ cat metadata/sample_meta.txt &gt; tmp.txt
@@ -917,8 +882,7 @@ Show the first or last lines of a file.
 - If you have 10,000 `fasta` files in a directory
   (e.g. one per gene), and you want to put them all into
   a single `fasta` file:
-  
-  ```bash
+  ```sh
   $ cat *.fasta &gt; all.fasta        # Recall the `*` wildcard  
   ```
 
@@ -935,8 +899,7 @@ Show the first or last lines of a file.
 ## Text files: `head` and `tail`
 
 - `head` / `tail` will simply show the first / last few lines of a file.
-  
-  ```bash
+  ```sh
   $ head my_file.txt        # Default: shows first/last 10 lines
   
   $ tail -n 1 my_file.txt   # Just show the last/first line
@@ -951,16 +914,14 @@ Show the first or last lines of a file.
 &lt;br&gt;
 
 - Skip the first line of a file (*cut off the header*, if you only want the data):
-  
-  ```bash
+  ```sh
   $ tail -n +2 file
   ```
 
 --
 
 - Print line number 1866:
-  
-  ```bash
+  ```sh
   $ head -n 1866 file | tail -n 1
   ```
 
@@ -983,8 +944,7 @@ name:script
 .pull-left[
 **Assign** a variable (no **`$`**):
 
-
-```bash
+```sh
 # Any string:
 my_name=Jelmer
 ```
@@ -993,26 +953,23 @@ my_name=Jelmer
 .pull-right[
 **Recall** a variable (with **`$`**):
 
-
-```bash
+```sh
 $ echo $my_name
 # Jelmer
-```
+  ```
 ]
 
 --
 
 .pull-left[
-
-```bash
+```sh
 # A filename:
 my_file="README.txt"
 ```
 ]
 
 .pull-right[
-
-```bash
+```sh
 $ ls -lh $my_file
 # -rw-r--r-- 1 jelmer PAS0471 568 Dec  7 09:58 README.txt
 ```
@@ -1021,8 +978,7 @@ $ ls -lh $my_file
 --
 
 .pull-left[  
-
-```bash
+```sh
 # Use "command substitution"
 # to assign a command's output
 today=$(date +"%Y-%m-%d")
@@ -1030,8 +986,7 @@ today=$(date +"%Y-%m-%d")
 ]
 
 .pull-right[
-
-```bash
+```sh
 $ touch README_$today.txt
 $ ls README_*
 # README_2020-12-10.txt
@@ -1040,9 +995,30 @@ $ ls README_*
 
 --
 
+.pull-left[
+Pre-existing variables:
+("**Environment variables**")
+]
+
+.pull-right[
+```sh
+$ echo $USER
+# jelmer
+```
+]
+
+--
+
+---
+
+## Assigning and using variables (cont.)
+
 - **It can be useful to use variables for things that:**
+  
   - May be subject to change over time or in reruns (dir names, settings).
+  
   - Need to be manipulated.
+  
   - Are re-used often.
 
 
@@ -1051,8 +1027,7 @@ $ ls README_*
 ## A very minimal script
 
 - Create and run a very simple script:
-  
-  ```bash
+  ```sh
   $ echo 'Hello $1' &gt; hello.sh
   
   $ bash hello.sh Jelmer
@@ -1063,8 +1038,7 @@ $ ls README_*
 
 .pull-left[
 - Or, assign a variable first:
-  
-  ```bash
+  ```sh
   $ my_name=Jelmer
   $ hello.sh $my_name
   # Hello Jelmer
@@ -1073,23 +1047,21 @@ $ ls README_*
 
 .pull-right[
 - Or use `$USER`:
-  
-  ```bash
+  ```sh
   $ hello.sh $USER
-  # Hello jelmer!
+  # Hello jelmer
   ```
 ]
 
 --
 
 - We can also redirect the output to a file:
-  
-  ```bash
+  ```sh
   $ hello.sh Jelmer &gt; hello.txt
   
   $ cat hello.txt
   # Hello Jelmer
-  ```
+  ``` 
   
 ---
 class: center middle inverse
@@ -1176,8 +1148,7 @@ background-color: #ededed
 
 ## Brace expansion
 
-
-```bash
+```sh
 $ touch sample{1,2,3}_{F,R}.fastq.gz
 
 $ ls
@@ -1207,24 +1178,21 @@ background-color: #ededed
 By default, it returns lines for which matches were found.
 
 - Create a file for all annotations for "Gene001":
-  
-  ```bash
+  ```sh
   grep "Gene001" my.gff &gt; Gene001.gff
   ```
 
 --
 
 - Count the number of lines containing "exon": 
-  
-  ```bash
+  ```sh
   grep -c "exon" my.gff   # -c: count matches
   ```
 
 --
 
 - Remove the header lines, which start with a `#`, from a VCF file:
-  
-  ```bash
+  ```sh  
   grep -v "^#" my.vcf     # -v: reverse search  
   ```
 
@@ -1241,14 +1209,12 @@ background-color: #ededed
 ## Text file data tools
 
 - **`cut`**: cut (select) one or more columns from a tabular file
-  
-  ```bash
+  ```sh
   $ cut -f 2-5 &lt; my.gff   # Cut the 2nd through 5th column 
   ```
 
 - **`wc` / `wc -l`**: count words / lines.
-  
-  ```bash
+  ```sh
   $ wc -l my.fastq   # Count the number of lines in a fastq file.
   ```
 
@@ -1257,14 +1223,12 @@ background-color: #ededed
 &lt;br&gt;
 
 - **`sort`**: sort a file by a specified column
-  
-  ```bash
+  ```sh
   $ sort -k5,5 my.bed
   ```
   
 - **`uniq` / `uniq -c`**: retain / count unique occurrences (*if in order!*)
-  
-  ```bash
+  ```sh
   $ uniq -c list_of_names.txt # Would return count for each name
   ```
 
@@ -1276,8 +1240,7 @@ background-color: #ededed
 For instance, the "pipeline" below will return a sorted list (most commmon
 to least common) of annotation types from an annotation file&lt;sup&gt;[1]&lt;/sup&gt;:
 
-
-```bash
+```sh
 $ grep -v "^#" my.gff | cut -f3 | sort | uniq -c | sort -rn
 # 36128 exon
 # 25901 CDS
@@ -1288,8 +1251,7 @@ $ grep -v "^#" my.gff | cut -f3 | sort | uniq -c | sort -rn
 --
 
 - Command-by-command (note **`\`** to continue across lines):
-  
-  ```bash
+  ```sh
   $ grep -v "^#" my.gff | \ # Excl. header lines starting with `#`
   +   cut -f3 | \           # Select only the 3rd column
   +   sort | \              # Sort alphabetically
@@ -1326,34 +1288,29 @@ background-color:#e4ede4
 ## Solutions: Working with text files I
 
 1. Move into the `metadata` folder:
-  
-  ```bash
+  ```sh
   mv metadata/
   ```
 
 1. Print the entire file to screen with `cat` and with `column -t`:
-  
-  ```bash
+  ```sh
   cat V4_meta.txt
   column -t V4_meta.txt
   ```
   
 2. Print the first 6 lines of the file, then make them line up with
   `column -t`:
-  
-  ```bash
+  ```sh
   head V4_meta.txt | column -t
   ```
   
 2. Print everything but the first line, which has the column headers:
-  
-  ```bash
+  ```sh
   tail -n +2
   ```
 
 3. Print the line for sample "304-S1":
-  
-  ```bash
+  ```sh
   grep "304-S1" V4_meta.txt
   ```
 
@@ -1379,14 +1336,12 @@ background-color:#e4ede4
 ## Solutions: Working with text files II
 
 1. How many samples (lines) do we have for each "Experiment"?
-  
-  ```bash
+  ```sh
   tail -n +2 V4_meta.txt | cut -f 3 | sort | uniq -c
   ```
 
 2. How many different "Blocks" do we have?
-  
-  ```bash
+  ```sh
   $ tail -n +2 V4_meta.txt | grep -v "NA" | \
   +    cut -f 6 | sort | uniq | wc -l
   ```
@@ -1394,8 +1349,7 @@ background-color:#e4ede4
 3. Count occurences of
   *"GAGTGCCAGCCGCCGCGGTAATACGTAGGGTGCGAGCGTTAATCGGAATTACTGGGC"*
   in the file `data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz`.
-  
-  ```bash
+  ```sh
   $ grep -c "GAGTGCCAGCCGCCGCGGTAATACGTAGGGTGCGAGCGTTAATCGGAATTACTGGGC" \
   +      data/fastq/502-S4-V4-V5_S66_L001_R1_001.fastq.gz
   ```
@@ -1420,8 +1374,7 @@ background-color: #ededed
 ## The `less` pager
 
 - `less` doesn't load entire files into memory: **easy to look at large files**.
-  
-  ```bash
+  ```sh
   $ less my_file.txt
   
   $ zless my_fastq.gz    # `zless` variant to view zipped files!
@@ -1492,8 +1445,7 @@ background-color: #ededed
 --
 
 - We can see this when we try to list a non-existing directory:
-  
-  ```bash
+  ```sh
   ls -lhr solutions/ &gt; solution_files.txt 
   # ls: cannot access solutions.txt: No such file or directory
   ```
@@ -1502,8 +1454,7 @@ background-color: #ededed
 
 --
 
-  
-  ```bash
+  ```sh
   $ ls
   # solution_files.txt
   $ cat solution_files.txt
@@ -1513,8 +1464,7 @@ background-color: #ededed
 --
 
 - To redirect the standard error:
-  
-  ```bash
+  ```sh
   ls -lhr solutions/ &gt; solution_files.txt 2&gt; errors.txt
   ls -lhr solutions/ &amp;&gt; out.txt # `&amp;&gt;`: combine stdout and stderr
   ```

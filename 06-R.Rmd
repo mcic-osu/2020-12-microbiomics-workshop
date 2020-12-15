@@ -32,7 +32,7 @@ klippy::klippy(position = 'right',
 > ## Learning Objectives
 >
 > * Get some basic familiarity with R and RStudio
-> * Learn how and why to use RStudio Projects
+> * Learn why and how to use RStudio Projects
 > * Understand objects, functions, and how to use them
 > * Understand the concepts of `vector` and `data.frame`
 > * Explore the structure and the content of a `data.frame`
@@ -148,7 +148,7 @@ R does the calculation and prints the result, and then you get the `>` prompt ag
 (The `[1]` may look a bit weird when there is only one output element; 
 this is how you can keep count of output elements.)
 
-You can generally use R as a calculator in this way, with standard symbols:
+With the standard symbols you can use R as a general calculator:
 
 ```{r calculations, eval = TRUE, results='show'}
 203 * 2.54   # Multiplication
@@ -245,9 +245,8 @@ and work with them in other ways, as long as we quote the strings:
 ### Need for Scripts
 
 We can go along like this, typing commands directly into the R console.
-But there won't be an easy way to keep track of what we've done.
-
-It's best to write your code in separate files, i.e. "scripts".
+But to better keep track of what you're doing,
+it's a good idea to write your code in files, i.e. "**scripts**".
 And when we start creating scripts, we need to worry about how we
 organize the scripts and data for a project.
 
@@ -301,17 +300,16 @@ forward slash `/` to delimit directories, even if you are on a Windows machine.*
 <br>
 
 Working this way makes it a lot easier to move your project around on your computer
-and share it with others without worrying about whether or not the underlying scripts
+and share it with others without worrying whether the paths in the scripts
 will still work.
 
 A challenge of using relative paths is that you need to make sure you are
 always at the same starting point (your *working directory*).
-RStudio provides a helpful set of tools to do this through its **"Projects"**.
+RStudio provides a helpful way to
+**keep your working directory constant through its "Projects"**.
 When you use a Project, your working directory will *always* be the top-level
 directory of that project,
 and you can safely use relative paths to point to other files.
-
-<br>
 
 ### Create an RStudio Project:
 
@@ -361,9 +359,8 @@ and refer to all files relative to our project's top-level directory.
 
 ### Interacting with the R console from your script
 
-I recommend always *typing your commands into a script*,
-which you'll save for later reference,
-and then executing the commands from there.
+I recommend always *typing your commands into a script*
+and executing the commands from there.
 
 We want to make sure to save our division,
 so start by typing the following into the R script in the top-left pane:
@@ -376,14 +373,14 @@ With the cursor still on this line,
 press <kbd>`Ctrl`</kbd> + <kbd>`Enter`</kbd>.
 The command will be copied to the R console and executed,
 and then the cursor will move to the next line.
-(You can also highlight a bunch of code and execute the block all at
+(You can also highlight multiple lines of code and execute them all at
 once with <kbd>`Ctrl`</kbd> + <kbd>`Enter`</kbd>.)
 
 ### Commenting
 
-Use `#` signs to comment.
+Use `#` signs to comment your code.
 Anything to the right of a `#` is ignored by R, meaning it won't be executed.
-You can use `#` both at the start of a line or anywhere in the line, after actual code.
+You can use `#` both at the start of a line or anywhere in a line following code.
 
 Comments are a great way to describe what your code does within the code itself,
 so comment liberally in your R scripts!
@@ -474,7 +471,8 @@ Therefore, `y` will keep the value `100`.
 ### Objects in your workspace
 
 The objects you create get added to your "workspace". You can list the
-current objects with `ls()`. RStudio also shows the objects in the Environment panel.
+current objects with `ls()`. RStudio also shows the objects in the
+**Environment panel.**
 
 
 ----
@@ -492,7 +490,7 @@ round(203 / 2.54)
 ```
 
 Here, `round()` is a _function_ that rounds a number.
-The value in the parentheses is called a function "argument",
+The value in the parentheses is called a function "*argument*",
 which is used in the execution of the function.
 
 ### Using named arguments
@@ -589,8 +587,8 @@ exists, will work too (e.g. "rounding a number in r").
 A **vector** is the most common and basic data structure in R,
 and is composed of a **series of values of the same type**.
 
-We can assign a series of values to a vector using the `c()` function.
-For example:
+We can assign a series of values to a vector using the `c()` function
+(for "combine"). For example:
 
 ```{r, eval = TRUE}
 wingspan_cm <- c(11.8, 203, 18.2, 27.9)
@@ -605,7 +603,7 @@ birds <- c("hummingbird", "bald_eagle", "chickadee", "cardinal")
 
 <br>
 
-As mentioned, all of a vector's elements are the same type of data.
+As mentioned, all of a vector's elements are of the same type of data.   
 The function `class()` indicates what kind of data you are working with:
 
 ```{r, eval = TRUE, results='show'}
@@ -615,17 +613,21 @@ class(birds)
 
 ### Data types in R
 
-These classes are different types of **atomic vectors**, R's simplest **data type**.
+The classes we saw above are different types of **atomic vectors**,
+R's simplest **data type**.
 The 4 most common atomic vector types are:
 
 - **`"numeric"`** (or `"double"`) -- floating point numbers
+
 - **`"character"`** -- character strings
+
 - **`"logical"`** -- `TRUE` and `FALSE` (also known as boolean)
+
 - **`"integer"`** -- integer numbers
 
 <details>
 <summary>
-&nbsp; `r icon::fa("info-circle")` &nbsp; Vector coercion: when not all elements are of the same type. (Click here)
+&nbsp; `r icon::fa("info-circle")` &nbsp; **Vector coercion**: when not all elements are of the same type. (Click here)
 </summary>
 
 What happens if we try to mix vector types (e.g., "character and numeric")
@@ -676,9 +678,9 @@ wingspan_in
 &nbsp;  `r icon::fa("info-circle")` &nbsp; Why does this work?
 </summary>
 
-R "vectorizes" operations whenever it can.
+R "*vectorizes*" operations whenever it can.
 This means that in this case, each element in the vector `weights_cm` will be divided
-by 2.54 -- this number is "vectorized" or recycled to match the number of weights.
+by 2.54 -- this number is **recycled** to match the number of weights.
 
 For a programming language, this is unusual behavior -- but it is very useful!
 
@@ -705,11 +707,15 @@ While vectors can be composed of one of several *data types*, they, in turn,
 are one of several **data structures** that R uses.
 Other important ones are:
 
-- **`data.frame`** -- A rectangular data structure where each column can be a different data type.
+- **`data.frame`** -- A rectangular data structure where each column can be a
+  different data type.
+
 - **`matrix`** -- A rectangular data structure of a single data type.
+
 - **`list`** -- A very flexible data structure that we will not further discuss here.
+
 - **`factor`** -- Character strings with a discrete set of possible values,
-used mostly for statistical tests and when plotting.
+  used mostly for statistical tests and when plotting.
 
 
 ----
@@ -727,8 +733,8 @@ in which:
 
 ### Create, write, and read a data frame
 
-We can easily create a data frame by hand using the `data.frame()` function and a
-`column_name = column_vector` notation for each column:
+We can easily create a data frame by hand using the `data.frame()` function and
+"`column_name = column_vector`" notation for each column:
 
 ```{r eval=TRUE, results='show'}
 birds_df <- data.frame(species = birds,
