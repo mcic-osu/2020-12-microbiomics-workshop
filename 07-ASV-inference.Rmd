@@ -44,7 +44,8 @@ Process metabarcoding reads, post-adapter removal, including:
 
 ### Notes
 
-- This documented was adapted from [Callahan et al. 2006](https://f1000research.com/articles/5-1492/v2)
+- This documented was adapted from
+  [Callahan et al. 2006](https://f1000research.com/articles/5-1492/v2)
   by Matthew Willman, with further edits by Soledad Benitez Ponce and Jelmer Poelstra.
   
 - To convert an `Rmd` (R Markdown) file to an R script,
@@ -52,6 +53,10 @@ Process metabarcoding reads, post-adapter removal, including:
   `knitr::purl(input='<filename>.Rmd')`.
   (You can download this `Rmd` file by clicking the `Code` button
   in the top-right of this page -- but we will open it at OSC.)
+
+- This document deliberately does not have any R output.
+  In case you want to check your output against a reference,
+  you can find a document with R output [here](assets/07-ASV-inference.html).
 
 ### Start an RStudio Server job at OSC
 

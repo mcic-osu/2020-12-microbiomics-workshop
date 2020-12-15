@@ -45,6 +45,10 @@ Analyze microbiome experimental data as a phyloseq object - explore ecological m
   (You can download this `Rmd` file by clicking the `Code` button
   in the top-right of this page -- but we will open it at OSC.)
 
+- This document deliberately does not have any R output.
+  In case you want to check your output against a reference,
+  you can find a document with R output [here](assets/08-postASV-analysis.html).
+  
 ### Open this file in RStudio Server at OSC
 
 - This assumes you still have an active RStudio Server job at OSC;
