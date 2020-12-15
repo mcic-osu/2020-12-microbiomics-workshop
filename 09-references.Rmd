@@ -1,11 +1,16 @@
 ---
-title: "References"
+title: "<br>References"
 output:
   rmarkdown::html_document:
     theme: cerulean
     toc: true
     toc_float: true
 ---
+
+<br>
+
+Below, find a list of useful references for microbiome analyses,
+compiled by Soledad Benitez Ponce.
 
 -----
 
