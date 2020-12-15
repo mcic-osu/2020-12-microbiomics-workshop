@@ -388,6 +388,7 @@ slurm_file=slurm-cutadapt-$USER-%j.out
 Finally, we're ready to **submit the script**!
 ```{bash}
 sbatch -o $slurm_file scripts/01-cutadapt.sh $indir $outdir
+# Submitted batch job 2526085
 ```
 
 -----
@@ -403,7 +404,7 @@ We can check what's going on with our job using `squeue`:
 # Initially the job may be queued ("PD" in the "ST" (status) column):
 squeue -u $USER
 # JOBID   PARTITION     NAME       USER    ST      TIME  NODES NODELIST(REASON)
-# 2526085 serial-40     01-cutad   jelmer  PD       0:02      1 (None) 
+# 2526085 serial-40     01-cutad   jelmer  PD       0:00      1 (None) 
 
 # Then the job should be running ("R" in the "ST" column):
 squeue -u $USER
