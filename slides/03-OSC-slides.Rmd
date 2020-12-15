@@ -146,8 +146,10 @@ name: introduction
 
 - Essentially a (large/powerful) computer -- one of many in a cluster.
 
-- Most jobs run on a single node.   
-  (Parallelization across nodes is possible but advanced.)
+  - **Login node**: A node you end up on after logging in, which is not meant
+  for computing. (A few per cluster.)
+  
+  - **Compute node**: A node for compute jobs. (Hundreds per cluster.)
 
 ---
 
@@ -212,8 +214,6 @@ but also through the web browser: from https://ondemand.osc.edu.
 
 --
 
-<br>
-
 - **Interface Demo**
 
 --
@@ -225,20 +225,13 @@ but also through the web browser: from https://ondemand.osc.edu.
 
 ---
 
-## Login nodes
-
-- After logging in to OSC, you're on a **login node**.
-
-<p align="center">
-<img src=figs_OSC/cluster_diagram.png width="900">
-</p>
-
-
----
-
 ## Login nodes: best practices
 
+- After logging in to OSC, you're on a **login node**.
+  
 - Use login nodes for *navigation*, *housekeeping*, and *job submission*.
+
+--
 
 - Any process that is active for >20 minutes or uses >1GB **will be killed**.
 
@@ -246,8 +239,6 @@ but also through the web browser: from https://ondemand.osc.edu.
   login nodes are *shared by everyone*, and can get clogged.   
 
 <br>
-
---
 
 .content-box-purple[
 `r icon::fa("info-circle")` &nbsp; For more info, see OSC's page [Login environment at OSC](https://www.osc.edu/supercomputing/login-environment-at-osc).
@@ -267,13 +258,6 @@ name: transfer
 <br><br><br><br>
 
 ### [[Back to overview]](#overview)
-
----
-
-## Transferring files
-
-There are several ways to transfer files between your local computer and OSC,
-depending on your preferences and **the size of the transfer**.
 
 ---
 
@@ -339,7 +323,7 @@ class: inverse middle center
 name: jobs
 
 # Starting a Compute Job
-# (i.e., Accessing Compute Nodes)
+## (i.e., Accessing Compute Nodes)
 
 -----
 
@@ -376,8 +360,10 @@ name: jobs
 <br>
 
 .content-box-purple[
-`r icon::fa("info-circle")` &nbsp; For all these options, you can provide      
-&nbsp; &nbsp;  &nbsp; instructions to the *SLURM* scheduler to reserve X nodes/cores/time, etc.
+`r icon::fa("info-circle")` &nbsp; For all these options, you can provide
+instructions to the *SLURM*   
+&nbsp; &nbsp;  &nbsp; &nbsp; scheduler to request a specific number of  nodes/cores/memory for a   
+&nbsp; &nbsp;  &nbsp; &nbsp; specific amount of time, etc.
 ]
 
 
@@ -410,12 +396,17 @@ name:rstudio_server_job
 - To submit a job:
 
   ```sh
-  $ sbatch hello.sh
+  $ sbatch [sbatch-options] script.sh [script-arguments]
+  
+  $ sbatch hello.sh Jelmer
+  # Submitted batch job 2526085 
   ```
+
+--
 
 <br>
 
-- The `sbatch` instructions go to the top of your script:
+- The `sbatch` instructions can also be provided at the top of your script:
 
   ```sh
   #SBATCH --account=PAS0471
@@ -429,12 +420,13 @@ name:rstudio_server_job
 
 ## Starting a compute job: Interactive job
 
-- To start an [interactive job](https://www.osc.edu/supercomputing/knowledge-base/slurm_migration/how_to_monitor_and_manage_jobs):
+- To start an
+  [interactive job](https://www.osc.edu/supercomputing/knowledge-base/slurm_migration/how_to_monitor_and_manage_jobs):
 
   ```sh
-  sinteractive            # Default: 30-mins, 1-core, 1-node
+  $ sinteractive         # Default: 30-mins, 1-core, 1-node
   
-  sinteractive -time=120  # Two hours 
+  $ sinteractive -t 120  # Two hours 
   ```
 
 - This will get you interactive shell access on a compute node. 
@@ -462,13 +454,12 @@ name: job_options
   though some of the packages we'll work with *can* do this.
 
 
-<br> <br> <br> <br> <br> <br> <br>
+<br> <br> <br> <br> <br> <br> <br> <br>
 
 ```sh
 #SBATCH --nodes=1-1             # 1 node min. and max. 
 
 # Two ways to ask for two cores:
-
 #SBATCH --cpus-per-task=2       # Preferred for multi-threading
 #SBATCH --ntasks-per-node=2     # Preferred for multi-process
 ```
@@ -491,8 +482,6 @@ name: job_options
   
   - Slight trade-off: shorter jobs are likely to start sooner.   
 
---
-
 <br> <br>
 
 ```sh
@@ -501,9 +490,7 @@ name: job_options
 # "days-hours:minutes:seconds".          
 
 #SBATCH --time=60            # 1 hour
-
 #SBATCH --time=03:30:00      # 3.5 hours
-
 #SBATCH --time=5-0           # 5 days
 ```
 
@@ -799,6 +786,57 @@ background-color: #ededed
 
 ## Monitoring *SLURM* Jobs
 
+- *Queued* and *running* jobs can be monitored using the `squeue` command.
+  (Make sure to specify that you want to see your jobs,
+  or *all* jobs on the entire cluster will be shown.)
+
+- When a job is queued (waiting to start),
+  the "`ST`" (status) column will read "`PD`":  
+  ```sh
+  $ squeue -u $USER
+  # JOBID   PARTITION     NAME       USER    ST      TIME  NODES NODELIST(REASON)
+  # 2526085 serial-40     01-cutad   jelmer  PD       0:00      1 (None) 
+  ```
+
+- When a job is running,
+  the "`ST`" column will read "`R`":
+  ```sh
+  squeue -u $USER
+  # JOBID   PARTITION     NAME       USER    ST      TIME  NODES NODELIST(REASON) 
+  # 2526085 serial-40     01-cutad   jelmer  R       0:02      1 p0002 
+  ```
+  
+- As soon as a job has finished running, it will disappear from this list.
+
+---
+
+- You can see more details about any job, including finished jobs,
+  using `scontrol show job`:
+  
+  ```sh
+  scontrol show job 2526085   # Replace the number with your JOBID
+
+  # UserId=jelmer(33227) GroupId=PAS0471(3773) MCS_label=N/A
+  # Priority=200005206 Nice=0 Account=pas0471 QOS=pitzer-default
+  # JobState=RUNNING Reason=None Dependency=(null)
+  # Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+  # RunTime=00:02:00 TimeLimit=01:00:00 TimeMin=N/A
+  # SubmitTime=2020-12-14T14:32:44 EligibleTime=2020-12-14T14:32:44
+  # AccrueTime=2020-12-14T14:32:44
+  # StartTime=2020-12-14T14:32:47 EndTime=2020-12-14T15:32:47 Deadline=N/A
+  # SuspendTime=None SecsPreSuspend=0 LastSchedEval=2020-12-14T14:32:47
+  # Partition=serial-40core AllocNode:Sid=pitzer-login01:57954
+  # ReqNodeList=(null) ExcNodeList=(null)
+  # NodeList=p0002
+  # BatchHost=p0002
+  # NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+  # TRES=cpu=1,mem=4556M,node=1,billing=1,gres/gpfs:project=0
+  # Socks/Node=* NtasksPerN:B:S:C=1:0:*:1 CoreSpec=*
+  # MinCPUsNode=1 MinMemoryCPU=4556M MinTmpDiskNode=0
+  # Features=(null) DelayBoot=00:00:00
+  # OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+  # [...]
+  ```
 
 ---
 name: conda
