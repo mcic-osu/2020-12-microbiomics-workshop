@@ -749,6 +749,8 @@ unifrac_dist <- UniFrac(ps_S3, weighted = TRUE)
 Then we'll use `vegan::adonis2` to perform the *PERMANOVA*.
 
 ```{r PERMANOVA}
+set.seed(100)  # Set the seed to make the analysis reproducible
+
 permanova <- adonis2(unifrac_dist ~ Treatment,
                      data = metadata,
                      permutations = 10000)
