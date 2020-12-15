@@ -12,17 +12,15 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r knitr_options, echo=FALSE, purl=FALSE}
-root_dir <- "/fs/project/PAS0471/workshops/2020-12_micro/$USER"
-#knitr::opts_knit$set(root.dir = root_dir) # UNCOMMENT AT OSC
+```{r setup, echo=FALSE, purl=FALSE}
+root_dir <- '/fs/project/PAS0471/workshops/2020-12_micro/$USER'
+#knitr::opts_knit$set(root.dir = root_dir)
 
-knitr::opts_chunk$set(results='hide',
-                      eval = FALSE, # CHANGE TO TRUE TO RUN UPON COMPILING
-                      class.source="r_code",
-                      class.output="r_output",
-                      class.warning="r_warning",
-                      class.message="r_warning",
-                      class.error="r_error")
+knitr::opts_chunk$set(
+  cache = TRUE,
+  eval = FALSE, # change as needed
+  class.source = 'r_code', class.output = 'r_output', class.warning = 'r_warning', class.message = 'r_warning', class.error = 'r_error'
+  )
 ```
 
 <br>
