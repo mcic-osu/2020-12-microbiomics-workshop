@@ -8,6 +8,7 @@ output:
     toc: true
     toc_float: true
     css: my.css
+    anchor_sections: true
 editor_options: 
   chunk_output_type: console
 ---
