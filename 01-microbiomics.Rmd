@@ -1,5 +1,5 @@
 ---
-title: "<br>An Introduction to Amplicon Sequencing"
+title: "<br>An Introduction to Metabarcoding"
 ---
 
 <br><br><br>
