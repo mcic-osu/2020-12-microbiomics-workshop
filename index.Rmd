@@ -11,7 +11,7 @@ title: "<br>Microbiomics Workshop"
 <br>
 
 <span style="font-size: 18px">**This website contains materials for an online
-OSU microbiomics workshop<br>on December 16 and 17, 2020.**</span>
+OSU microbiome metabarcoding workshop<br>on December 16 and 17, 2020.**</span>
 
 ----
 
