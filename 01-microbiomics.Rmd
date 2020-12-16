@@ -4,4 +4,4 @@ title: "<br>An Introduction to Metabarcoding"
 
 <br><br><br>
 
-## <a href="assets/intro_presentation.pdf" target="_blank">Click here for the slides (PDF)</a>
+## <a href="slides/intro_presentation.pdf" target="_blank">Click here for the slides (PDF)</a>

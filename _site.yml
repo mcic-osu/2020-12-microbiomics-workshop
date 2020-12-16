@@ -19,7 +19,7 @@ navbar:
     - text: "Day 1"
       menu:
         - text: "Lectures:"
-        - text: "Intro to Amplicon Sequencing"
+        - text: "Intro to Metabarcoding"
           href: "01-microbiomics.html"
         - text: "---------"
         - text: "Lecture/Code-along:"
