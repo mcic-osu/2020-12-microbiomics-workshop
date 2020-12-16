@@ -176,9 +176,9 @@ class: center middle
 
 --
 
-<p align="left">
-<img src=figs_shell/cal.png width="400">
-</p>
+  <p align="center">
+  <img src=figs_shell/cal.png width="400">
+  </p>
 
 ---
 
@@ -481,14 +481,15 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 
 - We can also provide a directory or file name as an argument:
   ```sh
-  $ ls -lh metadata/Experiment description
+  $ ls -lh metadata
   ```
   
----
-
-## Navigation: `ls` (cont.)
-
-- We can also provide a directory or file name as an argument:
+  <p align="center">
+  <img src=figs_shell/ls-metadata.png width="500">
+  </p>
+  
+--
+  
   ```sh
   $ ls -lh metadata/Experiment description
   # ls: cannot access Experiment: No such file or directory
@@ -496,8 +497,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
   ```
 
   What just happened? And how do we get around this?
-
-<br>
 
 --
 
@@ -509,8 +508,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
   ```
 
 --
-
-<br>
 
 - **But, better to avoid spaces in file names!**
 
@@ -541,6 +538,7 @@ name:stdin
 - With "**`>`**", we **redirect** output to a file:
   - If the file doesn't exist, it will be *created*.
   - If the file does exist, any contents will be *overwritten*. 
+  
   ```sh
   $ ls -lhr data/raw > list_of_files.txt
   ```
@@ -570,7 +568,7 @@ about redirecting
 
 - A file name can be given as an argument to most commands.
 
-  This `grep` command will search for the string "soil_blank"
+  This "`grep`" command will search for the string "soil_blank"
   inside the contents of our metadata file:
   ```sh
   $ grep "soil_blank" metadata/sample_meta.txt
@@ -580,7 +578,7 @@ about redirecting
 
 <br>
 
-- Most command *also* accept input from "standard input" (*stdin*),   
+- Most commands *also* accept input from "standard input" (*stdin*),   
   using the **pipe**, "**`|`**":
   ```sh
   $ cat metadata/sample_meta.txt | grep "soil_blank"

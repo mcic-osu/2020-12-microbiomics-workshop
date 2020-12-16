@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # An Introduction to the shell
 ### Jelmer Poelstra
 ### MCIC Wooster
-### 2020/12/16 (updated: 2020-12-15)
+### 2020/12/16 (updated: 2020-12-16)
 
 ---
 
@@ -181,9 +181,9 @@ class: center middle
 
 --
 
-&lt;p align="left"&gt;
-&lt;img src=figs_shell/cal.png width="400"&gt;
-&lt;/p&gt;
+  &lt;p align="center"&gt;
+  &lt;img src=figs_shell/cal.png width="400"&gt;
+  &lt;/p&gt;
 
 ---
 
@@ -489,14 +489,15 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
 
 - We can also provide a directory or file name as an argument:
   ```sh
-  $ ls -lh metadata/Experiment description
+  $ ls -lh metadata
   ```
   
----
-
-## Navigation: `ls` (cont.)
-
-- We can also provide a directory or file name as an argument:
+  &lt;p align="center"&gt;
+  &lt;img src=figs_shell/ls-metadata.png width="500"&gt;
+  &lt;/p&gt;
+  
+--
+  
   ```sh
   $ ls -lh metadata/Experiment description
   # ls: cannot access Experiment: No such file or directory
@@ -504,8 +505,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
   ```
 
   What just happened? And how do we get around this?
-
-&lt;br&gt;
 
 --
 
@@ -517,8 +516,6 @@ $ cd .      # This doesn't move you anywhere, as `.` is a shortcut
   ```
 
 --
-
-&lt;br&gt;
 
 - **But, better to avoid spaces in file names!**
 
@@ -549,6 +546,7 @@ name:stdin
 - With "**`&gt;`**", we **redirect** output to a file:
   - If the file doesn't exist, it will be *created*.
   - If the file does exist, any contents will be *overwritten*. 
+  
   ```sh
   $ ls -lhr data/raw &gt; list_of_files.txt
   ```
@@ -578,7 +576,7 @@ about redirecting
 
 - A file name can be given as an argument to most commands.
 
-  This `grep` command will search for the string "soil_blank"
+  This "`grep`" command will search for the string "soil_blank"
   inside the contents of our metadata file:
   ```sh
   $ grep "soil_blank" metadata/sample_meta.txt
@@ -588,7 +586,7 @@ about redirecting
 
 &lt;br&gt;
 
-- Most command *also* accept input from "standard input" (*stdin*),   
+- Most commands *also* accept input from "standard input" (*stdin*),   
   using the **pipe**, "**`|`**":
   ```sh
   $ cat metadata/sample_meta.txt | grep "soil_blank"
