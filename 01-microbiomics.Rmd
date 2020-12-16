@@ -3,3 +3,5 @@ title: "<br>An Introduction to Amplicon Sequencing"
 ---
 
 <br><br><br>
+
+## <a href="assets/intro_presentation.pdf" target="_blank">Click here for the slides (PDF)</a>
