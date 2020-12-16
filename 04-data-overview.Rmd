@@ -14,6 +14,13 @@ output:
 
 -----
 
+## Slides
+
+[Click here to download the slides (PDF)](slides/workflow_intro.pdf).
+
+
+-----
+
 ## The Dataset
 
 This dataset consists of 16S-V4 gene-marker sequence data collected from soil DNA samples collected from an Ohio rye cover cropping experiment.
