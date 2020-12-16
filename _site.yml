@@ -37,7 +37,7 @@ navbar:
         - text: "Workflow Sessions:"
         - text: "Overview"
           href: "04-data-overview.html"
-        - text: "I: Adapter and Primer Removal"
+        - text: "I: Primer Removal"
           href: "05-preprocess-reads.html"
         - text: "II: ASV Inference"
           href: "07-ASV-inference.html"
