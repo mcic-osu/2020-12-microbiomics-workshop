@@ -13,8 +13,6 @@ title: "<br>Microbiomics Workshop"
 <span style="font-size: 18px">**This website contains materials for an online
 OSU microbiomics workshop<br>on December 16 and 17, 2020.**</span>
 
-For pre-workshop computer setup, see the [Setup](00_setup.html) page.
-
 ----
 
 ## Schedule
@@ -29,8 +27,9 @@ _Introduction to Metabarcoding_ | Lecture | Antonino | | <a href="slides/intro_p
 _Introduction to the Shell_ | Mixed | Jelmer | <a href="02-shell.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/02-shell-slides.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
 _Introduction to OSC_ | Mixed | Jelmer | <a href="03-OSC.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | <a href="slides/03-OSC-slides.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-desktop fa-lg"></i></span></a> |
 
-
 </mytable>
+
+- [Click here for the Zoom recording for day 1](https://osu.zoom.us/rec/share/cgPOzJq8-dhyLAERxJNPwRSa_TKSxUKEDmBlEvzzDqYlHBPx2wQpX7iBCdga9jFB.oBmtUXJ8dFFjOMN_).
 
 ### Day 2 (Thu, Dec 17)
 
