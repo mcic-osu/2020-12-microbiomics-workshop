@@ -953,7 +953,7 @@ $ echo $my_name
 
 .pull-left[
 ```sh
-# A filename:
+# A file name:
 my_file="README.txt"
 ```
 ]
@@ -1018,7 +1018,7 @@ $ echo $USER
 
 - Create and run a very simple script:
   ```sh
-  $ echo 'Hello $1' > hello.sh
+  $ echo 'echo "Hello $1"' > hello.sh
   
   $ bash hello.sh Jelmer
   # Hello Jelmer
