@@ -26,7 +26,7 @@ output:
 
 - [Introduction](slides/02-shell-slides.html#intro)
 - [Navigation](slides/02-shell-slides.html#navigation)
-- [Standard in/out and Pipes](slides/02-shell-slides.html#stdin)
+- [Standard In/Out and Pipes](slides/02-shell-slides.html#stdin)
 - [Managing Files](slides/02-shell-slides.html#managing_files)
 - [Wildcards](slides/02-shell-slides.html#wildcards)
 - [Viewing Text Files](slides/02-shell-slides.html#text_files)
