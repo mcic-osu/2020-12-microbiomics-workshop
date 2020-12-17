@@ -64,15 +64,22 @@ We will use the output from `cutadapt` as input for the next step in our workflo
 
 ### Primers
 
-These are the primers that were used in this amplicon sequencing.
-we want to remove:
+These are the primers that were used in this amplicon sequencing experiment.
 
 - 515F: *GAGTGYCAGCMGCCGCGGTAA*
 - 806R: *ACGGACTACNVGGGTWTCTAAT*
 - 515F reverse complement: *TTACCGCGGCKGCTGRCACTC*
 - 806R reverse complement: *ATTAGAWACCCBNGTAGTCCGT*
 
-We will specify these primers when running `cutadapt`.
+We will specify these primers when running `cutadapt`,
+in order to remove them from the fastq files.
+
+<div class="alert fyi">
+<div>
+For this tutorial, the original fastq files have been subsampled to about 1/3 of
+their original size to shorten the time needed for computation.
+</div
+</div>
 
 ### Load the `conda` environment with `cutadapt` 
 
