@@ -567,6 +567,7 @@ and the number of nonchimeric reads:
 nreads_summary <- data.frame(filter_results,
                              denoised_F,
                              denoised_R,
+                             merged,
                              nonchim = rowSums(seqtab),
                              row.names = sampleIDs)
 colnames(nreads_summary)[1:2] <- c('input', 'filtered')
