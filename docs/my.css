@@ -106,5 +106,11 @@ div.puzzle, div.fyi, div.demo, div.note {
 }
 
 div.puzzle {
-    background-image: url("img/puzzle-div.png");
+  background-image: url("img/puzzle-div.png");
+}
+
+div.fyi {
+  background-image: url("img/icons8-info-64.png");
+  background-size: 25px;
+  padding-left: 50px;
 }
