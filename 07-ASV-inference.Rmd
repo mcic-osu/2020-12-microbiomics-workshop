@@ -14,7 +14,7 @@ editor_options:
 ---
 
 ```{r setup, echo=FALSE, purl=FALSE}
-root_dir <- '/fs/project/PAS0471/workshops/2020-12_micro/$USER'
+root_dir <- '..'
 #knitr::opts_knit$set(root.dir = root_dir)
 
 knitr::opts_chunk$set(
