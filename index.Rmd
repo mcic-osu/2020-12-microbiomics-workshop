@@ -1,5 +1,5 @@
 ---
-title: "<br>Microbiomics Workshop"
+title: "<br>Microbiome Metabarcoding Workshop"
 ---
 
 <style>
@@ -44,6 +44,8 @@ _Workflow part I: Primer Removal_ | Hands-on | Breakout Rooms | <a href="05-prep
 | _Workflow part III: ASV Analysis_ | Hands-on | Breakout Rooms | <a href="08-postASV-analysis.html" target="_blank"><span style="color: #4b5357;"><i class="fas fa-book fa-lg"></i></span></a> | |
 
 </mytable>
+
+- [Click here for the Zoom recording for day 2](https://osu.zoom.us/rec/share/Awaf-HSrb17gi7J4w7kuc22SvLOMdD9mAH14PUevYGbEda1mQeSWTjV8uKxASGPP.jnZRrxmhEe8g_GMP).
 
 ----
 
